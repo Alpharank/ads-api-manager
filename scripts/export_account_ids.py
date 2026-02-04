@@ -22,7 +22,7 @@ from google.ads.googleads.errors import GoogleAdsException
 
 def main():
     # Load config
-    with open('config.yaml', 'r') as f:
+    with open('config/config.yaml', 'r') as f:
         config = yaml.safe_load(f)
 
     # Initialize client

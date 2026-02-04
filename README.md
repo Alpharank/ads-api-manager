@@ -13,7 +13,13 @@ pip install -r requirements.txt
 
 ### 2. Configure Credentials
 
-Edit `config.yaml` with our credentials:
+Copy the example config and fill in credentials:
+
+```bash
+cp config/config.example.yaml config/config.yaml
+```
+
+Edit `config/config.yaml` with our credentials:
 
 ```yaml
 google_ads:
@@ -30,45 +36,73 @@ If we don't have a refresh token yet:
 
 ```bash
 pip install google-auth-oauthlib
-python generate_refresh_token.py
+python scripts/generate_refresh_token.py
 ```
 
 ### 4. Map Our Client IDs
 
-Add all 40 accounts to the `client_mapping` section in `config.yaml`:
+Add accounts to the `client_mapping` section in `config/config.yaml`. Current accounts under the MCC:
+
+| Customer ID  | Account Name                        |
+|-------------|--------------------------------------|
+| 9001645164  | California Coast Credit Union        |
+| 7306319113  | CommonWealth One Federal Credit Union |
+| 4668771744  | FCC_FirstCommunityCreditUnion        |
+| 7543892333  | Kitsap Credit Union                  |
+| 7636280979  | Public Service Credit Union          |
 
 ```yaml
 client_mapping:
   "9001645164": "californiacoast_cu"
-  "1234567890": "hughes_cu"
-  # ... etc
+  "7306319113": "commonwealth_one_fcu"
+  "4668771744": "firstcommunity_cu"
+  "7543892333": "kitsap_cu"
+  "7636280979": "publicservice_cu"
 ```
 
 ## Usage
 
 ### List all accessible accounts
 ```bash
-python google_ads_to_s3.py --list-accounts
+python pipeline/google_ads_to_s3.py --list-accounts
 ```
 
 ### Pull yesterday's data (default)
 ```bash
-python google_ads_to_s3.py
+python pipeline/google_ads_to_s3.py
 ```
 
 ### Backfill last 90 days
 ```bash
-python google_ads_to_s3.py --backfill 90
+python pipeline/google_ads_to_s3.py --backfill 90
 ```
 
 ### Pull specific date
 ```bash
-python google_ads_to_s3.py --date 2024-01-15
+python pipeline/google_ads_to_s3.py --date 2024-01-15
 ```
 
 ### Pull for a single client
 ```bash
-python google_ads_to_s3.py --backfill 90 --client californiacoast_cu
+python pipeline/google_ads_to_s3.py --backfill 90 --client californiacoast_cu
+```
+
+## Project Structure
+
+```
+google_ads_to_s3/
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── config/
+│   ├── config.example.yaml   # Template with placeholder values
+│   └── config.yaml           # Real credentials (gitignored)
+├── pipeline/
+│   ├── __init__.py
+│   └── google_ads_to_s3.py   # Main pipeline class + CLI entrypoint
+└── scripts/
+    ├── export_account_ids.py  # List MCC child accounts
+    └── generate_refresh_token.py  # OAuth setup helper
 ```
 
 ## Output Structure
@@ -115,7 +149,7 @@ Deploy as a Lambda function triggered by CloudWatch Events (daily at 6 AM UTC):
 
 ### Cron
 ```bash
-0 6 * * * cd /path/to/google_ads_to_s3 && python google_ads_to_s3.py >> /var/log/google_ads.log 2>&1
+0 6 * * * cd /path/to/google_ads_to_s3 && python pipeline/google_ads_to_s3.py >> /var/log/google_ads.log 2>&1
 ```
 
 ## GCLID Mapping

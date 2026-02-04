@@ -34,7 +34,7 @@ logger = logging.getLogger(__name__)
 class GoogleAdsToS3:
     """Main class to pull Google Ads data and upload to S3."""
 
-    def __init__(self, config_path: str = "config.yaml"):
+    def __init__(self, config_path: str = "config/config.yaml"):
         """Initialize with configuration file."""
         with open(config_path, 'r') as f:
             self.config = yaml.safe_load(f)
@@ -306,7 +306,7 @@ class GoogleAdsToS3:
 
 def main():
     parser = argparse.ArgumentParser(description='Google Ads to S3 Pipeline')
-    parser.add_argument('--config', default='config.yaml', help='Path to config file')
+    parser.add_argument('--config', default='config/config.yaml', help='Path to config file')
     parser.add_argument('--date', help='Specific date to pull (YYYY-MM-DD)')
     parser.add_argument('--backfill', type=int, help='Number of days to backfill')
     parser.add_argument('--list-accounts', action='store_true', help='List all accessible accounts')
