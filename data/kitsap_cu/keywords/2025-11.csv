@@ -1,0 +1,119 @@
+campaign_name,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
+KCU - Personal - Brand,General Banking,kitsap credit union,PHRASE,7311,2623,2954.273572,280.049253
+KCU - Personal - NB,Certificates,cd rates,BROAD,3990,474,4744.745128,2.0
+KCU - Personal - NB Locations,Location - Kitsap,kitsap bank,PHRASE,1383,174,4959.457186,6.662712
+KCU - Personal - NB,Money Market Accounts,money market account,BROAD,2053,145,1474.110518,2.0
+KCU - Personal - NB,General Banking,online banking,PHRASE,1021,93,1159.253736,0.5
+KCU - Personal - Brand,General Banking,kitsap cu,PHRASE,246,92,378.470883,19.833333
+KCU - Personal - NB,Digital Accounts,online banking,PHRASE,748,66,587.831735,2.5
+KCU - Personal - NB,Savings Accounts,high yield savings account,PHRASE,1291,63,1443.306351,1.0
+KCU - Personal - Brand,General Banking,kitsap federal credit union,PHRASE,166,55,168.357933,8.022746
+KCU - Personal - NB,Digital Accounts,online bank,PHRASE,467,52,606.584246,0.0
+KCU - Personal - NB,Certificates,best cd rates,BROAD,645,51,560.181647,0.0
+KCU - Personal - NB,Savings Accounts,savings account interest rates,PHRASE,797,50,586.7838459999999,1.0
+KCU - Personal - Brand,Banking Location,kitsap credit union port orchard,PHRASE,258,47,244.666347,9.666667
+KCU - Personal - NB,Money Market Accounts,money market rates,BROAD,702,45,623.19,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union silverdale,PHRASE,247,45,244.723591,15.0
+KCU - Personal - NB,Certificates,credit union cd rates,BROAD,690,43,310.138276,1.0
+KCU - Business - NB,General Banking,business banking,PHRASE,2016,42,1944.15,4.0
+KCU - Personal - NB Locations,Location - Kitsap,kitsap banking,PHRASE,603,37,1159.368519,4.166666
+KCU - Personal - Brand,Personal Banking,kitsap credit union rates,PHRASE,95,30,181.156805,2.0
+KCU - Personal - NB,Certificates,certificate of deposit rates,BROAD,490,28,268.03326400000003,0.0
+KCU - Business - NB,General Banking,banking small business,PHRASE,1007,25,1144.663794,5.0
+KCU - Personal - NB,Savings Accounts,savings account rates,PHRASE,234,22,204.28,2.0
+KCU - Personal - Brand,Banking Location,kitsap credit union bremerton,PHRASE,143,20,101.05,8.5
+KCU - Personal - Brand,General Banking,kitsap community credit union,PHRASE,86,19,162.75,1.0
+KCU - Personal - Brand,Banking Location,kitsap credit union kingston,PHRASE,55,17,37.393163,2.477717
+KCU - Personal - NB Locations,Location - Puyallup,puyallup bank,PHRASE,326,17,758.767859,3.0
+KCU - Personal - Brand,Banking Location,kitsap credit union near me,PHRASE,59,16,69.949517,5.5
+KCU - Business - NB,Digital Accounts,commercial online banking,PHRASE,124,16,545.69,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union locations,PHRASE,76,16,112.946964,12.063765
+KCU - Personal - NB,Checking Accounts,checking account,PHRASE,210,15,457.21000000000004,3.0
+KCU - Personal - NB,Savings Accounts,open savings account,PHRASE,303,13,294.3,1.0
+KCU - Personal - NB Locations,Location - Silverdale,credit union silverdale,PHRASE,135,13,316.16999999999996,5.0
+KCU - Personal - Brand,Banking Location,kitsap credit union poulsbo,PHRASE,102,13,76.93777299999999,2.833333
+KCU - Personal - NB Locations,Location - Puyallup,credit union puyallup,PHRASE,184,12,491.962801,1.0
+KCU - Personal - NB,Certificates,certificate of deposit,BROAD,226,11,449.62,0.0
+KCU - Business - NB,General Banking,business banking accounts,PHRASE,485,10,547.471944,0.5
+KCU - Personal - Brand,Banking Location,kitsap credit union port townsend,PHRASE,62,10,58.199961,3.0
+KCU - Business - NB,Digital Accounts,online business banking services,PHRASE,281,10,348.46999999999997,0.0
+KCU - Business - NB,Digital Accounts,business online banking,PHRASE,148,9,524.88,1.0
+KCU - Personal - NB,Digital Accounts,mobile banking,PHRASE,96,7,97.065357,0.0
+KCU - Personal - NB Locations,Location - Port Orchard,credit union port orchard,PHRASE,47,6,101.053959,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union gig harbor,PHRASE,65,5,31.39,1.0
+KCU - Personal - NB Locations,Location - Gig Harbor,gig harbor bank,PHRASE,37,5,58.861923,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union belfair,PHRASE,60,4,18.66,1.0
+KCU - Business - NB,General Banking,open business bank account,PHRASE,103,4,239.79999999999998,0.5
+KCU - Personal - NB,Digital Accounts,online checking account,PHRASE,81,3,85.615883,0.0
+KCU - Personal - NB,Certificates,certificate accounts,BROAD,32,3,102.83,0.0
+KCU - Personal - NB Locations,Location - Silverdale,silverdale bank,PHRASE,33,3,214.73000000000002,0.0
+KCU - Personal - NB Locations,Location - Port Orchard,port orchard bank,PHRASE,26,3,99.26,0.0
+KCU - Business - NB,Savings Accounts,business money savings,PHRASE,69,3,199.13,0.0
+KCU - Personal - NB,Money Market Accounts,money market vs savings,BROAD,18,2,19.27,0.0
+KCU - Personal - NB Locations,Location - Bainbridge,credit union bainbridge,PHRASE,17,2,25.91,1.063763
+KCU - Personal - NB Locations,Location - Port Townsend,port townsend bank,PHRASE,17,2,20.04,0.0
+KCU - Personal - NB Locations,Location - Bremerton,credit union bremerton,PHRASE,9,2,30.74,0.0
+KCU - Business - NB,General Banking,banking business services,PHRASE,40,2,71.37,0.0
+KCU - Personal - NB,Savings Accounts,best savings account,PHRASE,35,2,69.844927,0.0
+KCU - Personal - NB Locations,Location - Bremerton,bremerton bank,PHRASE,13,2,29.7,0.0
+KCU - Personal - NB,Savings Accounts,online savings account,PHRASE,9,2,15.0,0.0
+KCU - Personal - NB Locations,Location - Bainbridge,bainbridge bank,PHRASE,3,1,4.85,0.0
+KCU - Personal - NB,Money Market Accounts,best money market account,BROAD,10,1,8.59,0.0
+KCU - Personal - NB,General Banking,open bank account,PHRASE,19,1,7.33,0.0
+KCU - Personal - NB,Savings Accounts,credit union savings account,PHRASE,6,1,8.3,0.0
+KCU - Personal - NB,Money Market Accounts,credit union money market,BROAD,6,1,79.440832,0.0
+KCU - Personal - NB Locations,Location - Port Townsend,credit union port townsend,PHRASE,3,1,10.67,0.0
+KCU - Personal - NB,Money Market Accounts,high yield money market,BROAD,23,1,6.77,0.0
+KCU - Personal - NB Locations,Location - Poulsbo,poulsbo bank,PHRASE,31,1,186.96,0.0
+KCU - Personal - NB,Digital Accounts,online account opening,PHRASE,8,1,10.14,0.0
+KCU - Business - Brand,General Banking,kitsap credit union business,PHRASE,6,1,6.09,0.0
+KCU - Personal - NB,Certificates,ira cd rates,BROAD,18,1,10.25,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union puyallup,PHRASE,52,1,14.212042,1.0
+KCU - Business - NB,General Banking,start business bank account,PHRASE,56,1,32.76,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union branches,PHRASE,6,1,5.41,0.0
+KCU - Business - Brand,General Banking,kitsap credit union small business,PHRASE,2,1,4.18,1.0
+KCU - Business - NB,General Banking,online business banking,PHRASE,46,1,43.42,0.0
+KCU - Personal - NB,Checking Accounts,joint checking account,PHRASE,19,1,6.97,0.0
+KCU - Business - NB,Checking Accounts,business checking account,PHRASE,4,0,0.0,0.0
+KCU - Business - NB,General Banking,business bank account,PHRASE,15,0,0.0,0.0
+KCU - Personal - NB Locations,Location - Belfair,belfair bank,PHRASE,3,0,0.0,0.0
+KCU - Business - NB,Checking Accounts,best business checking account,PHRASE,1,0,0.0,0.0
+KCU - Personal - NB Locations,Location - Belfair,credit union belfair,PHRASE,1,0,0.0,0.0
+KCU - Business - NB,General Banking,banking for business,PHRASE,7,0,0.0,0.0
+KCU - Business - NB,General Banking,apply for bank business account,PHRASE,14,0,0.0,0.0
+KCU - Personal - NB Locations,Location - Gig Harbor,credit union gig harbor,PHRASE,14,0,0.0,0.0
+KCU - Business - NB,Digital Accounts,open business account online,PHRASE,42,0,0.0,0.0
+KCU - Business - NB,Checking Accounts,business checking account no fees,PHRASE,1,0,0.0,0.0
+KCU - Business - NB,Checking Accounts,commercial checking account,PHRASE,3,0,0.0,0.0
+KCU - Business - NB,Digital Accounts,online business checking account,PHRASE,7,0,0.0,0.0
+KCU - Business - NB,General Banking,new business bank account,PHRASE,1,0,0.0,0.0
+KCU - Business - NB,Digital Accounts,online business banking account,PHRASE,44,0,0.0,0.0
+KCU - Personal - NB Locations,Location - Port Hadlock,port hadlock bank,PHRASE,6,0,0.0,0.0
+KCU - Business - NB,Digital Accounts,online business account opening,PHRASE,1,0,0.0,0.0
+KCU - Business - NB,Digital Accounts,digital business banking,PHRASE,4,0,0.0,0.0
+KCU - Business - NB,Digital Accounts,digital business account,PHRASE,25,0,0.0,0.0
+KCU - Business - NB,Checking Accounts,small business checking account,PHRASE,1,0,0.0,0.0
+KCU - Personal - NB Locations,Location - Poulsbo,credit union poulsbo,PHRASE,1,0,0.0,0.0
+KCU - Personal - NB Locations,Location - Kingston,credit union kingston,PHRASE,1,0,0.0,0.0
+KCU - Personal - NB,Digital Accounts,digital banking,PHRASE,3,0,0.0,0.0
+KCU - Business - NB,General Banking,open business checking account online,PHRASE,4,0,0.0,0.0
+KCU - Personal - NB,General Banking,open checking account online,PHRASE,4,0,0.0,0.0
+KCU - Personal - NB,Checking Accounts,open checking account,PHRASE,18,0,0.0,0.0
+KCU - Personal - NB,Checking Accounts,free checking account,PHRASE,3,0,0.0,0.0
+KCU - Personal - NB,Checking Accounts,best checking account,PHRASE,5,0,0.0,0.0
+KCU - Personal - NB,Certificates,short term cd,BROAD,1,0,0.0,0.0
+KCU - Personal - NB,Digital Accounts,open bank account online,PHRASE,11,0,0.0,0.0
+KCU - Personal - NB,General Banking,new bank account,PHRASE,2,0,0.0,0.0
+KCU - Personal - NB,Certificates,share certificate rates,BROAD,4,0,0.0,0.0
+KCU - Personal - NB,Certificates,share cert,BROAD,5,0,0.0,0.0
+KCU - Personal - NB,General Banking,personal bank account,PHRASE,3,0,0.0,0.0
+KCU - Personal - NB,Digital Accounts,internet banking,PHRASE,1,0,0.0,0.0
+KCU - Personal - NB,General Banking,start bank account,PHRASE,3,0,0.0,0.0
+KCU - Personal - Brand,Personal Banking,kitsap credit union banking,PHRASE,1,0,0.0,0.0
+KCU - Personal - Brand,Personal Banking,kitsap credit union accounts,PHRASE,6,0,0.0,0.0
+KCU - Personal - NB,Money Market Accounts,money market account rates,BROAD,9,0,0.0,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union port hadlock,PHRASE,2,0,0.0,0.0
+KCU - Personal - Brand,Banking Location,kitsap credit union bainbridge,PHRASE,2,0,0.0,0.0
+KCU - Business - NB,Savings Accounts,business savings account,PHRASE,7,0,0.0,0.0
+KCU - Business - NB,Savings Accounts,business emergency fund account,PHRASE,2,0,0.0,0.0
+KCU - Business - NB,General Banking,open business savings account,PHRASE,2,0,0.0,0.0

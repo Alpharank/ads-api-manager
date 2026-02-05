@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Ads Dashboard</title>
+    <script src="https://cdn.plot.ly/plotly-basic-2.27.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+
+        :root {
+            --teal: #296f5e;
+            --teal-dark: #1a4a3f;
+            --teal-light: #3a9a84;
+            --mint: #6DB09F;
+            --mint-light: #D1F0E8;
+            --rose: #C5998B;
+            --brown: #703B2A;
+            --bg: #f5f7fa;
+            --card: #ffffff;
+            --text: #1a1a2e;
+            --muted: #6b7280;
+            --light: #9ca3af;
+            --border: #e5e7eb;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            margin: 0;
+            padding: 16px;
+            min-width: 320px;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-size: 18px;
+            color: var(--muted);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border);
+            border-top-color: var(--teal);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 16px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .error-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 24px;
+        }
+
+        .error-page h1 {
+            font-size: 24px;
+            color: var(--teal-dark);
+            margin-bottom: 16px;
+        }
+
+        .error-page p {
+            color: var(--muted);
+            max-width: 400px;
+        }
+
+        .dashboard { display: none; }
+        .dashboard.active { display: block; }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, #296f5e 0%, #1a4a3f 100%);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 0 0 20px 20px;
+            margin: -16px -16px 24px -16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .dashboard-header .header-left h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .dashboard-header .metadata {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .month-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .month-selector label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .month-selector select {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            background: white;
+            color: var(--text);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Text Filter */
+        .text-filter-section {
+            margin-bottom: 24px;
+        }
+
+        .text-filter-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: 2px solid var(--border);
+            border-radius: 50px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .text-filter-input:focus {
+            outline: none;
+            border-color: var(--teal);
+            box-shadow: 0 0 0 4px rgba(41, 111, 94, 0.1);
+        }
+
+        .text-filter-input::placeholder {
+            color: var(--light);
+        }
+
+        /* Filter Badge */
+        .filter-indicator {
+            background: var(--mint-light);
+            border: 2px solid var(--teal);
+            border-radius: 12px;
+            padding: 12px 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--teal);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .filter-badge svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .clear-filter-btn {
+            background: var(--teal);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .clear-filter-btn:hover {
+            background: var(--teal-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(41, 111, 94, 0.3);
+        }
+
+        /* KPI Section */
+        .kpi-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi-card {
+            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+            border-radius: 50px;
+            padding: 20px 28px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            opacity: 0.9;
+        }
+
+        .kpi-value {
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .kpi-sub {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 2px;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .chart-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .chart-with-labels {
+            display: flex;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .campaign-labels-column {
+            display: flex;
+            flex-direction: column;
+            padding-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .campaign-label-row {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .campaign-label-row .campaign-label {
+            font-size: 13px;
+            color: #1a1a2e;
+            font-weight: 600;
+            white-space: nowrap;
+            max-width: 220px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chart-container {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        /* Table Section */
+        .table-section {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+        }
+
+        .table-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            position: sticky;
+            top: 0;
+            background: #f1f5f9;
+            z-index: 10;
+        }
+
+        th {
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--muted);
+            border-bottom: 2px solid var(--border);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        th:hover {
+            color: var(--teal);
+        }
+
+        th.text-right {
+            text-align: right;
+        }
+
+        th .sort-arrow {
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background-color 0.15s;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        td {
+            padding: 14px 16px;
+            font-size: 14px;
+            color: var(--text);
+        }
+
+        td.text-right {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .match-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .match-BROAD { background: #dbeafe; color: #1e40af; }
+        .match-PHRASE { background: #fef3c7; color: #92400e; }
+        .match-EXACT { background: var(--mint-light); color: var(--teal-dark); }
+        .match-UNKNOWN { background: #f3f4f6; color: #6b7280; }
+
+        .metric-value {
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .kpi-section {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-with-labels {
+                flex-direction: column;
+            }
+
+            .campaign-labels-column {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <span>Loading dashboard...</span>
+    </div>
+
+    <div id="error" class="error-page hidden">
+        <h1>Dashboard Error</h1>
+        <p id="errorMessage">Unable to load dashboard. Please check your URL parameters.</p>
+    </div>
+
+    <div id="dashboard" class="dashboard">
+        <div class="dashboard-header">
+            <div class="header-left">
+                <h1 id="dashboardTitle">Google Ads Performance</h1>
+                <div class="metadata" id="dashboardMeta">Ad Spend Analysis</div>
+            </div>
+            <div class="month-selector">
+                <label for="monthSelect">Period:</label>
+                <select id="monthSelect"></select>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="text-filter-section">
+                <input type="text" id="textFilter" class="text-filter-input" placeholder="Filter by campaign or keyword...">
+            </div>
+
+            <div id="filterIndicator" class="filter-indicator hidden">
+                <div class="filter-badge">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3"/>
+                    </svg>
+                    <span>Filtered by: <strong id="filterCampaignName"></strong></span>
+                </div>
+                <button class="clear-filter-btn" onclick="clearFilter()">Clear Filter</button>
+            </div>
+
+            <div class="kpi-section">
+                <div class="kpi-card">
+                    <div class="kpi-label">Impressions</div>
+                    <div class="kpi-value" id="kpiImpressions">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Clicks</div>
+                    <div class="kpi-value" id="kpiClicks">0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Spend</div>
+                    <div class="kpi-value" id="kpiSpend">$0</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-label">Conversions</div>
+                    <div class="kpi-value" id="kpiConversions">0</div>
+                    <div class="kpi-sub" id="kpiCPA"></div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <div class="chart-title">Campaign Performance</div>
+                <div class="chart-with-labels">
+                    <div class="campaign-labels-column" id="campaignLabels"></div>
+                    <div class="chart-container" id="campaignChart"></div>
+                </div>
+            </div>
+
+            <div class="table-section">
+                <div class="table-header">
+                    <span class="table-title">Keyword Performance</span>
+                    <span id="keywordCount" style="margin-left: 12px; color: var(--muted); font-size: 14px;"></span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th onclick="sortTable('keyword')">Keyword <span class="sort-arrow" id="sort-keyword"></span></th>
+                                <th onclick="sortTable('match_type')">Match <span class="sort-arrow" id="sort-match_type"></span></th>
+                                <th onclick="sortTable('campaign_name')">Campaign <span class="sort-arrow" id="sort-campaign_name"></span></th>
+                                <th onclick="sortTable('ad_group_name')">Ad Group <span class="sort-arrow" id="sort-ad_group_name"></span></th>
+                                <th class="text-right" onclick="sortTable('impressions')">Impr. <span class="sort-arrow" id="sort-impressions"></span></th>
+                                <th class="text-right" onclick="sortTable('clicks')">Clicks <span class="sort-arrow" id="sort-clicks"></span></th>
+                                <th class="text-right" onclick="sortTable('cost')">Cost <span class="sort-arrow" id="sort-cost"></span></th>
+                                <th class="text-right" onclick="sortTable('conversions')">Conv. <span class="sort-arrow" id="sort-conversions"></span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let clientConfig = null;
+        let dataManifest = null;
+        let campaignData = [];
+        let keywordData = [];
+        let activeFilter = null;
+        let textFilterValue = '';
+        let currentMonth = null;
+        let sortColumn = 'clicks';
+        let sortAscending = false;
+
+        async function init() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const clientToken = params.get('client');
+
+                if (!clientToken) {
+                    showError('Missing client parameter. URL should include ?client=YOUR_TOKEN');
+                    return;
+                }
+
+                const clientsResponse = await fetch('clients.json');
+                if (!clientsResponse.ok) throw new Error('Failed to load client configuration');
+                const clients = await clientsResponse.json();
+
+                clientConfig = clients[clientToken];
+                if (!clientConfig) {
+                    showError('Invalid client token. Please check your URL.');
+                    return;
+                }
+
+                const manifestResponse = await fetch('data-manifest.json');
+                if (!manifestResponse.ok) throw new Error('Failed to load data manifest');
+                dataManifest = await manifestResponse.json();
+
+                const availableMonths = dataManifest[clientConfig.id] || [];
+                if (availableMonths.length === 0) {
+                    showError(`No data available for ${clientConfig.name}.`);
+                    return;
+                }
+
+                availableMonths.sort().reverse();
+                currentMonth = availableMonths[0];
+
+                const monthSelect = document.getElementById('monthSelect');
+                availableMonths.forEach(month => {
+                    const option = document.createElement('option');
+                    option.value = month;
+                    option.textContent = formatMonth(month);
+                    monthSelect.appendChild(option);
+                });
+                monthSelect.value = currentMonth;
+                monthSelect.addEventListener('change', (e) => {
+                    currentMonth = e.target.value;
+                    loadData();
+                });
+
+                document.getElementById('dashboardTitle').textContent = `${clientConfig.name}`;
+                document.getElementById('textFilter').addEventListener('input', (e) => {
+                    textFilterValue = e.target.value;
+                    renderDashboard();
+                });
+
+                await loadData();
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showError('Failed to initialize dashboard: ' + error.message);
+            }
+        }
+
+        function formatMonth(monthStr) {
+            const [year, month] = monthStr.split('-');
+            const date = new Date(year, parseInt(month) - 1);
+            return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        function showError(message) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('active');
+            document.getElementById('error').classList.remove('hidden');
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        function showDashboard() {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('error').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('active');
+        }
+
+        async function loadData() {
+            try {
+                // Load campaign data
+                const campUrl = `data/${clientConfig.id}/campaigns/${currentMonth}.csv`;
+                const campResponse = await fetch(campUrl);
+                if (!campResponse.ok) throw new Error(`Failed to load ${campUrl}`);
+                const campText = await campResponse.text();
+
+                Papa.parse(campText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: (results) => {
+                        campaignData = results.data.map(row => ({
+                            campaign_name: (row.campaign_name || '').trim(),
+                            impressions: parseInt(row.impressions) || 0,
+                            clicks: parseInt(row.clicks) || 0,
+                            cost: parseFloat(row.cost) || 0,
+                            conversions: parseFloat(row.conversions) || 0
+                        })).filter(row => row.impressions > 0 || row.clicks > 0);
+                        campaignData.sort((a, b) => b.clicks - a.clicks);
+                    }
+                });
+
+                // Load keyword data
+                const kwUrl = `data/${clientConfig.id}/keywords/${currentMonth}.csv`;
+                const kwResponse = await fetch(kwUrl);
+                if (kwResponse.ok) {
+                    const kwText = await kwResponse.text();
+                    Papa.parse(kwText, {
+                        header: true,
+                        skipEmptyLines: true,
+                        complete: (results) => {
+                            keywordData = results.data.map(row => ({
+                                campaign_name: (row.campaign_name || '').trim(),
+                                ad_group_name: (row.ad_group_name || '').trim(),
+                                keyword: (row.keyword || '').trim(),
+                                match_type: (row.match_type || '').trim(),
+                                impressions: parseInt(row.impressions) || 0,
+                                clicks: parseInt(row.clicks) || 0,
+                                cost: parseFloat(row.cost) || 0,
+                                conversions: parseFloat(row.conversions) || 0
+                            })).filter(row => row.impressions > 0 || row.clicks > 0);
+                            keywordData.sort((a, b) => b.clicks - a.clicks);
+                        }
+                    });
+                } else {
+                    keywordData = [];
+                }
+
+                document.getElementById('dashboardMeta').textContent =
+                    `Google Ads Performance \u2014 ${formatMonth(currentMonth)}`;
+
+                showDashboard();
+                renderDashboard();
+            } catch (error) {
+                console.error('Data loading error:', error);
+                showError('Failed to load data: ' + error.message);
+            }
+        }
+
+        function getFilteredCampaigns() {
+            let data = campaignData;
+            if (activeFilter) {
+                data = data.filter(row => row.campaign_name === activeFilter);
+            }
+            if (textFilterValue) {
+                const term = textFilterValue.toLowerCase();
+                data = data.filter(row => row.campaign_name.toLowerCase().includes(term));
+            }
+            return data;
+        }
+
+        function getFilteredKeywords() {
+            let data = keywordData;
+            if (activeFilter) {
+                data = data.filter(row => row.campaign_name === activeFilter);
+            }
+            if (textFilterValue) {
+                const term = textFilterValue.toLowerCase();
+                data = data.filter(row =>
+                    row.keyword.toLowerCase().includes(term) ||
+                    row.campaign_name.toLowerCase().includes(term) ||
+                    row.ad_group_name.toLowerCase().includes(term)
+                );
+            }
+            return data;
+        }
+
+        function renderDashboard() {
+            updateKPIs();
+            renderCampaignChart();
+            renderTable();
+        }
+
+        function updateKPIs() {
+            const data = getFilteredCampaigns();
+            const totalImpressions = data.reduce((sum, row) => sum + row.impressions, 0);
+            const totalClicks = data.reduce((sum, row) => sum + row.clicks, 0);
+            const totalCost = data.reduce((sum, row) => sum + row.cost, 0);
+            const totalConversions = data.reduce((sum, row) => sum + row.conversions, 0);
+
+            document.getElementById('kpiImpressions').textContent = totalImpressions.toLocaleString();
+            document.getElementById('kpiClicks').textContent = totalClicks.toLocaleString();
+            document.getElementById('kpiSpend').textContent = '$' + totalCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('kpiConversions').textContent = totalConversions.toLocaleString(undefined, {maximumFractionDigits: 1});
+
+            const cpa = totalConversions > 0 ? totalCost / totalConversions : 0;
+            document.getElementById('kpiCPA').textContent = cpa > 0
+                ? `CPA: $${cpa.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
+                : '';
+        }
+
+        function renderCampaignChart() {
+            const data = getFilteredCampaigns().slice(0, 20);
+            const campaigns = data.map(d => d.campaign_name);
+            const clicks = data.map(d => d.clicks);
+
+            const barHeight = 32;
+            const chartHeight = campaigns.length * barHeight + 80;
+            const marginTop = 10;
+            const marginBottom = 40;
+            const plotAreaHeight = chartHeight - marginTop - marginBottom;
+            const bandHeight = campaigns.length > 0 ? plotAreaHeight / campaigns.length : 0;
+
+            const labelsContainer = document.getElementById('campaignLabels');
+            labelsContainer.innerHTML = '';
+            labelsContainer.style.paddingTop = marginTop + 'px';
+
+            campaigns.forEach(name => {
+                const row = document.createElement('div');
+                row.className = 'campaign-label-row';
+                row.style.height = bandHeight + 'px';
+                row.innerHTML = `<span class="campaign-label" title="${name}">${name}</span>`;
+                row.onclick = () => setFilter(name);
+                labelsContainer.appendChild(row);
+            });
+
+            const colors = campaigns.map((_, i) => {
+                const ratio = i / (campaigns.length - 1 || 1);
+                const r1 = 109, g1 = 176, b1 = 159;
+                const r2 = 41, g2 = 111, b2 = 94;
+                const r = Math.round(r1 + (r2 - r1) * ratio);
+                const g = Math.round(g1 + (g2 - g1) * ratio);
+                const b = Math.round(b1 + (b2 - b1) * ratio);
+                return `rgb(${r}, ${g}, ${b})`;
+            });
+
+            const trace = {
+                type: 'bar',
+                x: clicks,
+                y: campaigns,
+                orientation: 'h',
+                marker: {
+                    color: colors,
+                    line: { color: '#296f5e', width: 1 }
+                },
+                text: clicks.map(c => c.toLocaleString()),
+                textposition: 'outside',
+                textfont: {
+                    size: 12,
+                    color: '#1a1a2e',
+                    family: 'Inter, sans-serif',
+                    weight: 600
+                },
+                hovertemplate: '<b>%{y}</b><br>Clicks: %{x:,}<extra></extra>'
+            };
+
+            const layout = {
+                autosize: true,
+                margin: { l: 10, r: 40, t: 10, b: 40 },
+                height: chartHeight,
+                font: {
+                    family: 'Inter, sans-serif',
+                    size: 13,
+                    color: '#1a1a2e'
+                },
+                xaxis: {
+                    title: {
+                        text: 'Total Clicks',
+                        font: { size: 14, weight: 600, color: '#296f5e' }
+                    },
+                    gridcolor: '#e5e7eb',
+                    showgrid: true,
+                    zeroline: false,
+                    automargin: true
+                },
+                yaxis: {
+                    showticklabels: false,
+                    showgrid: false,
+                    autorange: 'reversed'
+                },
+                paper_bgcolor: 'white',
+                plot_bgcolor: 'white',
+                hovermode: 'closest',
+                bargap: 0.3
+            };
+
+            Plotly.newPlot('campaignChart', [trace], layout, { displayModeBar: false, responsive: true });
+
+            document.getElementById('campaignChart').on('plotly_click', function(data) {
+                setFilter(data.points[0].y);
+            });
+        }
+
+        function renderTable() {
+            let filteredData = getFilteredKeywords();
+
+            // Sort
+            filteredData.sort((a, b) => {
+                let aVal = a[sortColumn];
+                let bVal = b[sortColumn];
+                if (typeof aVal === 'string') {
+                    aVal = aVal.toLowerCase();
+                    bVal = bVal.toLowerCase();
+                    return sortAscending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                }
+                return sortAscending ? aVal - bVal : bVal - aVal;
+            });
+
+            document.getElementById('keywordCount').textContent =
+                `(${filteredData.length} ${filteredData.length === 1 ? 'keyword' : 'keywords'})`;
+
+            // Update sort arrows
+            document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '');
+            const arrowEl = document.getElementById(`sort-${sortColumn}`);
+            if (arrowEl) arrowEl.textContent = sortAscending ? '\u25B2' : '\u25BC';
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            filteredData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHtml(row.keyword)}</td>
+                    <td><span class="match-badge match-${row.match_type}">${row.match_type}</span></td>
+                    <td>${escapeHtml(row.campaign_name)}</td>
+                    <td>${escapeHtml(row.ad_group_name)}</td>
+                    <td class="text-right"><span class="metric-value">${row.impressions.toLocaleString()}</span></td>
+                    <td class="text-right"><span class="metric-value">${row.clicks.toLocaleString()}</span></td>
+                    <td class="text-right"><span class="metric-value">$${row.cost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
+                    <td class="text-right"><span class="metric-value">${row.conversions.toLocaleString(undefined, {maximumFractionDigits: 1})}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortAscending = !sortAscending;
+            } else {
+                sortColumn = column;
+                sortAscending = false;
+            }
+            renderTable();
+        }
+
+        function setFilter(campaignName) {
+            activeFilter = campaignName;
+            document.getElementById('filterCampaignName').textContent = campaignName;
+            document.getElementById('filterIndicator').classList.remove('hidden');
+            renderDashboard();
+        }
+
+        function clearFilter() {
+            activeFilter = null;
+            textFilterValue = '';
+            document.getElementById('textFilter').value = '';
+            document.getElementById('filterIndicator').classList.add('hidden');
+            renderDashboard();
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
