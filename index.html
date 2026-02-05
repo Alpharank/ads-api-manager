@@ -540,6 +540,14 @@
         let sortColumn = 'clicks';
         let sortAscending = false;
 
+        function displayName(name) {
+            const prefix = clientConfig && clientConfig.stripPrefix;
+            if (prefix && name.startsWith(prefix)) {
+                return name.substring(prefix.length);
+            }
+            return name;
+        }
+
         async function init() {
             try {
                 const params = new URLSearchParams(window.location.search);
@@ -735,6 +743,8 @@
             const campaigns = data.map(d => d.campaign_name);
             const clicks = data.map(d => d.clicks);
 
+            const displayCampaigns = campaigns.map(c => displayName(c));
+
             const barHeight = 32;
             const chartHeight = campaigns.length * barHeight + 80;
             const marginTop = 10;
@@ -746,11 +756,12 @@
             labelsContainer.innerHTML = '';
             labelsContainer.style.paddingTop = marginTop + 'px';
 
-            campaigns.forEach(name => {
+            campaigns.forEach((name, i) => {
+                const label = displayCampaigns[i];
                 const row = document.createElement('div');
                 row.className = 'campaign-label-row';
                 row.style.height = bandHeight + 'px';
-                row.innerHTML = `<span class="campaign-label" title="${name}">${name}</span>`;
+                row.innerHTML = `<span class="campaign-label" title="${name}">${label}</span>`;
                 row.onclick = () => setFilter(name);
                 labelsContainer.appendChild(row);
             });
@@ -768,7 +779,8 @@
             const trace = {
                 type: 'bar',
                 x: clicks,
-                y: campaigns,
+                y: displayCampaigns,
+                customdata: campaigns,
                 orientation: 'h',
                 marker: {
                     color: colors,
@@ -818,7 +830,7 @@
             Plotly.newPlot('campaignChart', [trace], layout, { displayModeBar: false, responsive: true });
 
             document.getElementById('campaignChart').on('plotly_click', function(data) {
-                setFilter(data.points[0].y);
+                setFilter(data.points[0].customdata);
             });
         }
 
@@ -853,7 +865,7 @@
                 tr.innerHTML = `
                     <td>${escapeHtml(row.keyword)}</td>
                     <td><span class="match-badge match-${row.match_type}">${row.match_type}</span></td>
-                    <td>${escapeHtml(row.campaign_name)}</td>
+                    <td>${escapeHtml(displayName(row.campaign_name))}</td>
                     <td>${escapeHtml(row.ad_group_name)}</td>
                     <td class="text-right"><span class="metric-value">${row.impressions.toLocaleString()}</span></td>
                     <td class="text-right"><span class="metric-value">${row.clicks.toLocaleString()}</span></td>

@@ -1,7 +1,8 @@
 {
   "0f72e02a2ecb57f724288d7dab4fbbdd2d1640b45ad59e34ff260ed591dad92f": {
     "id": "californiacoast_cu",
-    "name": "California Coast Credit Union"
+    "name": "California Coast Credit Union",
+    "stripPrefix": "Ark Marketing_CCCU_"
   },
   "27579ec0b32f0584b26197dc8e9fb46a190d4ef97a7931a7d71ddd3356b57a5e": {
     "id": "commonwealth_one_fcu",
