@@ -185,6 +185,9 @@ class GoogleAdsToS3:
         query = f"""
             SELECT
                 click_view.gclid,
+                click_view.keyword,
+                click_view.keyword_info.text,
+                click_view.keyword_info.match_type,
                 click_view.area_of_interest.city,
                 click_view.area_of_interest.region,
                 click_view.area_of_interest.country,
@@ -205,6 +208,8 @@ class GoogleAdsToS3:
                 rows.append({
                     'date': row.segments.date,
                     'gclid': row.click_view.gclid,
+                    'keyword': row.click_view.keyword_info.text,
+                    'match_type': row.click_view.keyword_info.match_type.name if row.click_view.keyword_info.match_type else None,
                     'campaign_id': str(row.campaign.id),
                     'campaign_name': row.campaign.name,
                     'ad_group_id': str(row.ad_group.id),
