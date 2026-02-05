@@ -13,6 +13,7 @@ Usage:
 
 import argparse
 import logging
+import os
 from datetime import datetime, timedelta
 from io import StringIO
 from typing import Dict, List, Optional
@@ -219,23 +220,29 @@ class GoogleAdsToS3:
         return pd.DataFrame(rows)
 
     def upload_to_s3(self, df: pd.DataFrame, client_id: str, data_type: str, date: str):
-        """Upload dataframe to S3 as CSV."""
+        """Upload dataframe to S3 as CSV and save locally."""
         if df.empty:
-            logger.info(f"No {data_type} data for {client_id} on {date}, skipping upload")
+            logger.info(f"No {data_type} data for {client_id} on {date}, skipping")
             return
 
-        csv_buffer = StringIO()
-        df.to_csv(csv_buffer, index=False)
+        csv_content = df.to_csv(index=False)
 
-        key = f"{self.prefix}/{data_type}/{client_id}/{date}.csv"
+        # Save locally
+        local_dir = os.path.join("output", client_id, data_type)
+        os.makedirs(local_dir, exist_ok=True)
+        local_path = os.path.join(local_dir, f"{date}.csv")
+        with open(local_path, 'w') as f:
+            f.write(csv_content)
 
+        # Upload to S3
+        key = f"{self.prefix}/{client_id}/{data_type}/{date}.csv"
         self.s3_client.put_object(
             Bucket=self.bucket,
             Key=key,
-            Body=csv_buffer.getvalue(),
+            Body=csv_content,
             ContentType='text/csv'
         )
-        logger.info(f"Uploaded: s3://{self.bucket}/{key} ({len(df)} rows)")
+        logger.info(f"Saved: {local_path} + s3://{self.bucket}/{key} ({len(df)} rows)")
 
     def process_account(self, account: Dict, date: str):
         """Process a single account for a specific date."""

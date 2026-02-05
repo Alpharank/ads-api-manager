@@ -3,3 +3,6 @@ boto3>=1.28.0
 pandas>=2.0.0
 pyarrow>=12.0.0
 pyyaml>=6.0
+
+# Deploy dependency — installed in the Airflow environment, not pip-installed here
+# apache-airflow>=2.7.0
