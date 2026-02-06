@@ -1,39 +1,39 @@
-campaign_name,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
-CWO_Loans_Search,Auto Loans,car loans,PHRASE,1513,91,634.856724,9.5
-CWO_Checking_Search,Checking,online checking account,PHRASE,1163,64,1206.116476,30.5
-CWO_Loans_Search,Auto Loans,apply for auto loan,PHRASE,934,62,436.520066,7.0
-CWO_Loans_Search,Auto Loans,auto loans,PHRASE,1152,59,423.149531,9.5
-CWO_Checking_Search,Checking,checking account,PHRASE,906,41,511.287467,7.0
-CWO_Loans_Search,Auto Loans,refinance my auto loan,PHRASE,377,39,327.809504,4.0
-CWO_Checking_Search,Checking,bank checking account,PHRASE,569,27,296.444399,11.5
-CWO_Loans_Search,Auto Loans,auto loan rates,PHRASE,382,22,69.912657,0.5
-CWO_Loans_Search,Auto Loans,credit union auto loans,PHRASE,290,21,159.17176800000001,6.5
-CWO_Loans_Search,Auto Loans,auto loan refinance,PHRASE,176,20,135.658938,4.0
-CWO_Loans_Search,Auto Loans,auto loan refinance,EXACT,123,11,119.09,5.0
-CWO_Checking_Search,Checking,free checking account,PHRASE,130,10,203.22,1.997112
-CWO_Loans_Search,Auto Loans,vehicle financing,PHRASE,168,8,70.12,3.0
-CWO_Loans_Search,Auto Loans,auto loan pre approval,EXACT,71,8,115.146628,0.0
-CWO_Loans_Search,Auto Loans,auto loans,EXACT,140,8,84.6,1.0
-CWO_Checking_Search,Checking,best checking account,PHRASE,94,8,48.173663,1.0
-CWO_Checking_Search,Checking,checking account bonus,PHRASE,140,8,41.355244,1.0
-CWO_Checking_Search,Checking,high interest checking account,PHRASE,163,6,34.736101999999995,0.0
-CWO_Loans_Search,Auto Loans,pre approved auto loans,PHRASE,188,5,32.32,0.0
-CWO_Checking_Search,Checking,checking account for teens,PHRASE,225,5,137.46,2.0
-CWO_Loans_Search,Auto Loans,car loans,EXACT,51,4,44.45,0.0
-CWO_Loans_Search,Auto Loans,cheap car loans,PHRASE,6,3,24.161862,0.0
-CWO_Checking_Search,Checking,checking account with rewards,PHRASE,48,3,11.81,0.0
-CWO_Checking_Search,Checking,credit union checking account,PHRASE,98,2,54.379999999999995,0.0
-CWO_Checking_Search,Checking,checking account for students,PHRASE,62,2,16.82,0.0
-CWO_Loans_Search,Auto Loans,auto loan rates,EXACT,22,1,0.71555,0.0
-CWO_Loans_Search,Auto Loans,auto loans near me,PHRASE,13,1,4.967483,0.0
-CWO_Checking_Search,Checking,open a checking account,PHRASE,14,1,22.17,0.0
-CWO_Checking_Search,Checking,checking account near me,PHRASE,18,1,26.619371,0.0
-CWO_Loans_Search,Auto Loans,best auto loan rates,PHRASE,3,0,0.0,0.0
-CWO_Loans_Search,Auto Loans,auto loan pre approval,PHRASE,5,0,0.0,0.0
-CWO_Checking_Search,Checking,open checking account online,PHRASE,18,0,0.0,0.0
-CWO_Loans_Search,Auto Loans,local auto loans,PHRASE,4,0,0.0,0.0
-CWO_Checking_Search,Checking,checking account with no fees,PHRASE,1,0,0.0,0.0
-CWO_Checking_Search,Checking,checking account promotions,PHRASE,3,0,0.0,0.0
-CWO_Loans_Search,Auto Loans,used car loan,EXACT,1,0,0.0,0.0
-CWO_Loans_Search,Auto Loans,used car loan rates,PHRASE,1,0,0.0,0.0
-CWO_Loans_Search,Auto Loans,vehicle loan,EXACT,1,0,0.0,0.0
+campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,car loans,PHRASE,1513,91,634.856724,9.5
+22527054383,CWO_Checking_Search,180103857758,Checking,online checking account,PHRASE,1163,64,1206.116476,30.5
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,apply for auto loan,PHRASE,934,62,436.520066,7.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loans,PHRASE,1152,59,423.149531,9.5
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account,PHRASE,906,41,511.287467,7.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,refinance my auto loan,PHRASE,377,39,327.809504,4.0
+22527054383,CWO_Checking_Search,180103857758,Checking,bank checking account,PHRASE,569,27,296.444399,11.5
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan rates,PHRASE,382,22,69.912657,0.5
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,credit union auto loans,PHRASE,290,21,159.17176800000001,6.5
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan refinance,PHRASE,176,20,135.658938,4.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan refinance,EXACT,123,11,119.09,5.0
+22527054383,CWO_Checking_Search,180103857758,Checking,free checking account,PHRASE,130,10,203.22,1.997112
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,vehicle financing,PHRASE,168,8,70.12,3.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan pre approval,EXACT,71,8,115.146628,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loans,EXACT,140,8,84.6,1.0
+22527054383,CWO_Checking_Search,180103857758,Checking,best checking account,PHRASE,94,8,48.173663,1.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account bonus,PHRASE,140,8,41.355244,1.0
+22527054383,CWO_Checking_Search,180103857758,Checking,high interest checking account,PHRASE,163,6,34.736101999999995,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,pre approved auto loans,PHRASE,188,5,32.32,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account for teens,PHRASE,225,5,137.46,2.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,car loans,EXACT,51,4,44.45,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,cheap car loans,PHRASE,6,3,24.161862,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account with rewards,PHRASE,48,3,11.81,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,credit union checking account,PHRASE,98,2,54.379999999999995,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account for students,PHRASE,62,2,16.82,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan rates,EXACT,22,1,0.71555,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loans near me,PHRASE,13,1,4.967483,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,open a checking account,PHRASE,14,1,22.17,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account near me,PHRASE,18,1,26.619371,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,best auto loan rates,PHRASE,3,0,0.0,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan pre approval,PHRASE,5,0,0.0,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,open checking account online,PHRASE,18,0,0.0,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,local auto loans,PHRASE,4,0,0.0,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account with no fees,PHRASE,1,0,0.0,0.0
+22527054383,CWO_Checking_Search,180103857758,Checking,checking account promotions,PHRASE,3,0,0.0,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,used car loan,EXACT,1,0,0.0,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,used car loan rates,PHRASE,1,0,0.0,0.0
+22860074145,CWO_Loans_Search,183132204123,Auto Loans,vehicle loan,EXACT,1,0,0.0,0.0

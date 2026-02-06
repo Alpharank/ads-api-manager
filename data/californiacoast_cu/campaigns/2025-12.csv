@@ -1,13 +1,13 @@
-campaign_name,impressions,clicks,cost,conversions
-Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,58686,22456,6764.018354,188.758413
-Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,26047,6168,8977.422744,87.248195
-Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,14517,1480,3485.038919,14.371848
-Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,12390,1224,2585.401095,53.410519
-Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,8252,1142,1394.804222,49.620263
-Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,12191,1033,2985.565083,34.013899
-Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,7610,1008,1498.800701,17.036032
-Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,16830,926,6165.675078,53.655593
-Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach,1806132,879,1505.451431,0.0
-Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach,764295,350,626.692693,0.0
-Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting,632713,107,572.154587,0.0
-Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting,396518,52,372.795446,0.0
+campaign_id,campaign_name,impressions,clicks,cost,conversions
+1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,58686,22456,6764.018354,188.758413
+22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,26047,6168,8977.422744,87.248195
+1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,14517,1480,3485.038919,14.371848
+22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,12390,1224,2585.401095,53.410519
+1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,8252,1142,1394.804222,49.620263
+22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,12191,1033,2985.565083,34.013899
+1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,7610,1008,1498.800701,17.036032
+22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,16830,926,6165.675078,53.655593
+22080143039,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach,1806132,879,1505.451431,0.0
+21609985820,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach,764295,350,626.692693,0.0
+22082727542,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting,632713,107,572.154587,0.0
+1636059240,Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting,396518,52,372.795446,0.0

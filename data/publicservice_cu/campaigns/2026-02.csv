@@ -1,14 +1,14 @@
-campaign_name,impressions,clicks,cost,conversions
-General Membership Campaign,3032,1074,97.489079,52.931415
-Personal Loan Campaign,511,78,212.847517,31.973551999999998
-Pmax - Home Equity Loan,1271,66,189.448518,10.0
-Pmax - Checking Account,1911,56,110.17734099999998,7.0
-Mortgage Search 6/11,831,45,81.31,0.0
-Leads - Auto Loan,389,22,130.192186,3.0
-Recreational loan - Display - Leads,203,22,25.139001,4.994325
-Display - Personal Loan,72,19,24.708406,8.0
-Mortgages - Display,93,12,23.957274,0.0
-CD - Search - 6/11/2025,111,11,28.326182,0.0
-CD - Display - 6/11/2025,42,10,23.418684,0.0
-General Membership - Display - Leads - Ads,43,9,26.112973,1.0
-Recreational Loan Campaign,73,6,25.29,1.0
+campaign_id,campaign_name,impressions,clicks,cost,conversions
+22600644893,General Membership Campaign,3032,1074,97.489079,52.931415
+22604458072,Personal Loan Campaign,511,78,212.847517,31.973551999999998
+22749923275,Pmax - Home Equity Loan,1271,66,189.448518,10.0
+22749892459,Pmax - Checking Account,1911,56,110.17734099999998,7.0
+23226790794,Mortgage Search 6/11,831,45,81.31,0.0
+22359768469,Leads - Auto Loan,389,22,130.192186,3.0
+22672853490,Recreational loan - Display - Leads,203,22,25.139001,4.994325
+22795984517,Display - Personal Loan,72,19,24.708406,8.0
+23236336489,Mortgages - Display,93,12,23.957274,0.0
+23236422937,CD - Search - 6/11/2025,111,11,28.326182,0.0
+23232380573,CD - Display - 6/11/2025,42,10,23.418684,0.0
+22682563885,General Membership - Display - Leads - Ads,43,9,26.112973,1.0
+22600681592,Recreational Loan Campaign,73,6,25.29,1.0

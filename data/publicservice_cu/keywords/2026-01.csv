@@ -1,40 +1,40 @@
-campaign_name,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
-General Membership Campaign,General Membership Ad Group - 1,public service credit union,PHRASE,11554,4292,363.785591,225.063986
-Personal Loan Campaign,Personal Loan Ad Group - 2,personal loan,PHRASE,2108,303,685.223894,102.018409
-General Membership Campaign,General Membership Ad Group - 1,Michigan credit unions,PHRASE,496,154,12.212612,6.5
-Mortgage Search 6/11,Ad group 1,mortgage calculator,PHRASE,2473,131,220.789639,0.0
-General Membership Campaign,General Membership Ad Group - 1,public service credit union Detroit,PHRASE,339,97,18.176444,7.0
-Mortgage Search 6/11,Ad group 1,mortgage rates today,PHRASE,1486,90,151.640286,0.0
-Personal Loan Campaign,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,374,63,145.571759,30.006612
-CD - Search - 6/11/2025,Ad group 1,certificate of deposit rates,PHRASE,932,47,83.841168,1.0
-Leads - Auto Loan,Auto Loan Keywords,Auto financing,PHRASE,712,46,223.987167,9.0
-Leads - Auto Loan,Auto Loan Keywords,Auto loans,PHRASE,397,34,158.463437,5.0
-Mortgage Search 6/11,Ad group 1,first time home buyer down payment help,BROAD,282,28,25.009999999999998,0.040128
-Personal Loan Campaign,Personal Loan Adgroup - 1,emergency personal loan,PHRASE,137,22,52.741243,10.5
-Leads - Auto Loan,Auto Loan Keywords,Car loans,PHRASE,338,18,101.765697,6.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,motorcycle loan,PHRASE,142,10,46.870000000000005,0.0
-Personal Loan Campaign,Personal Loan Ad Group - 2,personal loan near me,PHRASE,66,7,16.538449,1.5
-CD - Search - 6/11/2025,Ad group 1,best CD rates,PHRASE,98,7,10.873307,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,RV loan,PHRASE,68,6,12.99,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,camper financing,PHRASE,52,5,19.72,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,boat loan,PHRASE,110,4,17.402254,0.0
-Mortgage Search 6/11,Ad group 1,refinance mortgage rates,PHRASE,12,1,1.54,0.0
-Leads - Auto Loan,Auto Loan Keywords,Auto loan requirements,PHRASE,22,1,7.44,1.0
-Leads - Auto Loan,Auto Loan Keywords,Pre-approved car loans,PHRASE,19,1,8.24,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,Recreational loan rates,PHRASE,9,1,3.31,0.0
-CD - Search - 6/11/2025,Ad group 1,best CD rates Michigan,PHRASE,115,1,1.83,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,ATV financing,PHRASE,2,0,0.0,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,camper financing Michigan,PHRASE,8,0,0.0,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,jet ski financing,PHRASE,2,0,0.0,0.0
-CD - Search - 6/11/2025,Ad group 1,CD rates Detroit,PHRASE,9,0,0.0,0.0
-Leads - Auto Loan,Auto Loan Keywords,Used car loans,PHRASE,1,0,0.0,0.0
-Mortgage Search 6/11,Ad group 1,fixed rate mortgage,PHRASE,8,0,0.0,0.0
-Mortgage Search 6/11,Ad group 1,best mortgage rates,PHRASE,8,0,0.0,0.0
-CD - Search - 6/11/2025,Ad group 1,CD rates today,PHRASE,6,0,0.0,0.0
-Leads - Auto Loan,Auto Loan Keywords,New car financing,PHRASE,2,0,0.0,0.0
-General Membership Campaign,General Membership Ad Group - 1,PSCU near me,PHRASE,2,0,0.0,0.0
-CD - Search - 6/11/2025,Ad group 1,local CD rates,PHRASE,2,0,0.0,0.0
-CD - Search - 6/11/2025,Ad group 1,jumbo CD rates,PHRASE,1,0,0.0,0.0
-CD - Search - 6/11/2025,Ad group 1,highest CD rates,PHRASE,4,0,0.0,0.0
-CD - Search - 6/11/2025,Ad group 1,CD specials,PHRASE,41,0,0.0,0.0
-Recreational Loan Campaign,Recreational Loan Adgroup - 1,recreational loans,PHRASE,37,0,0.0,0.0
+campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
+22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,11554,4292,363.785591,225.063986
+22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2108,303,685.223894,102.018409
+22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,Michigan credit unions,PHRASE,496,154,12.212612,6.5
+23226790794,Mortgage Search 6/11,193924622611,Ad group 1,mortgage calculator,PHRASE,2473,131,220.789639,0.0
+22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union Detroit,PHRASE,339,97,18.176444,7.0
+23226790794,Mortgage Search 6/11,193924622611,Ad group 1,mortgage rates today,PHRASE,1486,90,151.640286,0.0
+22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,374,63,145.571759,30.006612
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,certificate of deposit rates,PHRASE,932,47,83.841168,1.0
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto financing,PHRASE,712,46,223.987167,9.0
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto loans,PHRASE,397,34,158.463437,5.0
+23226790794,Mortgage Search 6/11,193924622611,Ad group 1,first time home buyer down payment help,BROAD,282,28,25.009999999999998,0.040128
+22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,emergency personal loan,PHRASE,137,22,52.741243,10.5
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Car loans,PHRASE,338,18,101.765697,6.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,motorcycle loan,PHRASE,142,10,46.870000000000005,0.0
+22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan near me,PHRASE,66,7,16.538449,1.5
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,best CD rates,PHRASE,98,7,10.873307,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,RV loan,PHRASE,68,6,12.99,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,camper financing,PHRASE,52,5,19.72,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,boat loan,PHRASE,110,4,17.402254,0.0
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto loan requirements,PHRASE,22,1,7.44,1.0
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Pre-approved car loans,PHRASE,19,1,8.24,0.0
+23226790794,Mortgage Search 6/11,193924622611,Ad group 1,refinance mortgage rates,PHRASE,12,1,1.54,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,Recreational loan rates,PHRASE,9,1,3.31,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,best CD rates Michigan,PHRASE,115,1,1.83,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,jumbo CD rates,PHRASE,1,0,0.0,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,CD specials,PHRASE,41,0,0.0,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,CD rates today,PHRASE,6,0,0.0,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,CD rates Detroit,PHRASE,9,0,0.0,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,highest CD rates,PHRASE,4,0,0.0,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,recreational loans,PHRASE,37,0,0.0,0.0
+23226790794,Mortgage Search 6/11,193924622611,Ad group 1,fixed rate mortgage,PHRASE,8,0,0.0,0.0
+23226790794,Mortgage Search 6/11,193924622611,Ad group 1,best mortgage rates,PHRASE,8,0,0.0,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,jet ski financing,PHRASE,2,0,0.0,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,camper financing Michigan,PHRASE,8,0,0.0,0.0
+22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,ATV financing,PHRASE,2,0,0.0,0.0
+22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,PSCU near me,PHRASE,2,0,0.0,0.0
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Used car loans,PHRASE,1,0,0.0,0.0
+22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,New car financing,PHRASE,2,0,0.0,0.0
+23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,local CD rates,PHRASE,2,0,0.0,0.0

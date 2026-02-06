@@ -1,0 +1,11 @@
+search_term,keyword,match_type,campaign_id,campaign_name,ad_group_id,ad_group_name,impressions,clicks,cost,conversions
+kitsap credit union,kitsap credit union,EXACT,23228929821,KCU - Personal - Brand,123456,Brand Terms,450,180,15.50,12.0
+credit union near me,credit union near me,BROAD,23238626386,KCU - Personal - NB,123457,Non-Brand General,320,45,85.25,3.0
+kitsap cu login,kitsap cu,PHRASE,23228929821,KCU - Personal - Brand,123456,Brand Terms,280,95,8.20,8.5
+best credit union washington,credit union washington,BROAD,23238626386,KCU - Personal - NB,123457,Non-Brand General,195,28,65.40,1.5
+auto loan rates,auto loans,BROAD,23371442105,KCU - Personal - NB Extended,123458,Auto Loans,175,22,55.80,2.0
+kitsap federal credit union,kitsap credit union,EXACT,23228929821,KCU - Personal - Brand,123456,Brand Terms,165,72,6.50,5.0
+mortgage rates today,mortgage rates,BROAD,23371442105,KCU - Personal - NB Extended,123459,Mortgages,155,18,48.90,1.0
+cd rates near me,cd rates,BROAD,23434304363,KCU - pMax - 10 Mo Cert,123460,Certificates,140,38,95.20,4.0
+open checking account,checking account,BROAD,23238626386,KCU - Personal - NB,123457,Non-Brand General,125,15,42.30,0.5
+kitsap credit union hours,kitsap credit union,EXACT,23228929821,KCU - Personal - Brand,123456,Brand Terms,110,45,4.20,3.0

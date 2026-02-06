@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Ads Dashboard</title>
-    <script src="https://cdn.plot.ly/plotly-basic-2.27.0.min.js"></script>
+    <title>AlphaRank Ads Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
         :root {
             --teal: #296f5e;
@@ -15,14 +15,22 @@
             --teal-light: #3a9a84;
             --mint: #6DB09F;
             --mint-light: #D1F0E8;
-            --rose: #C5998B;
-            --brown: #703B2A;
-            --bg: #f5f7fa;
-            --card: #ffffff;
+            --gold: #b8963e;
+            --gold-light: #d4b86a;
+            --gold-muted: #a38a4d;
+            --accent: #296f5e;
+            --accent-light: #D1F0E8;
+            --accent-hover: #1a4a3f;
+            --sidebar-bg: #f5f7fa;
+            --sidebar-active: #D1F0E8;
+            --sidebar-text: #1a1a2e;
+            --sidebar-width: 220px;
+            --header-height: 64px;
+            --bg: #ffffff;
             --text: #1a1a2e;
-            --muted: #6b7280;
-            --light: #9ca3af;
+            --text-secondary: #6b7280;
             --border: #e5e7eb;
+            --hover-bg: #f1f3f4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,32 +41,31 @@
             color: var(--text);
             line-height: 1.5;
             margin: 0;
-            padding: 16px;
-            min-width: 320px;
+            overflow: hidden;
+            height: 100vh;
         }
 
+        /* ── Loading & Error ── */
         .loading {
             display: flex;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            font-size: 18px;
-            color: var(--muted);
+            font-size: 16px;
+            color: var(--text-secondary);
         }
 
         .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--border);
-            border-top-color: var(--teal);
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 16px;
+            animation: spin .8s linear infinite;
+            margin-right: 14px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .error-page {
             display: flex;
@@ -70,375 +77,1266 @@
             padding: 24px;
         }
 
-        .error-page h1 {
-            font-size: 24px;
-            color: var(--teal-dark);
-            margin-bottom: 16px;
-        }
+        .error-page h1 { font-size: 22px; color: var(--text); margin-bottom: 12px; }
+        .error-page p { color: var(--text-secondary); max-width: 400px; }
 
-        .error-page p {
-            color: var(--muted);
-            max-width: 400px;
-        }
+        .dashboard { display: none; height: 100vh; }
+        .dashboard.active { display: flex; flex-direction: column; }
+        .hidden { display: none !important; }
 
-        .dashboard { display: none; }
-        .dashboard.active { display: block; }
-
-        .dashboard-header {
+        /* ── Top Header Bar ── */
+        .top-header {
+            height: var(--header-height);
+            min-height: var(--header-height);
             background: linear-gradient(135deg, #296f5e 0%, #1a4a3f 100%);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 0 0 20px 20px;
-            margin: -16px -16px 24px -16px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            padding: 0 24px;
             gap: 16px;
+            z-index: 20;
         }
 
-        .dashboard-header .header-left h1 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .dashboard-header .metadata {
-            font-size: 13px;
-            opacity: 0.9;
-        }
-
-        .month-selector {
+        .header-logo {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .month-selector label {
-            font-size: 14px;
-            font-weight: 500;
+        .header-logo svg.owl-icon {
+            width: 36px;
+            height: 43px;
         }
 
-        .month-selector select {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            background: white;
-            color: var(--text);
-            font-size: 14px;
+        .header-logo .wordmark {
+            font-family: 'Inter', Arial, Helvetica, sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            color: #fff;
+        }
+
+        .header-logo .wordmark .rank {
+            color: var(--mint);
+        }
+
+        .header-logo .wordmark .ai {
+            color: var(--mint);
+            font-size: 17px;
+        }
+
+        .header-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255,255,255,0.3);
+            margin: 0 4px;
+        }
+
+        .top-header .client-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
             font-weight: 500;
+            color: rgba(255,255,255,0.9);
+            flex: 1;
+        }
+
+        .top-header .month-select {
+            padding: 8px 12px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #fff;
+            background: rgba(255,255,255,0.12);
             cursor: pointer;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        /* Text Filter */
-        .text-filter-section {
-            margin-bottom: 24px;
-        }
-
-        .text-filter-input {
-            width: 100%;
-            max-width: 400px;
-            padding: 12px 20px;
-            border: 2px solid var(--border);
-            border-radius: 50px;
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-
-        .text-filter-input:focus {
+        .top-header .month-select:focus {
             outline: none;
-            border-color: var(--teal);
-            box-shadow: 0 0 0 4px rgba(41, 111, 94, 0.1);
+            border-color: rgba(255,255,255,0.6);
         }
 
-        .text-filter-input::placeholder {
-            color: var(--light);
+        .top-header .month-select option {
+            color: var(--text);
+            background: #fff;
         }
 
-        /* Filter Badge */
-        .filter-indicator {
-            background: var(--mint-light);
-            border: 2px solid var(--teal);
-            border-radius: 12px;
-            padding: 12px 20px;
-            margin-bottom: 24px;
+        .date-range-group {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            transition: all 0.3s ease;
+            gap: 8px;
         }
 
-        .filter-badge {
+        .date-range-toggle {
+            display: flex;
+            background: rgba(255,255,255,0.12);
+            border-radius: 4px;
+            padding: 2px;
+            gap: 2px;
+        }
+
+        .date-range-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            color: rgba(255,255,255,0.7);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .date-range-btn:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+        }
+
+        .date-range-btn.active {
+            color: var(--teal-dark);
+            background: #fff;
+        }
+
+        .custom-date-inputs {
+            display: none;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .custom-date-inputs.visible {
+            display: flex;
+        }
+
+        .custom-date-inputs input {
+            padding: 6px 10px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: inherit;
+            color: #fff;
+            background: rgba(255,255,255,0.12);
+            width: 120px;
+        }
+
+        .custom-date-inputs input:focus {
+            outline: none;
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .custom-date-inputs span {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+
+        /* ── Layout: Sidebar + Main ── */
+        .app-layout {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── Left Sidebar ── */
+        .sidebar {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 8px 0;
+        }
+
+        .sidebar-section-label {
+            padding: 12px 24px 4px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 24px;
+            height: 40px;
+            font-size: 14px;
+            color: var(--sidebar-text);
+            cursor: pointer;
+            border-radius: 0 20px 20px 0;
+            margin-right: 8px;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .sidebar-item:hover {
+            background: var(--hover-bg);
+        }
+
+        .sidebar-item.active {
+            background: var(--sidebar-active);
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .sidebar-item svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            fill: currentColor;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 8px 0;
+        }
+
+        /* ── Main Content ── */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background: #f8f9fb;
+        }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb-bar {
+            padding: 12px 24px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            background: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .breadcrumb-bar a {
+            color: var(--accent);
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .breadcrumb-bar a:hover { text-decoration: underline; }
+        .breadcrumb-sep { margin: 0 6px; color: var(--text-secondary); }
+        .breadcrumb-current { color: var(--text); font-weight: 500; }
+
+        /* ── View Title ── */
+        .view-title-bar {
+            padding: 20px 24px 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dict-toggle {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: var(--teal);
-            color: white;
-            padding: 6px 16px;
-            border-radius: 50px;
-            font-weight: 600;
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
             font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
         }
 
-        .filter-badge svg {
+        .dict-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-light);
+            box-shadow: 0 4px 12px rgba(41,111,94,0.15), 0 2px 4px rgba(0,0,0,0.06);
+            transform: translateY(-1px);
+        }
+
+        .dict-toggle:active {
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            background: #c2e8dd;
+        }
+
+        .dict-toggle.active {
+            border-color: var(--accent);
+            color: #fff;
+            background: var(--accent);
+            box-shadow: 0 2px 8px rgba(41,111,94,0.25), 0 1px 2px rgba(0,0,0,0.06);
+        }
+
+        .dict-toggle.active:hover {
+            background: var(--accent-hover);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(41,111,94,0.3), 0 2px 4px rgba(0,0,0,0.06);
+        }
+
+        .dict-toggle.active:active {
+            background: var(--teal-dark);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        }
+
+        .dict-toggle svg {
             width: 18px;
             height: 18px;
+            fill: currentColor;
         }
 
-        .clear-filter-btn {
-            background: var(--teal);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 50px;
+        /* ── Data Dictionary Panel ── */
+        .dict-toggle-row {
+            padding: 8px 24px 16px;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .data-dict-panel {
+            display: none;
+            margin: 0 24px 16px;
+            padding: 20px 24px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+        }
+
+        .data-dict-panel.visible {
+            display: block;
+        }
+
+        .data-dict-panel h3 {
             font-size: 14px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
+            color: var(--text);
+            margin-bottom: 14px;
         }
 
-        .clear-filter-btn:hover {
-            background: var(--teal-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(41, 111, 94, 0.3);
-        }
-
-        /* KPI Section */
-        .kpi-section {
+        .dict-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px 24px;
         }
 
-        .kpi-card {
-            background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
-            border-radius: 50px;
-            padding: 20px 28px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            color: white;
-            transition: transform 0.2s;
+        .dict-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            background: #f8f9fb;
+            border: 1px solid #f0f1f3;
         }
 
-        .kpi-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .kpi-label {
+        .dict-term {
             font-size: 12px;
+            font-weight: 600;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .dict-formula {
+            font-size: 12px;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            color: var(--accent-hover);
+            background: var(--accent-light);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 3px 0;
+            width: fit-content;
+        }
+
+        .dict-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* ── KPI Summary Strip ── */
+        .kpi-strip {
+            display: flex;
+            gap: 0;
+            padding: 16px 24px 20px;
+            flex-wrap: wrap;
+        }
+
+        .kpi-strip-inner {
+            display: flex;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+            overflow: hidden;
+        }
+
+        .kpi-chip {
+            padding: 14px 22px;
+            border: 1px solid var(--border);
+            border-right: none;
+            background: #fff;
+            min-width: 140px;
+            position: relative;
+            cursor: help;
+        }
+
+        .kpi-chip:first-child {
+            border-radius: 12px 0 0 12px;
+        }
+
+        .kpi-chip:last-child {
+            border-right: 1px solid var(--border);
+            border-radius: 0 12px 12px 0;
+        }
+
+        .kpi-chip-label {
+            font-size: 11px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 6px;
-            opacity: 0.9;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
         }
 
-        .kpi-value {
-            font-size: 32px;
-            font-weight: 700;
-        }
-
-        .kpi-sub {
-            font-size: 12px;
-            opacity: 0.8;
-            margin-top: 2px;
-        }
-
-        /* Chart Section */
-        .chart-section {
-            background: var(--card);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        }
-
-        .chart-title {
-            font-size: 18px;
+        .kpi-chip-value {
+            font-size: 22px;
             font-weight: 600;
+            font-family: 'Inter', sans-serif;
             color: var(--text);
-            margin-bottom: 16px;
+            font-variant-numeric: tabular-nums;
         }
 
-        .chart-with-labels {
-            display: flex;
-            align-items: flex-start;
-            width: 100%;
+        .kpi-chip { cursor: pointer; transition: background 0.15s, color 0.15s; }
+        .kpi-chip:hover { background: #f1f8f6; }
+        .kpi-chip.kpi-selected {
+            background: linear-gradient(135deg, #296f5e 0%, #22614f 100%);
+            color: #fff;
+            border-color: var(--accent);
+        }
+        .kpi-chip.kpi-selected .kpi-chip-label { color: rgba(255,255,255,0.85); }
+        .kpi-chip.kpi-selected .kpi-chip-value { color: #fff; }
+
+        /* ── Attribution Type Selector ── */
+        .attribution-selector {
+            display: none;
+            padding: 0 24px 12px;
         }
 
-        .campaign-labels-column {
-            display: flex;
-            flex-direction: column;
-            padding-right: 8px;
-            flex-shrink: 0;
-        }
-
-        .campaign-label-row {
+        .attribution-selector.visible {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
-            gap: 10px;
-            cursor: pointer;
+            gap: 16px;
         }
 
-        .campaign-label-row .campaign-label {
+        .attribution-label {
             font-size: 12px;
-            color: #1a1a2e;
-            font-weight: 600;
-            white-space: normal;
-            word-break: break-word;
-            max-width: 280px;
-            line-height: 1.3;
-            text-align: right;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .chart-container {
-            position: relative;
-            flex: 1;
-            min-width: 0;
-            width: 100%;
+        .attribution-toggle-group {
+            display: flex;
+            background: #f1f3f5;
+            border-radius: 8px;
+            padding: 3px;
+            gap: 2px;
         }
 
-        /* Table Section */
-        .table-section {
-            background: white;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid var(--border);
-            margin-bottom: 24px;
+        .attribution-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text-secondary);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.15s ease;
         }
 
-        .table-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            background: #f8fafc;
-        }
-
-        .table-title {
-            font-size: 18px;
-            font-weight: 600;
+        .attribution-btn:hover {
             color: var(--text);
+            background: rgba(255,255,255,0.5);
         }
 
-        .table-container {
-            max-height: 600px;
-            overflow-y: auto;
+        .attribution-btn.active {
+            color: #fff;
+            background: var(--teal);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .attribution-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .attribution-btn .attr-icon {
+            display: flex;
+            align-items: center;
+            gap: 1px;
+        }
+
+        .attribution-btn .attr-icon span {
+            width: 4px;
+            height: 12px;
+            background: currentColor;
+            border-radius: 1px;
+        }
+
+        .attribution-btn .attr-icon span:first-child {
+            opacity: 0.3;
+        }
+
+        .attribution-btn .attr-icon span:last-child {
+            opacity: 0.3;
+        }
+
+        .attribution-btn.active .attr-icon span {
+            opacity: 0.4;
+        }
+
+        .attribution-btn[data-model="last_click"] .attr-icon span:last-child,
+        .attribution-btn[data-model="last_click"].active .attr-icon span:last-child {
+            opacity: 1;
+        }
+
+        .attribution-btn[data-model="first_click"] .attr-icon span:first-child,
+        .attribution-btn[data-model="first_click"].active .attr-icon span:first-child {
+            opacity: 1;
+        }
+
+        .attribution-btn[data-model="linear"] .attr-icon span,
+        .attribution-btn[data-model="linear"].active .attr-icon span {
+            opacity: 1;
+        }
+
+        /* KPI chips use the shared #colTooltip via JS */
+
+        /* ── Table Card ── */
+        .table-card {
+            margin: 0 24px 24px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* ── Filter / Toolbar ── */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .filter-input {
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--text);
+            width: 280px;
+            transition: all 0.15s;
+            background: #f8f9fb;
+        }
+
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(41,111,94,0.1);
+            background: #fff;
+        }
+
+        .filter-input::placeholder { color: #9aa0a6; }
+
+        .toolbar-count {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .match-filter-group {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            margin-left: 4px;
+        }
+
+        .match-filter-group.visible {
+            display: flex;
+        }
+
+        .match-filter-btn {
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.15s;
+            background: #fff;
+            color: var(--text-secondary);
+        }
+
+        .match-filter-btn:hover {
+            border-color: var(--teal-light);
+        }
+
+        .match-filter-btn.active {
+            border-color: var(--teal);
+            color: #fff;
+            background: var(--teal);
+        }
+
+        .match-filter-btn.active.match-btn-BROAD { background: var(--teal); border-color: var(--teal); }
+        .match-filter-btn.active.match-btn-PHRASE { background: #b45309; border-color: #b45309; }
+        .match-filter-btn.active.match-btn-EXACT { background: #166534; border-color: #166534; }
+
+        /* ── Data Table ── */
+        .table-wrap {
+            flex: 1;
+            overflow: auto;
+            padding: 0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
+            font-size: 13px;
         }
 
         thead {
             position: sticky;
             top: 0;
-            background: #f1f5f9;
-            z-index: 10;
+            z-index: 5;
+            background: #fafbfc;
         }
 
         th {
-            padding: 12px 16px;
+            padding: 8px 16px;
             text-align: left;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--muted);
-            border-bottom: 2px solid var(--border);
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
             cursor: pointer;
             user-select: none;
+            white-space: nowrap;
+            position: relative;
         }
 
-        th:hover {
-            color: var(--teal);
+        th:hover { color: var(--text); }
+
+        th.text-right { text-align: right; }
+
+        /* Floating tooltip (appended to body) */
+        #colTooltip {
+            display: none;
+            position: fixed;
+            background: var(--text);
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.6;
+            width: 260px;
+            z-index: 9999;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            pointer-events: none;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
         }
 
-        th.text-right {
-            text-align: right;
+        #colTooltip.visible {
+            display: block;
+        }
+
+        #colTooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 7px solid transparent;
+            border-top-color: var(--text);
+        }
+
+        #colTooltip .tt-title {
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--mint);
+            margin-bottom: 4px;
+        }
+
+        #colTooltip .tt-formula {
+            display: inline-block;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 12px;
+            background: rgba(255,255,255,0.15);
+            padding: 3px 10px;
+            border-radius: 5px;
+            margin-top: 6px;
         }
 
         th .sort-arrow {
             font-size: 10px;
-            margin-left: 4px;
+            margin-left: 3px;
+        }
+
+        th.sorted {
+            color: var(--text);
         }
 
         tbody tr {
-            border-bottom: 1px solid var(--border);
-            transition: background-color 0.15s;
+            border-bottom: 1px solid #f1f3f4;
+            transition: background 0.1s;
         }
 
         tbody tr:hover {
-            background-color: #f8fafc;
+            background: #f8f9fa;
+        }
+
+        tbody tr.clickable {
+            cursor: pointer;
+        }
+
+        tbody tr.clickable:hover {
+            background: var(--accent-light);
         }
 
         td {
-            padding: 14px 16px;
-            font-size: 14px;
+            padding: 10px 16px;
+            font-size: 13px;
             color: var(--text);
         }
 
         td.text-right {
             text-align: right;
-            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        td.dim {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        td.name-cell {
+            color: var(--accent);
+            font-weight: 500;
         }
 
         .match-badge {
             display: inline-block;
             padding: 2px 8px;
-            border-radius: 50px;
+            border-radius: 4px;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
 
-        .match-BROAD { background: #dbeafe; color: #1e40af; }
-        .match-PHRASE { background: #fef3c7; color: #92400e; }
-        .match-EXACT { background: var(--mint-light); color: var(--teal-dark); }
-        .match-UNKNOWN { background: #f3f4f6; color: #6b7280; }
+        .match-BROAD { background: var(--accent-light); color: var(--teal); }
+        .match-PHRASE { background: #fef7e0; color: #b45309; }
+        .match-EXACT { background: #e6f4ea; color: #166534; }
+        .match-UNKNOWN { background: #f1f3f4; color: #5f6368; }
 
-        .metric-value {
-            font-variant-numeric: tabular-nums;
+        /* ── Widget Chart Cards ── */
+        .widget-row {
+            padding: 0 24px 8px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .dashboard-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        @media (max-width: 1100px) {
+            .widget-row { grid-template-columns: 1fr; }
+        }
 
-            .kpi-section {
-                grid-template-columns: 1fr;
-            }
+        .gs-item-content {
+            height: 100%;
+        }
 
-            .chart-with-labels {
-                flex-direction: column;
-            }
+        .chart-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            border: 1px solid var(--border);
+            padding: 18px 20px 14px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
 
-            .campaign-labels-column {
-                display: none;
+        .chart-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .chart-card-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .chart-card-value {
+            font-size: 26px;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            margin-bottom: 8px;
+        }
+
+        .chart-card-body {
+            position: relative;
+            height: 120px;
+            max-height: 120px;
+        }
+
+        .chart-card-body canvas {
+            width: 100% !important;
+            max-height: 120px !important;
+        }
+
+        /* Settings menu */
+        .chart-settings-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: 6px;
+            line-height: 1;
+            transition: background 0.15s, color 0.15s;
+        }
+
+        .chart-settings-btn:hover {
+            background: var(--hover-bg);
+            color: var(--text);
+        }
+
+        .chart-settings-dropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 12px;
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            z-index: 50;
+            min-width: 120px;
+            overflow: hidden;
+        }
+
+        .chart-settings-dropdown.open {
+            display: block;
+        }
+
+        .chart-settings-dropdown button {
+            display: block;
+            width: 100%;
+            padding: 8px 16px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            color: var(--text);
+            text-align: left;
+            transition: background 0.1s;
+        }
+
+        .chart-settings-dropdown button:hover {
+            background: var(--hover-bg);
+        }
+
+        .chart-settings-dropdown button.active {
+            color: var(--accent);
+            font-weight: 500;
+            background: var(--accent-light);
+        }
+
+        /* Chart expand */
+        .chart-expand-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: 6px;
+            line-height: 1;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+        }
+
+        .chart-expand-btn:hover {
+            background: var(--hover-bg);
+            color: var(--text);
+        }
+
+        .chart-expand-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .chart-card.expanded .chart-card-body {
+            height: calc(70dvh - 120px) !important;
+        }
+
+        .widget-row.chart-expanded {
+            grid-template-columns: 1fr;
+        }
+
+        .widget-row.chart-expanded .chart-card:not(.expanded) {
+            display: none;
+        }
+
+        .main-content.chart-expanded .table-card,
+        .main-content.chart-expanded .data-dict-panel {
+            display: none;
+        }
+
+        /* ── Table Expand ── */
+        .main-content.table-expanded .widget-row,
+        .main-content.table-expanded .chart-controls,
+        .main-content.table-expanded .kpi-strip,
+        .main-content.table-expanded .attribution-selector,
+        .main-content.table-expanded .data-dict-panel,
+        .main-content.table-expanded .dict-toggle-row {
+            display: none;
+        }
+
+        .main-content.table-expanded .table-card {
+            margin-top: 0;
+            flex: 1;
+            max-height: none;
+            height: calc(100vh - 140px);
+        }
+
+        .main-content.table-expanded .table-card .table-wrap {
+            max-height: none;
+            flex: 1;
+        }
+
+        .table-expand-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 6px 8px;
+            border-radius: 6px;
+            line-height: 1;
+            transition: background 0.15s, color 0.15s;
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        .table-expand-btn:hover {
+            background: var(--hover-bg);
+            color: var(--text);
+        }
+
+        .table-expand-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        /* ── Resize Handles ── */
+        .resize-handle {
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .resize-handle-h {
+            height: 20px;
+            margin: 8px 24px;
+            cursor: ns-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.03) 50%, transparent 100%);
+            border-radius: 8px;
+        }
+
+        .resize-handle-h::before {
+            content: '⋯';
+            font-size: 20px;
+            letter-spacing: 2px;
+            color: #9ca3af;
+            transition: all 0.15s ease;
+        }
+
+        .resize-handle-h:hover {
+            background: rgba(41,111,94,0.08);
+        }
+
+        .resize-handle-h:hover::before,
+        .resize-handle-h.dragging::before {
+            color: var(--teal);
+            transform: scaleX(1.2);
+        }
+
+        .resize-handle-v {
+            width: 8px;
+            cursor: ew-resize;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .resize-handle-v::before {
+            content: '';
+            width: 4px;
+            height: 40px;
+            background: var(--border);
+            border-radius: 2px;
+            transition: all 0.15s ease;
+        }
+
+        .resize-handle-v:hover::before,
+        .resize-handle-v.dragging::before {
+            background: var(--teal);
+            width: 5px;
+            height: 60px;
+        }
+
+        /* Prevent text selection during resize */
+        body.resizing {
+            user-select: none;
+            cursor: ns-resize !important;
+        }
+
+        body.resizing-v {
+            user-select: none;
+            cursor: ew-resize !important;
+        }
+
+        /* Make chart widget row resizable */
+        .widget-row {
+            min-height: 120px;
+        }
+
+        .widget-row .chart-card {
+            min-height: 100px;
+        }
+
+        .widget-row .chart-card-body {
+            height: auto;
+            min-height: 80px;
+            flex: 1;
+        }
+
+        /* Make table card fill remaining space */
+        .table-card {
+            min-height: 200px;
+        }
+
+        /* ── Chart Date Range Selector ── */
+        .chart-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 12px;
+            padding: 8px 24px;
+        }
+
+        .date-range-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        .date-range-select {
+            padding: 6px 28px 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text);
+            background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='%236b7280'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 8px center;
+            appearance: none;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .date-range-select:hover {
+            border-color: var(--teal);
+        }
+
+        .date-range-select:focus {
+            outline: none;
+            border-color: var(--teal);
+        }
+
+        /* ── Sidebar Hierarchy ── */
+        .sidebar-sub {
+            padding: 0 0 4px;
+        }
+
+        .sidebar-sub-item {
+            padding: 5px 12px 5px 20px;
+            margin-left: 32px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--teal);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 170px;
+            border-left: 2px solid var(--mint-light);
+            line-height: 1.3;
+        }
+
+        /* ── Current Selection Panel (below Insights) ── */
+        .current-selection {
+            margin: 8px 12px;
+            padding: 12px;
+            background: var(--sidebar-active);
+            border-radius: 8px;
+            border: 1px solid var(--mint-light);
+        }
+
+        .current-selection-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .current-selection-label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-secondary);
+        }
+
+        .clear-selection-btn {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+
+        .clear-selection-btn:hover {
+            color: #dc2626;
+            background: rgba(220, 38, 38, 0.1);
+        }
+
+        .current-selection-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--teal-dark);
+            margin-bottom: 6px;
+            padding: 6px 8px;
+            background: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .current-selection-item:hover {
+            background: #f0f9f6;
+        }
+
+        .current-selection-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .current-selection-item .sel-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .current-selection-item .sel-type {
+            font-size: 9px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        .current-selection-item .sel-name {
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .current-selection-item .sel-remove {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-left: 8px;
+            opacity: 0;
+            transition: opacity 0.15s;
+        }
+
+        .current-selection-item:hover .sel-remove {
+            opacity: 1;
+            color: #dc2626;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 56px;
+                min-width: 56px;
             }
+            .sidebar-item span { display: none; }
+            .sidebar-item { padding: 0 18px; justify-content: center; }
+            .sidebar-section-label { display: none; }
+            :root { --sidebar-width: 56px; }
         }
     </style>
 </head>
 <body>
+    <div id="colTooltip"></div>
+
     <div id="loading" class="loading">
         <div class="loading-spinner"></div>
         <span>Loading dashboard...</span>
@@ -446,179 +1344,486 @@
 
     <div id="error" class="error-page hidden">
         <h1>Dashboard Error</h1>
-        <p id="errorMessage">Unable to load dashboard. Please check your URL parameters.</p>
+        <p id="errorMessage">Unable to load dashboard.</p>
     </div>
 
     <div id="dashboard" class="dashboard">
-        <div class="dashboard-header">
-            <div class="header-left">
-                <h1 id="dashboardTitle">Google Ads Performance</h1>
-                <div class="metadata" id="dashboardMeta">Ad Spend Analysis</div>
+        <!-- Top Header -->
+        <div class="top-header">
+            <div class="header-logo">
+                <svg class="owl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none">
+                    <line x1="0" y1="195" x2="200" y2="195" stroke="white" stroke-width="2.5"/>
+                    <path d="M20 195 L8 183" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M20 195 L8 207" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M35 195 L25 186" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M72 195 C68 205 62 212 58 218 C55 222 58 226 64 224 C68 222 70 218 72 212 C74 218 76 222 80 224 C86 226 89 222 86 218 C82 212 78 205 76 195" stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                    <path d="M124 195 C120 205 114 212 110 218 C107 222 110 226 116 224 C120 222 122 218 124 212 C126 218 128 222 132 224 C138 226 141 222 138 218 C134 212 130 205 128 195" stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                    <ellipse cx="100" cy="140" rx="52" ry="58" stroke="white" stroke-width="2.5"/>
+                    <ellipse cx="100" cy="155" rx="32" ry="38" stroke="white" stroke-width="2"/>
+                    <path d="M48 75 C42 60 45 50 50 42 L28 30 C18 26 16 36 26 40 C36 44 48 42 55 40 C65 35 80 32 100 32 C120 32 135 35 145 40 C152 42 164 44 174 40 C184 36 182 26 172 30 L150 42 C155 50 158 60 152 75 C158 95 150 115 135 125 C120 135 80 135 65 125 C50 115 42 95 48 75Z" stroke="white" stroke-width="2.5" fill="none"/>
+                    <circle cx="75" cy="78" r="24" stroke="white" stroke-width="2.5"/>
+                    <circle cx="75" cy="78" r="15" fill="#5a9a8a"/>
+                    <circle cx="75" cy="78" r="8" fill="#1a3530"/>
+                    <circle cx="125" cy="78" r="24" stroke="white" stroke-width="2.5"/>
+                    <circle cx="125" cy="78" r="15" fill="#5a9a8a"/>
+                    <circle cx="125" cy="78" r="8" fill="#1a3530"/>
+                    <path d="M94 98 Q100 90 106 98 L100 110 Z" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/>
+                </svg>
+                <span class="wordmark">ALPHA<span class="rank">RANK</span><span class="ai">.AI</span></span>
             </div>
-            <div class="month-selector">
-                <label for="monthSelect">Period:</label>
-                <select id="monthSelect"></select>
-            </div>
+            <div class="header-divider"></div>
+            <div class="client-name" id="clientName">Ads Dashboard</div>
         </div>
 
-        <div class="container">
-            <div class="text-filter-section">
-                <input type="text" id="textFilter" class="text-filter-input" placeholder="Filter by campaign or keyword...">
-            </div>
+        <div class="app-layout">
+            <!-- Left Sidebar -->
+            <nav class="sidebar">
+                <div class="sidebar-section-label">Campaigns</div>
+                <div class="sidebar-item active" data-level="campaigns" onclick="navigateToLevel('campaigns')">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    <span>Campaigns</span>
+                </div>
+                <div id="sidebarCampaignSub" class="sidebar-sub hidden"></div>
+                <div class="sidebar-item" data-level="adgroups" onclick="navigateToLevel('adgroups')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <span>Ad groups</span>
+                </div>
+                <div id="sidebarAdGroupSub" class="sidebar-sub hidden"></div>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Keywords</div>
+                <div class="sidebar-item" data-level="keywords" onclick="navigateToLevel('keywords')">
+                    <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                    <span>Keywords</span>
+                </div>
+                <div class="sidebar-item" data-level="searchterms" onclick="navigateToLevel('searchterms')">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    <span>Search terms</span>
+                </div>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Insights</div>
+                <div class="sidebar-item" data-level="channels" onclick="navigateToLevel('channels')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <span>Channels</span>
+                </div>
+                <div class="sidebar-item" data-level="whenwhere" onclick="navigateToLevel('whenwhere')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>When & Where</span>
+                </div>
 
-            <div id="filterIndicator" class="filter-indicator hidden">
-                <div class="filter-badge">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="22,3 2,3 10,12.46 10,19 14,21 14,12.46 22,3"/>
-                    </svg>
-                    <span>Filtered by: <strong id="filterCampaignName"></strong></span>
+                <!-- Current Selection Panel -->
+                <div id="currentSelectionPanel" class="current-selection hidden">
+                    <div class="current-selection-label">Current Selection</div>
+                    <div id="currentSelectionContent"></div>
                 </div>
-                <button class="clear-filter-btn" onclick="clearFilter()">Clear Filter</button>
-            </div>
+            </nav>
 
-            <div class="kpi-section">
-                <div class="kpi-card">
-                    <div class="kpi-label">Impressions</div>
-                    <div class="kpi-value" id="kpiImpressions">0</div>
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb-bar" id="breadcrumbBar">
+                    <span class="breadcrumb-current">All campaigns</span>
                 </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Clicks</div>
-                    <div class="kpi-value" id="kpiClicks">0</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Spend</div>
-                    <div class="kpi-value" id="kpiSpend">$0</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-label">Conversions</div>
-                    <div class="kpi-value" id="kpiConversions">0</div>
-                    <div class="kpi-sub" id="kpiCPA"></div>
-                </div>
-            </div>
 
-            <div class="chart-section">
-                <div class="chart-title">Campaign Performance</div>
-                <div class="chart-with-labels">
-                    <div class="campaign-labels-column" id="campaignLabels"></div>
-                    <div class="chart-container" id="campaignChart"></div>
+                <!-- View Title -->
+                <div class="view-title-bar">
+                    <span id="viewTitle">Campaigns</span>
                 </div>
-            </div>
 
-            <div class="table-section">
-                <div class="table-header">
-                    <span class="table-title">Keyword Performance</span>
-                    <span id="keywordCount" style="margin-left: 12px; color: var(--muted); font-size: 14px;"></span>
+                <!-- KPI Strip -->
+                <div class="kpi-strip">
+                    <div class="kpi-strip-inner">
+                        <div class="kpi-chip" data-key="impressions" onclick="selectKpiChart('impressions')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                            <div class="kpi-chip-label">Impr.</div>
+                            <div class="kpi-chip-value" id="kpiImpressions">0</div>
+                        </div>
+                        <div class="kpi-chip" data-key="clicks" onclick="selectKpiChart('clicks')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                            <div class="kpi-chip-label">Clicks</div>
+                            <div class="kpi-chip-value" id="kpiClicks">0</div>
+                        </div>
+                        <div class="kpi-chip" data-key="_ctr" onclick="selectKpiChart('_ctr')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                            <div class="kpi-chip-label">CTR</div>
+                            <div class="kpi-chip-value" id="kpiCTR">0%</div>
+                        </div>
+                        <div class="kpi-chip" data-key="cost" onclick="selectKpiChart('cost')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                            <div class="kpi-chip-label">Cost</div>
+                            <div class="kpi-chip-value" id="kpiCost">$0</div>
+                        </div>
+                        <div class="kpi-chip" data-key="conversions" onclick="selectKpiChart('conversions')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                            <div class="kpi-chip-label">Conv.</div>
+                            <div class="kpi-chip-value" id="kpiConversions">0</div>
+                        </div>
+                        <div class="kpi-chip" data-key="_cpa" onclick="selectKpiChart('_cpa')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                            <div class="kpi-chip-label">CPA</div>
+                            <div class="kpi-chip-value" id="kpiCPA">&mdash;</div>
+                        </div>
+                        <div class="kpi-chip" data-key="funded" onclick="selectKpiChart('funded')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFunded" style="display:none;">
+                            <div class="kpi-chip-label">Funded</div>
+                            <div class="kpi-chip-value" id="kpiFunded">0</div>
+                        </div>
+                        <div class="kpi-chip" data-key="_cpf" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipCPF" style="display:none;">
+                            <div class="kpi-chip-label">CPF</div>
+                            <div class="kpi-chip-value" id="kpiCPF">&mdash;</div>
+                        </div>
+                        <div class="kpi-chip" data-key="_avg_funded_value" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipAFV" style="display:none;">
+                            <div class="kpi-chip-label">Avg Fund Val</div>
+                            <div class="kpi-chip-value" id="kpiAFV">&mdash;</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th onclick="sortTable('keyword')">Keyword <span class="sort-arrow" id="sort-keyword"></span></th>
-                                <th onclick="sortTable('match_type')">Match <span class="sort-arrow" id="sort-match_type"></span></th>
-                                <th onclick="sortTable('campaign_name')">Campaign <span class="sort-arrow" id="sort-campaign_name"></span></th>
-                                <th onclick="sortTable('ad_group_name')">Ad Group <span class="sort-arrow" id="sort-ad_group_name"></span></th>
-                                <th class="text-right" onclick="sortTable('impressions')">Impr. <span class="sort-arrow" id="sort-impressions"></span></th>
-                                <th class="text-right" onclick="sortTable('clicks')">Clicks <span class="sort-arrow" id="sort-clicks"></span></th>
-                                <th class="text-right" onclick="sortTable('cost')">Cost <span class="sort-arrow" id="sort-cost"></span></th>
-                                <th class="text-right" onclick="sortTable('conversions')">Conv. <span class="sort-arrow" id="sort-conversions"></span></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody"></tbody>
-                    </table>
+
+                <!-- Attribution Type Selector -->
+                <div class="attribution-selector" id="attributionSelector">
+                    <span class="attribution-label">Attribution Model</span>
+                    <div class="attribution-toggle-group">
+                        <button class="attribution-btn active" data-model="last_click" onclick="setAttributionModel('last_click')" onmouseenter="showAttrTooltip(event, 'last_click')" onmouseleave="hideColTooltip()">
+                            <span class="attr-icon"><span></span><span></span><span></span></span>
+                            Last Click
+                        </button>
+                        <button class="attribution-btn" data-model="first_click" onclick="setAttributionModel('first_click')" onmouseenter="showAttrTooltip(event, 'first_click')" onmouseleave="hideColTooltip()">
+                            <span class="attr-icon"><span></span><span></span><span></span></span>
+                            First Click
+                        </button>
+                        <button class="attribution-btn" data-model="linear" onclick="setAttributionModel('linear')" onmouseenter="showAttrTooltip(event, 'linear')" onmouseleave="hideColTooltip()">
+                            <span class="attr-icon"><span></span><span></span><span></span></span>
+                            Linear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chart Controls -->
+                <div class="chart-controls">
+                    <label class="date-range-label">Data Month</label>
+                    <select class="date-range-select" id="monthSelect" onchange="changeMonth(this.value)"></select>
+                    <label class="date-range-label" style="margin-left:16px;">Chart Range</label>
+                    <select class="date-range-select" id="dateRangeSelect" onchange="setDateRange(this.value)">
+                        <option value="30">Last 30 Days</option>
+                        <option value="60">Last 60 Days</option>
+                        <option value="90" selected>Last 90 Days</option>
+                        <option value="month">This Month</option>
+                    </select>
+                    <label class="date-range-label" style="margin-left:16px;">View</label>
+                    <select class="date-range-select" id="chartViewSelect" onchange="setChartView(this.value)">
+                        <option value="daily" selected>Daily</option>
+                        <option value="dow">By Day of Week</option>
+                    </select>
+                </div>
+
+                <!-- Chart Cards -->
+                <div class="widget-row">
+                    <div class="chart-card" id="spendChartCard">
+                        <div class="chart-card-header">
+                            <div>
+                                <span class="chart-card-title">AD SPEND</span>
+                                <div class="chart-card-value" id="spendChartValue">$0</div>
+                            </div>
+                            <button class="chart-expand-btn" onclick="toggleChartExpand('spend')" title="Expand chart">
+                                <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                            </button>
+                            <button class="chart-settings-btn" onclick="toggleChartMenu('spend')" title="Chart type">&#x22EF;</button>
+                            <div class="chart-settings-dropdown" id="menu-spend">
+                                <button class="active" onclick="switchChartType('spend','line')">Line</button>
+                                <button onclick="switchChartType('spend','bar')">Bar</button>
+                            </div>
+                        </div>
+                        <div class="chart-card-body"><canvas id="spendChart"></canvas></div>
+                    </div>
+                    <div class="chart-card" id="convChartCard">
+                        <div class="chart-card-header">
+                            <div>
+                                <span class="chart-card-title">CONVERSIONS</span>
+                                <div class="chart-card-value" id="convChartValue">0</div>
+                            </div>
+                            <button class="chart-expand-btn" onclick="toggleChartExpand('conv')" title="Expand chart">
+                                <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                            </button>
+                            <button class="chart-settings-btn" onclick="toggleChartMenu('conv')" title="Chart type">&#x22EF;</button>
+                            <div class="chart-settings-dropdown" id="menu-conv">
+                                <button class="active" onclick="switchChartType('conv','line')">Line</button>
+                                <button onclick="switchChartType('conv','bar')">Bar</button>
+                            </div>
+                        </div>
+                        <div class="chart-card-body"><canvas id="convChart"></canvas></div>
+                    </div>
+                </div>
+
+                <!-- Resize Handle: Charts ↔ Table -->
+                <div class="resize-handle resize-handle-h" id="chartTableResizer" title="Drag to resize"></div>
+
+                <!-- Data Dictionary Toggle -->
+                <div class="dict-toggle-row">
+                    <button class="dict-toggle" id="dictToggle" onclick="toggleDataDict()">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+                        Metric Definitions
+                    </button>
+                </div>
+
+                <!-- Data Dictionary Panel -->
+                <div class="data-dict-panel" id="dataDictPanel">
+                    <h3>Google Ads Metrics</h3>
+                    <div class="dict-grid">
+                        <div class="dict-item">
+                            <span class="dict-term">Impressions</span>
+                            <span class="dict-desc">The number of times your ad was displayed on a search result page or website. Each time your ad appears, it counts as one impression.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Clicks</span>
+                            <span class="dict-desc">The number of times users clicked on your ad. Includes clicks to your website, app, or call extension.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">CTR (Click-Through Rate)</span>
+                            <span class="dict-formula">Clicks &divide; Impressions &times; 100</span>
+                            <span class="dict-desc">The percentage of impressions that resulted in a click. Higher CTR indicates more relevant ad copy and targeting.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Cost (Spend)</span>
+                            <span class="dict-desc">The total amount spent on ad clicks for the selected period. This is the actual amount charged by Google Ads.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Avg. CPC (Cost Per Click)</span>
+                            <span class="dict-formula">Cost &divide; Clicks</span>
+                            <span class="dict-desc">The average amount you pay each time someone clicks your ad. Varies by keyword competition and quality score.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Conversions</span>
+                            <span class="dict-desc">Actions defined in Google Ads as valuable (e.g., form submissions, phone calls, account sign-ups). Uses <strong>data-driven attribution</strong>, so fractional values are possible when credit is shared across multiple clicks.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Conv. Rate</span>
+                            <span class="dict-formula">Conversions &divide; Clicks &times; 100</span>
+                            <span class="dict-desc">The percentage of clicks that resulted in a conversion. Measures how effectively clicks turn into desired actions.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">CPA (Cost per Acquisition)</span>
+                            <span class="dict-formula">Cost &divide; Conversions</span>
+                            <span class="dict-desc">The average cost to acquire one conversion. Lower CPA means more efficient ad spend.</span>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:20px;">First-Party Attribution Metrics</h3>
+                    <div class="dict-grid">
+                        <div class="dict-item">
+                            <span class="dict-term">Apps (Applications)</span>
+                            <span class="dict-desc">Number of loan or membership applications started. Tracked via GCLID click ID linking Google Ads clicks to your application system.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Approved</span>
+                            <span class="dict-desc">Number of applications that were approved. Attributed to the ad click that initiated the customer journey.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Funded</span>
+                            <span class="dict-desc">Number of applications that reached funded status. This is your primary conversion event from first-party data.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">CPF (Cost Per Funded)</span>
+                            <span class="dict-formula">Cost &divide; Funded</span>
+                            <span class="dict-desc">The cost to acquire one funded application. More accurate than CPA as it uses first-party conversion data.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Value (Revenue)</span>
+                            <span class="dict-desc">Total dollar value of funded applications. Calculated from loan amounts and expected lifetime value.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Avg Funded Value</span>
+                            <span class="dict-formula">Value &divide; Funded</span>
+                            <span class="dict-desc">Average revenue per funded application. Helps identify which keywords drive higher-value customers.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">ROAS (Return on Ad Spend)</span>
+                            <span class="dict-formula">(Value &divide; Cost) &minus; 1</span>
+                            <span class="dict-desc">Return on ad spend using first-party revenue data. <span style="color:#dc2626;">Red</span> if below 1.5&times;, <span style="color:#296f5e;">green</span> if above 4.0&times;.</span>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:20px;">Attribution Models</h3>
+                    <div class="dict-grid">
+                        <div class="dict-item">
+                            <span class="dict-term">Last Click</span>
+                            <span class="dict-desc">100% credit to the <strong>last ad clicked</strong> before conversion. Best for understanding which ads close the deal. Default model.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">First Click</span>
+                            <span class="dict-desc">100% credit to the <strong>first ad clicked</strong> in the customer journey. Best for understanding which ads introduce new customers.</span>
+                        </div>
+                        <div class="dict-item">
+                            <span class="dict-term">Linear</span>
+                            <span class="dict-desc"><strong>Equal credit</strong> split across all touchpoints. If 3 ads were clicked, each gets 33% credit. Best for understanding the full journey.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table Card -->
+                <div class="table-card">
+                    <!-- Toolbar -->
+                    <div class="toolbar">
+                        <input type="text" class="filter-input" id="textFilter" placeholder="Filter...">
+                        <div class="match-filter-group" id="matchFilterGroup">
+                            <button class="match-filter-btn match-btn-BROAD active" data-match="BROAD" onclick="toggleMatchFilter('BROAD')">Broad</button>
+                            <button class="match-filter-btn match-btn-PHRASE active" data-match="PHRASE" onclick="toggleMatchFilter('PHRASE')">Phrase</button>
+                            <button class="match-filter-btn match-btn-EXACT active" data-match="EXACT" onclick="toggleMatchFilter('EXACT')">Exact</button>
+                        </div>
+                        <span class="toolbar-count" id="rowCount"></span>
+                        <button class="table-expand-btn" id="tableExpandBtn" onclick="toggleTableExpand()" title="Expand table">
+                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-wrap">
+                        <table>
+                            <thead id="tableHead"></thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // ── State ──
         let clientConfig = null;
         let dataManifest = null;
         let campaignData = [];
         let keywordData = [];
-        let activeFilter = null;
-        let textFilterValue = '';
+        let dailyData = [];
+        let dailyEnrichedData = [];  // Daily keyword-level attribution data
+        let searchTermsData = [];
+        let channelData = [];
+        let deviceData = [];
+        let locationData = [];
+        let enrichedDataByModel = {};  // Store enriched data for each attribution model
+        let currentAttributionModel = 'last_click';  // last_click | first_click | linear
+        let availableMonths = [];
         let currentMonth = null;
+        let currentDateRange = 90;  // month | 30 | 60 | 90 | custom - default to 90 days
+        let customStartDate = null;
+        let customEndDate = null;
+        let currentLevel = 'campaigns';
+        let selectedCampaign = null;
+        let selectedAdGroup = null;
         let sortColumn = 'clicks';
         let sortAscending = false;
+        let textFilterValue = '';
+        let matchFilters = { BROAD: true, PHRASE: true, EXACT: true };
 
+        // ── Chart State ──
+        let spendChartInstance = null;
+        let convChartInstance = null;
+        let spendChartType = 'line';
+        let convChartType = 'line';
+        let selectedMetrics = ['cost'];  // default; max 3
+        let chartView = 'daily';  // daily | dow (day of week)
+
+        // Distinct line colors for up to 3 selected metrics
+        const metricColors = ['#296f5e', '#b8963e', '#3a9a84'];
+        const fundedOverlayColor = '#b8963e';  // Muted gold - split complementary to teal
+
+        // Map KPI keys to chart-friendly metric info
+        const metricConfig = {
+            impressions:  { label: 'Impressions', field: 'impressions', fmt: fmtNum, isCurrency: false },
+            clicks:       { label: 'Clicks',      field: 'clicks',      fmt: fmtNum, isCurrency: false },
+            cost:         { label: 'Ad Spend',    field: 'cost',        fmt: fmtCur, isCurrency: true },
+            conversions:  { label: 'Conversions', field: 'conversions', fmt: fmtDec, isCurrency: false },
+            _ctr:         { label: 'CTR',         field: 'clicks',      fmt: fmtPct, isCurrency: false, derived: (data) => {
+                const impr = data.reduce((s, r) => s + (r.impressions || 0), 0);
+                const cl = data.reduce((s, r) => s + (r.clicks || 0), 0);
+                return impr > 0 ? (cl / impr) * 100 : 0;
+            }},
+            _cpc:         { label: 'Avg. CPC',    field: 'cost',        fmt: fmtCur, isCurrency: true, derived: (data) => {
+                const co = data.reduce((s, r) => s + (r.cost || 0), 0);
+                const cl = data.reduce((s, r) => s + (r.clicks || 0), 0);
+                return cl > 0 ? co / cl : 0;
+            }},
+            _cpa:         { label: 'CPA',         field: 'cost',        fmt: fmtCur, isCurrency: true, derived: (data) => {
+                const co = data.reduce((s, r) => s + (r.cost || 0), 0);
+                const cv = data.reduce((s, r) => s + (r.conversions || 0), 0);
+                return cv > 0 ? co / cv : 0;
+            }},
+            apps:         { label: 'Apps',        field: 'apps',        fmt: fmtNum, isCurrency: false },
+            funded:       { label: 'Funded',      field: 'funded',      fmt: fmtNum, isCurrency: false },
+            value:        { label: 'Revenue',     field: 'value',       fmt: fmtCur, isCurrency: true },
+        };
+
+        // ── Helpers ──
         function displayName(name) {
             const prefix = clientConfig && clientConfig.stripPrefix;
-            if (prefix && name.startsWith(prefix)) {
-                return name.substring(prefix.length);
-            }
-            return name;
+            return (prefix && name.startsWith(prefix)) ? name.substring(prefix.length) : name;
         }
 
+        function escapeHtml(str) {
+            const d = document.createElement('div');
+            d.textContent = str;
+            return d.innerHTML;
+        }
+
+        function formatMonth(m) {
+            const [y, mo] = m.split('-');
+            return new Date(y, parseInt(mo) - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        function fmtNum(n) { return n.toLocaleString(); }
+        function fmtCur(n) { return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+        function fmtPct(n) { return n.toFixed(2) + '%'; }
+        function fmtDec(n) { return n.toLocaleString(undefined, { maximumFractionDigits: 1 }); }
+        function ctr(i, c) { return i > 0 ? (c / i) * 100 : 0; }
+        function cpc(cost, c) { return c > 0 ? cost / c : 0; }
+        function convRate(conv, c) { return c > 0 ? (conv / c) * 100 : 0; }
+        function cpa(cost, conv) { return conv > 0 ? cost / conv : 0; }
+        function roas(value, cost) { return (cost > 0 && value > 0) ? (value / cost) - 1 : null; }
+        function fmtRoas(r) { return r !== null ? r.toFixed(2) + 'x' : '\u2014'; }
+        function roasColor(r) {
+            if (r === null) return '';
+            if (r < 1.5) return 'color:#dc2626;';
+            if (r > 4.0) return 'color:#296f5e;';
+            return '';
+        }
+
+        // ── Init ──
         async function init() {
             try {
-                const params = new URLSearchParams(window.location.search);
-                const clientToken = params.get('client');
+                const token = new URLSearchParams(window.location.search).get('client');
+                if (!token) { showError('Missing client parameter. URL should include ?client=YOUR_TOKEN'); return; }
 
-                if (!clientToken) {
-                    showError('Missing client parameter. URL should include ?client=YOUR_TOKEN');
-                    return;
-                }
+                const clients = await (await fetch('clients.json')).json();
+                clientConfig = clients[token];
+                if (!clientConfig) { showError('Invalid client token.'); return; }
 
-                const clientsResponse = await fetch('clients.json');
-                if (!clientsResponse.ok) throw new Error('Failed to load client configuration');
-                const clients = await clientsResponse.json();
+                dataManifest = await (await fetch('data-manifest.json')).json();
+                const months = (dataManifest[clientConfig.id] || []).sort().reverse();
+                if (!months.length) { showError('No data available for ' + clientConfig.name); return; }
 
-                clientConfig = clients[clientToken];
-                if (!clientConfig) {
-                    showError('Invalid client token. Please check your URL.');
-                    return;
-                }
+                // Store available months and use most recent
+                availableMonths = months;
+                currentMonth = months[0];
 
-                const manifestResponse = await fetch('data-manifest.json');
-                if (!manifestResponse.ok) throw new Error('Failed to load data manifest');
-                dataManifest = await manifestResponse.json();
-
-                const availableMonths = dataManifest[clientConfig.id] || [];
-                if (availableMonths.length === 0) {
-                    showError(`No data available for ${clientConfig.name}.`);
-                    return;
-                }
-
-                availableMonths.sort().reverse();
-                currentMonth = availableMonths[0];
-
-                const monthSelect = document.getElementById('monthSelect');
-                availableMonths.forEach(month => {
-                    const option = document.createElement('option');
-                    option.value = month;
-                    option.textContent = formatMonth(month);
-                    monthSelect.appendChild(option);
+                // Populate month selector
+                const monthSel = document.getElementById('monthSelect');
+                months.forEach(m => {
+                    const o = document.createElement('option');
+                    o.value = m;
+                    o.textContent = formatMonth(m);
+                    monthSel.appendChild(o);
                 });
-                monthSelect.value = currentMonth;
-                monthSelect.addEventListener('change', (e) => {
-                    currentMonth = e.target.value;
-                    loadData();
-                });
+                monthSel.value = currentMonth;
 
-                document.getElementById('dashboardTitle').textContent = `${clientConfig.name}`;
-                document.getElementById('textFilter').addEventListener('input', (e) => {
+                document.getElementById('clientName').textContent = clientConfig.name;
+                document.getElementById('textFilter').addEventListener('input', e => {
                     textFilterValue = e.target.value;
-                    renderDashboard();
+                    renderTable();
                 });
 
                 await loadData();
-            } catch (error) {
-                console.error('Initialization error:', error);
-                showError('Failed to initialize dashboard: ' + error.message);
+            } catch (e) {
+                console.error(e);
+                showError('Failed to initialize: ' + e.message);
             }
         }
 
-        function formatMonth(monthStr) {
-            const [year, month] = monthStr.split('-');
-            const date = new Date(year, parseInt(month) - 1);
-            return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-        }
-
-        function showError(message) {
+        function showError(msg) {
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('active');
             document.getElementById('error').classList.remove('hidden');
-            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').textContent = msg;
         }
 
         function showDashboard() {
@@ -627,288 +1832,1786 @@
             document.getElementById('dashboard').classList.add('active');
         }
 
+        // ── Data Loading ──
         async function loadData() {
             try {
-                // Load campaign data
-                const campUrl = `data/${clientConfig.id}/campaigns/${currentMonth}.csv`;
-                const campResponse = await fetch(campUrl);
-                if (!campResponse.ok) throw new Error(`Failed to load ${campUrl}`);
-                const campText = await campResponse.text();
+                const base = `data/${clientConfig.id}`;
+                const modelSuffix = currentAttributionModel === 'last_click' ? '' : `_${currentAttributionModel}`;
+                const [campText, kwText, dailyText, enrichedText, dailyEnrichedText, searchTermsText, channelText, deviceText, locationText] = await Promise.all([
+                    fetch(`${base}/campaigns/${currentMonth}.csv`).then(r => { if (!r.ok) throw new Error('No campaign data'); return r.text(); }),
+                    fetch(`${base}/keywords/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/daily/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/enriched/${currentMonth}${modelSuffix}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/enriched/daily/${currentMonth}${modelSuffix}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/search_terms/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/channels/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/devices/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/locations/${currentMonth}.csv`).then(r => r.ok ? r.text() : '')
+                ]);
 
-                Papa.parse(campText, {
-                    header: true,
-                    skipEmptyLines: true,
-                    complete: (results) => {
-                        campaignData = results.data.map(row => ({
-                            campaign_name: (row.campaign_name || '').trim(),
-                            impressions: parseInt(row.impressions) || 0,
-                            clicks: parseInt(row.clicks) || 0,
-                            cost: parseFloat(row.cost) || 0,
-                            conversions: parseFloat(row.conversions) || 0
-                        })).filter(row => row.impressions > 0 || row.clicks > 0);
-                        campaignData.sort((a, b) => b.clicks - a.clicks);
-                    }
-                });
-
-                // Load keyword data
-                const kwUrl = `data/${clientConfig.id}/keywords/${currentMonth}.csv`;
-                const kwResponse = await fetch(kwUrl);
-                if (kwResponse.ok) {
-                    const kwText = await kwResponse.text();
-                    Papa.parse(kwText, {
-                        header: true,
-                        skipEmptyLines: true,
-                        complete: (results) => {
-                            keywordData = results.data.map(row => ({
-                                campaign_name: (row.campaign_name || '').trim(),
-                                ad_group_name: (row.ad_group_name || '').trim(),
-                                keyword: (row.keyword || '').trim(),
-                                match_type: (row.match_type || '').trim(),
-                                impressions: parseInt(row.impressions) || 0,
-                                clicks: parseInt(row.clicks) || 0,
-                                cost: parseFloat(row.cost) || 0,
-                                conversions: parseFloat(row.conversions) || 0
-                            })).filter(row => row.impressions > 0 || row.clicks > 0);
-                            keywordData.sort((a, b) => b.clicks - a.clicks);
-                        }
+                // Parse enriched Athena data (first-party: apps, funded, value, etc.)
+                const enrichedMap = {};
+                if (enrichedText) {
+                    Papa.parse(enrichedText, { header: true, skipEmptyLines: true }).data.forEach(r => {
+                        enrichedMap[(r.campaign_id || '').trim()] = {
+                            apps: parseFloat(r.apps) || 0,
+                            approved: parseFloat(r.approved) || 0,
+                            funded: parseFloat(r.funded) || 0,
+                            production: parseFloat(r.production) || 0,
+                            value: parseFloat(r.value) || 0,
+                            cpf: parseFloat(r.cpf) || 0,
+                            avg_funded_value: parseFloat(r.avg_funded_value) || 0
+                        };
                     });
-                } else {
-                    keywordData = [];
                 }
 
-                document.getElementById('dashboardMeta').textContent =
-                    `Google Ads Performance \u2014 ${formatMonth(currentMonth)}`;
+                // Parse daily keyword-level enriched data (by click date)
+                dailyEnrichedData = dailyEnrichedText ? Papa.parse(dailyEnrichedText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        date: (r.date || '').trim(),
+                        campaign_id: (r.campaign_id || '').trim(),
+                        campaign_name: (r.campaign_name || '').trim(),
+                        ad_group_id: (r.ad_group_id || '').trim(),
+                        ad_group_name: (r.ad_group_name || '').trim(),
+                        keyword: (r.keyword || '').trim(),
+                        match_type: (r.match_type || '').trim(),
+                        apps: parseFloat(r.apps) || 0,
+                        approved: parseFloat(r.approved) || 0,
+                        funded: parseFloat(r.funded) || 0,
+                        production: parseFloat(r.production) || 0,
+                        value: parseFloat(r.value) || 0
+                    }))
+                    .filter(r => r.date) : [];
+
+                // Build keyword-level enriched totals from daily data
+                const keywordEnrichedMap = {};
+                dailyEnrichedData.forEach(r => {
+                    const key = `${r.campaign_id}|${r.ad_group_id}|${r.keyword}`;
+                    if (!keywordEnrichedMap[key]) {
+                        keywordEnrichedMap[key] = { apps: 0, approved: 0, funded: 0, production: 0, value: 0 };
+                    }
+                    keywordEnrichedMap[key].apps += r.apps;
+                    keywordEnrichedMap[key].approved += r.approved;
+                    keywordEnrichedMap[key].funded += r.funded;
+                    keywordEnrichedMap[key].production += r.production;
+                    keywordEnrichedMap[key].value += r.value;
+                });
+
+                campaignData = Papa.parse(campText, { header: true, skipEmptyLines: true }).data
+                    .map(r => {
+                        const cid = (r.campaign_id || '').trim();
+                        const enriched = enrichedMap[cid] || {};
+                        return {
+                            campaign_id: cid,
+                            campaign_name: (r.campaign_name || '').trim(),
+                            impressions: parseInt(r.impressions) || 0,
+                            clicks: parseInt(r.clicks) || 0,
+                            cost: parseFloat(r.cost) || 0,
+                            conversions: parseFloat(r.conversions) || 0,
+                            // First-party data from Athena (merged by campaign_id)
+                            apps: enriched.apps || 0,
+                            approved: enriched.approved || 0,
+                            funded: enriched.funded || 0,
+                            production: enriched.production || 0,
+                            value: enriched.value || 0,
+                            cpf: enriched.cpf || 0,
+                            avg_funded_value: enriched.avg_funded_value || 0
+                        };
+                    })
+                    .filter(r => r.impressions > 0 || r.clicks > 0)
+                    .sort((a, b) => b.clicks - a.clicks);
+
+                // Keywords with actual keyword-level attribution data (from daily enriched)
+                keywordData = kwText ? Papa.parse(kwText, { header: true, skipEmptyLines: true }).data
+                    .map(r => {
+                        const cid = (r.campaign_id || '').trim();
+                        const agid = (r.ad_group_id || '').trim();
+                        const kw = (r.keyword || '').trim();
+                        const key = `${cid}|${agid}|${kw}`;
+                        // Use actual keyword-level attribution data if available
+                        const kwEnriched = keywordEnrichedMap[key] || {};
+                        return {
+                            campaign_id: cid,
+                            campaign_name: (r.campaign_name || '').trim(),
+                            ad_group_id: agid,
+                            ad_group_name: (r.ad_group_name || '').trim(),
+                            keyword: kw,
+                            match_type: (r.match_type || '').trim(),
+                            impressions: parseInt(r.impressions) || 0,
+                            clicks: parseInt(r.clicks) || 0,
+                            cost: parseFloat(r.cost) || 0,
+                            conversions: parseFloat(r.conversions) || 0,
+                            // Actual keyword-level attribution (by click date)
+                            apps: Math.round((kwEnriched.apps || 0) * 10) / 10,
+                            approved: Math.round((kwEnriched.approved || 0) * 10) / 10,
+                            funded: Math.round((kwEnriched.funded || 0) * 10) / 10,
+                            production: Math.round((kwEnriched.production || 0) * 100) / 100,
+                            value: Math.round((kwEnriched.value || 0) * 100) / 100
+                        };
+                    })
+                    .filter(r => r.impressions > 0 || r.clicks > 0)
+                    .sort((a, b) => b.clicks - a.clicks) : [];
+
+                // Load daily data from current month
+                let allDailyData = dailyText ? Papa.parse(dailyText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        date: (r.date || '').trim(),
+                        campaign_id: (r.campaign_id || '').trim(),
+                        campaign_name: (r.campaign_name || '').trim(),
+                        impressions: parseInt(r.impressions) || 0,
+                        clicks: parseInt(r.clicks) || 0,
+                        cost: parseFloat(r.cost) || 0,
+                        conversions: parseFloat(r.conversions) || 0
+                    }))
+                    .filter(r => r.date) : [];
+
+                // Load additional months of daily data for 90-day view
+                const monthsToLoad = availableMonths.slice(1, 4); // Load up to 3 more months
+                for (const month of monthsToLoad) {
+                    try {
+                        const extraDaily = await fetch(`${base}/daily/${month}.csv`).then(r => r.ok ? r.text() : '');
+                        if (extraDaily) {
+                            const parsed = Papa.parse(extraDaily, { header: true, skipEmptyLines: true }).data
+                                .map(r => ({
+                                    date: (r.date || '').trim(),
+                                    campaign_id: (r.campaign_id || '').trim(),
+                                    campaign_name: (r.campaign_name || '').trim(),
+                                    impressions: parseInt(r.impressions) || 0,
+                                    clicks: parseInt(r.clicks) || 0,
+                                    cost: parseFloat(r.cost) || 0,
+                                    conversions: parseFloat(r.conversions) || 0
+                                }))
+                                .filter(r => r.date);
+                            allDailyData = allDailyData.concat(parsed);
+                        }
+                        // Also load daily enriched data for this month
+                        const extraEnriched = await fetch(`${base}/enriched/daily/${month}${modelSuffix}.csv`).then(r => r.ok ? r.text() : '');
+                        if (extraEnriched) {
+                            const parsed = Papa.parse(extraEnriched, { header: true, skipEmptyLines: true }).data
+                                .map(r => ({
+                                    date: (r.date || '').trim(),
+                                    campaign_id: (r.campaign_id || '').trim(),
+                                    campaign_name: (r.campaign_name || '').trim(),
+                                    ad_group_id: (r.ad_group_id || '').trim(),
+                                    ad_group_name: (r.ad_group_name || '').trim(),
+                                    keyword: (r.keyword || '').trim(),
+                                    match_type: (r.match_type || '').trim(),
+                                    apps: parseFloat(r.apps) || 0,
+                                    approved: parseFloat(r.approved) || 0,
+                                    funded: parseFloat(r.funded) || 0,
+                                    production: parseFloat(r.production) || 0,
+                                    value: parseFloat(r.value) || 0
+                                }))
+                                .filter(r => r.date);
+                            dailyEnrichedData = dailyEnrichedData.concat(parsed);
+                        }
+                    } catch (e) { /* ignore missing months */ }
+                }
+                dailyData = allDailyData;
+
+                // Search terms (what people actually searched for)
+                searchTermsData = searchTermsText ? Papa.parse(searchTermsText, { header: true, skipEmptyLines: true }).data
+                    .map(r => {
+                        const cid = (r.campaign_id || '').trim();
+                        const enriched = enrichedMap[cid] || {};
+                        const campCost = campaignData.find(c => c.campaign_id === cid)?.cost || 0;
+                        const termCost = parseFloat(r.cost) || 0;
+                        const costShare = campCost > 0 ? termCost / campCost : 0;
+                        return {
+                            search_term: (r.search_term || '').trim(),
+                            keyword: (r.keyword || '').trim(),
+                            match_type: (r.match_type || '').trim(),
+                            campaign_id: cid,
+                            campaign_name: (r.campaign_name || '').trim(),
+                            ad_group_name: (r.ad_group_name || '').trim(),
+                            impressions: parseInt(r.impressions) || 0,
+                            clicks: parseInt(r.clicks) || 0,
+                            cost: termCost,
+                            conversions: parseFloat(r.conversions) || 0,
+                            funded: Math.round((enriched.funded || 0) * costShare * 10) / 10,
+                            value: Math.round((enriched.value || 0) * costShare * 100) / 100
+                        };
+                    })
+                    .filter(r => r.impressions > 0 || r.clicks > 0)
+                    .sort((a, b) => b.clicks - a.clicks) : [];
+
+                // Channel/network data
+                channelData = channelText ? Papa.parse(channelText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        network: (r.network || r.ad_network_type || '').trim(),
+                        impressions: parseInt(r.impressions) || 0,
+                        clicks: parseInt(r.clicks) || 0,
+                        cost: parseFloat(r.cost) || 0,
+                        conversions: parseFloat(r.conversions) || 0
+                    }))
+                    .filter(r => r.impressions > 0 || r.clicks > 0)
+                    .sort((a, b) => b.cost - a.cost) : [];
+
+                // Device data
+                deviceData = deviceText ? Papa.parse(deviceText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        device: (r.device || r.device_type || '').trim(),
+                        impressions: parseInt(r.impressions) || 0,
+                        clicks: parseInt(r.clicks) || 0,
+                        cost: parseFloat(r.cost) || 0,
+                        conversions: parseFloat(r.conversions) || 0
+                    }))
+                    .filter(r => r.impressions > 0 || r.clicks > 0)
+                    .sort((a, b) => b.cost - a.cost) : [];
+
+                // Location data
+                locationData = locationText ? Papa.parse(locationText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        location: (r.location || r.geo_target_constant || '').trim(),
+                        impressions: parseInt(r.impressions) || 0,
+                        clicks: parseInt(r.clicks) || 0,
+                        cost: parseFloat(r.cost) || 0,
+                        conversions: parseFloat(r.conversions) || 0
+                    }))
+                    .filter(r => r.impressions > 0 || r.clicks > 0)
+                    .sort((a, b) => b.cost - a.cost) : [];
 
                 showDashboard();
-                renderDashboard();
-            } catch (error) {
-                console.error('Data loading error:', error);
-                showError('Failed to load data: ' + error.message);
+                render();
+            } catch (e) {
+                console.error(e);
+                showError('Failed to load data: ' + e.message);
             }
         }
 
-        function getFilteredCampaigns() {
-            let data = campaignData;
-            if (activeFilter) {
-                data = data.filter(row => row.campaign_name === activeFilter);
-            }
-            if (textFilterValue) {
-                const term = textFilterValue.toLowerCase();
-                data = data.filter(row => row.campaign_name.toLowerCase().includes(term));
-            }
-            return data;
+        // ── Derived Data ──
+        function getAdGroupData() {
+            let src = keywordData;
+            if (selectedCampaign) src = src.filter(k => k.campaign_name === selectedCampaign.campaign_name);
+            const map = {};
+            src.forEach(k => {
+                const key = k.campaign_name + '|||' + k.ad_group_name;
+                if (!map[key]) {
+                    map[key] = { campaign_id: k.campaign_id, campaign_name: k.campaign_name,
+                        ad_group_id: k.ad_group_id, ad_group_name: k.ad_group_name,
+                        impressions: 0, clicks: 0, cost: 0, conversions: 0 };
+                }
+                const m = map[key];
+                m.impressions += k.impressions; m.clicks += k.clicks;
+                m.cost += k.cost; m.conversions += k.conversions;
+            });
+            return Object.values(map);
         }
 
-        function getFilteredKeywords() {
-            let data = keywordData;
-            if (activeFilter) {
-                data = data.filter(row => row.campaign_name === activeFilter);
-            }
-            if (textFilterValue) {
-                const term = textFilterValue.toLowerCase();
-                data = data.filter(row =>
-                    row.keyword.toLowerCase().includes(term) ||
-                    row.campaign_name.toLowerCase().includes(term) ||
-                    row.ad_group_name.toLowerCase().includes(term)
-                );
-            }
-            return data;
+        function getScopedKeywords() {
+            let d = keywordData;
+            if (selectedCampaign) d = d.filter(k => k.campaign_name === selectedCampaign.campaign_name);
+            if (selectedAdGroup) d = d.filter(k => k.ad_group_name === selectedAdGroup.ad_group_name);
+            return d;
         }
 
-        function renderDashboard() {
+        function getKPIData() {
+            if (currentLevel === 'keywords' && selectedAdGroup) return getScopedKeywords();
+            if (selectedCampaign) return campaignData.filter(c => c.campaign_name === selectedCampaign.campaign_name);
+            return campaignData;
+        }
+
+        // ── Navigation ──
+        function navigateToLevel(level) {
+            if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
+            else if (level === 'adgroups') { selectedAdGroup = null; }
+            else if (['searchterms', 'channels', 'whenwhere'].includes(level)) {
+                selectedCampaign = null; selectedAdGroup = null;
+            }
+            currentLevel = level;
+            sortColumn = level === 'channels' ? 'cost' : (level === 'whenwhere' ? 'cost' : 'clicks');
+            sortAscending = false;
+            textFilterValue = ''; document.getElementById('textFilter').value = '';
+            render();
+        }
+
+        function drillIntoCampaign(name, id) {
+            selectedCampaign = { campaign_name: name, campaign_id: id };
+            selectedAdGroup = null;
+            currentLevel = 'adgroups';
+            sortColumn = 'clicks'; sortAscending = false;
+            textFilterValue = ''; document.getElementById('textFilter').value = '';
+            render();
+        }
+
+        function drillIntoAdGroup(name, id) {
+            selectedAdGroup = { ad_group_name: name, ad_group_id: id };
+            currentLevel = 'keywords';
+            sortColumn = 'clicks'; sortAscending = false;
+            textFilterValue = ''; document.getElementById('textFilter').value = '';
+            render();
+        }
+
+        // ── Render ──
+        function render() {
+            updateSidebar();
+            updateBreadcrumb();
+            updateViewTitle();
             updateKPIs();
-            renderCampaignChart();
+            updateFilterPlaceholder();
+            renderTable();
+            renderAllCharts();
+        }
+
+        function updateSidebar() {
+            document.querySelectorAll('.sidebar-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.level === currentLevel);
+            });
+            updateSidebarHierarchy();
+        }
+
+        // ── Attribution Model ──
+        async function setAttributionModel(model) {
+            currentAttributionModel = model;
+
+            // Update button states
+            document.querySelectorAll('.attribution-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.model === model);
+            });
+
+            // Reload all data with the new attribution model
+            // This loads daily keyword-level attribution data for the selected model
+            await loadData();
+        }
+
+        // ── Month Selector ──
+        function changeMonth(month) {
+            currentMonth = month;
+            selectedCampaign = null;
+            selectedAdGroup = null;
+            currentLevel = 'campaigns';
+            loadData();
+        }
+
+        // ── Chart View Selector ──
+        function setChartView(view) {
+            chartView = view;
+            renderAllCharts();
+        }
+
+        // Day of week names (Mon-Sun order)
+        const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        // Map JS getDay() (0=Sun) to Mon-Sun index
+        const dowMap = [6, 0, 1, 2, 3, 4, 5]; // Sun=6, Mon=0, Tue=1, etc.
+
+        // Get data aggregated by day of week
+        function getDailyChartDataByDOW(metric) {
+            // For attribution metrics, use actual daily enriched data
+            const fundedMetrics = ['funded', 'apps', 'approved', 'value', 'production'];
+            if (fundedMetrics.includes(metric) && dailyEnrichedData.length > 0) {
+                let src = filterByDateRange(dailyEnrichedData);
+                if (selectedCampaign) {
+                    src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+                }
+
+                // Aggregate by day of week from actual daily data
+                const byDow = [0, 0, 0, 0, 0, 0, 0];
+                const countByDow = [0, 0, 0, 0, 0, 0, 0];
+                src.forEach(r => {
+                    if (!r.date) return;
+                    const parts = r.date.split('-');
+                    const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    const jsDow = dt.getDay();
+                    const idx = dowMap[jsDow];
+                    byDow[idx] += r[metric] || 0;
+                    countByDow[idx]++;
+                });
+                const avgValues = byDow.map((v, i) => countByDow[i] > 0 ? v / countByDow[i] : 0);
+                return {
+                    labels: dayNames,
+                    values: avgValues,
+                    totals: byDow,
+                    counts: countByDow,
+                    fullDates: dayNames
+                };
+            }
+
+            // Standard metrics from daily campaign data
+            let src = filterByDateRange(dailyData);
+            if (selectedCampaign) {
+                src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+            }
+
+            const byDow = [0, 0, 0, 0, 0, 0, 0];
+            const countByDow = [0, 0, 0, 0, 0, 0, 0];
+            src.forEach(r => {
+                if (!r.date) return;
+                const parts = r.date.split('-');
+                const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                const jsDow = dt.getDay();
+                const idx = dowMap[jsDow];
+                byDow[idx] += r[metric] || 0;
+                countByDow[idx]++;
+            });
+            // Return averages per day
+            const avgValues = byDow.map((v, i) => countByDow[i] > 0 ? v / countByDow[i] : 0);
+            return {
+                labels: dayNames,
+                values: avgValues,
+                totals: byDow,
+                counts: countByDow,
+                fullDates: dayNames
+            };
+        }
+
+        function getDailyDerivedDataByDOW(metricKey) {
+            let src = filterByDateRange(dailyData);
+            if (selectedCampaign) {
+                src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+            }
+            // Aggregate raw metrics by day of week first (Mon-Sun)
+            const byDow = Array(7).fill(null).map(() => ({ impressions: 0, clicks: 0, cost: 0, conversions: 0, count: 0 }));
+            src.forEach(r => {
+                if (!r.date) return;
+                const parts = r.date.split('-');
+                const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+                const jsDow = dt.getDay();
+                const idx = dowMap[jsDow];
+                byDow[idx].impressions += r.impressions || 0;
+                byDow[idx].clicks += r.clicks || 0;
+                byDow[idx].cost += r.cost || 0;
+                byDow[idx].conversions += r.conversions || 0;
+                byDow[idx].count++;
+            });
+            // Calculate derived metric averages
+            const values = byDow.map(v => {
+                if (v.count === 0) return 0;
+                if (metricKey === '_ctr') return v.impressions > 0 ? (v.clicks / v.impressions) * 100 : 0;
+                if (metricKey === '_cpc') return v.clicks > 0 ? v.cost / v.clicks : 0;
+                if (metricKey === '_cpa') return v.conversions > 0 ? v.cost / v.conversions : 0;
+                return 0;
+            });
+            return {
+                labels: dayNames,
+                values: values,
+                fullDates: dayNames
+            };
+        }
+
+        // ── Date Range Selector ──
+        function setDateRange(range) {
+            // Convert string to number if needed
+            if (range !== 'month') range = parseInt(range);
+            currentDateRange = range;
+
+            // Calculate date window for filtering
+            const end = new Date();
+            const start = new Date();
+            if (range !== 'month') {
+                start.setDate(start.getDate() - range);
+            } else {
+                // For monthly, use current month
+                start.setDate(1);
+            }
+
+            customStartDate = start.toISOString().split('T')[0];
+            customEndDate = end.toISOString().split('T')[0];
+
+            console.log(`Date range: ${customStartDate} to ${customEndDate}`);
+            render();
+        }
+
+        // Custom date range (for future use)
+        function applyCustomDateRange() {
+            // Placeholder for custom date picker implementation
+            render();
+        }
+
+        function updateSidebarHierarchy() {
+            const campSub = document.getElementById('sidebarCampaignSub');
+            const agSub = document.getElementById('sidebarAdGroupSub');
+            const selPanel = document.getElementById('currentSelectionPanel');
+            const selContent = document.getElementById('currentSelectionContent');
+
+            // Hide old inline sub-items
+            campSub.classList.add('hidden');
+            agSub.classList.add('hidden');
+
+            // Update selection panel
+            if (selectedCampaign || selectedAdGroup) {
+                let html = '';
+                if (selectedCampaign) {
+                    html += `<div class="current-selection-item" onclick="clearAdGroup()" title="Click to go back to campaign level">
+                        <div class="sel-info">
+                            <span class="sel-type">Campaign</span>
+                            <span class="sel-name">${escapeHtml(displayName(selectedCampaign.campaign_name))}</span>
+                        </div>
+                        <span class="sel-remove" onclick="event.stopPropagation(); clearCampaign();" title="Clear selection">×</span>
+                    </div>`;
+                }
+                if (selectedAdGroup) {
+                    html += `<div class="current-selection-item" title="Current ad group">
+                        <div class="sel-info">
+                            <span class="sel-type">Ad Group</span>
+                            <span class="sel-name">${escapeHtml(selectedAdGroup.ad_group_name)}</span>
+                        </div>
+                        <span class="sel-remove" onclick="clearAdGroup();" title="Go back to campaign">×</span>
+                    </div>`;
+                }
+                selContent.innerHTML = html;
+                selPanel.classList.remove('hidden');
+            } else {
+                selContent.innerHTML = '';
+                selPanel.classList.add('hidden');
+            }
+        }
+
+        // Back navigation functions
+        function clearCampaign() {
+            selectedCampaign = null;
+            selectedAdGroup = null;
+            currentLevel = 'campaigns';
+            render();
+        }
+
+        function clearAdGroup() {
+            selectedAdGroup = null;
+            currentLevel = 'adgroups';
+            render();
+        }
+
+        function updateBreadcrumb() {
+            const bar = document.getElementById('breadcrumbBar');
+            let h = '';
+            if (currentLevel === 'campaigns') {
+                h = '<span class="breadcrumb-current">All campaigns</span>';
+            } else if (currentLevel === 'adgroups') {
+                h = '<a onclick="navigateToLevel(\'campaigns\')">All campaigns</a>';
+                h += '<span class="breadcrumb-sep">&#8250;</span>';
+                h += selectedCampaign
+                    ? `<span class="breadcrumb-current">${escapeHtml(displayName(selectedCampaign.campaign_name))}</span>`
+                    : '<span class="breadcrumb-current">All ad groups</span>';
+            } else if (currentLevel === 'keywords') {
+                h = '<a onclick="navigateToLevel(\'campaigns\')">All campaigns</a>';
+                h += '<span class="breadcrumb-sep">&#8250;</span>';
+                if (selectedCampaign) {
+                    h += `<a onclick="drillIntoCampaign('${selectedCampaign.campaign_name.replace(/'/g, "\\'")}','${selectedCampaign.campaign_id}')">${escapeHtml(displayName(selectedCampaign.campaign_name))}</a>`;
+                    h += '<span class="breadcrumb-sep">&#8250;</span>';
+                }
+                h += selectedAdGroup
+                    ? `<span class="breadcrumb-current">${escapeHtml(selectedAdGroup.ad_group_name)}</span>`
+                    : '<span class="breadcrumb-current">All keywords</span>';
+            } else if (currentLevel === 'searchterms') {
+                h = '<span class="breadcrumb-current">Search terms</span>';
+            } else if (currentLevel === 'channels') {
+                h = '<span class="breadcrumb-current">Channel performance</span>';
+            } else if (currentLevel === 'whenwhere') {
+                h = '<span class="breadcrumb-current">When & Where</span>';
+            }
+            bar.innerHTML = h;
+        }
+
+        function updateViewTitle() {
+            const titles = {
+                campaigns: 'Campaigns',
+                adgroups: 'Ad groups',
+                keywords: 'Keywords',
+                searchterms: 'Search terms',
+                channels: 'Channel Performance',
+                whenwhere: 'When & Where'
+            };
+            document.getElementById('viewTitle').textContent = titles[currentLevel] || 'Dashboard';
+        }
+
+        function updateFilterPlaceholder() {
+            const ph = {
+                campaigns: 'Filter campaigns...',
+                adgroups: 'Filter ad groups...',
+                keywords: 'Filter keywords...',
+                searchterms: 'Filter search terms...',
+                channels: 'Filter channels...',
+                whenwhere: 'Filter...'
+            };
+            document.getElementById('textFilter').placeholder = ph[currentLevel] || 'Filter...';
+            // Show match type filters only on keywords or search terms view
+            const mfg = document.getElementById('matchFilterGroup');
+            mfg.classList.toggle('visible', currentLevel === 'keywords' || currentLevel === 'searchterms');
+        }
+
+        function toggleMatchFilter(type) {
+            matchFilters[type] = !matchFilters[type];
+            const btn = document.querySelector('.match-filter-btn[data-match="' + type + '"]');
+            if (btn) btn.classList.toggle('active', matchFilters[type]);
             renderTable();
         }
 
         function updateKPIs() {
-            const data = getFilteredCampaigns();
-            const totalImpressions = data.reduce((sum, row) => sum + row.impressions, 0);
-            const totalClicks = data.reduce((sum, row) => sum + row.clicks, 0);
-            const totalCost = data.reduce((sum, row) => sum + row.cost, 0);
-            const totalConversions = data.reduce((sum, row) => sum + row.conversions, 0);
+            const d = getKPIData();
+            const ti = d.reduce((s, r) => s + r.impressions, 0);
+            const tc = d.reduce((s, r) => s + r.clicks, 0);
+            const tco = d.reduce((s, r) => s + r.cost, 0);
+            const tv = d.reduce((s, r) => s + r.conversions, 0);
+            const tval = d.reduce((s, r) => s + (r.value || 0), 0);
+            const tfunded = d.reduce((s, r) => s + (r.funded || 0), 0);
 
-            document.getElementById('kpiImpressions').textContent = totalImpressions.toLocaleString();
-            document.getElementById('kpiClicks').textContent = totalClicks.toLocaleString();
-            document.getElementById('kpiSpend').textContent = '$' + totalCost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            document.getElementById('kpiConversions').textContent = totalConversions.toLocaleString(undefined, {maximumFractionDigits: 1});
+            document.getElementById('kpiImpressions').textContent = fmtNum(ti);
+            document.getElementById('kpiClicks').textContent = fmtNum(tc);
+            document.getElementById('kpiCTR').textContent = fmtPct(ctr(ti, tc));
+            document.getElementById('kpiCost').textContent = fmtCur(tco);
+            document.getElementById('kpiConversions').textContent = fmtDec(tv);
+            document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCur(cpa(tco, tv)) : '\u2014';
 
-            const cpa = totalConversions > 0 ? totalCost / totalConversions : 0;
-            document.getElementById('kpiCPA').textContent = cpa > 0
-                ? `CPA: $${cpa.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
-                : '';
-        }
+            // Show funded-related chips and attribution selector only when first-party data exists
+            const hasFunded = campaignData.some(c => c.funded > 0);
+            document.getElementById('kpiChipFunded').style.display = hasFunded ? '' : 'none';
+            document.getElementById('kpiChipCPF').style.display = hasFunded ? '' : 'none';
+            document.getElementById('kpiChipAFV').style.display = hasFunded ? '' : 'none';
+            document.getElementById('attributionSelector').classList.toggle('visible', hasFunded);
 
-        function renderCampaignChart() {
-            const data = getFilteredCampaigns().slice(0, 20);
-            const campaigns = data.map(d => d.campaign_name);
-            const clicks = data.map(d => d.clicks);
-
-            const displayCampaigns = campaigns.map(c => displayName(c));
-
-            const barHeight = 44;
-            const chartHeight = campaigns.length * barHeight + 80;
-            const marginTop = 10;
-            const marginBottom = 40;
-            const plotAreaHeight = chartHeight - marginTop - marginBottom;
-            const bandHeight = campaigns.length > 0 ? plotAreaHeight / campaigns.length : 0;
-
-            const labelsContainer = document.getElementById('campaignLabels');
-            labelsContainer.innerHTML = '';
-            labelsContainer.style.paddingTop = marginTop + 'px';
-
-            campaigns.forEach((name, i) => {
-                const label = displayCampaigns[i];
-                const row = document.createElement('div');
-                row.className = 'campaign-label-row';
-                row.style.height = bandHeight + 'px';
-                row.innerHTML = `<span class="campaign-label" title="${name}">${label}</span>`;
-                row.onclick = () => setFilter(name);
-                labelsContainer.appendChild(row);
-            });
-
-            const colors = campaigns.map((_, i) => {
-                const ratio = i / (campaigns.length - 1 || 1);
-                const r1 = 109, g1 = 176, b1 = 159;
-                const r2 = 41, g2 = 111, b2 = 94;
-                const r = Math.round(r1 + (r2 - r1) * ratio);
-                const g = Math.round(g1 + (g2 - g1) * ratio);
-                const b = Math.round(b1 + (b2 - b1) * ratio);
-                return `rgb(${r}, ${g}, ${b})`;
-            });
-
-            const trace = {
-                type: 'bar',
-                x: clicks,
-                y: displayCampaigns,
-                customdata: campaigns,
-                orientation: 'h',
-                marker: {
-                    color: colors,
-                    line: { color: '#296f5e', width: 1 }
-                },
-                text: clicks.map(c => c.toLocaleString()),
-                textposition: 'outside',
-                textfont: {
-                    size: 12,
-                    color: '#1a1a2e',
-                    family: 'Inter, sans-serif',
-                    weight: 600
-                },
-                hovertemplate: '<b>%{y}</b><br>Clicks: %{x:,}<extra></extra>'
-            };
-
-            const layout = {
-                autosize: true,
-                margin: { l: 10, r: 40, t: 10, b: 40 },
-                height: chartHeight,
-                font: {
-                    family: 'Inter, sans-serif',
-                    size: 13,
-                    color: '#1a1a2e'
-                },
-                xaxis: {
-                    title: {
-                        text: 'Total Clicks',
-                        font: { size: 14, weight: 600, color: '#296f5e' }
-                    },
-                    gridcolor: '#e5e7eb',
-                    showgrid: true,
-                    zeroline: false,
-                    automargin: true
-                },
-                yaxis: {
-                    showticklabels: false,
-                    showgrid: false,
-                    autorange: 'reversed'
-                },
-                paper_bgcolor: 'white',
-                plot_bgcolor: 'white',
-                hovermode: 'closest',
-                bargap: 0.3
-            };
-
-            Plotly.newPlot('campaignChart', [trace], layout, { displayModeBar: false, responsive: true });
-
-            document.getElementById('campaignChart').on('plotly_click', function(data) {
-                setFilter(data.points[0].customdata);
-            });
+            if (hasFunded) {
+                document.getElementById('kpiFunded').textContent = fmtNum(tfunded);
+                document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCur(tco / tfunded) : '\u2014';
+                document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCur(tval / tfunded) : '\u2014';
+            }
         }
 
         function renderTable() {
-            let filteredData = getFilteredKeywords();
+            if (currentLevel === 'campaigns') renderCampaigns();
+            else if (currentLevel === 'adgroups') renderAdGroups();
+            else if (currentLevel === 'keywords') renderKeywords();
+            else if (currentLevel === 'searchterms') renderSearchTerms();
+            else if (currentLevel === 'channels') renderChannels();
+            else if (currentLevel === 'whenwhere') renderWhenWhere();
+        }
 
-            // Sort
-            filteredData.sort((a, b) => {
-                let aVal = a[sortColumn];
-                let bVal = b[sortColumn];
-                if (typeof aVal === 'string') {
-                    aVal = aVal.toLowerCase();
-                    bVal = bVal.toLowerCase();
-                    return sortAscending ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-                }
-                return sortAscending ? aVal - bVal : bVal - aVal;
-            });
+        // ── Campaigns Table ──
+        function renderCampaigns() {
+            setHead([
+                ['campaign_name', 'Campaign', false],
+                ['campaign_id', 'Campaign ID', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conv.', true],
+                ['funded', 'Funded', true],
+                ['_cpf', 'CPF', true],
+                ['_avg_funded_value', 'Avg Funded Val', true]
+            ]);
 
-            document.getElementById('keywordCount').textContent =
-                `(${filteredData.length} ${filteredData.length === 1 ? 'keyword' : 'keywords'})`;
+            let data = campaignData.map(r => ({
+                ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
+                _cpf: r.funded > 0 ? r.cost / r.funded : null,
+                _avg_funded_value: r.funded > 0 ? r.value / r.funded : null
+            }));
 
-            // Update sort arrows
-            document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '');
-            const arrowEl = document.getElementById(`sort-${sortColumn}`);
-            if (arrowEl) arrowEl.textContent = sortAscending ? '\u25B2' : '\u25BC';
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.campaign_name.toLowerCase().includes(t) || r.campaign_id.includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'campaign');
 
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
-
-            filteredData.forEach(row => {
+            data.forEach(r => {
                 const tr = document.createElement('tr');
+                tr.className = 'clickable';
+                tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
                 tr.innerHTML = `
-                    <td>${escapeHtml(row.keyword)}</td>
-                    <td><span class="match-badge match-${row.match_type}">${row.match_type}</span></td>
-                    <td>${escapeHtml(displayName(row.campaign_name))}</td>
-                    <td>${escapeHtml(row.ad_group_name)}</td>
-                    <td class="text-right"><span class="metric-value">${row.impressions.toLocaleString()}</span></td>
-                    <td class="text-right"><span class="metric-value">${row.clicks.toLocaleString()}</span></td>
-                    <td class="text-right"><span class="metric-value">$${row.cost.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span></td>
-                    <td class="text-right"><span class="metric-value">${row.conversions.toLocaleString(undefined, {maximumFractionDigits: 1})}</span></td>
-                `;
+                    <td class="name-cell">${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td class="dim">${escapeHtml(r.campaign_id)}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
+                    <td class="text-right">${r._cpf !== null ? fmtCur(r._cpf) : '\u2014'}</td>
+                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>`;
                 tbody.appendChild(tr);
             });
         }
 
-        function sortTable(column) {
-            if (sortColumn === column) {
-                sortAscending = !sortAscending;
-            } else {
-                sortColumn = column;
-                sortAscending = false;
+        // ── Ad Groups Table ──
+        function renderAdGroups() {
+            setHead([
+                ['ad_group_name', 'Ad group', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conv.', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'Cost / conv.', true],
+                ['_roas', 'ROAS', true]
+            ]);
+
+            let data = getAdGroupData().map(r => ({
+                ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
+                _roas: roas(r.value || 0, r.cost)
+            }));
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.ad_group_name.toLowerCase().includes(t) || r.campaign_name.toLowerCase().includes(t));
             }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'ad group');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.className = 'clickable';
+                tr.onclick = () => {
+                    if (!selectedCampaign) selectedCampaign = { campaign_name: r.campaign_name, campaign_id: r.campaign_id };
+                    drillIntoAdGroup(r.ad_group_name, r.ad_group_id);
+                };
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.ad_group_name)}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>
+                    <td class="text-right" style="${roasColor(r._roas)}">${fmtRoas(r._roas)}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── Keywords Table ──
+        function renderKeywords() {
+            setHead([
+                ['keyword', 'Keyword', false],
+                ['match_type', 'Match type', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conv.', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'Cost / conv.', true],
+                ['funded', 'Funded', true],
+                ['_avg_funded_value', 'Avg Funded Val', true]
+            ]);
+
+            let data = getScopedKeywords().map(r => ({
+                ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
+                _avg_funded_value: r.funded > 0 ? r.value / r.funded : null
+            }));
+
+            // Match type filter
+            data = data.filter(r => matchFilters[r.match_type] !== false);
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.keyword.toLowerCase().includes(t) || r.ad_group_name.toLowerCase().includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'keyword');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${escapeHtml(r.keyword)}</td>
+                    <td><span class="match-badge match-${r.match_type}">${r.match_type}</span></td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>
+                    <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
+                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── Search Terms Table ──
+        function renderSearchTerms() {
+            setHead([
+                ['search_term', 'Search term', false],
+                ['keyword', 'Keyword', false],
+                ['match_type', 'Match', false],
+                ['campaign_name', 'Campaign', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['conversions', 'Conv.', true],
+                ['funded', 'Funded', true]
+            ]);
+
+            let data = searchTermsData.map(r => ({
+                ...r,
+                _ctr: ctr(r.impressions, r.clicks),
+                _cpc: cpc(r.cost, r.clicks),
+                _cpa: cpa(r.cost, r.conversions)
+            }));
+
+            // Match type filter
+            data = data.filter(r => matchFilters[r.match_type] !== false);
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r =>
+                    r.search_term.toLowerCase().includes(t) ||
+                    r.keyword.toLowerCase().includes(t) ||
+                    r.campaign_name.toLowerCase().includes(t)
+                );
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'search term');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0 && searchTermsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--text-secondary);padding:40px;">No search terms data available. Run the search terms export script to populate this view.</td></tr>';
+                return;
+            }
+
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.search_term)}</td>
+                    <td>${escapeHtml(r.keyword)}</td>
+                    <td><span class="match-badge match-${r.match_type}">${r.match_type}</span></td>
+                    <td>${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── Channels Table ──
+        function renderChannels() {
+            setHead([
+                ['network', 'Network', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conv.', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'CPA', true]
+            ]);
+
+            let data = channelData.map(r => ({
+                ...r,
+                _ctr: ctr(r.impressions, r.clicks),
+                _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks),
+                _cpa: cpa(r.cost, r.conversions)
+            }));
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.network.toLowerCase().includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'channel');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0 && channelData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-secondary);padding:40px;">No channel data available. Run the channels export script to populate this view.</td></tr>';
+                return;
+            }
+
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                const networkLabel = formatNetworkName(r.network);
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(networkLabel)}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function formatNetworkName(network) {
+            const names = {
+                'SEARCH': 'Google Search',
+                'SEARCH_PARTNERS': 'Search Partners',
+                'CONTENT': 'Display Network',
+                'YOUTUBE_SEARCH': 'YouTube Search',
+                'YOUTUBE_WATCH': 'YouTube Videos',
+                'MIXED': 'Cross-network',
+                'UNSPECIFIED': 'Unspecified'
+            };
+            return names[network] || network;
+        }
+
+        // ── When & Where Table (combined devices + locations) ──
+        function renderWhenWhere() {
+            // Show devices first, then locations
+            setHead([
+                ['dimension', 'Dimension', false],
+                ['type', 'Type', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['conversions', 'Conv.', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'CPA', true]
+            ]);
+
+            // Combine device and location data with type markers
+            let data = [
+                ...deviceData.map(r => ({
+                    dimension: formatDeviceName(r.device),
+                    type: 'Device',
+                    impressions: r.impressions,
+                    clicks: r.clicks,
+                    cost: r.cost,
+                    conversions: r.conversions,
+                    _ctr: ctr(r.impressions, r.clicks),
+                    _cpc: cpc(r.cost, r.clicks),
+                    _conv_rate: convRate(r.conversions, r.clicks),
+                    _cpa: cpa(r.cost, r.conversions)
+                })),
+                ...locationData.map(r => ({
+                    dimension: r.location,
+                    type: 'Location',
+                    impressions: r.impressions,
+                    clicks: r.clicks,
+                    cost: r.cost,
+                    conversions: r.conversions,
+                    _ctr: ctr(r.impressions, r.clicks),
+                    _cpc: cpc(r.cost, r.clicks),
+                    _conv_rate: convRate(r.conversions, r.clicks),
+                    _cpa: cpa(r.cost, r.conversions)
+                }))
+            ];
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.dimension.toLowerCase().includes(t) || r.type.toLowerCase().includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'row');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0 && deviceData.length === 0 && locationData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-secondary);padding:40px;">No device or location data available. Run the export scripts to populate this view.</td></tr>';
+                return;
+            }
+
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.dimension)}</td>
+                    <td><span class="match-badge match-${r.type === 'Device' ? 'BROAD' : 'EXACT'}">${r.type}</span></td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function formatDeviceName(device) {
+            const names = {
+                'MOBILE': 'Mobile',
+                'DESKTOP': 'Desktop',
+                'TABLET': 'Tablet',
+                'CONNECTED_TV': 'Connected TV',
+                'OTHER': 'Other',
+                'UNSPECIFIED': 'Unspecified'
+            };
+            return names[device] || device;
+        }
+
+        // ── Table Helpers ──
+        const colTooltips = {
+            campaign_name: { title: 'Campaign', desc: 'The name of the Google Ads campaign.' },
+            campaign_id: { title: 'Campaign ID', desc: 'Unique numeric ID assigned by Google Ads.' },
+            ad_group_name: { title: 'Ad Group', desc: 'The name of the ad group within a campaign.' },
+            keyword: { title: 'Keyword', desc: 'The search keyword being targeted.' },
+            match_type: { title: 'Match Type', desc: 'How closely a search query must match your keyword. Broad = related searches, Phrase = includes your keyword, Exact = matches your keyword precisely.' },
+            impressions: { title: 'Impressions', desc: 'The number of times your ad was displayed on a search result page or website.' },
+            clicks: { title: 'Clicks', desc: 'The number of times users clicked on your ad to visit your website or call.' },
+            _ctr: { title: 'CTR', desc: 'Click-through rate. The percentage of impressions that resulted in a click.', formula: 'Clicks \u00F7 Impressions \u00D7 100' },
+            cost: { title: 'Cost', desc: 'The total dollar amount spent on ad clicks for this period.' },
+            _cpc: { title: 'Avg. CPC', desc: 'Average cost per click. The average amount paid each time someone clicks your ad.', formula: 'Cost \u00F7 Clicks' },
+            conversions: { title: 'Conversions', desc: 'Completed actions defined in Google Ads as valuable (form fills, phone calls, sign-ups). Uses data-driven attribution, so values can be fractional when credit is shared across clicks.' },
+            _conv_rate: { title: 'Conv. Rate', desc: 'The percentage of clicks that resulted in a conversion action.', formula: 'Conversions \u00F7 Clicks \u00D7 100' },
+            _cpa: { title: 'Cost / Conv.', desc: 'Cost per acquisition. The average cost to generate one conversion.', formula: 'Cost \u00F7 Conversions' },
+            _roas: { title: 'ROAS', desc: 'Return on ad spend. Revenue generated per dollar of ad spend. Requires Athena value data. Red if < 1.5\u00D7, green if > 4.0\u00D7.', formula: '(Value \u00F7 Cost) \u2212 1' },
+            apps: { title: 'Apps Completed', desc: 'Number of loan or membership applications completed and attributed to ad campaigns via click ID tracking.' },
+            funded: { title: 'Funded', desc: 'Number of applications that reached funded status. Attributed via GCLID click tracking from Athena first-party data.' },
+            _cpf: { title: 'CPF (Cost Per Funded)', desc: 'Cost to acquire one funded application.', formula: 'Cost ÷ Funded' },
+            _avg_funded_value: { title: 'Avg Funded Value', desc: 'Average dollar value per funded application.', formula: 'Value ÷ Funded' },
+            search_term: { title: 'Search Term', desc: 'The actual search query that triggered your ad. This is what the user typed into Google.' },
+            network: { title: 'Network', desc: 'The Google Ads network where your ad appeared: Search, Display, YouTube, etc.' },
+            dimension: { title: 'Dimension', desc: 'The breakdown category for this row (device type or geographic location).' },
+            type: { title: 'Type', desc: 'Whether this row is a Device breakdown or a Location breakdown.' }
+        };
+
+        const tooltipEl = document.getElementById('colTooltip');
+        let tooltipTimeout = null;
+
+        function positionTooltip(rect) {
+            const tw = 260;
+            let left = rect.left + rect.width / 2 - tw / 2;
+            if (left < 8) left = 8;
+            if (left + tw > window.innerWidth - 8) left = window.innerWidth - tw - 8;
+            tooltipEl.style.left = left + 'px';
+            tooltipEl.style.top = (rect.top - tooltipEl.offsetHeight - 10) + 'px';
+        }
+
+        function renderTooltip(key) {
+            const info = colTooltips[key];
+            if (!info) return false;
+            clearTimeout(tooltipTimeout);
+            let html = `<div class="tt-title">${info.title}</div>${info.desc}`;
+            if (info.formula) html += `<span class="tt-formula">${info.formula}</span>`;
+            tooltipEl.innerHTML = html;
+            tooltipEl.classList.add('visible');
+            return true;
+        }
+
+        function showColTooltip(e, key) {
+            if (!renderTooltip(key)) return;
+            positionTooltip(e.target.closest('th').getBoundingClientRect());
+        }
+
+        function showKpiTooltip(e) {
+            const chip = e.target.closest('.kpi-chip');
+            const key = chip && chip.dataset.key;
+            if (!renderTooltip(key)) return;
+            positionTooltip(chip.getBoundingClientRect());
+        }
+
+        function hideColTooltip() {
+            tooltipTimeout = setTimeout(() => tooltipEl.classList.remove('visible'), 80);
+        }
+
+        // Attribution model tooltips
+        const attrTooltips = {
+            last_click: {
+                title: 'Last Click Attribution',
+                desc: 'Gives 100% credit to the last ad a user clicked before converting. Best for short sales cycles and direct response campaigns. Shows which ads close the deal.'
+            },
+            first_click: {
+                title: 'First Click Attribution',
+                desc: 'Gives 100% credit to the first ad a user clicked in their journey. Best for awareness campaigns. Shows which ads introduce customers to your brand.'
+            },
+            linear: {
+                title: 'Linear Attribution',
+                desc: 'Distributes credit equally across all touchpoints. If a user clicked 3 ads before converting, each gets 33% credit. Best for understanding the full customer journey.'
+            }
+        };
+
+        function showAttrTooltip(e, model) {
+            const info = attrTooltips[model];
+            if (!info) return;
+            clearTimeout(tooltipTimeout);
+            let html = `<div class="tt-title">${info.title}</div>${info.desc}`;
+            tooltipEl.innerHTML = html;
+            tooltipEl.classList.add('visible');
+            positionTooltip(e.target.closest('.attribution-btn').getBoundingClientRect());
+        }
+
+        function setHead(cols) {
+            document.getElementById('tableHead').innerHTML = '<tr>' + cols.map(([key, label, right]) =>
+                `<th${right ? ' class="text-right"' : ''} onclick="sortTable('${key}')" onmouseenter="showColTooltip(event,'${key}')" onmouseleave="hideColTooltip()">${label} <span class="sort-arrow" id="sort-${key}"></span></th>`
+            ).join('') + '</tr>';
+        }
+
+        function setCount(n, noun) {
+            document.getElementById('rowCount').textContent = `${n} ${noun}${n !== 1 ? 's' : ''}`;
+        }
+
+        function sortTable(col) {
+            if (sortColumn === col) sortAscending = !sortAscending;
+            else { sortColumn = col; sortAscending = false; }
             renderTable();
         }
 
-        function setFilter(campaignName) {
-            activeFilter = campaignName;
-            document.getElementById('filterCampaignName').textContent = campaignName;
-            document.getElementById('filterIndicator').classList.remove('hidden');
-            renderDashboard();
+        function applySorting(data) {
+            return data.slice().sort((a, b) => {
+                let av = a[sortColumn], bv = b[sortColumn];
+                if (av === undefined) av = 0;
+                if (bv === undefined) bv = 0;
+                if (typeof av === 'string') {
+                    av = av.toLowerCase(); bv = (bv || '').toLowerCase();
+                    return sortAscending ? av.localeCompare(bv) : bv.localeCompare(av);
+                }
+                return sortAscending ? av - bv : bv - av;
+            });
         }
 
-        function clearFilter() {
-            activeFilter = null;
-            textFilterValue = '';
-            document.getElementById('textFilter').value = '';
-            document.getElementById('filterIndicator').classList.add('hidden');
-            renderDashboard();
+        function updateSortArrows() {
+            document.querySelectorAll('.sort-arrow').forEach(el => el.textContent = '');
+            const el = document.getElementById('sort-' + sortColumn);
+            if (el) {
+                el.textContent = sortAscending ? '\u25B2' : '\u25BC';
+                el.closest('th').classList.add('sorted');
+            }
         }
 
-        function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
+        function toggleDataDict() {
+            const panel = document.getElementById('dataDictPanel');
+            const btn = document.getElementById('dictToggle');
+            panel.classList.toggle('visible');
+            btn.classList.toggle('active');
         }
 
-        document.addEventListener('DOMContentLoaded', init);
+        // ── Chart Data Helpers ──
+        // Filter daily data by current date range
+        function filterByDateRange(data) {
+            if (currentDateRange === 'month') {
+                // Filter to current month only
+                const now = new Date();
+                const monthStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+                return data.filter(r => r.date && r.date.startsWith(monthStr));
+            }
+            // Filter by last N days
+            const end = new Date();
+            const start = new Date();
+            start.setDate(start.getDate() - currentDateRange);
+            const startStr = start.toISOString().split('T')[0];
+            const endStr = end.toISOString().split('T')[0];
+            return data.filter(r => r.date && r.date >= startStr && r.date <= endStr);
+        }
+
+        function getDailyChartData(metric) {
+            // For attribution metrics (funded, apps, value), use actual daily enriched data
+            const fundedMetrics = ['funded', 'apps', 'approved', 'value', 'production'];
+            if (fundedMetrics.includes(metric) && dailyEnrichedData.length > 0) {
+                let src = filterByDateRange(dailyEnrichedData);
+                if (selectedCampaign) {
+                    src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+                }
+
+                // Aggregate by date from actual daily keyword-level data
+                const byDate = {};
+                src.forEach(r => {
+                    if (!byDate[r.date]) byDate[r.date] = 0;
+                    byDate[r.date] += r[metric] || 0;
+                });
+                const dates = Object.keys(byDate).sort();
+                return {
+                    labels: dates.map(d => {
+                        const parts = d.split('-');
+                        const dt = new Date(parts[0], parseInt(parts[1]) - 1, parseInt(parts[2]));
+                        return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    }),
+                    values: dates.map(d => byDate[d]),
+                    fullDates: dates
+                };
+            }
+
+            // Standard metrics from daily campaign data
+            let src = filterByDateRange(dailyData);
+            if (selectedCampaign) {
+                src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+            }
+
+            const byDate = {};
+            src.forEach(r => {
+                if (!byDate[r.date]) byDate[r.date] = 0;
+                byDate[r.date] += r[metric] || 0;
+            });
+            const dates = Object.keys(byDate).sort();
+            return {
+                labels: dates.map(d => {
+                    const parts = d.split('-');
+                    const dt = new Date(parts[0], parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }),
+                values: dates.map(d => byDate[d]),
+                fullDates: dates
+            };
+        }
+
+        function getDailyDerivedData(metricKey) {
+            let src = filterByDateRange(dailyData);
+            if (selectedCampaign) {
+                src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+            }
+            const byDate = {};
+            src.forEach(r => {
+                if (!byDate[r.date]) byDate[r.date] = { impressions: 0, clicks: 0, cost: 0, conversions: 0 };
+                const d = byDate[r.date];
+                d.impressions += r.impressions || 0;
+                d.clicks += r.clicks || 0;
+                d.cost += r.cost || 0;
+                d.conversions += r.conversions || 0;
+            });
+            const dates = Object.keys(byDate).sort();
+            const values = dates.map(d => {
+                const v = byDate[d];
+                if (metricKey === '_ctr') return v.impressions > 0 ? (v.clicks / v.impressions) * 100 : 0;
+                if (metricKey === '_cpc') return v.clicks > 0 ? v.cost / v.clicks : 0;
+                if (metricKey === '_cpa') return v.conversions > 0 ? v.cost / v.conversions : 0;
+                return 0;
+            });
+            return {
+                labels: dates.map(d => {
+                    const parts = d.split('-');
+                    const dt = new Date(parts[0], parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                }),
+                values: values,
+                fullDates: dates
+            };
+        }
+
+        function hasFundedData() {
+            return campaignData.some(r => r.funded > 0);
+        }
+
+        function getDailyFundedData() {
+            // Use actual daily enriched data for funded metric
+            if (dailyEnrichedData.length > 0) {
+                let src = filterByDateRange(dailyEnrichedData);
+                if (selectedCampaign) {
+                    src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+                }
+                const byDate = {};
+                src.forEach(r => {
+                    if (!byDate[r.date]) byDate[r.date] = 0;
+                    byDate[r.date] += r.funded || 0;
+                });
+                const dates = Object.keys(byDate).sort();
+                return { values: dates.map(d => byDate[d]), fullDates: dates };
+            }
+
+            // Fallback: distribute monthly funded proportionally by daily cost
+            let src = dailyData;
+            if (selectedCampaign) {
+                src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
+            }
+            const campFunded = {};
+            const campCost = {};
+            campaignData.forEach(c => {
+                if (c.funded > 0) {
+                    campFunded[c.campaign_id] = c.funded;
+                    campCost[c.campaign_id] = c.cost;
+                }
+            });
+            const byDate = {};
+            src.forEach(r => {
+                if (!byDate[r.date]) byDate[r.date] = 0;
+                const cf = campFunded[r.campaign_id] || 0;
+                const cc = campCost[r.campaign_id] || 0;
+                if (cf > 0 && cc > 0) {
+                    byDate[r.date] += cf * (r.cost / cc);
+                }
+            });
+            const dates = Object.keys(byDate).sort();
+            return { values: dates.map(d => byDate[d]), fullDates: dates };
+        }
+
+        function getMetricDailyData(metricKey) {
+            if (metricKey.startsWith('_')) return getDailyDerivedData(metricKey);
+            return getDailyChartData(metricKey);
+        }
+
+        // ── Two-Chart Rendering ──
+        function renderSingleChart(canvasId, metric, chartType, fmtFn, chartColor) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas || !dailyData.length) return null;
+
+            // Use day-of-week or daily data based on chartView
+            const daily = chartView === 'dow'
+                ? getDailyChartDataByDOW(metric)
+                : getDailyChartData(metric);
+            const labels = daily.labels;
+            const fullDates = daily.fullDates;
+            // Force bar chart for day-of-week view
+            const isBar = chartType === 'bar' || chartView === 'dow';
+            const color = chartColor || '#296f5e';  // Default teal, or custom color
+
+            const datasets = [{
+                label: metricConfig[metric] ? metricConfig[metric].label : metric,
+                data: daily.values,
+                borderColor: color,
+                backgroundColor: isBar ? (color + '99') : (color + '20'),
+                borderWidth: isBar ? 0 : 2,
+                fill: !isBar,
+                tension: 0.3,
+                pointRadius: 0,
+                pointHoverRadius: isBar ? 0 : 4,
+                pointHoverBackgroundColor: color,
+                borderRadius: isBar ? 4 : 0,
+                barPercentage: 0.7,
+                yAxisID: 'y'
+            }];
+
+            // Funded overlay on spend chart
+            if (metric === 'cost' && hasFundedData() && !isBar) {
+                const funded = getDailyFundedData();
+                datasets.push({
+                    label: 'Funded',
+                    data: funded.values,
+                    borderColor: fundedOverlayColor,
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    fill: false,
+                    tension: 0.3,
+                    pointRadius: 0,
+                    pointHoverRadius: 4,
+                    pointHoverBackgroundColor: fundedOverlayColor,
+                    borderDash: [4, 3],
+                    yAxisID: 'y1'
+                });
+            }
+
+            const isCurrency = metric === 'cost';
+            const scales = {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 10, family: 'Inter' }, color: '#9aa0a6', maxTicksLimit: 8 },
+                    border: { display: false }
+                },
+                y: {
+                    position: 'left',
+                    grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#9aa0a6',
+                        maxTicksLimit: 5,
+                        callback: function(v) {
+                            return isCurrency ? '$' + v.toLocaleString() : v.toLocaleString();
+                        }
+                    },
+                    border: { display: false },
+                    beginAtZero: true
+                }
+            };
+
+            // Add funded axis if needed
+            if (metric === 'cost' && hasFundedData() && !isBar) {
+                scales.y1 = {
+                    position: 'right',
+                    grid: { display: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: fundedOverlayColor,
+                        maxTicksLimit: 5,
+                        callback: function(v) { return Math.round(v).toLocaleString(); }
+                    },
+                    border: { display: false },
+                    beginAtZero: true
+                };
+            }
+
+            return new Chart(canvas.getContext('2d'), {
+                type: isBar ? 'bar' : 'line',
+                data: { labels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: {
+                            display: datasets.length > 1,
+                            position: 'top',
+                            align: 'end',
+                            labels: { boxWidth: 12, boxHeight: 2, font: { size: 11, family: 'Inter' }, padding: 10 }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1a1a2e',
+                            titleFont: { family: 'Inter', size: 12 },
+                            bodyFont: { family: 'Inter', size: 13 },
+                            padding: 10,
+                            cornerRadius: 8,
+                            callbacks: {
+                                title: function(items) {
+                                    const idx = items[0].dataIndex;
+                                    return fullDates[idx] || items[0].label;
+                                },
+                                label: function(c) {
+                                    const prefix = c.dataset.label + ': ';
+                                    if (c.dataset.label === 'Funded') return prefix + fmtDec(c.parsed.y);
+                                    return prefix + fmtFn(c.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales
+                }
+            });
+        }
+
+        function renderAllCharts() {
+            if (convChartInstance) { convChartInstance.destroy(); convChartInstance = null; }
+
+            // Update conversions chart header
+            const kpiData = getKPIData();
+            const totalConv = kpiData.reduce((s, r) => s + r.conversions, 0);
+            document.getElementById('convChartValue').textContent = fmtDec(totalConv);
+
+            // Left chart: multi-metric (based on selected KPIs)
+            renderMultiMetricChart();
+
+            // Right chart: conversions (gold)
+            convChartInstance = renderSingleChart('convChart', 'conversions', convChartType, fmtDec, '#b8963e');
+
+            updateKpiSelected();
+        }
+
+        function selectKpiChart(kpiKey) {
+            if (!metricConfig[kpiKey]) return;
+            const idx = selectedMetrics.indexOf(kpiKey);
+            if (idx !== -1) {
+                if (selectedMetrics.length > 1) selectedMetrics.splice(idx, 1);
+            } else {
+                if (selectedMetrics.length >= 3) selectedMetrics.shift();
+                selectedMetrics.push(kpiKey);
+            }
+            updateKpiSelected();
+            renderMultiMetricChart();  // Re-render with selected metrics
+        }
+
+        function updateKpiSelected() {
+            document.querySelectorAll('.kpi-chip').forEach(chip => {
+                const key = chip.dataset.key;
+                chip.classList.toggle('kpi-selected', selectedMetrics.includes(key));
+            });
+        }
+
+        // Multi-metric colors: teal, gold, purple
+        const multiMetricColors = ['#296f5e', '#b8963e', '#7c3aed'];
+
+        function renderMultiMetricChart() {
+            if (spendChartInstance) { spendChartInstance.destroy(); spendChartInstance = null; }
+
+            const canvas = document.getElementById('spendChart');
+            if (!canvas || !dailyData.length || selectedMetrics.length === 0) return;
+
+            // Build datasets for each selected metric
+            const datasets = [];
+            const allLabels = [];
+            let fullDates = [];
+
+            // Force bar chart for day-of-week view
+            const isBar = spendChartType === 'bar' || chartView === 'dow';
+
+            selectedMetrics.forEach((metricKey, i) => {
+                const config = metricConfig[metricKey];
+                if (!config) return;
+
+                // Use day-of-week or daily data based on chartView
+                let daily;
+                if (chartView === 'dow') {
+                    daily = metricKey.startsWith('_') ? getDailyDerivedDataByDOW(metricKey) : getDailyChartDataByDOW(metricKey);
+                } else {
+                    daily = metricKey.startsWith('_') ? getDailyDerivedData(metricKey) : getDailyChartData(metricKey);
+                }
+                const color = multiMetricColors[i % multiMetricColors.length];
+
+                if (i === 0) {
+                    allLabels.push(...daily.labels);
+                    fullDates = daily.fullDates;
+                }
+
+                datasets.push({
+                    label: config.label,
+                    data: daily.values,
+                    borderColor: color,
+                    backgroundColor: isBar ? (color + '99') : (color + '20'),
+                    borderWidth: isBar ? 0 : 2,
+                    fill: !isBar,
+                    tension: 0.3,
+                    pointRadius: 0,
+                    pointHoverRadius: isBar ? 0 : 4,
+                    pointHoverBackgroundColor: color,
+                    borderRadius: isBar ? 4 : 0,
+                    barPercentage: 0.7,
+                    yAxisID: i === 0 ? 'y' : 'y1'
+                });
+            });
+
+            // Update chart title and values
+            const titleEl = document.querySelector('#spendChartCard .chart-card-title');
+            const valueEl = document.getElementById('spendChartValue');
+            const kpiData = getKPIData();
+
+            if (selectedMetrics.length === 1) {
+                const cfg = metricConfig[selectedMetrics[0]];
+                titleEl.textContent = cfg.label.toUpperCase();
+                const total = kpiData.reduce((s, r) => s + (r[selectedMetrics[0]] || 0), 0);
+                valueEl.textContent = cfg.fmt(total);
+            } else {
+                // Show both metric names in title
+                titleEl.textContent = selectedMetrics.map(k => metricConfig[k].label).join(' vs ');
+                // Show both values with colors
+                const vals = selectedMetrics.map((k, i) => {
+                    const cfg = metricConfig[k];
+                    const total = cfg.derived ? cfg.derived(kpiData) : kpiData.reduce((s, r) => s + (r[k] || 0), 0);
+                    const color = multiMetricColors[i];
+                    return `<span style="color:${color}">${cfg.fmt(total)}</span>`;
+                });
+                valueEl.innerHTML = vals.join(' <span style="color:#9aa0a6;font-size:16px">vs</span> ');
+            }
+
+            // Build scales - left axis for first metric, right axis for second
+            const scales = {
+                x: {
+                    grid: { display: false },
+                    ticks: { font: { size: 10, family: 'Inter' }, color: '#9aa0a6', maxTicksLimit: 8 },
+                    border: { display: false }
+                },
+                y: {
+                    position: 'left',
+                    grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: multiMetricColors[0],
+                        maxTicksLimit: 5,
+                        callback: function(v) {
+                            const cfg = metricConfig[selectedMetrics[0]];
+                            return cfg && cfg.isCurrency ? '$' + v.toLocaleString() : v.toLocaleString();
+                        }
+                    },
+                    border: { display: false },
+                    beginAtZero: true
+                }
+            };
+
+            // Add right axis if multiple metrics
+            if (selectedMetrics.length > 1) {
+                scales.y1 = {
+                    position: 'right',
+                    grid: { display: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: multiMetricColors[1],
+                        maxTicksLimit: 5,
+                        callback: function(v) {
+                            const cfg = metricConfig[selectedMetrics[1]];
+                            return cfg && cfg.isCurrency ? '$' + v.toLocaleString() : v.toLocaleString();
+                        }
+                    },
+                    border: { display: false },
+                    beginAtZero: true
+                };
+            }
+
+            spendChartInstance = new Chart(canvas.getContext('2d'), {
+                type: isBar ? 'bar' : 'line',
+                data: { labels: allLabels, datasets },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: { intersect: false, mode: 'index' },
+                    plugins: {
+                        legend: {
+                            display: datasets.length > 1,
+                            position: 'top',
+                            align: 'end',
+                            labels: { boxWidth: 12, boxHeight: 2, font: { size: 11, family: 'Inter' }, padding: 10 }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1a1a2e',
+                            titleFont: { family: 'Inter', size: 12 },
+                            bodyFont: { family: 'Inter', size: 13 },
+                            padding: 10,
+                            cornerRadius: 8,
+                            callbacks: {
+                                title: function(items) {
+                                    const idx = items[0].dataIndex;
+                                    return fullDates[idx] || items[0].label;
+                                },
+                                label: function(c) {
+                                    const metricKey = selectedMetrics[c.datasetIndex];
+                                    const cfg = metricConfig[metricKey];
+                                    return c.dataset.label + ': ' + (cfg ? cfg.fmt(c.parsed.y) : c.parsed.y);
+                                }
+                            }
+                        }
+                    },
+                    scales
+                }
+            });
+        }
+
+        // ── Chart Expand ──
+        function toggleChartExpand(id) {
+            const card = document.getElementById(id + 'ChartCard');
+            const widgetRow = document.querySelector('.widget-row');
+            const main = document.querySelector('.main-content');
+            const btn = card.querySelector('.chart-expand-btn');
+            const isExpanded = card.classList.toggle('expanded');
+            widgetRow.classList.toggle('chart-expanded', isExpanded);
+            main.classList.toggle('chart-expanded', isExpanded);
+            // Swap icon: expand ↔ collapse
+            btn.innerHTML = isExpanded
+                ? '<svg viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>'
+                : '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>';
+            btn.title = isExpanded ? 'Collapse chart' : 'Expand chart';
+            // Re-render chart to fit new size
+            setTimeout(() => renderAllCharts(), 50);
+        }
+
+        // ── Chart Settings Menu ──
+        function toggleChartMenu(id) {
+            const menu = document.getElementById('menu-' + id);
+            document.querySelectorAll('.chart-settings-dropdown').forEach(el => {
+                if (el !== menu) el.classList.remove('open');
+            });
+            menu.classList.toggle('open');
+        }
+
+        function switchChartType(id, type) {
+            if (id === 'spend') spendChartType = type;
+            else if (id === 'conv') convChartType = type;
+            const menu = document.getElementById('menu-' + id);
+            menu.querySelectorAll('button').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase() === type);
+            });
+            menu.classList.remove('open');
+            renderAllCharts();
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.chart-settings-btn') && !e.target.closest('.chart-settings-dropdown')) {
+                document.querySelectorAll('.chart-settings-dropdown').forEach(el => el.classList.remove('open'));
+            }
+        });
+
+        // ── Data Dictionary Toggle ──
+        function toggleDataDict() {
+            const panel = document.getElementById('dataDictPanel');
+            const toggleBtns = document.querySelectorAll('.dict-toggle');
+            const isVisible = panel.classList.toggle('visible');
+            toggleBtns.forEach(btn => btn.classList.toggle('active', isVisible));
+        }
+
+        // ── Table Expand Toggle ──
+        function toggleTableExpand() {
+            const tableCard = document.querySelector('.table-card');
+            const main = document.querySelector('.main-content');
+            const btn = document.getElementById('tableExpandBtn');
+            const isExpanded = tableCard.classList.toggle('expanded');
+            main.classList.toggle('table-expanded', isExpanded);
+            // Swap icon: expand ↔ collapse
+            btn.innerHTML = isExpanded
+                ? '<svg viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>'
+                : '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>';
+            btn.title = isExpanded ? 'Collapse table' : 'Expand table';
+        }
+
+        // ── Drag-to-Resize Panels ──
+        function initResizeHandles() {
+            const chartTableResizer = document.getElementById('chartTableResizer');
+            if (!chartTableResizer) return;
+
+            const widgetRow = document.querySelector('.widget-row');
+            const mainContent = document.querySelector('.main-content');
+
+            let isResizing = false;
+            let startY = 0;
+            let startHeight = 0;
+
+            chartTableResizer.addEventListener('mousedown', (e) => {
+                isResizing = true;
+                startY = e.clientY;
+                startHeight = widgetRow.offsetHeight;
+                chartTableResizer.classList.add('dragging');
+                document.body.classList.add('resizing');
+                e.preventDefault();
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isResizing) return;
+
+                const deltaY = e.clientY - startY;
+                const newHeight = Math.max(120, Math.min(startHeight + deltaY, window.innerHeight - 300));
+                widgetRow.style.height = newHeight + 'px';
+
+                // Update chart card body heights
+                const chartBodies = widgetRow.querySelectorAll('.chart-card-body');
+                chartBodies.forEach(body => {
+                    body.style.height = Math.max(60, newHeight - 80) + 'px';
+                    body.style.maxHeight = 'none';
+                });
+
+                // Re-render charts at new size
+                if (spendChartInstance) spendChartInstance.resize();
+                if (convChartInstance) convChartInstance.resize();
+            });
+
+            document.addEventListener('mouseup', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    chartTableResizer.classList.remove('dragging');
+                    document.body.classList.remove('resizing');
+                    // Final chart re-render
+                    setTimeout(() => renderAllCharts(), 50);
+                }
+            });
+
+            // Touch support for mobile
+            chartTableResizer.addEventListener('touchstart', (e) => {
+                isResizing = true;
+                startY = e.touches[0].clientY;
+                startHeight = widgetRow.offsetHeight;
+                chartTableResizer.classList.add('dragging');
+                document.body.classList.add('resizing');
+            }, { passive: true });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isResizing) return;
+                const deltaY = e.touches[0].clientY - startY;
+                const newHeight = Math.max(120, Math.min(startHeight + deltaY, window.innerHeight - 300));
+                widgetRow.style.height = newHeight + 'px';
+                const chartBodies = widgetRow.querySelectorAll('.chart-card-body');
+                chartBodies.forEach(body => {
+                    body.style.height = Math.max(60, newHeight - 80) + 'px';
+                    body.style.maxHeight = 'none';
+                });
+            }, { passive: true });
+
+            document.addEventListener('touchend', () => {
+                if (isResizing) {
+                    isResizing = false;
+                    chartTableResizer.classList.remove('dragging');
+                    document.body.classList.remove('resizing');
+                    setTimeout(() => renderAllCharts(), 50);
+                }
+            });
+        }
+
+        // Initialize resize handles after DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            initResizeHandles();
+        });
     </script>
 </body>
 </html>
