@@ -3194,7 +3194,14 @@
             const scales = {
                 x: {
                     grid: { display: false },
-                    ticks: { font: { size: 10, family: 'Inter' }, color: '#9aa0a6', maxTicksLimit: 8 },
+                    ticks: {
+                        font: { size: 9, family: 'Inter' },
+                        color: '#9aa0a6',
+                        maxTicksLimit: 6,
+                        maxRotation: 0,
+                        autoSkip: true,
+                        autoSkipPadding: 20
+                    },
                     border: { display: false }
                 },
                 y: {
@@ -3383,7 +3390,14 @@
             const scales = {
                 x: {
                     grid: { display: false },
-                    ticks: { font: { size: 10, family: 'Inter' }, color: '#9aa0a6', maxTicksLimit: 8 },
+                    ticks: {
+                        font: { size: 9, family: 'Inter' },
+                        color: '#9aa0a6',
+                        maxTicksLimit: 6,
+                        maxRotation: 0,
+                        autoSkip: true,
+                        autoSkipPadding: 20
+                    },
                     border: { display: false }
                 },
                 y: {
