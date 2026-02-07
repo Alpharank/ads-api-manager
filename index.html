@@ -1073,114 +1073,46 @@
             fill: currentColor;
         }
 
-        /* ── Resize Handles ── */
-        .resize-handle {
-            position: relative;
-            z-index: 100;
-            flex-shrink: 0;
-        }
-
-        .resize-handle-h {
-            height: 10px;
-            margin: 8px 24px;
-            cursor: ns-resize;
+        /* ── Chart Size Controls ── */
+        .chart-size-controls {
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--teal);
-            border-radius: 6px;
-            transition: all 0.15s ease;
-            position: relative;
+            gap: 8px;
+            padding: 6px 24px;
+            margin: 0;
         }
 
-        .resize-handle-h::before {
-            content: '═══';
-            font-size: 10px;
-            color: rgba(255,255,255,0.7);
-            transition: all 0.15s ease;
-        }
-
-        .resize-handle-h::after {
-            content: 'Click and drag to expand';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-top: 6px;
-            padding: 6px 12px;
-            background: #1a1a2e;
-            color: #fff;
-            font-size: 12px;
-            font-family: 'Inter', sans-serif;
-            border-radius: 6px;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.15s ease;
-            pointer-events: none;
-        }
-
-        .resize-handle-h:hover {
-            background: var(--gold);
-            height: 12px;
-        }
-
-        .resize-handle-h:hover::before {
-            color: #fff;
-        }
-
-        .resize-handle-h:hover::after {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .resize-handle-h.dragging {
-            background: var(--gold);
-            height: 12px;
-        }
-
-        .resize-handle-h.dragging::before {
-            color: #fff;
-        }
-
-        .resize-handle-h.dragging::after {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .resize-handle-v {
-            width: 8px;
-            cursor: ew-resize;
+        .chart-size-btn {
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-
-        .resize-handle-v::before {
-            content: '';
-            width: 4px;
-            height: 40px;
-            background: var(--border);
-            border-radius: 2px;
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: #fff;
+            color: var(--text-secondary);
+            cursor: pointer;
             transition: all 0.15s ease;
         }
 
-        .resize-handle-v:hover::before,
-        .resize-handle-v.dragging::before {
-            background: var(--teal);
-            width: 5px;
-            height: 60px;
+        .chart-size-btn:hover {
+            border-color: var(--teal);
+            background: var(--accent-light);
+            color: var(--teal);
         }
 
-        /* Prevent text selection during resize */
-        body.resizing {
-            user-select: none;
-            cursor: ns-resize !important;
+        .chart-size-btn:active {
+            transform: scale(0.95);
         }
 
-        body.resizing-v {
-            user-select: none;
-            cursor: ew-resize !important;
+        .chart-size-label {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         /* Make chart widget row resizable */
@@ -1592,8 +1524,16 @@
                     </div>
                 </div>
 
-                <!-- Resize Handle: Charts ↔ Table -->
-                <div class="resize-handle resize-handle-h" id="chartTableResizer" title="Drag to resize"></div>
+                <!-- Chart Size Controls -->
+                <div class="chart-size-controls" id="chartSizeControls">
+                    <button class="chart-size-btn" onclick="adjustChartSize(-50)" title="Shrink charts">
+                        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 13H5v-2h14v2z"/></svg>
+                    </button>
+                    <span class="chart-size-label">Chart Height</span>
+                    <button class="chart-size-btn" onclick="adjustChartSize(50)" title="Expand charts">
+                        <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                    </button>
+                </div>
 
                 <!-- Data Dictionary Toggle -->
                 <div class="dict-toggle-row">
@@ -3581,86 +3521,41 @@
             btn.title = isExpanded ? 'Collapse table' : 'Expand table';
         }
 
-        // ── Drag-to-Resize Panels ──
-        function initResizeHandles() {
-            const resizer = document.getElementById('chartTableResizer');
+        // ── Chart Size Adjustment ──
+        let chartRowHeight = 240; // Default height
+
+        function adjustChartSize(delta) {
             const widgetRow = document.querySelector('.widget-row');
+            const chartCards = widgetRow.querySelectorAll('.chart-card');
+            const chartBodies = widgetRow.querySelectorAll('.chart-card-body');
 
-            if (!resizer || !widgetRow) {
-                console.error('Resize elements not found');
-                return;
-            }
+            // Adjust height within bounds
+            chartRowHeight = Math.max(180, Math.min(chartRowHeight + delta, 500));
 
-            // Set initial height explicitly
-            widgetRow.style.height = widgetRow.getBoundingClientRect().height + 'px';
+            // Apply to widget row
+            widgetRow.style.minHeight = chartRowHeight + 'px';
 
-            let startY, startHeight;
+            // Apply to chart cards and bodies
+            const cardHeight = chartRowHeight;
+            const bodyHeight = chartRowHeight - 90;
 
-            function onMouseDown(e) {
-                e.preventDefault();
-                startY = e.clientY;
-                startHeight = parseInt(widgetRow.style.height) || widgetRow.getBoundingClientRect().height;
-                resizer.classList.add('dragging');
-                document.body.style.cursor = 'ns-resize';
-                document.body.style.userSelect = 'none';
-                document.addEventListener('mousemove', onMouseMove);
-                document.addEventListener('mouseup', onMouseUp);
-            }
-
-            function onMouseMove(e) {
-                const delta = e.clientY - startY;
-                const newHeight = Math.max(150, Math.min(startHeight + delta, window.innerHeight - 250));
-                widgetRow.style.height = newHeight + 'px';
-
-                // Resize chart bodies
-                const chartBodies = widgetRow.querySelectorAll('.chart-card-body');
-                const bodyHeight = Math.max(80, newHeight - 90);
-                chartBodies.forEach(body => {
-                    body.style.height = bodyHeight + 'px';
-                });
-
-                // Resize charts
-                if (spendChartInstance) spendChartInstance.resize();
-                if (convChartInstance) convChartInstance.resize();
-            }
-
-            function onMouseUp() {
-                resizer.classList.remove('dragging');
-                document.body.style.cursor = '';
-                document.body.style.userSelect = '';
-                document.removeEventListener('mousemove', onMouseMove);
-                document.removeEventListener('mouseup', onMouseUp);
-                setTimeout(() => renderAllCharts(), 100);
-            }
-
-            resizer.addEventListener('mousedown', onMouseDown);
-
-            // Touch support
-            resizer.addEventListener('touchstart', (e) => {
-                startY = e.touches[0].clientY;
-                startHeight = parseInt(widgetRow.style.height) || widgetRow.getBoundingClientRect().height;
-                resizer.classList.add('dragging');
-            }, { passive: true });
-
-            document.addEventListener('touchmove', (e) => {
-                if (!resizer.classList.contains('dragging')) return;
-                const delta = e.touches[0].clientY - startY;
-                const newHeight = Math.max(150, Math.min(startHeight + delta, window.innerHeight - 250));
-                widgetRow.style.height = newHeight + 'px';
-            }, { passive: true });
-
-            document.addEventListener('touchend', () => {
-                if (resizer.classList.contains('dragging')) {
-                    resizer.classList.remove('dragging');
-                    setTimeout(() => renderAllCharts(), 100);
-                }
+            chartCards.forEach(card => {
+                card.style.height = cardHeight + 'px';
+                card.style.minHeight = cardHeight + 'px';
             });
+
+            chartBodies.forEach(body => {
+                body.style.height = Math.max(80, bodyHeight) + 'px';
+                body.style.minHeight = Math.max(80, bodyHeight) + 'px';
+            });
+
+            // Re-render charts to fit new size
+            setTimeout(() => renderAllCharts(), 50);
         }
 
-        // Initialize resize handles after DOM is ready
+        // Initialize after DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
             init();
-            initResizeHandles();
         });
     </script>
 </body>
