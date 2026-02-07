@@ -882,11 +882,11 @@
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
             border: 1px solid var(--border);
-            padding: 18px 20px 14px;
+            padding: 18px 20px 20px;
             display: flex;
             flex-direction: column;
             position: relative;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .chart-card-header {
@@ -915,13 +915,13 @@
 
         .chart-card-body {
             position: relative;
-            height: 140px;
-            padding-bottom: 8px;
+            height: 160px;
+            padding-bottom: 24px;
         }
 
         .chart-card-body canvas {
             width: 100% !important;
-            height: 100% !important;
+            height: calc(100% - 10px) !important;
         }
 
         /* Settings menu */
@@ -1150,14 +1150,14 @@
         }
 
         .widget-row .chart-card {
-            min-height: 180px;
+            min-height: 200px;
         }
 
         .widget-row .chart-card-body {
-            height: 130px;
-            min-height: 130px;
+            height: 150px;
+            min-height: 150px;
             flex: 1;
-            padding-bottom: 10px;
+            padding-bottom: 24px;
         }
 
         /* Make table card fill remaining space */
