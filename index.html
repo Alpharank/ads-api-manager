@@ -3553,81 +3553,76 @@
 
         // ── Drag-to-Resize Panels ──
         function initResizeHandles() {
-            const chartTableResizer = document.getElementById('chartTableResizer');
-            if (!chartTableResizer) return;
-
+            const resizer = document.getElementById('chartTableResizer');
             const widgetRow = document.querySelector('.widget-row');
-            const mainContent = document.querySelector('.main-content');
 
-            let isResizing = false;
-            let startY = 0;
-            let startHeight = 0;
+            if (!resizer || !widgetRow) {
+                console.error('Resize elements not found');
+                return;
+            }
 
-            chartTableResizer.addEventListener('mousedown', (e) => {
-                isResizing = true;
-                startY = e.clientY;
-                startHeight = widgetRow.offsetHeight;
-                chartTableResizer.classList.add('dragging');
-                document.body.classList.add('resizing');
+            // Set initial height explicitly
+            widgetRow.style.height = widgetRow.getBoundingClientRect().height + 'px';
+
+            let startY, startHeight;
+
+            function onMouseDown(e) {
                 e.preventDefault();
-            });
+                startY = e.clientY;
+                startHeight = parseInt(widgetRow.style.height) || widgetRow.getBoundingClientRect().height;
+                resizer.classList.add('dragging');
+                document.body.style.cursor = 'ns-resize';
+                document.body.style.userSelect = 'none';
+                document.addEventListener('mousemove', onMouseMove);
+                document.addEventListener('mouseup', onMouseUp);
+            }
 
-            document.addEventListener('mousemove', (e) => {
-                if (!isResizing) return;
-
-                const deltaY = e.clientY - startY;
-                const newHeight = Math.max(120, Math.min(startHeight + deltaY, window.innerHeight - 300));
+            function onMouseMove(e) {
+                const delta = e.clientY - startY;
+                const newHeight = Math.max(150, Math.min(startHeight + delta, window.innerHeight - 250));
                 widgetRow.style.height = newHeight + 'px';
 
-                // Update chart card body heights
+                // Resize chart bodies
                 const chartBodies = widgetRow.querySelectorAll('.chart-card-body');
+                const bodyHeight = Math.max(80, newHeight - 90);
                 chartBodies.forEach(body => {
-                    body.style.height = Math.max(60, newHeight - 80) + 'px';
-                    body.style.maxHeight = 'none';
+                    body.style.height = bodyHeight + 'px';
                 });
 
-                // Re-render charts at new size
+                // Resize charts
                 if (spendChartInstance) spendChartInstance.resize();
                 if (convChartInstance) convChartInstance.resize();
-            });
+            }
 
-            document.addEventListener('mouseup', () => {
-                if (isResizing) {
-                    isResizing = false;
-                    chartTableResizer.classList.remove('dragging');
-                    document.body.classList.remove('resizing');
-                    // Final chart re-render
-                    setTimeout(() => renderAllCharts(), 50);
-                }
-            });
+            function onMouseUp() {
+                resizer.classList.remove('dragging');
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                setTimeout(() => renderAllCharts(), 100);
+            }
 
-            // Touch support for mobile
-            chartTableResizer.addEventListener('touchstart', (e) => {
-                isResizing = true;
+            resizer.addEventListener('mousedown', onMouseDown);
+
+            // Touch support
+            resizer.addEventListener('touchstart', (e) => {
                 startY = e.touches[0].clientY;
-                startHeight = widgetRow.offsetHeight;
-                chartTableResizer.classList.add('dragging');
-                document.body.classList.add('resizing');
+                startHeight = parseInt(widgetRow.style.height) || widgetRow.getBoundingClientRect().height;
+                resizer.classList.add('dragging');
             }, { passive: true });
 
             document.addEventListener('touchmove', (e) => {
-                if (!isResizing) return;
-                const deltaY = e.touches[0].clientY - startY;
-                const newHeight = Math.max(120, Math.min(startHeight + deltaY, window.innerHeight - 300));
+                if (!resizer.classList.contains('dragging')) return;
+                const delta = e.touches[0].clientY - startY;
+                const newHeight = Math.max(150, Math.min(startHeight + delta, window.innerHeight - 250));
                 widgetRow.style.height = newHeight + 'px';
-                const chartBodies = widgetRow.querySelectorAll('.chart-card-body');
-                chartBodies.forEach(body => {
-                    body.style.height = Math.max(60, newHeight - 80) + 'px';
-                    body.style.maxHeight = 'none';
-                });
             }, { passive: true });
 
             document.addEventListener('touchend', () => {
-                if (isResizing) {
-                    isResizing = false;
-                    chartTableResizer.classList.remove('dragging');
-                    document.body.classList.remove('resizing');
-                    setTimeout(() => renderAllCharts(), 50);
+                if (resizer.classList.contains('dragging')) {
+                    resizer.classList.remove('dragging');
+                    setTimeout(() => renderAllCharts(), 100);
                 }
             });
         }
