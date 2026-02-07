@@ -3024,19 +3024,11 @@
                     byDate[r.date] += r[metric] || 0;
                 });
                 const dates = Object.keys(byDate).sort();
-                // Smart labels: show "Mon D" on first of month or first point, otherwise just "D"
-                let lastMonth = null;
-                const labels = dates.map((d, i) => {
+                // Always show "Mon D" format - Chart.js will auto-skip for readability
+                const labels = dates.map(d => {
                     const parts = d.split('-');
-                    const month = parseInt(parts[1]);
-                    const day = parseInt(parts[2]);
-                    const dt = new Date(parts[0], month - 1, day);
-                    if (i === 0 || day === 1 || month !== lastMonth) {
-                        lastMonth = month;
-                        return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                    }
-                    lastMonth = month;
-                    return day.toString();
+                    const dt = new Date(parts[0], parseInt(parts[1]) - 1, parseInt(parts[2]));
+                    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
                 });
                 return {
                     labels,
@@ -3057,20 +3049,11 @@
                 byDate[r.date] += r[metric] || 0;
             });
             const dates = Object.keys(byDate).sort();
-            // Smart labels: show "Mon D" on first of month or first point, otherwise just "D"
-            let lastMonth = null;
-            const labels = dates.map((d, i) => {
+            // Always show "Mon D" format - Chart.js will auto-skip for readability
+            const labels = dates.map(d => {
                 const parts = d.split('-');
-                const month = parseInt(parts[1]);
-                const day = parseInt(parts[2]);
-                const dt = new Date(parts[0], month - 1, day);
-                // Show month on first point, first of month, or when month changes
-                if (i === 0 || day === 1 || month !== lastMonth) {
-                    lastMonth = month;
-                    return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-                }
-                lastMonth = month;
-                return day.toString();
+                const dt = new Date(parts[0], parseInt(parts[1]) - 1, parseInt(parts[2]));
+                return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             });
             return {
                 labels,
