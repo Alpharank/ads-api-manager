@@ -1501,6 +1501,10 @@
                             <div class="kpi-chip-label">Funded</div>
                             <div class="kpi-chip-value" id="kpiFunded">0</div>
                         </div>
+                        <div class="kpi-chip" data-key="value" onclick="selectKpiChart('value')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFundedRev" style="display:none;">
+                            <div class="kpi-chip-label">Funded Rev</div>
+                            <div class="kpi-chip-value" id="kpiFundedRev">&mdash;</div>
+                        </div>
                         <div class="kpi-chip" data-key="_cpf" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipCPF" style="display:none;">
                             <div class="kpi-chip-label">CPF</div>
                             <div class="kpi-chip-value" id="kpiCPF">&mdash;</div>
@@ -1512,7 +1516,7 @@
                     </div>
                 </div>
 
-                <!-- Attribution Type Selector -->
+                <!-- Attribution Type Selector (ARCHIVED - multi-model attribution not yet implemented)
                 <div class="attribution-selector" id="attributionSelector">
                     <span class="attribution-label">Attribution Model</span>
                     <div class="attribution-toggle-group">
@@ -1530,6 +1534,7 @@
                         </button>
                     </div>
                 </div>
+                -->
 
                 <!-- Chart Controls -->
                 <div class="chart-controls">
@@ -2202,18 +2207,15 @@
         }
 
         // ── Attribution Model ──
+        /* ARCHIVED - Multi-model attribution not yet implemented
         async function setAttributionModel(model) {
             currentAttributionModel = model;
-
-            // Update button states
             document.querySelectorAll('.attribution-btn').forEach(btn => {
                 btn.classList.toggle('active', btn.dataset.model === model);
             });
-
-            // Reload all data with the new attribution model
-            // This loads daily keyword-level attribution data for the selected model
             await loadData();
         }
+        */
 
         // ── Month Selector ──
         function changeMonth(month) {
@@ -2492,15 +2494,16 @@
             document.getElementById('kpiConversions').textContent = fmtDec(tv);
             document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCur(cpa(tco, tv)) : '\u2014';
 
-            // Show funded-related chips and attribution selector only when first-party data exists
+            // Show funded-related chips when first-party data exists
             const hasFunded = campaignData.some(c => c.funded > 0);
             document.getElementById('kpiChipFunded').style.display = hasFunded ? '' : 'none';
+            document.getElementById('kpiChipFundedRev').style.display = hasFunded ? '' : 'none';
             document.getElementById('kpiChipCPF').style.display = hasFunded ? '' : 'none';
             document.getElementById('kpiChipAFV').style.display = hasFunded ? '' : 'none';
-            document.getElementById('attributionSelector').classList.toggle('visible', hasFunded);
 
             if (hasFunded) {
                 document.getElementById('kpiFunded').textContent = fmtNum(tfunded);
+                document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCur(tval) : '\u2014';
                 document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCur(tco / tfunded) : '\u2014';
                 document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCur(tval / tfunded) : '\u2014';
             }
@@ -2911,6 +2914,7 @@
             _roas: { title: 'ROAS', desc: 'Return on ad spend. Revenue generated per dollar of ad spend. Requires Athena value data. Red if < 1.5\u00D7, green if > 4.0\u00D7.', formula: '(Value \u00F7 Cost) \u2212 1' },
             apps: { title: 'Apps Completed', desc: 'Number of loan or membership applications completed and attributed to ad campaigns via click ID tracking.' },
             funded: { title: 'Funded', desc: 'Number of applications that reached funded status. Attributed via GCLID click tracking from Athena first-party data.' },
+            value: { title: 'Funded Revenue', desc: 'Total dollar value of all funded applications attributed to ad campaigns. Represents actual production/loan amounts from first-party Athena data.' },
             _cpf: { title: 'CPF (Cost Per Funded)', desc: 'Cost to acquire one funded application.', formula: 'Cost ÷ Funded' },
             _avg_funded_value: { title: 'Avg Funded Value', desc: 'Average dollar value per funded application.', formula: 'Value ÷ Funded' },
             search_term: { title: 'Search Term', desc: 'The actual search query that triggered your ad. This is what the user typed into Google.' },
