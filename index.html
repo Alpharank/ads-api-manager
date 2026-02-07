@@ -1081,32 +1081,39 @@
         }
 
         .resize-handle-h {
-            height: 20px;
-            margin: 8px 24px;
+            height: 16px;
+            margin: 4px 24px;
             cursor: ns-resize;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.03) 50%, transparent 100%);
+            background: var(--border);
             border-radius: 8px;
+            opacity: 0.6;
+            transition: all 0.15s ease;
         }
 
         .resize-handle-h::before {
-            content: '⋯';
-            font-size: 20px;
-            letter-spacing: 2px;
-            color: #9ca3af;
+            content: '⋮⋮⋮';
+            font-size: 12px;
+            letter-spacing: 4px;
+            color: #6b7280;
             transition: all 0.15s ease;
         }
 
         .resize-handle-h:hover {
-            background: rgba(41,111,94,0.08);
+            background: var(--teal);
+            opacity: 1;
         }
 
         .resize-handle-h:hover::before,
         .resize-handle-h.dragging::before {
-            color: var(--teal);
-            transform: scaleX(1.2);
+            color: #fff;
+        }
+
+        .resize-handle-h.dragging {
+            background: var(--teal);
+            opacity: 1;
         }
 
         .resize-handle-v {
