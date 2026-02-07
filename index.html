@@ -1497,19 +1497,19 @@
                             <div class="kpi-chip-label">CPA</div>
                             <div class="kpi-chip-value" id="kpiCPA">&mdash;</div>
                         </div>
-                        <div class="kpi-chip" data-key="funded" onclick="selectKpiChart('funded')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFunded" style="display:none;">
+                        <div class="kpi-chip" data-key="funded" onclick="selectKpiChart('funded')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFunded">
                             <div class="kpi-chip-label">Funded</div>
-                            <div class="kpi-chip-value" id="kpiFunded">0</div>
+                            <div class="kpi-chip-value" id="kpiFunded">&mdash;</div>
                         </div>
-                        <div class="kpi-chip" data-key="value" onclick="selectKpiChart('value')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFundedRev" style="display:none;">
+                        <div class="kpi-chip" data-key="value" onclick="selectKpiChart('value')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFundedRev">
                             <div class="kpi-chip-label">Funded Rev</div>
                             <div class="kpi-chip-value" id="kpiFundedRev">&mdash;</div>
                         </div>
-                        <div class="kpi-chip" data-key="_cpf" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipCPF" style="display:none;">
+                        <div class="kpi-chip" data-key="_cpf" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipCPF">
                             <div class="kpi-chip-label">CPF</div>
                             <div class="kpi-chip-value" id="kpiCPF">&mdash;</div>
                         </div>
-                        <div class="kpi-chip" data-key="_avg_funded_value" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipAFV" style="display:none;">
+                        <div class="kpi-chip" data-key="_avg_funded_value" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipAFV">
                             <div class="kpi-chip-label">Avg Fund Val</div>
                             <div class="kpi-chip-value" id="kpiAFV">&mdash;</div>
                         </div>
@@ -2494,19 +2494,11 @@
             document.getElementById('kpiConversions').textContent = fmtDec(tv);
             document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCur(cpa(tco, tv)) : '\u2014';
 
-            // Show funded-related chips when first-party data exists
-            const hasFunded = campaignData.some(c => c.funded > 0);
-            document.getElementById('kpiChipFunded').style.display = hasFunded ? '' : 'none';
-            document.getElementById('kpiChipFundedRev').style.display = hasFunded ? '' : 'none';
-            document.getElementById('kpiChipCPF').style.display = hasFunded ? '' : 'none';
-            document.getElementById('kpiChipAFV').style.display = hasFunded ? '' : 'none';
-
-            if (hasFunded) {
-                document.getElementById('kpiFunded').textContent = fmtNum(tfunded);
-                document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCur(tval) : '\u2014';
-                document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCur(tco / tfunded) : '\u2014';
-                document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCur(tval / tfunded) : '\u2014';
-            }
+            // Always show funded-related chips (they show "—" when no data)
+            document.getElementById('kpiFunded').textContent = tfunded > 0 ? fmtNum(tfunded) : '\u2014';
+            document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCur(tval) : '\u2014';
+            document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCur(tco / tfunded) : '\u2014';
+            document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCur(tval / tfunded) : '\u2014';
         }
 
         function renderTable() {
