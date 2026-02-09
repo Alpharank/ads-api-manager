@@ -24,20 +24,28 @@ try:
 except ImportError:
     sys.exit("Required: pip install boto3 pandas")
 
+import yaml
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
+CLIENTS_CONFIG = PROJECT_ROOT / "config" / "clients.yaml"
 
-# S3 bucket containing first-party attribution data
-S3_BUCKET = "ai.alpharank.core"
 
-# Client ID to S3 folder mapping
-CLIENT_S3_PATHS = {
-    "kitsap_cu": "customers/kitsap/downloads",
-    "californiacoast_cu": "customers/californiacoast/downloads",
-    "commonwealth_one_fcu": "customers/commonwealth/downloads",
-    "firstcommunity_cu": "customers/firstcommunity/downloads",
-    "publicservice_cu": "customers/publicservice/downloads",
-}
+def load_client_s3_paths() -> dict:
+    """Load {client_id: s3_path} from centralized config."""
+    with open(CLIENTS_CONFIG, 'r') as f:
+        clients = yaml.safe_load(f)
+    return {k: v['s3_path'] for k, v in clients.items()}
+
+
+def load_s3_bucket() -> str:
+    """Load S3 bucket from config.yaml, falling back to default."""
+    config_path = PROJECT_ROOT / "config" / "config.yaml"
+    if config_path.exists():
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f) or {}
+        return config.get('aws', {}).get('bucket', 'ai.alpharank.core')
+    return 'ai.alpharank.core'
 
 
 def extract_campaign_id(full_attribution: str) -> str:
@@ -62,9 +70,9 @@ def extract_campaign_id(full_attribution: str) -> str:
     return None
 
 
-def load_dpr_from_s3(s3_client, client_id: str) -> pd.DataFrame:
+def load_dpr_from_s3(s3_client, client_id: str, s3_bucket: str, client_s3_paths: dict) -> pd.DataFrame:
     """Load digital performance ranking data from S3."""
-    s3_path = CLIENT_S3_PATHS.get(client_id)
+    s3_path = client_s3_paths.get(client_id)
     if not s3_path:
         print(f"No S3 path configured for {client_id}")
         return pd.DataFrame()
@@ -78,10 +86,10 @@ def load_dpr_from_s3(s3_client, client_id: str) -> pd.DataFrame:
 
     for key in file_patterns:
         try:
-            response = s3_client.get_object(Bucket=S3_BUCKET, Key=key)
+            response = s3_client.get_object(Bucket=s3_bucket, Key=key)
             content = response['Body'].read().decode('utf-8')
             df = pd.read_csv(StringIO(content))
-            print(f"  Loaded from s3://{S3_BUCKET}/{key}: {len(df)} rows")
+            print(f"  Loaded from s3://{s3_bucket}/{key}: {len(df)} rows")
             return df
         except s3_client.exceptions.NoSuchKey:
             continue
@@ -208,15 +216,25 @@ def main():
     args = parser.parse_args()
 
     s3_client = boto3.client('s3', region_name='us-east-1')
+    s3_bucket = load_s3_bucket()
+    client_s3_paths = load_client_s3_paths()
 
     # Determine clients to process
-    clients = [args.client] if args.client else list(CLIENT_S3_PATHS.keys())
+    clients = [args.client] if args.client else list(client_s3_paths.keys())
 
     # Determine months to process
     if args.month:
         months = [args.month]
     elif args.all_months:
-        months = ['2025-11', '2025-12', '2026-01', '2026-02']
+        # Auto-detect available months from existing data
+        all_months = set()
+        for cid in clients:
+            enriched_dir = DATA_DIR / cid / "enriched"
+            if enriched_dir.exists():
+                for f in enriched_dir.glob("*.csv"):
+                    if not f.stem.startswith('.') and '_' not in f.stem:
+                        all_months.add(f.stem)
+        months = sorted(all_months) if all_months else [datetime.utcnow().strftime('%Y-%m')]
     else:
         months = [datetime.utcnow().strftime('%Y-%m')]
 
@@ -224,7 +242,7 @@ def main():
         print(f"\nProcessing {client_id}...")
 
         # Load DPR data from S3
-        dpr_df = load_dpr_from_s3(s3_client, client_id)
+        dpr_df = load_dpr_from_s3(s3_client, client_id, s3_bucket, client_s3_paths)
         if dpr_df.empty:
             continue
 

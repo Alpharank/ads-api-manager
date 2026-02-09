@@ -13,19 +13,20 @@ from collections import defaultdict
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = PROJECT_ROOT / "output"
 DATA_DIR = PROJECT_ROOT / "data"
 MANIFEST_PATH = PROJECT_ROOT / "data-manifest.json"
+CLIENTS_CONFIG = PROJECT_ROOT / "config" / "clients.yaml"
 
-CLIENTS = [
-    "californiacoast_cu",
-    "commonwealth_one_fcu",
-    "firstcommunity_cu",
-    "kitsap_cu",
-    "publicservice_cu",
-]
+
+def load_client_ids() -> list:
+    """Load client IDs from the centralized clients.yaml config."""
+    with open(CLIENTS_CONFIG, 'r') as f:
+        clients = yaml.safe_load(f)
+    return list(clients.keys())
 
 CAMPAIGN_COLS = ["campaign_id", "campaign_name", "impressions", "clicks", "cost", "conversions"]
 KEYWORD_COLS = ["campaign_id", "campaign_name", "ad_group_id", "ad_group_name", "keyword", "match_type", "impressions", "clicks", "cost", "conversions"]
@@ -123,7 +124,7 @@ def aggregate_keywords(client_id: str) -> dict[str, pd.DataFrame]:
 def main():
     manifest = {}
 
-    for client_id in CLIENTS:
+    for client_id in load_client_ids():
         print(f"Processing {client_id}...")
         available_months = set()
 

@@ -37,10 +37,11 @@ default_args = {
 
 
 def pull_client(client_id: str, **context):
-    """Run the Google Ads pipeline for a single client for yesterday's date."""
+    """Run the Google Ads pipeline for a single client for the execution date."""
     from pipeline.google_ads_to_s3 import GoogleAdsToS3
 
-    yesterday = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
+    # Use Airflow's logical execution date (ds = YYYY-MM-DD)
+    yesterday = context["ds"]
     config_path = os.path.join(PROJECT_ROOT, "config", "config.yaml")
 
     pipeline = GoogleAdsToS3(config_path=config_path)

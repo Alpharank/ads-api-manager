@@ -1,0 +1,45 @@
+# Centralized client list — single source of truth for all scripts and DAGs.
+#
+# Keys are the internal client_id used for file paths, S3 keys, and dashboard tokens.
+# Fields:
+#   name            – human-readable client name
+#   google_ads_id   – Google Ads customer ID (no dashes)
+#   s3_path         – S3 folder for first-party DPR data
+#   athena_id       – client_id in staging.google_ads_campaign_data (may differ from key)
+#   dashboard_token – SHA-256 token for the GitHub Pages dashboard
+
+californiacoast_cu:
+  name: "California Coast Credit Union"
+  google_ads_id: "9001645164"
+  s3_path: "customers/californiacoast/downloads"
+  athena_id: "california_coast_cu"
+  dashboard_token: "0f72e02a2ecb57f724288d7dab4fbbdd2d1640b45ad59e34ff260ed591dad92f"
+  strip_prefix: "Ark Marketing_CCCU_"
+
+commonwealth_one_fcu:
+  name: "CommonWealth One Federal Credit Union"
+  google_ads_id: "7306319113"
+  s3_path: "customers/commonwealth/downloads"
+  athena_id: "commonwealth_one_fcu"
+  dashboard_token: "27579ec0b32f0584b26197dc8e9fb46a190d4ef97a7931a7d71ddd3356b57a5e"
+
+firstcommunity_cu:
+  name: "First Community Credit Union"
+  google_ads_id: "4668771744"
+  s3_path: "customers/firstcommunity/downloads"
+  athena_id: "first_community_cu"
+  dashboard_token: "05979da34c7285484c85deed78e6fd75cefef705b3d9ec87f1c9cd9954475530"
+
+kitsap_cu:
+  name: "Kitsap Credit Union"
+  google_ads_id: "7543892333"
+  s3_path: "customers/kitsap/downloads"
+  athena_id: "kitsap_cu"
+  dashboard_token: "d49d866d6e58accdfc6b0a57099c04d349ceafedcefa8f249d3cee7bd8ebb472"
+
+publicservice_cu:
+  name: "Public Service Credit Union"
+  google_ads_id: "7636280979"
+  s3_path: "customers/publicservice/downloads"
+  athena_id: "public_service_cu"
+  dashboard_token: "92ec66122ab956def432f3ba0d4f5f142db0f211270256bf12fc27beba80fd9a"

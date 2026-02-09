@@ -9,40 +9,43 @@ apps, approved, funded, production, value
 Also creates _first_click.csv and _linear.csv variants.
 """
 
+import argparse
 import os
 import csv
-import random
 from collections import defaultdict
 from datetime import datetime
 
-DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data', 'kitsap_cu')
+def get_data_dir(client_id):
+    """Return the data directory for a given client."""
+    return os.path.join(os.path.dirname(__file__), '..', 'data', client_id)
 
-def load_daily_data(month):
+
+def load_daily_data(data_dir, month):
     """Load daily campaign data."""
-    path = os.path.join(DATA_DIR, 'daily', f'{month}.csv')
+    path = os.path.join(data_dir, 'daily', f'{month}.csv')
     if not os.path.exists(path):
         return []
     with open(path, 'r') as f:
         return list(csv.DictReader(f))
 
-def load_keyword_data(month):
+def load_keyword_data(data_dir, month):
     """Load keyword data."""
-    path = os.path.join(DATA_DIR, 'keywords', f'{month}.csv')
+    path = os.path.join(data_dir, 'keywords', f'{month}.csv')
     if not os.path.exists(path):
         return []
     with open(path, 'r') as f:
         return list(csv.DictReader(f))
 
-def load_enriched_data(month, model=''):
+def load_enriched_data(data_dir, month, model=''):
     """Load monthly enriched campaign data for an attribution model."""
     suffix = f'_{model}' if model else ''
-    path = os.path.join(DATA_DIR, 'enriched', f'{month}{suffix}.csv')
+    path = os.path.join(data_dir, 'enriched', f'{month}{suffix}.csv')
     if not os.path.exists(path):
         return {}
     with open(path, 'r') as f:
         return {r['campaign_id']: r for r in csv.DictReader(f)}
 
-def generate_daily_keyword_attribution(month, model=''):
+def generate_daily_keyword_attribution(data_dir, month, model=''):
     """
     Generate daily keyword-level attribution data.
 
@@ -53,13 +56,19 @@ def generate_daily_keyword_attribution(month, model=''):
     4. Distribute campaign totals to days proportionally by daily cost
     5. Distribute daily totals to keywords proportionally by keyword cost share
     """
-    daily_data = load_daily_data(month)
-    keyword_data = load_keyword_data(month)
-    enriched = load_enriched_data(month, model)
+    daily_data = load_daily_data(data_dir, month)
+    keyword_data = load_keyword_data(data_dir, month)
+    enriched = load_enriched_data(data_dir, month, model)
 
     if not daily_data or not enriched:
         print(f"  Skipping {month} - missing data")
         return []
+
+    # Build campaign_id -> campaign_name lookup (O(1) instead of O(n) per access)
+    campaign_name_lookup = {}
+    for row in daily_data:
+        if row['campaign_id'] not in campaign_name_lookup:
+            campaign_name_lookup[row['campaign_id']] = row.get('campaign_name', '')
 
     # Compute campaign total costs from daily data
     campaign_daily_cost = defaultdict(lambda: defaultdict(float))  # {campaign_id: {date: cost}}
@@ -146,12 +155,7 @@ def generate_daily_keyword_attribution(month, model=''):
                 else:
                     kw_share = kw_cost / kw_total_cost
 
-                # Get campaign name from daily data
-                camp_name = ''
-                for row in daily_data:
-                    if row['campaign_id'] == cid:
-                        camp_name = row['campaign_name']
-                        break
+                camp_name = campaign_name_lookup.get(cid, '')
 
                 output_rows.append({
                     'date': date,
@@ -171,12 +175,12 @@ def generate_daily_keyword_attribution(month, model=''):
     return sorted(output_rows, key=lambda x: (x['date'], x['campaign_id'], x['keyword']))
 
 
-def write_daily_attribution(month, rows, model=''):
+def write_daily_attribution(data_dir, month, rows, model=''):
     """Write daily attribution data to CSV."""
-    os.makedirs(os.path.join(DATA_DIR, 'enriched', 'daily'), exist_ok=True)
+    os.makedirs(os.path.join(data_dir, 'enriched', 'daily'), exist_ok=True)
 
     suffix = f'_{model}' if model else ''
-    path = os.path.join(DATA_DIR, 'enriched', 'daily', f'{month}{suffix}.csv')
+    path = os.path.join(data_dir, 'enriched', 'daily', f'{month}{suffix}.csv')
 
     fieldnames = ['date', 'campaign_id', 'campaign_name', 'ad_group_id', 'ad_group_name',
                   'keyword', 'match_type', 'apps', 'approved', 'funded', 'production', 'value']
@@ -189,29 +193,57 @@ def write_daily_attribution(month, rows, model=''):
     print(f"  Wrote {len(rows)} rows to {path}")
 
 
+def get_available_clients():
+    """List client directories that have enriched data."""
+    data_root = os.path.join(os.path.dirname(__file__), '..', 'data')
+    clients = []
+    for name in sorted(os.listdir(data_root)):
+        enriched = os.path.join(data_root, name, 'enriched')
+        if os.path.isdir(enriched):
+            clients.append(name)
+    return clients
+
+
 def main():
-    # Process available months
-    months = []
-    enriched_dir = os.path.join(DATA_DIR, 'enriched')
-    for f in os.listdir(enriched_dir):
-        if f.endswith('.csv') and not f.startswith('.') and '_' not in f:
-            months.append(f.replace('.csv', ''))
+    parser = argparse.ArgumentParser(description='Generate daily keyword-level attribution data')
+    parser.add_argument('--client', help='Process a specific client_id (default: all clients with enriched data)')
+    args = parser.parse_args()
 
-    months.sort(reverse=True)
+    if args.client:
+        clients = [args.client]
+    else:
+        clients = get_available_clients()
 
-    print(f"Processing months: {months}")
+    if not clients:
+        print("No clients found with enriched data.")
+        return
 
-    for month in months:
-        print(f"\n{month}:")
+    for client_id in clients:
+        data_dir = get_data_dir(client_id)
+        enriched_dir = os.path.join(data_dir, 'enriched')
 
-        # Generate for each attribution model
-        for model in ['', 'first_click', 'linear']:
-            model_name = model if model else 'last_click (default)'
-            print(f"  Generating {model_name}...")
+        if not os.path.isdir(enriched_dir):
+            print(f"Skipping {client_id} — no enriched directory")
+            continue
 
-            rows = generate_daily_keyword_attribution(month, model)
-            if rows:
-                write_daily_attribution(month, rows, model)
+        months = []
+        for f in os.listdir(enriched_dir):
+            if f.endswith('.csv') and not f.startswith('.') and '_' not in f:
+                months.append(f.replace('.csv', ''))
+
+        months.sort(reverse=True)
+
+        print(f"\n=== {client_id} — months: {months} ===")
+
+        for month in months:
+            print(f"\n{month}:")
+            for model in ['', 'first_click', 'linear']:
+                model_name = model if model else 'last_click (default)'
+                print(f"  Generating {model_name}...")
+
+                rows = generate_daily_keyword_attribution(data_dir, month, model)
+                if rows:
+                    write_daily_attribution(data_dir, month, rows, model)
 
 
 if __name__ == '__main__':

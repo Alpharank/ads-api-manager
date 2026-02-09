@@ -110,8 +110,8 @@ class InsightsExporter:
         logger.info(f"Found {len(accounts)} accessible accounts")
         return accounts
 
-    def pull_search_terms(self, customer_id: str, date: str) -> pd.DataFrame:
-        """Pull search terms report for a specific date."""
+    def pull_search_terms(self, customer_id: str, start_date: str, end_date: str) -> pd.DataFrame:
+        """Pull search terms report for a date range."""
         ga_service = self.google_ads_client.get_service("GoogleAdsService")
 
         query = f"""
@@ -129,7 +129,7 @@ class InsightsExporter:
                 metrics.conversions,
                 segments.date
             FROM search_term_view
-            WHERE segments.date = '{date}'
+            WHERE segments.date BETWEEN '{start_date}' AND '{end_date}'
                 AND metrics.impressions > 0
         """
 
@@ -156,8 +156,8 @@ class InsightsExporter:
 
         return pd.DataFrame(rows)
 
-    def pull_network_data(self, customer_id: str, date: str) -> pd.DataFrame:
-        """Pull performance data by ad network/channel."""
+    def pull_network_data(self, customer_id: str, start_date: str, end_date: str) -> pd.DataFrame:
+        """Pull performance data by ad network/channel for a date range."""
         ga_service = self.google_ads_client.get_service("GoogleAdsService")
 
         query = f"""
@@ -169,11 +169,10 @@ class InsightsExporter:
                 metrics.conversions,
                 segments.date
             FROM campaign
-            WHERE segments.date = '{date}'
+            WHERE segments.date BETWEEN '{start_date}' AND '{end_date}'
                 AND metrics.impressions > 0
         """
 
-        # Aggregate by network
         network_agg = {}
         try:
             response = ga_service.search(customer_id=customer_id, query=query)
@@ -196,8 +195,8 @@ class InsightsExporter:
 
         return pd.DataFrame(list(network_agg.values()))
 
-    def pull_device_data(self, customer_id: str, date: str) -> pd.DataFrame:
-        """Pull performance data by device type."""
+    def pull_device_data(self, customer_id: str, start_date: str, end_date: str) -> pd.DataFrame:
+        """Pull performance data by device type for a date range."""
         ga_service = self.google_ads_client.get_service("GoogleAdsService")
 
         query = f"""
@@ -209,11 +208,10 @@ class InsightsExporter:
                 metrics.conversions,
                 segments.date
             FROM campaign
-            WHERE segments.date = '{date}'
+            WHERE segments.date BETWEEN '{start_date}' AND '{end_date}'
                 AND metrics.impressions > 0
         """
 
-        # Aggregate by device
         device_agg = {}
         try:
             response = ga_service.search(customer_id=customer_id, query=query)
@@ -236,8 +234,8 @@ class InsightsExporter:
 
         return pd.DataFrame(list(device_agg.values()))
 
-    def pull_location_data(self, customer_id: str, date: str) -> pd.DataFrame:
-        """Pull performance data by geographic location."""
+    def pull_location_data(self, customer_id: str, start_date: str, end_date: str) -> pd.DataFrame:
+        """Pull performance data by geographic location for a date range."""
         ga_service = self.google_ads_client.get_service("GoogleAdsService")
 
         query = f"""
@@ -252,7 +250,7 @@ class InsightsExporter:
                 segments.geo_target_region,
                 segments.geo_target_city
             FROM geographic_view
-            WHERE segments.date = '{date}'
+            WHERE segments.date BETWEEN '{start_date}' AND '{end_date}'
                 AND metrics.impressions > 0
         """
 
@@ -260,7 +258,6 @@ class InsightsExporter:
         try:
             response = ga_service.search(customer_id=customer_id, query=query)
             for row in response:
-                # Try to get a readable location name
                 location = row.segments.geo_target_city or row.segments.geo_target_region or f"Location {row.geographic_view.country_criterion_id}"
                 rows.append({
                     'location': location,
@@ -271,10 +268,8 @@ class InsightsExporter:
                     'conversions': row.metrics.conversions
                 })
         except GoogleAdsException as e:
-            # geographic_view might not be available for all campaign types
             logger.warning(f"Error pulling location data for {customer_id}: {e}")
 
-        # Aggregate by location
         if rows:
             df = pd.DataFrame(rows)
             return df.groupby('location', as_index=False).agg({
@@ -298,76 +293,28 @@ class InsightsExporter:
         logger.info(f"  {data_type}/{month}.csv: {len(df)} rows")
 
     def process_account_month(self, account: Dict, month: str):
-        """Process a single account for an entire month."""
+        """Process a single account for an entire month using date-range queries."""
+        import calendar
+
         customer_id = account['customer_id']
         client_id = account['client_id']
 
         logger.info(f"Processing {account['name']} ({client_id}) for {month}")
 
-        # Calculate date range for the month
         year, mo = month.split('-')
-        import calendar
         last_day = calendar.monthrange(int(year), int(mo))[1]
         start_date = f"{year}-{mo}-01"
         end_date = f"{year}-{mo}-{last_day:02d}"
 
-        # Aggregate data for the month
-        search_terms_all = []
-        network_all = {}
-        device_all = {}
-        location_all = {}
+        # Fetch all data with date-range queries (4 API calls instead of 4*days)
+        st_df = self.pull_search_terms(customer_id, start_date, end_date)
+        net_df = self.pull_network_data(customer_id, start_date, end_date)
+        dev_df = self.pull_device_data(customer_id, start_date, end_date)
+        loc_df = self.pull_location_data(customer_id, start_date, end_date)
 
-        current = datetime.strptime(start_date, '%Y-%m-%d')
-        end = datetime.strptime(end_date, '%Y-%m-%d')
-
-        while current <= end:
-            date_str = current.strftime('%Y-%m-%d')
-
-            # Search terms
-            st_df = self.pull_search_terms(customer_id, date_str)
-            if not st_df.empty:
-                search_terms_all.append(st_df)
-
-            # Network data - aggregate
-            net_df = self.pull_network_data(customer_id, date_str)
-            for _, row in net_df.iterrows():
-                key = row['network']
-                if key not in network_all:
-                    network_all[key] = {'network': key, 'impressions': 0, 'clicks': 0, 'cost': 0, 'conversions': 0}
-                network_all[key]['impressions'] += row['impressions']
-                network_all[key]['clicks'] += row['clicks']
-                network_all[key]['cost'] += row['cost']
-                network_all[key]['conversions'] += row['conversions']
-
-            # Device data - aggregate
-            dev_df = self.pull_device_data(customer_id, date_str)
-            for _, row in dev_df.iterrows():
-                key = row['device']
-                if key not in device_all:
-                    device_all[key] = {'device': key, 'impressions': 0, 'clicks': 0, 'cost': 0, 'conversions': 0}
-                device_all[key]['impressions'] += row['impressions']
-                device_all[key]['clicks'] += row['clicks']
-                device_all[key]['cost'] += row['cost']
-                device_all[key]['conversions'] += row['conversions']
-
-            # Location data - aggregate
-            loc_df = self.pull_location_data(customer_id, date_str)
-            for _, row in loc_df.iterrows():
-                key = row['location']
-                if key not in location_all:
-                    location_all[key] = {'location': key, 'impressions': 0, 'clicks': 0, 'cost': 0, 'conversions': 0}
-                location_all[key]['impressions'] += row['impressions']
-                location_all[key]['clicks'] += row['clicks']
-                location_all[key]['cost'] += row['cost']
-                location_all[key]['conversions'] += row['conversions']
-
-            current += timedelta(days=1)
-
-        # Save aggregated data
-        if search_terms_all:
-            combined_st = pd.concat(search_terms_all, ignore_index=True)
-            # Aggregate search terms by search_term + keyword + campaign
-            agg_st = combined_st.groupby(
+        # Save search terms (aggregate by search_term + keyword + campaign)
+        if not st_df.empty:
+            agg_st = st_df.groupby(
                 ['search_term', 'keyword', 'match_type', 'campaign_id', 'campaign_name', 'ad_group_id', 'ad_group_name'],
                 as_index=False
             ).agg({
@@ -380,9 +327,9 @@ class InsightsExporter:
         else:
             self.save_data(pd.DataFrame(), client_id, 'search_terms', month)
 
-        self.save_data(pd.DataFrame(list(network_all.values())), client_id, 'channels', month)
-        self.save_data(pd.DataFrame(list(device_all.values())), client_id, 'devices', month)
-        self.save_data(pd.DataFrame(list(location_all.values())), client_id, 'locations', month)
+        self.save_data(net_df, client_id, 'channels', month)
+        self.save_data(dev_df, client_id, 'devices', month)
+        self.save_data(loc_df, client_id, 'locations', month)
 
     def run(self, month: str = None, client_filter: Optional[str] = None):
         """Run the export for a specific month."""

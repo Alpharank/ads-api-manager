@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AlphaRank Ads Dashboard</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha384-D/t0ZMqQW31H3az8ktEiNb39wyKnS82iFY52QPACM+IjKW3jDUhyIgh2PApRqJZs" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -1336,6 +1336,77 @@
             .sidebar-item { padding: 0 18px; justify-content: center; }
             .sidebar-section-label { display: none; }
             :root { --sidebar-width: 56px; }
+            .kpi-strip-inner { flex-wrap: wrap; }
+            .kpi-chip { min-width: 110px; }
+            .toolbar { flex-wrap: wrap; }
+            .filter-input { width: 100%; min-width: 0; }
+        }
+
+        @media (max-width: 640px) {
+            /* Hide sidebar entirely on small screens */
+            .sidebar { display: none; }
+            :root { --sidebar-width: 0px; }
+
+            /* Header adjustments */
+            .top-header {
+                padding: 0 12px;
+                gap: 8px;
+                flex-wrap: wrap;
+                height: auto;
+                min-height: var(--header-height);
+                padding-top: 8px;
+                padding-bottom: 8px;
+            }
+            .header-logo .wordmark { font-size: 16px; letter-spacing: 1px; }
+            .header-divider { display: none; }
+            .top-header .client-name { font-size: 13px; flex-basis: 100%; order: 10; }
+            .date-range-group { flex-wrap: wrap; }
+            .date-range-toggle { flex-wrap: wrap; }
+
+            /* Body scroll */
+            body { overflow: auto; height: auto; }
+            .dashboard.active { height: auto; min-height: 100vh; }
+
+            /* KPI strip */
+            .kpi-strip { padding: 12px; }
+            .kpi-strip-inner { flex-wrap: wrap; border-radius: 8px; }
+            .kpi-chip { min-width: 0; flex: 1 1 calc(50% - 1px); padding: 10px 14px; }
+            .kpi-chip-value { font-size: 18px; }
+            .kpi-chip-label { font-size: 10px; }
+
+            /* View title, breadcrumb */
+            .view-title-bar { padding: 14px 12px 0; font-size: 18px; }
+            .breadcrumb-bar { padding: 8px 12px; }
+            .dict-toggle-row { padding: 6px 12px 10px; }
+
+            /* Table card */
+            .table-card { margin: 0 8px 16px; border-radius: 8px; }
+            .toolbar { padding: 8px 10px; gap: 8px; }
+            .filter-input { width: 100%; min-width: 0; }
+
+            /* Table horizontal scroll */
+            .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            table { min-width: 700px; }
+
+            /* Widget/chart cards */
+            .widget-row { padding: 0 8px 8px; grid-template-columns: 1fr; }
+            .chart-card { padding: 14px; }
+            .chart-card-value { font-size: 20px; }
+
+            /* Attribution selector */
+            .attribution-selector.visible { flex-wrap: wrap; padding: 0 12px 10px; }
+            .attribution-toggle-group { flex-wrap: wrap; }
+
+            /* Data dictionary */
+            .data-dict-panel { margin: 0 8px 12px; padding: 14px; }
+            .dict-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 400px) {
+            .top-header .month-select { width: 100%; }
+            .kpi-chip { flex: 1 1 100%; }
+            table { min-width: 560px; font-size: 12px; }
+            td, th { padding: 6px 8px; }
         }
     </style>
 </head>
@@ -1791,14 +1862,38 @@
             return '';
         }
 
+        // ── Client config (embedded to prevent public token enumeration) ──
+        const _clientMap = {
+            "0f72e02a2ecb57f724288d7dab4fbbdd2d1640b45ad59e34ff260ed591dad92f": {
+                "id": "californiacoast_cu",
+                "name": "California Coast Credit Union",
+                "stripPrefix": "Ark Marketing_CCCU_"
+            },
+            "27579ec0b32f0584b26197dc8e9fb46a190d4ef97a7931a7d71ddd3356b57a5e": {
+                "id": "commonwealth_one_fcu",
+                "name": "CommonWealth One Federal Credit Union"
+            },
+            "05979da34c7285484c85deed78e6fd75cefef705b3d9ec87f1c9cd9954475530": {
+                "id": "firstcommunity_cu",
+                "name": "First Community Credit Union"
+            },
+            "d49d866d6e58accdfc6b0a57099c04d349ceafedcefa8f249d3cee7bd8ebb472": {
+                "id": "kitsap_cu",
+                "name": "Kitsap Credit Union"
+            },
+            "92ec66122ab956def432f3ba0d4f5f142db0f211270256bf12fc27beba80fd9a": {
+                "id": "publicservice_cu",
+                "name": "Public Service Credit Union"
+            }
+        };
+
         // ── Init ──
         async function init() {
             try {
                 const token = new URLSearchParams(window.location.search).get('client');
                 if (!token) { showError('Missing client parameter. URL should include ?client=YOUR_TOKEN'); return; }
 
-                const clients = await (await fetch('clients.json')).json();
-                clientConfig = clients[token];
+                clientConfig = _clientMap[token];
                 if (!clientConfig) { showError('Invalid client token.'); return; }
 
                 dataManifest = await (await fetch('data-manifest.json')).json();
@@ -2382,33 +2477,50 @@
 
         function updateBreadcrumb() {
             const bar = document.getElementById('breadcrumbBar');
-            let h = '';
-            if (currentLevel === 'campaigns') {
-                h = '<span class="breadcrumb-current">All campaigns</span>';
-            } else if (currentLevel === 'adgroups') {
-                h = '<a onclick="navigateToLevel(\'campaigns\')">All campaigns</a>';
-                h += '<span class="breadcrumb-sep">&#8250;</span>';
-                h += selectedCampaign
-                    ? `<span class="breadcrumb-current">${escapeHtml(displayName(selectedCampaign.campaign_name))}</span>`
-                    : '<span class="breadcrumb-current">All ad groups</span>';
-            } else if (currentLevel === 'keywords') {
-                h = '<a onclick="navigateToLevel(\'campaigns\')">All campaigns</a>';
-                h += '<span class="breadcrumb-sep">&#8250;</span>';
-                if (selectedCampaign) {
-                    h += `<a onclick="drillIntoCampaign('${selectedCampaign.campaign_name.replace(/'/g, "\\'")}','${selectedCampaign.campaign_id}')">${escapeHtml(displayName(selectedCampaign.campaign_name))}</a>`;
-                    h += '<span class="breadcrumb-sep">&#8250;</span>';
-                }
-                h += selectedAdGroup
-                    ? `<span class="breadcrumb-current">${escapeHtml(selectedAdGroup.ad_group_name)}</span>`
-                    : '<span class="breadcrumb-current">All keywords</span>';
-            } else if (currentLevel === 'searchterms') {
-                h = '<span class="breadcrumb-current">Search terms</span>';
-            } else if (currentLevel === 'channels') {
-                h = '<span class="breadcrumb-current">Channel performance</span>';
-            } else if (currentLevel === 'whenwhere') {
-                h = '<span class="breadcrumb-current">When & Where</span>';
+            bar.innerHTML = '';
+
+            function makeLink(text, handler) {
+                const a = document.createElement('a');
+                a.textContent = text;
+                a.addEventListener('click', handler);
+                return a;
             }
-            bar.innerHTML = h;
+            function makeSep() {
+                const s = document.createElement('span');
+                s.className = 'breadcrumb-sep';
+                s.innerHTML = '&#8250;';
+                return s;
+            }
+            function makeCurrent(text) {
+                const s = document.createElement('span');
+                s.className = 'breadcrumb-current';
+                s.textContent = text;
+                return s;
+            }
+
+            if (currentLevel === 'campaigns') {
+                bar.appendChild(makeCurrent('All campaigns'));
+            } else if (currentLevel === 'adgroups') {
+                bar.appendChild(makeLink('All campaigns', () => navigateToLevel('campaigns')));
+                bar.appendChild(makeSep());
+                bar.appendChild(makeCurrent(selectedCampaign ? displayName(selectedCampaign.campaign_name) : 'All ad groups'));
+            } else if (currentLevel === 'keywords') {
+                bar.appendChild(makeLink('All campaigns', () => navigateToLevel('campaigns')));
+                bar.appendChild(makeSep());
+                if (selectedCampaign) {
+                    const campName = selectedCampaign.campaign_name;
+                    const campId = selectedCampaign.campaign_id;
+                    bar.appendChild(makeLink(displayName(campName), () => drillIntoCampaign(campName, campId)));
+                    bar.appendChild(makeSep());
+                }
+                bar.appendChild(makeCurrent(selectedAdGroup ? selectedAdGroup.ad_group_name : 'All keywords'));
+            } else if (currentLevel === 'searchterms') {
+                bar.appendChild(makeCurrent('Search terms'));
+            } else if (currentLevel === 'channels') {
+                bar.appendChild(makeCurrent('Channel performance'));
+            } else if (currentLevel === 'whenwhere') {
+                bar.appendChild(makeCurrent('When & Where'));
+            }
         }
 
         function updateViewTitle() {

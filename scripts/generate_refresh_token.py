@@ -8,6 +8,8 @@ Run this script to get a refresh token:
 Requires our OAuth Client ID and Client Secret from Google Cloud Console.
 """
 
+import os
+
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 # Google Ads API scope
@@ -45,14 +47,27 @@ def main():
 
     print()
     print("=" * 60)
-    print("SUCCESS! Here's the refresh token:")
+    print("SUCCESS! Refresh token obtained.")
     print("=" * 60)
     print()
-    print(f"Refresh Token: {credentials.refresh_token}")
-    print()
-    print("Add this to the config.yaml file:")
-    print()
-    print(f'  refresh_token: "{credentials.refresh_token}"')
+
+    # Write directly to config if it exists, otherwise prompt
+    config_path = os.path.join(os.path.dirname(__file__), '..', 'config', 'config.yaml')
+    if os.path.exists(config_path):
+        import yaml
+        with open(config_path, 'r') as f:
+            config = yaml.safe_load(f) or {}
+        config.setdefault('google_ads', {})['refresh_token'] = credentials.refresh_token
+        with open(config_path, 'w') as f:
+            yaml.dump(config, f, default_flow_style=False)
+        print(f"Refresh token written to {config_path}")
+    else:
+        # Fall back to clipboard/masked output
+        print("config.yaml not found. Token (copy it now — it will not be shown again):")
+        print()
+        print(credentials.refresh_token)
+        print()
+        print("Add to config/config.yaml under google_ads.refresh_token")
     print()
 
 

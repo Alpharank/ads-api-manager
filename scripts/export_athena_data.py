@@ -25,6 +25,7 @@ import time
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 try:
     import boto3
@@ -47,15 +48,14 @@ AWS_REGION = "us-east-1"
 # To get first_click/linear attribution, the pipeline would need to recompute
 # customer journeys under each model and store separate attribution outputs.
 
-# Client IDs must match the partition values in staging.google_ads_campaign_data
-# These are the client_id values from prod.application_data, typically snake_case
-CLIENTS = [
-    "california_coast_cu",
-    "commonwealth_one_fcu",
-    "first_community_cu",
-    "kitsap_cu",
-    "public_service_cu",
-]
+CLIENTS_CONFIG = PROJECT_ROOT / "config" / "clients.yaml"
+
+
+def load_athena_clients() -> dict:
+    """Load clients config, returning {athena_id: client_id} mapping."""
+    with open(CLIENTS_CONFIG, 'r') as f:
+        clients = yaml.safe_load(f)
+    return {v['athena_id']: k for k, v in clients.items()}
 
 # Campaign-level query with value/production/apps/funded
 # Mirrors the Athena query from staging.google_ads_campaign_data
@@ -72,8 +72,8 @@ WITH campaign_level AS (
     sum(production)    AS production,
     sum("value")       AS "value"
   FROM staging.google_ads_campaign_data
-  WHERE day BETWEEN date'{start_date}' AND date'{end_date}'
-    AND client_id = '{client_id}'
+  WHERE day BETWEEN date ? AND date ?
+    AND client_id = ?
   GROUP BY campaign_id, campaign
 )
 SELECT
@@ -101,24 +101,39 @@ SELECT
     SUM(lifetime_value) AS total_ltv,
     AVG(lifetime_value) AS avg_ltv
 FROM digital_lending_value_by_source
-WHERE client_id = '{client_id}'
-  AND month = '{month}'
+WHERE client_id = ?
+  AND month = ?
 GROUP BY source
 ORDER BY total_ltv DESC
 """
 
 
-def run_athena_query(client: "boto3.client", query: str) -> str:
+ATHENA_QUERY_TIMEOUT_SECONDS = 300  # 5 minutes
+
+
+def run_athena_query(client: "boto3.client", query: str, params: list = None) -> str:
     """Submit an Athena query and wait for completion. Returns query execution ID."""
-    response = client.start_query_execution(
+    kwargs = dict(
         QueryString=query,
         QueryExecutionContext={"Database": ATHENA_DATABASE},
         WorkGroup=ATHENA_WORKGROUP,
         ResultConfiguration={"OutputLocation": ATHENA_OUTPUT_BUCKET},
     )
+    if params:
+        kwargs["ExecutionParameters"] = params
+
+    response = client.start_query_execution(**kwargs)
     execution_id = response["QueryExecutionId"]
 
+    start_time = time.monotonic()
     while True:
+        elapsed = time.monotonic() - start_time
+        if elapsed > ATHENA_QUERY_TIMEOUT_SECONDS:
+            client.stop_query_execution(QueryExecutionId=execution_id)
+            raise RuntimeError(
+                f"Athena query timed out after {ATHENA_QUERY_TIMEOUT_SECONDS}s "
+                f"(execution_id={execution_id})"
+            )
         result = client.get_query_execution(QueryExecutionId=execution_id)
         state = result["QueryExecution"]["Status"]["State"]
         if state in ("SUCCEEDED",):
@@ -126,7 +141,7 @@ def run_athena_query(client: "boto3.client", query: str) -> str:
         if state in ("FAILED", "CANCELLED"):
             reason = result["QueryExecution"]["Status"].get("StateChangeReason", "Unknown")
             raise RuntimeError(f"Athena query {state}: {reason}")
-        time.sleep(1)
+        time.sleep(2)
 
 
 def fetch_results(client: "boto3.client", execution_id: str) -> pd.DataFrame:
@@ -150,34 +165,34 @@ def fetch_results(client: "boto3.client", execution_id: str) -> pd.DataFrame:
     return pd.DataFrame(rows, columns=columns)
 
 
-def export_enriched(client_id: str, month: str, athena_client: "boto3.client") -> None:
-    """Export enriched campaign data for a client/month."""
-    # Calculate date range for the month
+def export_enriched(athena_id: str, dashboard_id: str, month: str, athena_client: "boto3.client") -> None:
+    """Export enriched campaign data for a client/month.
+
+    Args:
+        athena_id: The client_id used in the Athena partition (e.g. 'california_coast_cu').
+        dashboard_id: The client_id used for dashboard file paths (e.g. 'californiacoast_cu').
+    """
+    import calendar
+
     year, mo = month.split("-")
     start_date = f"{year}-{mo}-01"
-    # Get last day of month
-    import calendar
     last_day = calendar.monthrange(int(year), int(mo))[1]
     end_date = f"{year}-{mo}-{last_day:02d}"
 
-    query = CAMPAIGN_QUERY.format(
-        client_id=client_id,
-        start_date=start_date,
-        end_date=end_date
+    execution_id = run_athena_query(
+        athena_client, CAMPAIGN_QUERY, params=[start_date, end_date, athena_id]
     )
-    execution_id = run_athena_query(athena_client, query)
     df = fetch_results(athena_client, execution_id)
 
     if df.empty:
-        print(f"  No enriched data for {client_id}/{month}")
+        print(f"  No enriched data for {athena_id}/{month}")
         return
 
-    # Convert numeric columns
     for col in ["clicks", "cost", "apps", "approved", "funded", "production", "value", "roas", "cpf", "avg_funded_value"]:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce")
 
-    out_dir = DATA_DIR / client_id / "enriched"
+    out_dir = DATA_DIR / dashboard_id / "enriched"
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{month}.csv"
     df.to_csv(out_path, index=False)
@@ -186,8 +201,9 @@ def export_enriched(client_id: str, month: str, athena_client: "boto3.client") -
 
 def export_ltv(client_id: str, month: str, athena_client: "boto3.client") -> None:
     """Export LTV data for a client/month."""
-    query = LTV_QUERY.format(client_id=client_id, month=month)
-    execution_id = run_athena_query(athena_client, query)
+    execution_id = run_athena_query(
+        athena_client, LTV_QUERY, params=[client_id, month]
+    )
     df = fetch_results(athena_client, execution_id)
 
     if df.empty:
@@ -235,10 +251,11 @@ def main():
         from datetime import datetime
         month = datetime.utcnow().strftime("%Y-%m")
 
-    for client_id in CLIENTS:
-        print(f"Processing {client_id} for {month}...")
-        export_enriched(client_id, month, athena_client)
-        export_ltv(client_id, month, athena_client)
+    athena_clients = load_athena_clients()  # {athena_id: dashboard_client_id}
+    for athena_id, dashboard_id in athena_clients.items():
+        print(f"Processing {athena_id} (-> {dashboard_id}) for {month}...")
+        export_enriched(athena_id, dashboard_id, month, athena_client)
+        export_ltv(athena_id, month, athena_client)
 
     print("\nDone!")
 

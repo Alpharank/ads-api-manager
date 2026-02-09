@@ -14,8 +14,9 @@ Usage:
 import argparse
 import logging
 import os
+import re
+import time
 from datetime import datetime, timedelta
-from io import StringIO
 from typing import Dict, List, Optional
 
 import boto3
@@ -30,6 +31,25 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+MAX_RETRIES = 3
+RETRY_BASE_DELAY = 5  # seconds
+
+
+def _validate_date(date_str: str) -> str:
+    """Validate and return a YYYY-MM-DD date string."""
+    if not _DATE_RE.match(date_str):
+        raise ValueError(f"Invalid date format: {date_str!r}. Expected YYYY-MM-DD.")
+    # Verify it's a real date
+    datetime.strptime(date_str, "%Y-%m-%d")
+    return date_str
+
+
+class GoogleAdsApiError(Exception):
+    """Raised when a Google Ads API call fails (distinct from empty results)."""
+    pass
 
 
 class GoogleAdsToS3:
@@ -95,9 +115,27 @@ class GoogleAdsToS3:
         logger.info(f"Found {len(accounts)} accessible accounts")
         return accounts
 
+    def _search_with_retry(self, customer_id: str, query: str, label: str):
+        """Execute a Google Ads search with exponential backoff retry."""
+        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+        for attempt in range(1, MAX_RETRIES + 1):
+            try:
+                return ga_service.search(customer_id=customer_id, query=query)
+            except GoogleAdsException as e:
+                if attempt == MAX_RETRIES:
+                    raise GoogleAdsApiError(
+                        f"Failed to pull {label} for {customer_id} after {MAX_RETRIES} attempts: {e}"
+                    ) from e
+                delay = RETRY_BASE_DELAY * (2 ** (attempt - 1))
+                logger.warning(
+                    f"Attempt {attempt}/{MAX_RETRIES} failed for {label} "
+                    f"({customer_id}), retrying in {delay}s: {e}"
+                )
+                time.sleep(delay)
+
     def pull_campaign_data(self, customer_id: str, date: str) -> pd.DataFrame:
         """Pull campaign performance data for a specific date."""
-        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+        safe_date = _validate_date(date)
 
         query = f"""
             SELECT
@@ -110,32 +148,29 @@ class GoogleAdsToS3:
                 metrics.conversions,
                 segments.date
             FROM campaign
-            WHERE segments.date = '{date}'
+            WHERE segments.date = '{safe_date}'
                 AND metrics.impressions > 0
         """
 
         rows = []
-        try:
-            response = ga_service.search(customer_id=customer_id, query=query)
-            for row in response:
-                rows.append({
-                    'date': row.segments.date,
-                    'campaign_id': str(row.campaign.id),
-                    'campaign_name': row.campaign.name,
-                    'campaign_status': row.campaign.status.name,
-                    'impressions': row.metrics.impressions,
-                    'clicks': row.metrics.clicks,
-                    'cost': row.metrics.cost_micros / 1_000_000,  # Convert to dollars
-                    'conversions': row.metrics.conversions
-                })
-        except GoogleAdsException as e:
-            logger.error(f"Error pulling campaign data for {customer_id}: {e}")
+        response = self._search_with_retry(customer_id, query, "campaign data")
+        for row in response:
+            rows.append({
+                'date': row.segments.date,
+                'campaign_id': str(row.campaign.id),
+                'campaign_name': row.campaign.name,
+                'campaign_status': row.campaign.status.name,
+                'impressions': row.metrics.impressions,
+                'clicks': row.metrics.clicks,
+                'cost': row.metrics.cost_micros / 1_000_000,
+                'conversions': row.metrics.conversions
+            })
 
         return pd.DataFrame(rows)
 
     def pull_keyword_data(self, customer_id: str, date: str) -> pd.DataFrame:
         """Pull keyword performance data for a specific date."""
-        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+        safe_date = _validate_date(date)
 
         query = f"""
             SELECT
@@ -151,36 +186,32 @@ class GoogleAdsToS3:
                 metrics.conversions,
                 segments.date
             FROM keyword_view
-            WHERE segments.date = '{date}'
+            WHERE segments.date = '{safe_date}'
                 AND metrics.impressions > 0
         """
 
         rows = []
-        try:
-            response = ga_service.search(customer_id=customer_id, query=query)
-            for row in response:
-                rows.append({
-                    'date': row.segments.date,
-                    'campaign_id': str(row.campaign.id),
-                    'campaign_name': row.campaign.name,
-                    'ad_group_id': str(row.ad_group.id),
-                    'ad_group_name': row.ad_group.name,
-                    'keyword': row.ad_group_criterion.keyword.text,
-                    'match_type': row.ad_group_criterion.keyword.match_type.name,
-                    'impressions': row.metrics.impressions,
-                    'clicks': row.metrics.clicks,
-                    'cost': row.metrics.cost_micros / 1_000_000,
-                    'conversions': row.metrics.conversions
-                })
-        except GoogleAdsException as e:
-            # keyword_view might not exist for display campaigns, etc.
-            logger.warning(f"Error pulling keyword data for {customer_id}: {e}")
+        response = self._search_with_retry(customer_id, query, "keyword data")
+        for row in response:
+            rows.append({
+                'date': row.segments.date,
+                'campaign_id': str(row.campaign.id),
+                'campaign_name': row.campaign.name,
+                'ad_group_id': str(row.ad_group.id),
+                'ad_group_name': row.ad_group.name,
+                'keyword': row.ad_group_criterion.keyword.text,
+                'match_type': row.ad_group_criterion.keyword.match_type.name,
+                'impressions': row.metrics.impressions,
+                'clicks': row.metrics.clicks,
+                'cost': row.metrics.cost_micros / 1_000_000,
+                'conversions': row.metrics.conversions
+            })
 
         return pd.DataFrame(rows)
 
     def pull_click_data(self, customer_id: str, date: str) -> pd.DataFrame:
         """Pull click-level data with GCLIDs for a specific date."""
-        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+        safe_date = _validate_date(date)
 
         query = f"""
             SELECT
@@ -198,29 +229,26 @@ class GoogleAdsToS3:
                 segments.date,
                 segments.ad_network_type
             FROM click_view
-            WHERE segments.date = '{date}'
+            WHERE segments.date = '{safe_date}'
         """
 
         rows = []
-        try:
-            response = ga_service.search(customer_id=customer_id, query=query)
-            for row in response:
-                rows.append({
-                    'date': row.segments.date,
-                    'gclid': row.click_view.gclid,
-                    'keyword': row.click_view.keyword_info.text,
-                    'match_type': row.click_view.keyword_info.match_type.name if row.click_view.keyword_info.match_type else None,
-                    'campaign_id': str(row.campaign.id),
-                    'campaign_name': row.campaign.name,
-                    'ad_group_id': str(row.ad_group.id),
-                    'ad_group_name': row.ad_group.name,
-                    'network': row.segments.ad_network_type.name,
-                    'city': row.click_view.area_of_interest.city if row.click_view.area_of_interest else None,
-                    'region': row.click_view.area_of_interest.region if row.click_view.area_of_interest else None,
-                    'country': row.click_view.area_of_interest.country if row.click_view.area_of_interest else None
-                })
-        except GoogleAdsException as e:
-            logger.error(f"Error pulling click data for {customer_id}: {e}")
+        response = self._search_with_retry(customer_id, query, "click data")
+        for row in response:
+            rows.append({
+                'date': row.segments.date,
+                'gclid': row.click_view.gclid,
+                'keyword': row.click_view.keyword_info.text,
+                'match_type': row.click_view.keyword_info.match_type.name if row.click_view.keyword_info.match_type else None,
+                'campaign_id': str(row.campaign.id),
+                'campaign_name': row.campaign.name,
+                'ad_group_id': str(row.ad_group.id),
+                'ad_group_name': row.ad_group.name,
+                'network': row.segments.ad_network_type.name,
+                'city': row.click_view.area_of_interest.city if row.click_view.area_of_interest else None,
+                'region': row.click_view.area_of_interest.region if row.click_view.area_of_interest else None,
+                'country': row.click_view.area_of_interest.country if row.click_view.area_of_interest else None
+            })
 
         return pd.DataFrame(rows)
 
@@ -250,7 +278,11 @@ class GoogleAdsToS3:
         logger.info(f"Saved: {local_path} + s3://{self.bucket}/{key} ({len(df)} rows)")
 
     def process_account(self, account: Dict, date: str):
-        """Process a single account for a specific date."""
+        """Process a single account for a specific date.
+
+        Raises GoogleAdsApiError if any data pull fails (API error).
+        Empty results (no data for that date) are handled gracefully.
+        """
         customer_id = account['customer_id']
         client_id = account['client_id']
 
