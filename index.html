@@ -1573,10 +1573,6 @@
                             <div class="kpi-chip-label">Cost</div>
                             <div class="kpi-chip-value" id="kpiCost">$0</div>
                         </div>
-                        <div class="kpi-chip" data-key="conversions" onclick="selectKpiChart('conversions')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
-                            <div class="kpi-chip-label">Conv.</div>
-                            <div class="kpi-chip-value" id="kpiConversions">0</div>
-                        </div>
                         <div class="kpi-chip" data-key="_cpa" onclick="selectKpiChart('_cpa')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
                             <div class="kpi-chip-label">CPA</div>
                             <div class="kpi-chip-value" id="kpiCPA">&mdash;</div>
@@ -1660,8 +1656,10 @@
                     <div class="chart-card" id="convChartCard">
                         <div class="chart-card-header">
                             <div>
-                                <span class="chart-card-title">CONVERSIONS</span>
+                                <span class="chart-card-title">FUNDED</span>
                                 <div class="chart-card-value" id="convChartValue">0</div>
+                                <span class="chart-card-title" style="margin-left:16px;">FUNDED REV</span>
+                                <div class="chart-card-value" id="fundedRevChartValue">$0</div>
                             </div>
                             <button class="chart-expand-btn" onclick="toggleChartExpand('conv')" title="Expand chart">
                                 <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
@@ -2629,7 +2627,6 @@
             document.getElementById('kpiClicks').textContent = fmtNumC(tc);
             document.getElementById('kpiCTR').textContent = fmtPct(ctr(ti, tc));
             document.getElementById('kpiCost').textContent = fmtCurC(tco);
-            document.getElementById('kpiConversions').textContent = fmtDecC(tv);
             document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCurC(cpa(tco, tv)) : '\u2014';
 
             // Always show funded-related chips (they show "—" when no data)
@@ -3369,6 +3366,27 @@
                 });
             }
 
+            // Revenue overlay on funded chart
+            if (metric === 'funded' && hasFundedData() && !isBar) {
+                const revData = getDailyChartData('value');
+                if (revData.values.length) {
+                    datasets.push({
+                        label: 'Funded Rev',
+                        data: revData.values,
+                        borderColor: '#b8963e',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        pointHoverBackgroundColor: '#b8963e',
+                        borderDash: [4, 3],
+                        yAxisID: 'y1'
+                    });
+                }
+            }
+
             const isCurrency = metric === 'cost';
             const scales = {
                 x: {
@@ -3399,7 +3417,21 @@
                 }
             };
 
-            // Add funded axis if needed
+            // Add secondary axis if needed
+            if (metric === 'funded' && hasFundedData() && !isBar) {
+                scales.y1 = {
+                    position: 'right',
+                    grid: { display: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#b8963e',
+                        maxTicksLimit: 5,
+                        callback: function(v) { return '$' + v.toLocaleString(); }
+                    },
+                    border: { display: false },
+                    beginAtZero: true
+                };
+            }
             if (metric === 'cost' && hasFundedData() && !isBar) {
                 scales.y1 = {
                     position: 'right',
@@ -3456,16 +3488,18 @@
         function renderAllCharts() {
             if (convChartInstance) { convChartInstance.destroy(); convChartInstance = null; }
 
-            // Update conversions chart header
+            // Update funded chart header
             const kpiData = getKPIData();
-            const totalConv = kpiData.reduce((s, r) => s + r.conversions, 0);
-            document.getElementById('convChartValue').textContent = fmtDec(totalConv);
+            const totalFunded = kpiData.reduce((s, r) => s + (r.funded || 0), 0);
+            const totalFundedRev = kpiData.reduce((s, r) => s + (r.value || 0), 0);
+            document.getElementById('convChartValue').textContent = fmtNumC(totalFunded);
+            document.getElementById('fundedRevChartValue').textContent = fmtCurC(totalFundedRev);
 
             // Left chart: multi-metric (based on selected KPIs)
             renderMultiMetricChart();
 
-            // Right chart: conversions (gold)
-            convChartInstance = renderSingleChart('convChart', 'conversions', convChartType, fmtDec, '#b8963e');
+            // Right chart: funded (teal) with funded revenue overlay
+            convChartInstance = renderSingleChart('convChart', 'funded', convChartType, fmtNum, '#296f5e');
 
             updateKpiSelected();
         }
