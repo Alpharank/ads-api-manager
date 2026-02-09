@@ -476,9 +476,10 @@
             border: 1px solid var(--border);
             border-right: none;
             background: #fff;
-            min-width: 140px;
+            min-width: 90px;
             position: relative;
             cursor: help;
+            white-space: nowrap;
         }
 
         .kpi-chip:first-child {
@@ -516,6 +517,40 @@
         }
         .kpi-chip.kpi-selected .kpi-chip-label { color: rgba(255,255,255,0.85); }
         .kpi-chip.kpi-selected .kpi-chip-value { color: #fff; }
+
+        /* ── KPI Compact Toggle ── */
+        .kpi-toolbar {
+            display: flex;
+            justify-content: flex-end;
+            padding: 8px 24px 0;
+        }
+
+        .compact-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            font-family: inherit;
+            color: var(--text-secondary);
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .compact-toggle:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .compact-toggle.active {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            color: var(--accent);
+        }
 
         /* ── Attribution Type Selector ── */
         .attribution-selector {
@@ -1366,6 +1401,7 @@
 
             /* KPI strip — horizontal scroll */
             .kpi-strip { padding: 12px 8px; }
+            .kpi-toolbar { padding: 8px 8px 0; }
             .kpi-chip { min-width: 100px; padding: 10px 14px; }
             .kpi-chip-value { font-size: 18px; }
             .kpi-chip-label { font-size: 10px; }
@@ -1499,6 +1535,14 @@
                 <!-- View Title -->
                 <div class="view-title-bar">
                     <span id="viewTitle">Campaigns</span>
+                </div>
+
+                <!-- KPI Compact Toggle -->
+                <div class="kpi-toolbar">
+                    <button class="compact-toggle" id="compactToggle" title="Toggle compact numbers">
+                        <svg viewBox="0 0 20 20" width="14" height="14" fill="currentColor"><path d="M3 4h14v2H3V4zm0 5h8v2H3V9zm0 5h14v2H3v-2z"/></svg>
+                        <span id="compactLabel">Compact</span>
+                    </button>
                 </div>
 
                 <!-- KPI Strip -->
@@ -1784,6 +1828,7 @@
         let sortColumn = 'clicks';
         let sortAscending = false;
         let textFilterValue = '';
+        let compactMode = false;
         let matchFilters = { BROAD: true, PHRASE: true, EXACT: true };
 
         // ── Chart State ──
@@ -1845,6 +1890,15 @@
         function fmtCur(n) { return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
         function fmtPct(n) { return n.toFixed(2) + '%'; }
         function fmtDec(n) { return n.toLocaleString(undefined, { maximumFractionDigits: 1 }); }
+
+        function compactNum(n) {
+            if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (n >= 1e3) return (n / 1e3).toFixed(n >= 1e4 ? 0 : 1).replace(/\.0$/, '') + 'k';
+            return n.toLocaleString();
+        }
+        function fmtNumC(n) { return compactMode ? compactNum(n) : fmtNum(n); }
+        function fmtCurC(n) { return compactMode ? '$' + compactNum(n) : fmtCur(n); }
+        function fmtDecC(n) { return compactMode ? compactNum(n) : fmtDec(n); }
         function ctr(i, c) { return i > 0 ? (c / i) * 100 : 0; }
         function cpc(cost, c) { return c > 0 ? cost / c : 0; }
         function convRate(conv, c) { return c > 0 ? (conv / c) * 100 : 0; }
@@ -2562,18 +2616,18 @@
             const tval = d.reduce((s, r) => s + (r.value || 0), 0);
             const tfunded = d.reduce((s, r) => s + (r.funded || 0), 0);
 
-            document.getElementById('kpiImpressions').textContent = fmtNum(ti);
-            document.getElementById('kpiClicks').textContent = fmtNum(tc);
+            document.getElementById('kpiImpressions').textContent = fmtNumC(ti);
+            document.getElementById('kpiClicks').textContent = fmtNumC(tc);
             document.getElementById('kpiCTR').textContent = fmtPct(ctr(ti, tc));
-            document.getElementById('kpiCost').textContent = fmtCur(tco);
-            document.getElementById('kpiConversions').textContent = fmtDec(tv);
-            document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCur(cpa(tco, tv)) : '\u2014';
+            document.getElementById('kpiCost').textContent = fmtCurC(tco);
+            document.getElementById('kpiConversions').textContent = fmtDecC(tv);
+            document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCurC(cpa(tco, tv)) : '\u2014';
 
             // Always show funded-related chips (they show "—" when no data)
-            document.getElementById('kpiFunded').textContent = tfunded > 0 ? fmtNum(tfunded) : '\u2014';
-            document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCur(tval) : '\u2014';
-            document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCur(tco / tfunded) : '\u2014';
-            document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCur(tval / tfunded) : '\u2014';
+            document.getElementById('kpiFunded').textContent = tfunded > 0 ? fmtNumC(tfunded) : '\u2014';
+            document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCurC(tval) : '\u2014';
+            document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCurC(tco / tfunded) : '\u2014';
+            document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCurC(tval / tfunded) : '\u2014';
         }
 
         function renderTable() {
@@ -3751,6 +3805,12 @@
 
         // Initialize after DOM is ready
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('compactToggle').addEventListener('click', function() {
+                compactMode = !compactMode;
+                this.classList.toggle('active', compactMode);
+                document.getElementById('compactLabel').textContent = compactMode ? 'Full' : 'Compact';
+                updateKPIs();
+            });
             init();
         });
     </script>
