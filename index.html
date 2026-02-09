@@ -3541,6 +3541,27 @@
                 });
             });
 
+            // Add Funded Rev overlay when cost is the primary metric
+            if (hasFundedData() && !isBar && selectedMetrics.includes('cost')) {
+                const revDaily = chartView === 'dow' ? getDailyChartDataByDOW('value') : getDailyChartData('value');
+                if (revDaily.values.length) {
+                    datasets.push({
+                        label: 'Funded Rev',
+                        data: revDaily.values,
+                        borderColor: '#b8963e',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        fill: false,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        pointHoverRadius: 4,
+                        pointHoverBackgroundColor: '#b8963e',
+                        borderDash: [4, 3],
+                        yAxisID: selectedMetrics.length > 1 ? 'y1' : 'yRev'
+                    });
+                }
+            }
+
             // Update chart title and values
             const titleEl = document.querySelector('#spendChartCard .chart-card-title');
             const valueEl = document.getElementById('spendChartValue');
@@ -3595,6 +3616,22 @@
                 }
             };
 
+            // Add Funded Rev right axis when cost is sole metric
+            if (hasFundedData() && !isBar && selectedMetrics.includes('cost') && selectedMetrics.length === 1) {
+                scales.yRev = {
+                    position: 'right',
+                    grid: { display: false },
+                    ticks: {
+                        font: { size: 10, family: 'Inter' },
+                        color: '#b8963e',
+                        maxTicksLimit: 5,
+                        callback: function(v) { return '$' + v.toLocaleString(); }
+                    },
+                    border: { display: false },
+                    beginAtZero: true
+                };
+            }
+
             // Add right axis if multiple metrics
             if (selectedMetrics.length > 1) {
                 scales.y1 = {
@@ -3641,8 +3678,11 @@
                                 },
                                 label: function(c) {
                                     const metricKey = selectedMetrics[c.datasetIndex];
-                                    const cfg = metricConfig[metricKey];
-                                    return c.dataset.label + ': ' + (cfg ? cfg.fmt(c.parsed.y) : c.parsed.y);
+                                    const cfg = metricKey ? metricConfig[metricKey] : null;
+                                    if (cfg) return c.dataset.label + ': ' + cfg.fmt(c.parsed.y);
+                                    // Overlay dataset (e.g. Funded Rev)
+                                    const isCur = c.dataset.label.includes('Rev');
+                                    return c.dataset.label + ': ' + (isCur ? fmtCur(c.parsed.y) : fmtNum(c.parsed.y));
                                 }
                             }
                         }
