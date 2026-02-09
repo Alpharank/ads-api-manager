@@ -491,6 +491,15 @@
             border-radius: 0 12px 12px 0;
         }
 
+        .kpi-highlight {
+            background: var(--teal-dark, #2d6a5a);
+            border-color: var(--teal-dark, #2d6a5a);
+        }
+        .kpi-highlight .kpi-chip-label,
+        .kpi-highlight .kpi-chip-value {
+            color: #fff;
+        }
+
         .kpi-chip-label {
             font-size: 11px;
             font-weight: 600;
@@ -1560,7 +1569,7 @@
                             <div class="kpi-chip-label">CTR</div>
                             <div class="kpi-chip-value" id="kpiCTR">0%</div>
                         </div>
-                        <div class="kpi-chip" data-key="cost" onclick="selectKpiChart('cost')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
+                        <div class="kpi-chip kpi-highlight" data-key="cost" onclick="selectKpiChart('cost')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()">
                             <div class="kpi-chip-label">Cost</div>
                             <div class="kpi-chip-value" id="kpiCost">$0</div>
                         </div>
@@ -1576,7 +1585,7 @@
                             <div class="kpi-chip-label">Funded</div>
                             <div class="kpi-chip-value" id="kpiFunded">&mdash;</div>
                         </div>
-                        <div class="kpi-chip" data-key="value" onclick="selectKpiChart('value')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFundedRev">
+                        <div class="kpi-chip kpi-highlight" data-key="value" onclick="selectKpiChart('value')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFundedRev">
                             <div class="kpi-chip-label">Funded Rev</div>
                             <div class="kpi-chip-value" id="kpiFundedRev">&mdash;</div>
                         </div>
@@ -1950,9 +1959,12 @@
                 const months = (dataManifest[clientConfig.id] || []).sort().reverse();
                 if (!months.length) { showError('No data available for ' + clientConfig.name); return; }
 
-                // Store available months and use most recent
+                // Store available months and default to previous month
                 availableMonths = months;
-                currentMonth = months[0];
+                const now = new Date();
+                const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                const prevMonthStr = prevMonth.getFullYear() + '-' + String(prevMonth.getMonth() + 1).padStart(2, '0');
+                currentMonth = months.includes(prevMonthStr) ? prevMonthStr : months[0];
 
                 // Populate month selector
                 const monthSel = document.getElementById('monthSelect');
