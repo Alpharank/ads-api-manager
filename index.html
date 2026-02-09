@@ -1959,12 +1959,9 @@
                 const months = (dataManifest[clientConfig.id] || []).sort().reverse();
                 if (!months.length) { showError('No data available for ' + clientConfig.name); return; }
 
-                // Store available months and default to previous month
+                // Store available months and default to previous (not current/partial) month
                 availableMonths = months;
-                const now = new Date();
-                const prevMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                const prevMonthStr = prevMonth.getFullYear() + '-' + String(prevMonth.getMonth() + 1).padStart(2, '0');
-                currentMonth = months.includes(prevMonthStr) ? prevMonthStr : months[0];
+                currentMonth = months.length > 1 ? months[1] : months[0];
 
                 // Populate month selector
                 const monthSel = document.getElementById('monthSelect');
