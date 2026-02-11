@@ -4,10 +4,13 @@ Airflow DAG: Google Ads to S3 Daily Pipeline
 Discovers all MCC child accounts automatically, pulls data in parallel via
 dynamic task mapping, and updates the dashboard files in S3.
 
-Flow:  discover_accounts -> pull_account (N mapped) -> update_dashboard_files
+Flow:
+  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files
+                     \--> notify_account_changes (parallel, only when changes)
 """
 
 import json
+import logging
 import os
 import sys
 from datetime import datetime, timedelta
@@ -20,6 +23,8 @@ if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "config", "config.yaml")
+
+logger = logging.getLogger(__name__)
 
 default_args = {
     "owner": "alpharank",
@@ -41,8 +46,9 @@ default_args = {
 def google_ads_to_s3_daily():
 
     @task
-    def discover_accounts() -> list[dict]:
-        """Query the MCC and return the full account list from the registry."""
+    def discover_accounts() -> dict:
+        """Query the MCC and return the full account list from the registry,
+        along with any additions/removals."""
         from pipeline.google_ads_to_s3 import GoogleAdsToS3
 
         pipeline = GoogleAdsToS3(config_path=CONFIG_PATH)
@@ -133,10 +139,54 @@ def google_ads_to_s3_daily():
             ContentType='application/json',
         )
 
+    @task
+    def notify_account_changes(discovery_result: dict) -> None:
+        """Send a Slack alert to #customer-success when MCC accounts are
+        added or removed.  No-op when nothing changed."""
+        added = discovery_result.get("added", [])
+        removed = discovery_result.get("removed", [])
+
+        if not added and not removed:
+            logger.info("No account changes detected — skipping Slack notification")
+            return
+
+        from pipeline.slack import SlackNotifier
+
+        lines = [":rotating_light: *Google Ads MCC Account Changes*"]
+
+        if added:
+            lines.append("")
+            lines.append("*New accounts added:*")
+            for acc in added:
+                lines.append(
+                    f"\u2022 {acc['name']} (`{acc['client_id']}`) "
+                    f"\u2014 CID {acc['customer_id']}"
+                )
+
+        if removed:
+            lines.append("")
+            lines.append("*Accounts removed:*")
+            for acc in removed:
+                lines.append(
+                    f"\u2022 {acc['name']} (`{acc['client_id']}`) "
+                    f"\u2014 CID {acc['customer_id']}"
+                )
+
+        lines.append("")
+        lines.append("_Pipeline will automatically pull data for new accounts._")
+
+        message = "\n".join(lines)
+        SlackNotifier().send_message(message, "#customer-success")
+
     # --- Wire the DAG ---
-    accounts = discover_accounts()
-    pulls = pull_account.expand(account=accounts)
+    discovery_result = discover_accounts()
+
+    # pull_account needs just the account list
+    pulls = pull_account.expand(account=discovery_result["accounts"])
     pulls >> update_dashboard_files()
+
+    # notify runs in parallel with pulls (no dependency on pull completion)
+    notify_account_changes(discovery_result)
 
 
 google_ads_to_s3_daily()

@@ -134,12 +134,16 @@ class GoogleAdsToS3:
                 return candidate
         raise ValueError(f"Could not generate unique slug for {slug}")
 
-    def discover_accounts(self) -> List[Dict]:
+    def discover_accounts(self) -> Dict:
         """Query the MCC, reconcile with the S3 registry, and return the full
-        account list.  New accounts are auto-onboarded (slug + token generated).
+        account list along with any additions / removals.
 
-        Returns a list of dicts, each with keys:
-            customer_id, client_id, name, dashboard_token, is_new
+        Returns a dict with keys:
+            accounts  – list of active account dicts (customer_id, client_id,
+                        name, dashboard_token, is_new)
+            added     – list of newly discovered accounts this run
+            removed   – list of accounts present in the registry but no longer
+                        in the MCC
         """
         # 1. Load current registry
         registry = self._load_registry()
@@ -158,9 +162,11 @@ class GoogleAdsToS3:
 
         # 3. Query MCC for live accounts
         mcc_accounts = self.get_accessible_accounts()
+        live_ids = {str(a['customer_id']) for a in mcc_accounts}
 
         existing_slugs = {v['client_id'] for v in registry.values()}
         changed = False
+        added: List[Dict] = []
 
         for acc in mcc_accounts:
             cust_id = str(acc['customer_id'])
@@ -168,6 +174,11 @@ class GoogleAdsToS3:
                 # Update name if it was blank (seed case) or changed
                 if registry[cust_id]['name'] != acc['name']:
                     registry[cust_id]['name'] = acc['name']
+                    changed = True
+                # Clear removed_at if the account reappeared
+                if registry[cust_id].get('removed_at'):
+                    logger.info(f"Account reappeared: {acc['name']} ({cust_id})")
+                    del registry[cust_id]['removed_at']
                     changed = True
             else:
                 # --- New account ---
@@ -182,18 +193,35 @@ class GoogleAdsToS3:
                     "discovered_at": datetime.utcnow().isoformat(timespec='seconds'),
                 }
                 changed = True
+                added.append({
+                    "customer_id": cust_id,
+                    "client_id": slug,
+                    "name": acc['name'],
+                })
                 logger.info(f"New account discovered: {acc['name']} -> {slug}")
+
+        # 4. Detect removals — registry entries no longer in the MCC
+        removed: List[Dict] = []
+        for cust_id, entry in registry.items():
+            if cust_id not in live_ids and not entry.get('removed_at'):
+                entry['removed_at'] = datetime.utcnow().isoformat(timespec='seconds')
+                changed = True
+                removed.append({
+                    "customer_id": cust_id,
+                    "client_id": entry['client_id'],
+                    "name": entry['name'],
+                })
+                logger.info(f"Account removed from MCC: {entry['name']} ({cust_id})")
 
         if changed:
             self._save_registry(registry)
 
-        # 4. Build return list scoped to accounts currently in the MCC
-        live_ids = {str(a['customer_id']) for a in mcc_accounts}
-        result = []
+        # 5. Build return list scoped to accounts currently in the MCC
+        accounts = []
         for cust_id, entry in registry.items():
             if cust_id not in live_ids:
                 continue
-            result.append({
+            accounts.append({
                 'customer_id': cust_id,
                 'client_id': entry['client_id'],
                 'name': entry['name'],
@@ -201,9 +229,13 @@ class GoogleAdsToS3:
                 'is_new': cust_id not in self.client_mapping,
             })
 
-        logger.info(f"discover_accounts: {len(result)} active accounts "
-                     f"({sum(1 for r in result if r['is_new'])} new)")
-        return result
+        logger.info(f"discover_accounts: {len(accounts)} active accounts "
+                     f"({len(added)} added, {len(removed)} removed)")
+        return {
+            "accounts": accounts,
+            "added": added,
+            "removed": removed,
+        }
 
     def get_accessible_accounts(self) -> List[Dict]:
         """Get all child customer accounts under the MCC using CustomerClient."""

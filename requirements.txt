@@ -3,6 +3,7 @@ boto3==1.35.99
 pandas==2.2.3
 pyyaml==6.0.2
 google-auth-oauthlib==1.2.1
+slack-sdk>=3.0.0
 
 # Deploy dependency — installed in the Airflow environment, not pip-installed here
 # apache-airflow>=2.7.0
