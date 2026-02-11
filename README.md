@@ -1,6 +1,56 @@
 # Google Ads to S3 Pipeline
 
-Pulls daily campaign metrics, keyword metrics, and GCLID click data from Google Ads accounts under our MCC, uploads to S3, and serves per-client dashboards via GitHub Pages.
+Pulls daily campaign metrics, keyword metrics, and GCLID click data from all Google Ads accounts under our MCC, uploads to S3, and serves per-client dashboards via GitHub Pages.
+
+New accounts added to the MCC are **automatically discovered** — no config changes or code deploys needed.
+
+## How It Works
+
+The Airflow DAG (`google_ads_to_s3_daily`) runs daily at **8:00 AM UTC (3 AM EST)** and does the following:
+
+```
+discover_accounts ──> pull_account.expand(N) ──> update_dashboard_files ──> export_for_attribution
+                  \──> notify_account_changes (parallel, fires only when accounts change)
+```
+
+1. **Discover accounts** — queries the MCC for all enabled child accounts, reconciles against an S3 registry (`_registry/accounts.json`), and auto-generates slugs + dashboard tokens for any new accounts
+2. **Pull data** — for each active account (dynamic task mapping), pulls campaign, keyword, and click/GCLID data for yesterday and uploads to S3
+3. **Update dashboard files** — rebuilds `clients.json` and `data-manifest.json` so the GitHub Pages dashboard picks up new data and new clients
+4. **Export for attribution** — produces a monthly campaign file per client in the format the ROI attribution pipeline (`update_google_ads_roi`) expects, eliminating the previous manual monthly export
+5. **Notify account changes** — sends a Slack alert to `#customer-success` when accounts are added to or removed from the MCC
+
+## Auto-Discovery
+
+When a new account appears under the MCC:
+
+- A `client_id` slug is generated from the account name (e.g. "Altura Credit Union" → `altura_credit_union`)
+- A SHA-256 dashboard token is generated
+- The account is added to the S3 registry and included in all subsequent runs
+- A Slack notification is sent to `#customer-success`
+- Dashboard files are updated so the new client's dashboard is immediately available
+
+When an account is removed from the MCC, the registry entry gets a `removed_at` timestamp and data pulls stop. If the account reappears later, it's automatically reactivated.
+
+## Attribution Export
+
+After each daily pull, the pipeline writes a monthly attribution file for each client:
+
+```
+s3://ai.alpharank.core/adspend_reports/{client_id}_{YYYY-MM}_daily.csv
+```
+
+This file has 2 blank rows followed by a header row with columns: `Campaign ID`, `Ad group`, `Day`, `Clicks`, `Cost`, `Conversions`. The ROI attribution pipeline reads this file with `skiprows=2`.
+
+The file is overwritten daily with the full month-to-date data, so it always contains every day pulled so far for that month.
+
+### Timing
+
+| Pipeline | Schedule | What it does |
+|----------|----------|-------------|
+| `google_ads_to_s3_daily` | 8:00 AM UTC (3 AM EST) | Pull daily data, rebuild dashboards, export attribution file |
+| `update_google_ads_roi` | 11:30 AM UTC (6:30 AM EST) | Read attribution file, join with app data, write to staging |
+
+The export finishes hours before the ROI pipeline reads it.
 
 ## Dashboard
 
@@ -53,18 +103,6 @@ pip install google-auth-oauthlib
 python scripts/generate_refresh_token.py
 ```
 
-### 4. Map Our Client IDs
-
-Add accounts to the `client_mapping` section in `config/config.yaml`:
-
-| Customer ID  | Account Name                        | Client ID |
-|-------------|--------------------------------------|-----------|
-| 9001645164  | California Coast Credit Union        | californiacoast_cu |
-| 7306319113  | CommonWealth One Federal Credit Union | commonwealth_one_fcu |
-| 4668771744  | FCC_FirstCommunityCreditUnion        | firstcommunity_cu |
-| 7543892333  | Kitsap Credit Union                  | kitsap_cu |
-| 7636280979  | Public Service Credit Union          | publicservice_cu |
-
 ## Usage
 
 ### List all accessible accounts
@@ -97,41 +135,49 @@ python pipeline/google_ads_to_s3.py --backfill 90 --client californiacoast_cu
 ```
 google_ads_to_s3/
 ├── index.html               # Dashboard application (GitHub Pages)
-├── clients.json              # Client token -> config mapping
-├── data-manifest.json        # Available months per client
-├── data/                     # Monthly aggregated dashboard data
-│   ├── californiacoast_cu/
-│   │   ├── campaigns/YYYY-MM.csv
-│   │   └── keywords/YYYY-MM.csv
-│   └── ...
+├── clients/
+│   └── README.md            # Dashboard tokens and URLs per client
 ├── .github/workflows/
-│   └── deploy.yml            # GitHub Pages deployment
+│   └── deploy.yml           # GitHub Pages deployment
 ├── config/
-│   ├── config.example.yaml   # Template with placeholder values
-│   └── config.yaml           # Real credentials (gitignored)
+│   ├── config.example.yaml  # Template with placeholder values
+│   └── config.yaml          # Real credentials (gitignored)
 ├── dags/
-│   └── google_ads_to_s3_dag.py  # Airflow DAG (daily @ 6 AM UTC)
+│   └── google_ads_to_s3_dag.py  # Airflow DAG (daily @ 8 AM UTC)
 ├── pipeline/
 │   ├── __init__.py
-│   └── google_ads_to_s3.py   # Main pipeline class + CLI entrypoint
+│   ├── google_ads_to_s3.py  # Main pipeline class + CLI entrypoint
+│   └── slack.py             # Slack notification helper
 ├── scripts/
-│   ├── export_account_ids.py  # List MCC child accounts
+│   ├── export_account_ids.py      # List MCC child accounts
 │   └── generate_refresh_token.py  # OAuth setup helper
-├── output/                   # Local daily CSVs (gitignored)
+├── output/                  # Local daily CSVs (gitignored)
 ├── requirements.txt
 └── .gitignore
 ```
 
-## Output Structure
+## S3 Output Structure
 
-Daily data is uploaded to S3:
+### Daily data (per account, per date)
 
 ```
 s3://ai.alpharank.core/ad-spend-reports/
+├── _registry/
+│   └── accounts.json              # Auto-discovery account registry
+├── _dashboard/
+│   ├── clients.json               # Token -> client config mapping
+│   └── data-manifest.json         # Available months per client
 └── {client_id}/
     ├── campaigns/YYYY-MM-DD.csv
     ├── keywords/YYYY-MM-DD.csv
     └── clicks/YYYY-MM-DD.csv
+```
+
+### Attribution export (per client, per month)
+
+```
+s3://ai.alpharank.core/adspend_reports/
+└── {client_id}_{YYYY-MM}_daily.csv
 ```
 
 ### Campaign Data Columns
@@ -147,17 +193,6 @@ s3://ai.alpharank.core/ad-spend-reports/
 - date, gclid, keyword, match_type
 - campaign_id, campaign_name, ad_group_id, ad_group_name
 - network, city, region, country
-
-## Scheduling
-
-### Airflow DAG
-
-The DAG `google_ads_to_s3_daily` runs at 6 AM UTC daily. Client list is driven by the Airflow Variable `google_ads_clients` (JSON list) — add/remove clients from the Airflow UI without code changes.
-
-### Cron
-```bash
-0 6 * * * cd /path/to/google_ads_to_s3 && python pipeline/google_ads_to_s3.py >> /var/log/google_ads.log 2>&1
-```
 
 ## GCLID Mapping
 
@@ -177,20 +212,11 @@ result = funded_loans.merge(clicks, on='gclid', how='left')
 print(result[['loan_id', 'gclid', 'campaign_name', 'keyword', 'match_type', 'ad_group_name']])
 ```
 
-## Adding New Dashboard Data
-
-1. Aggregate daily CSVs into monthly summaries in `data/{client_id}/campaigns/YYYY-MM.csv` and `data/{client_id}/keywords/YYYY-MM.csv`
-2. Update `data-manifest.json` to include the new month
-3. Commit and push to main branch — GitHub Pages deploys automatically
-
 ## Adding New Clients
 
-1. Add client mapping to `config/config.yaml`
-2. Generate a token: `python -c "import hashlib; print(hashlib.sha256(b'google-ads-{client_id}').hexdigest())"`
-3. Add entry to `clients.json`
-4. Add entry to `data-manifest.json`
-5. Create data directory: `data/{client_id}/campaigns/` and `data/{client_id}/keywords/`
-6. Run backfill and aggregate data
+New clients are **automatically onboarded** when they appear under the MCC. No manual steps needed.
+
+The `client_mapping` in `config/config.yaml` seeds the initial set of accounts on first run. After that, the S3 registry is the source of truth and new accounts are discovered via the MCC query.
 
 ## License
 
