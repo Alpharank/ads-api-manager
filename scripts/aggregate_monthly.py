@@ -8,6 +8,7 @@ Usage:
 """
 
 import json
+import logging
 import os
 from collections import defaultdict
 from pathlib import Path
@@ -21,12 +22,39 @@ DATA_DIR = PROJECT_ROOT / "data"
 MANIFEST_PATH = PROJECT_ROOT / "data-manifest.json"
 CLIENTS_CONFIG = PROJECT_ROOT / "config" / "clients.yaml"
 
+logger = logging.getLogger(__name__)
 
-def load_client_ids() -> list:
-    """Load client IDs from the centralized clients.yaml config."""
-    with open(CLIENTS_CONFIG, 'r') as f:
-        clients = yaml.safe_load(f)
-    return list(clients.keys())
+# Hardcoded fallback — used only when the S3 registry is unreachable.
+_FALLBACK_CLIENTS = [
+    "californiacoast_cu",
+    "commonwealth_one_fcu",
+    "firstcommunity_cu",
+    "kitsap_cu",
+    "publicservice_cu",
+]
+
+
+def load_client_ids() -> list[str]:
+    """Return client IDs from the S3 registry, falling back to the hardcoded list."""
+    try:
+        import boto3
+        import yaml
+
+        config_path = PROJECT_ROOT / "config" / "config.yaml"
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+
+        s3 = boto3.client('s3', region_name=config['aws']['region'])
+        key = f"{config['aws']['prefix']}/_registry/accounts.json"
+        obj = s3.get_object(Bucket=config['aws']['bucket'], Key=key)
+        registry = json.loads(obj['Body'].read().decode('utf-8'))
+
+        clients = [entry['client_id'] for entry in registry.values()]
+        logger.info(f"Loaded {len(clients)} clients from S3 registry")
+        return clients
+    except Exception as exc:
+        logger.warning(f"Could not load S3 registry ({exc}); using fallback list")
+        return list(_FALLBACK_CLIENTS)
 
 CAMPAIGN_COLS = ["campaign_id", "campaign_name", "impressions", "clicks", "cost", "conversions"]
 KEYWORD_COLS = ["campaign_id", "campaign_name", "ad_group_id", "ad_group_name", "keyword", "match_type", "impressions", "clicks", "cost", "conversions"]

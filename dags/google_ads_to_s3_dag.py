@@ -1,9 +1,10 @@
 """
 Airflow DAG: Google Ads to S3 Daily Pipeline
 
-Pulls Google Ads data for all configured clients and uploads to S3.
-Client list is driven by the Airflow Variable `google_ads_clients` (JSON list).
-To add/remove a client, edit that variable in the Airflow UI.
+Discovers all MCC child accounts automatically, pulls data in parallel via
+dynamic task mapping, and updates the dashboard files in S3.
+
+Flow:  discover_accounts -> pull_account (N mapped) -> update_dashboard_files
 """
 
 import json
@@ -11,22 +12,14 @@ import os
 import sys
 from datetime import datetime, timedelta
 
-from airflow import DAG
-from airflow.models import Variable
-from airflow.operators.python import PythonOperator
+from airflow.decorators import dag, task
 
 # Ensure the project root is on sys.path so `pipeline` is importable.
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-DEFAULT_CLIENTS = [
-    "californiacoast_cu",
-    "commonwealth_one_fcu",
-    "firstcommunity_cu",
-    "kitsap_cu",
-    "publicservice_cu",
-]
+CONFIG_PATH = os.path.join(PROJECT_ROOT, "config", "config.yaml")
 
 default_args = {
     "owner": "alpharank",
@@ -36,34 +29,114 @@ default_args = {
 }
 
 
-def pull_client(client_id: str, **context):
-    """Run the Google Ads pipeline for a single client for the execution date."""
-    from pipeline.google_ads_to_s3 import GoogleAdsToS3
-
-    # Use Airflow's logical execution date (ds = YYYY-MM-DD)
-    yesterday = context["ds"]
-    config_path = os.path.join(PROJECT_ROOT, "config", "config.yaml")
-
-    pipeline = GoogleAdsToS3(config_path=config_path)
-    pipeline.run(start_date=yesterday, client_filter=client_id)
-
-
-with DAG(
+@dag(
     dag_id="google_ads_to_s3_daily",
     default_args=default_args,
-    description="Pull Google Ads data for all clients and upload to S3",
+    description="Discover MCC accounts, pull Google Ads data, and update dashboard files",
     schedule="0 6 * * *",
     start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["google_ads", "s3", "etl"],
-) as dag:
-    clients = json.loads(
-        Variable.get("google_ads_clients", default_var=json.dumps(DEFAULT_CLIENTS))
-    )
+)
+def google_ads_to_s3_daily():
 
-    for client_id in clients:
-        PythonOperator(
-            task_id=f"pull_{client_id}",
-            python_callable=pull_client,
-            op_kwargs={"client_id": client_id},
+    @task
+    def discover_accounts() -> list[dict]:
+        """Query the MCC and return the full account list from the registry."""
+        from pipeline.google_ads_to_s3 import GoogleAdsToS3
+
+        pipeline = GoogleAdsToS3(config_path=CONFIG_PATH)
+        return pipeline.discover_accounts()
+
+    @task
+    def pull_account(account: dict, **context) -> dict:
+        """Pull Google Ads data for a single account for yesterday's date."""
+        from pipeline.google_ads_to_s3 import GoogleAdsToS3
+
+        ds = context.get("ds")  # Airflow logical date (YYYY-MM-DD)
+        if ds is None:
+            ds = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
+
+        pipeline = GoogleAdsToS3(config_path=CONFIG_PATH)
+        return pipeline.process_account(account, ds)
+
+    @task(trigger_rule="all_done")
+    def update_dashboard_files() -> None:
+        """Rebuild clients.json and data-manifest.json in S3 from the registry."""
+        from pipeline.google_ads_to_s3 import GoogleAdsToS3
+
+        pipeline = GoogleAdsToS3(config_path=CONFIG_PATH)
+        registry = pipeline._load_registry()
+        if not registry:
+            return
+
+        bucket = pipeline.bucket
+        prefix = pipeline.prefix
+        s3 = pipeline.s3_client
+
+        # --- clients.json ---
+        # Load existing clients.json from S3 to preserve extra fields (e.g. stripPrefix)
+        clients_key = f"{prefix}/_dashboard/clients.json"
+        existing_clients = {}
+        try:
+            obj = s3.get_object(Bucket=bucket, Key=clients_key)
+            existing_clients = json.loads(obj['Body'].read().decode('utf-8'))
+        except s3.exceptions.NoSuchKey:
+            pass
+
+        clients = {}
+        for entry in registry.values():
+            token = entry['dashboard_token']
+            new_data = {
+                "id": entry['client_id'],
+                "name": entry['name'],
+            }
+            # Preserve any extra fields from the existing entry (e.g. stripPrefix)
+            if token in existing_clients:
+                merged = {**existing_clients[token], **new_data}
+            else:
+                merged = new_data
+            clients[token] = merged
+
+        s3.put_object(
+            Bucket=bucket,
+            Key=clients_key,
+            Body=json.dumps(clients, indent=2),
+            ContentType='application/json',
         )
+
+        # --- data-manifest.json ---
+        manifest = {}
+        for entry in registry.values():
+            client_id = entry['client_id']
+            # List month-level CSVs for this client's campaigns folder
+            resp = s3.list_objects_v2(
+                Bucket=bucket,
+                Prefix=f"{prefix}/{client_id}/campaigns/",
+                Delimiter='/',
+            )
+            months = set()
+            for obj_meta in resp.get('Contents', []):
+                key = obj_meta['Key']
+                basename = key.rsplit('/', 1)[-1]
+                if basename.endswith('.csv') and len(basename) >= 10:
+                    # daily files: YYYY-MM-DD.csv -> extract month
+                    months.add(basename[:7])
+            if months:
+                manifest[client_id] = sorted(months, reverse=True)
+
+        manifest_key = f"{prefix}/_dashboard/data-manifest.json"
+        s3.put_object(
+            Bucket=bucket,
+            Key=manifest_key,
+            Body=json.dumps(manifest, indent=2),
+            ContentType='application/json',
+        )
+
+    # --- Wire the DAG ---
+    accounts = discover_accounts()
+    pulls = pull_account.expand(account=accounts)
+    pulls >> update_dashboard_files()
+
+
+google_ads_to_s3_daily()

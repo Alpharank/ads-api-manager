@@ -12,6 +12,8 @@ Usage:
 """
 
 import argparse
+import hashlib
+import json
 import logging
 import os
 import re
@@ -77,6 +79,131 @@ class GoogleAdsToS3:
 
         # Client ID mapping
         self.client_mapping = self.config.get('client_mapping', {})
+
+        # Registry path in S3
+        self.registry_key = f"{self.prefix}/_registry/accounts.json"
+
+    # ------------------------------------------------------------------
+    # Auto-discovery helpers
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _generate_client_slug(name: str) -> str:
+        """Convert an account name to a client_id slug.
+
+        Example: "Altura Credit Union" -> "altura_credit_union"
+        """
+        slug = name.lower().replace(' ', '_').replace('-', '_')
+        slug = ''.join(c for c in slug if c.isalnum() or c == '_')
+        # Collapse consecutive underscores
+        slug = re.sub(r'_+', '_', slug).strip('_')
+        return slug[:30]
+
+    @staticmethod
+    def _generate_dashboard_token(client_id: str) -> str:
+        """SHA-256 dashboard token: sha256(b'google-ads-{client_id}')."""
+        return hashlib.sha256(f"google-ads-{client_id}".encode()).hexdigest()
+
+    def _load_registry(self) -> Dict:
+        """Load the account registry from S3. Returns empty dict on first run."""
+        try:
+            obj = self.s3_client.get_object(Bucket=self.bucket, Key=self.registry_key)
+            return json.loads(obj['Body'].read().decode('utf-8'))
+        except self.s3_client.exceptions.NoSuchKey:
+            logger.info("No existing registry found in S3 — will create one")
+            return {}
+
+    def _save_registry(self, registry: Dict):
+        """Write the account registry to S3."""
+        self.s3_client.put_object(
+            Bucket=self.bucket,
+            Key=self.registry_key,
+            Body=json.dumps(registry, indent=2),
+            ContentType='application/json',
+        )
+        logger.info(f"Registry saved to s3://{self.bucket}/{self.registry_key} "
+                     f"({len(registry)} accounts)")
+
+    def _unique_slug(self, slug: str, existing_slugs: set) -> str:
+        """Return *slug* if unique, otherwise append a counter suffix."""
+        if slug not in existing_slugs:
+            return slug
+        for i in range(2, 100):
+            candidate = f"{slug}_{i}"[:30]
+            if candidate not in existing_slugs:
+                return candidate
+        raise ValueError(f"Could not generate unique slug for {slug}")
+
+    def discover_accounts(self) -> List[Dict]:
+        """Query the MCC, reconcile with the S3 registry, and return the full
+        account list.  New accounts are auto-onboarded (slug + token generated).
+
+        Returns a list of dicts, each with keys:
+            customer_id, client_id, name, dashboard_token, is_new
+        """
+        # 1. Load current registry
+        registry = self._load_registry()
+
+        # 2. Seed from config.yaml client_mapping on first run
+        if not registry:
+            logger.info("Seeding registry from config.yaml client_mapping")
+            # We don't have names yet; the MCC query below will fill them in.
+            for cust_id, client_id in self.client_mapping.items():
+                registry[str(cust_id)] = {
+                    "client_id": client_id,
+                    "name": "",
+                    "dashboard_token": self._generate_dashboard_token(client_id),
+                    "discovered_at": datetime.utcnow().isoformat(timespec='seconds'),
+                }
+
+        # 3. Query MCC for live accounts
+        mcc_accounts = self.get_accessible_accounts()
+
+        existing_slugs = {v['client_id'] for v in registry.values()}
+        changed = False
+
+        for acc in mcc_accounts:
+            cust_id = str(acc['customer_id'])
+            if cust_id in registry:
+                # Update name if it was blank (seed case) or changed
+                if registry[cust_id]['name'] != acc['name']:
+                    registry[cust_id]['name'] = acc['name']
+                    changed = True
+            else:
+                # --- New account ---
+                slug = self._generate_client_slug(acc['name'])
+                slug = self._unique_slug(slug, existing_slugs)
+                existing_slugs.add(slug)
+
+                registry[cust_id] = {
+                    "client_id": slug,
+                    "name": acc['name'],
+                    "dashboard_token": self._generate_dashboard_token(slug),
+                    "discovered_at": datetime.utcnow().isoformat(timespec='seconds'),
+                }
+                changed = True
+                logger.info(f"New account discovered: {acc['name']} -> {slug}")
+
+        if changed:
+            self._save_registry(registry)
+
+        # 4. Build return list scoped to accounts currently in the MCC
+        live_ids = {str(a['customer_id']) for a in mcc_accounts}
+        result = []
+        for cust_id, entry in registry.items():
+            if cust_id not in live_ids:
+                continue
+            result.append({
+                'customer_id': cust_id,
+                'client_id': entry['client_id'],
+                'name': entry['name'],
+                'dashboard_token': entry['dashboard_token'],
+                'is_new': cust_id not in self.client_mapping,
+            })
+
+        logger.info(f"discover_accounts: {len(result)} active accounts "
+                     f"({sum(1 for r in result if r['is_new'])} new)")
+        return result
 
     def get_accessible_accounts(self) -> List[Dict]:
         """Get all child customer accounts under the MCC using CustomerClient."""
