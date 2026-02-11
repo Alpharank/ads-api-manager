@@ -466,6 +466,86 @@ class GoogleAdsToS3:
             'clicks': len(click_df)
         }
 
+    def export_for_attribution(self, year_month: str) -> list[str]:
+        """Export monthly campaign data in the format the ROI attribution pipeline expects.
+
+        Reads daily campaign CSVs for the given month, concatenates them, renames
+        columns, and writes a single file per client with 2 blank rows prepended
+        (the ROI pipeline reads with ``skiprows=2``).
+
+        Args:
+            year_month: Month to export in YYYY-MM format.
+
+        Returns:
+            List of client_ids that were exported.
+        """
+        registry = self._load_registry()
+        exported: list[str] = []
+
+        for _cust_id, entry in registry.items():
+            if entry.get("removed_at"):
+                continue
+
+            client_id = entry["client_id"]
+            campaign_prefix = f"{self.prefix}/{client_id}/campaigns/{year_month}-"
+
+            resp = self.s3_client.list_objects_v2(
+                Bucket=self.bucket,
+                Prefix=campaign_prefix,
+            )
+
+            csv_keys = [
+                obj["Key"]
+                for obj in resp.get("Contents", [])
+                if obj["Key"].endswith(".csv")
+            ]
+
+            if not csv_keys:
+                logger.info(f"No campaign data for {client_id} in {year_month}, skipping")
+                continue
+
+            frames = []
+            for key in sorted(csv_keys):
+                obj = self.s3_client.get_object(Bucket=self.bucket, Key=key)
+                frames.append(pd.read_csv(obj["Body"]))
+
+            combined = pd.concat(frames, ignore_index=True)
+
+            combined = combined.rename(columns={
+                "campaign_id": "Campaign ID",
+                "campaign_name": "Ad group",
+                "date": "Day",
+                "clicks": "Clicks",
+                "cost": "Cost",
+                "conversions": "Conversions",
+            })
+            combined = combined.drop(
+                columns=["campaign_status", "impressions"], errors="ignore"
+            )
+            combined = combined[
+                ["Campaign ID", "Ad group", "Day", "Clicks", "Cost", "Conversions"]
+            ]
+
+            csv_content = "\n\n" + combined.to_csv(index=False)
+
+            output_key = f"adspend_reports/{client_id}_{year_month}_daily.csv"
+            self.s3_client.put_object(
+                Bucket=self.bucket,
+                Key=output_key,
+                Body=csv_content,
+                ContentType="text/csv",
+            )
+            logger.info(
+                f"Exported attribution file: s3://{self.bucket}/{output_key} "
+                f"({len(combined)} rows, {len(csv_keys)} days)"
+            )
+            exported.append(client_id)
+
+        logger.info(
+            f"export_for_attribution: exported {len(exported)} clients for {year_month}"
+        )
+        return exported
+
     def run(self, start_date: str, end_date: Optional[str] = None, client_filter: Optional[str] = None):
         """Run the pipeline for a date range."""
         if end_date is None:

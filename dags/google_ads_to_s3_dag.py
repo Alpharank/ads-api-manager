@@ -5,7 +5,7 @@ Discovers all MCC child accounts automatically, pulls data in parallel via
 dynamic task mapping, and updates the dashboard files in S3.
 
 Flow:
-  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files
+  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files  -->  export_for_attribution
                      \--> notify_account_changes (parallel, only when changes)
 """
 
@@ -38,7 +38,7 @@ default_args = {
     dag_id="google_ads_to_s3_daily",
     default_args=default_args,
     description="Discover MCC accounts, pull Google Ads data, and update dashboard files",
-    schedule="0 6 * * *",
+    schedule="0 8 * * *",
     start_date=datetime(2025, 1, 1),
     catchup=False,
     tags=["google_ads", "s3", "etl"],
@@ -139,6 +139,19 @@ def google_ads_to_s3_daily():
             ContentType='application/json',
         )
 
+    @task(trigger_rule="all_done")
+    def export_for_attribution(**context) -> list:
+        """Export monthly campaign CSV in the format the ROI attribution pipeline expects."""
+        from pipeline.google_ads_to_s3 import GoogleAdsToS3
+
+        ds = context.get("ds")  # Airflow logical date (yesterday)
+        year_month = ds[:7]  # YYYY-MM from YYYY-MM-DD
+
+        pipeline = GoogleAdsToS3(config_path=CONFIG_PATH)
+        exported = pipeline.export_for_attribution(year_month)
+        logger.info(f"Exported attribution files for {len(exported)} clients: {exported}")
+        return exported
+
     @task
     def notify_account_changes(discovery_result: dict) -> None:
         """Send a Slack alert to #customer-success when MCC accounts are
@@ -183,7 +196,8 @@ def google_ads_to_s3_daily():
 
     # pull_account needs just the account list
     pulls = pull_account.expand(account=discovery_result["accounts"])
-    pulls >> update_dashboard_files()
+    dashboard = update_dashboard_files()
+    pulls >> dashboard >> export_for_attribution()
 
     # notify runs in parallel with pulls (no dependency on pull completion)
     notify_account_changes(discovery_result)
