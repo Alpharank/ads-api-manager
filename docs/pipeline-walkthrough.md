@@ -250,36 +250,38 @@ The GCLID is the key. When a click turns into a funded loan, the loan originatio
 
 ## 4. Data Volume: What We Store vs. What We Use
 
-### Per client, per day (real numbers from our data)
+### Per client, per day (real numbers from 2026-02-11)
 
 | Client | Campaign rows | Keyword rows | Click rows | What attribution reads |
 |--------|--------------|-------------|-----------|----------------------|
-| California Coast CU | 12 | 145 | 1,192 | 12 |
-| CommonWealth One FCU | 2 | 19 | 24 | 2 |
-| First Community CU | 1 | 29 | 74 | 1 |
-| Kitsap CU | 8 | 76 | 14,631 | 8 |
-| Public Service CU | 13 | 23 | 352 | 13 |
-| **Total** | **36** | **292** | **16,273** | **36** |
+| Altura Ad Account | 8 | 5 | 48,573 | 8 |
+| California Coast CU | 10 | 108 | 1,531 | 10 |
+| CommonWealth One FCU | 0 | 0 | 0 | 0 |
+| First Commonwealth Bank | 6 | 18 | 57,930 | 6 |
+| First Community CU | 1 | 61 | 98 | 1 |
+| Kitsap CU | 14 | 96 | 10,862 | 14 |
+| Public Service CU | 13 | 25 | 422 | 13 |
+| **Total** | **52** | **313** | **119,416** | **52** |
 
-The attribution pipeline reads **36 rows/day**. We store **16,601 rows/day**. That's a **460:1 ratio** of data collected to data used.
+The attribution pipeline reads **52 rows/day**. We store **119,781 rows/day**. That's a **2,300:1 ratio** of data collected to data used.
 
 ### Multipliers by data layer
 
 | Layer | Multiplier vs. campaigns | What it unlocks |
 |-------|-------------------------|----------------|
 | Keywords | **~10x** (range: 2x–29x) | Which keywords convert, match type efficiency, ad group performance |
-| Clicks | **~30–100x** typical, **1,700x** for high-traffic accounts | GCLID → funded loan join, geographic ROI, true per-click attribution |
+| Clicks | **~30–100x** typical, **6,000–10,000x** for high-traffic accounts (Altura, First Commonwealth) | GCLID → funded loan join, geographic ROI, true per-click attribution |
 
 ### Monthly storage per client
 
-| Layer | Rows/month (typical client) | CSV size/month |
-|-------|----------------------------|----------------|
-| Campaigns | ~300 | ~20 KB |
-| Keywords | ~3,000 | ~300 KB |
-| Clicks | ~30,000 (up to 450K for Kitsap) | ~3 MB (up to ~50 MB) |
-| **Total** | ~33,000 | ~3.3 MB |
+| Layer | Rows/month (typical client) | Rows/month (high-traffic) | CSV size/month |
+|-------|----------------------------|--------------------------|----------------|
+| Campaigns | ~300 | ~300 | ~20 KB |
+| Keywords | ~3,000 | ~3,000 | ~300 KB |
+| Clicks | ~5,000–30,000 | ~1.5M (Altura, First Commonwealth) | ~3 MB–160 MB |
+| **Total** | ~8,000–33,000 | ~1.5M | ~3–160 MB |
 
-For 70 clients over 12 months: roughly **28M rows / 2.8 GB** of click data. Campaign and keyword data is negligible in comparison.
+For 70 clients over 12 months: roughly **100M+ rows / 10+ GB** of click data if several accounts have Altura/First Commonwealth-level traffic. Campaign and keyword data is negligible in comparison.
 
 ---
 
@@ -294,25 +296,34 @@ Adding a new client to the MCC requires **zero pipeline changes**. The discover 
 4. Starts pulling data on the next run
 5. Sends a Slack notification to #customer-success
 
-### Scaling from 5 → 70 clients
+### Scaling from 7 → 70 clients
 
-| Metric | 5 clients (today) | 70 clients (target) | Notes |
+| Metric | 7 clients (today) | 70 clients (target) | Notes |
 |--------|-------------------|---------------------|-------|
-| Campaign rows/day | 36 | ~500 | Trivial |
-| Keyword rows/day | 292 | ~4,000 | Still trivial |
-| Click rows/day | 16,273 | ~200K–500K | Depends on traffic mix |
-| Daily CSV storage | ~5 MB | ~50–150 MB | S3 cost is negligible |
-| Monthly attribution file | 5 files, ~1 KB each | 70 files, ~1 KB each | Negligible |
-| Google Ads API calls | 15 (3 per account) | 210 (3 per account) | Well within rate limits |
-| DAG runtime | ~5–10 min | ~20–40 min | API calls are the bottleneck, not compute |
+| Campaign rows/day | 52 | ~500 | Trivial |
+| Keyword rows/day | 313 | ~4,000 | Still trivial |
+| Click rows/day | 119,416 | ~500K–2M | Depends on how many high-traffic accounts |
+| Daily CSV storage | ~30 MB | ~150–500 MB | S3 cost is negligible |
+| Monthly attribution file | 7 files, ~1 KB each | 70 files, ~1 KB each | Negligible |
+| Google Ads API calls | 21 (3 per account) | 210 (3 per account) | Well within rate limits |
+| DAG runtime | ~1–2 min | ~20–40 min | API calls are the bottleneck, not compute |
 
 ### What actually takes time
 
 The bottleneck is **Google Ads API latency**, not data processing. Each API call takes 2–5 seconds. With 70 accounts × 3 data types = 210 calls. Airflow runs accounts in parallel (dynamic task mapping), so with a parallelism of 16 workers the API pull phase takes ~70 seconds. The pandas operations (concat, rename, write CSV) take milliseconds.
 
-### The Kitsap factor
+### The high-traffic accounts
 
-Kitsap CU generates ~14,600 click rows/day — roughly 90% of all click data across 5 clients. If the 70-account roster includes several high-traffic accounts like Kitsap, daily click volume could reach 500K–1M rows. This is still fine for pandas (a 1M-row CSV concat takes <2 seconds), but it's the metric to watch.
+Three accounts dominate click volume:
+
+| Client | Clicks/day | % of total |
+|--------|-----------|-----------|
+| First Commonwealth Bank | 57,930 | 49% |
+| Altura Ad Account | 48,573 | 41% |
+| Kitsap CU | 10,862 | 9% |
+| All other accounts | 2,051 | 1% |
+
+These three accounts generate **99% of all click data**. If the 70-account roster includes more accounts at this traffic level, daily click volume could reach 1–2M rows. This is still fine for pandas (a 2M-row CSV concat takes <3 seconds), but it's the metric to watch.
 
 ---
 
