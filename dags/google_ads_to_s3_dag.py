@@ -5,7 +5,7 @@ Discovers all MCC child accounts automatically, pulls data in parallel via
 dynamic task mapping, and updates the dashboard files in S3.
 
 Flow:
-  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files  -->  export_for_attribution
+  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files  -->  export_for_attribution  -->  stop_instance
                      \--> notify_account_changes (parallel, only when changes)
 """
 
@@ -152,6 +152,17 @@ def google_ads_to_s3_daily():
         logger.info(f"Exported attribution files for {len(exported)} clients: {exported}")
         return exported
 
+    INSTANCE_ID = "i-044c661e5fb2c0c37"  # auto-attribution-prod
+
+    @task(trigger_rule="all_done")
+    def stop_instance() -> None:
+        """Stop the EC2 instance after the DAG completes."""
+        import boto3
+
+        ec2 = boto3.client("ec2", region_name="us-west-2")
+        ec2.stop_instances(InstanceIds=[INSTANCE_ID])
+        logger.info(f"Stopping EC2 instance {INSTANCE_ID}")
+
     @task
     def notify_account_changes(discovery_result: dict) -> None:
         """Send a Slack alert to #customer-success when MCC accounts are
@@ -197,7 +208,8 @@ def google_ads_to_s3_daily():
     # pull_account needs just the account list
     pulls = pull_account.expand(account=discovery_result["accounts"])
     dashboard = update_dashboard_files()
-    pulls >> dashboard >> export_for_attribution()
+    attribution = export_for_attribution()
+    pulls >> dashboard >> attribution >> stop_instance()
 
     # notify runs in parallel with pulls (no dependency on pull completion)
     notify_account_changes(discovery_result)
