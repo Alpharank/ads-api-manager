@@ -26,8 +26,10 @@ logger = logging.getLogger(__name__)
 
 # Hardcoded fallback — used only when the S3 registry is unreachable.
 _FALLBACK_CLIENTS = [
+    "altura_ad_account",
     "californiacoast_cu",
     "commonwealth_one_fcu",
+    "first_commonwealth_bank",
     "firstcommunity_cu",
     "kitsap_cu",
     "publicservice_cu",

@@ -8,6 +8,11 @@
 #   athena_id       – client_id in staging.google_ads_campaign_data (may differ from key)
 #   dashboard_token – SHA-256 token for the GitHub Pages dashboard
 
+altura_ad_account:
+  name: "Altura Ad Account"
+  google_ads_id: "6608894256"
+  dashboard_token: "0dd9606ac3b4801f14798f39da0da59a752536fd82484564efbf51d97049a805"
+
 californiacoast_cu:
   name: "California Coast Credit Union"
   google_ads_id: "9001645164"
@@ -22,6 +27,11 @@ commonwealth_one_fcu:
   s3_path: "customers/commonwealth/downloads"
   athena_id: "commonwealth_one_fcu"
   dashboard_token: "27579ec0b32f0584b26197dc8e9fb46a190d4ef97a7931a7d71ddd3356b57a5e"
+
+first_commonwealth_bank:
+  name: "First Commonwealth Bank"
+  google_ads_id: "2941063412"
+  dashboard_token: "d5d3084b4125d4c6bc8cd83d97df8f20df5da8458caff16a897335a81070dcd2"
 
 firstcommunity_cu:
   name: "First Community Credit Union"

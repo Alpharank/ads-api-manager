@@ -16,8 +16,10 @@ aws:
 # Map Google Ads Customer IDs to internal client_id names
 # Format: "google_ads_customer_id": "client_id" (no dashes in customer ID)
 client_mapping:
+  "6608894256": "altura_ad_account"
   "9001645164": "californiacoast_cu"
   "7306319113": "commonwealth_one_fcu"
+  "2941063412": "first_commonwealth_bank"
   "4668771744": "firstcommunity_cu"
   "7543892333": "kitsap_cu"
   "7636280979": "publicservice_cu"
