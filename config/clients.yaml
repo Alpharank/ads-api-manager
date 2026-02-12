@@ -11,6 +11,8 @@
 altura_ad_account:
   name: "Altura Ad Account"
   google_ads_id: "6608894256"
+  s3_path: "customers/altura_cu"
+  athena_id: "altura_cu"
   dashboard_token: "0dd9606ac3b4801f14798f39da0da59a752536fd82484564efbf51d97049a805"
 
 californiacoast_cu:
@@ -31,6 +33,8 @@ commonwealth_one_fcu:
 first_commonwealth_bank:
   name: "First Commonwealth Bank"
   google_ads_id: "2941063412"
+  s3_path: "customers/fc_bank"
+  athena_id: "fc_bank"
   dashboard_token: "d5d3084b4125d4c6bc8cd83d97df8f20df5da8458caff16a897335a81070dcd2"
 
 firstcommunity_cu:
