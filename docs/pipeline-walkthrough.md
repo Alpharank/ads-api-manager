@@ -8,7 +8,7 @@
 4. How much data we store vs. what we actually use today
 5. How it scales as we onboard more clients
 6. How the attribution bridge works
-7. EC2 cost optimization
+7. EC2 cost optimization (ready to enable)
 8. Recommendation: Airflow DAGs vs. PySpark/Glue
 
 ---
@@ -17,10 +17,9 @@
 
 ### The daily cycle
 
-Every day at **7:50 AM UTC**, an EventBridge rule fires a Lambda that starts the EC2 instance (`auto-attribution-prod`). Ten minutes later, Airflow wakes up and runs the DAG:
+Every day at **8:00 AM UTC**, Airflow runs the DAG:
 
 ```
-7:50 AM UTC   EventBridge → Lambda → Start EC2 instance
 8:00 AM UTC   Airflow DAG kicks off:
 
   ┌─────────────────────┐
@@ -45,18 +44,11 @@ Every day at **7:50 AM UTC**, an EventBridge rule fires a Lambda that starts the
            ▼
   ┌──────────────────────────┐
   │ export_for_attribution   │  Write monthly CSV for ROI pipeline
-  └────────┬─────────────────┘
-           │
-           ▼
-  ┌───────────────┐
-  │ stop_instance │  Shut down EC2 to save cost
-  └───────────────┘
+  └──────────────────────────┘
 
-~8:30 AM UTC   Instance stops
+~8:30 AM UTC   DAG completes
 11:30 AM UTC   ROI attribution pipeline reads the exported file
 ```
-
-The instance only runs for ~30–40 minutes per day.
 
 ### What happens at each step
 
@@ -73,8 +65,6 @@ The instance only runs for ~30–40 minutes per day.
 **update_dashboard_files** — Rebuilds two JSON files that power the GitHub Pages dashboard: `clients.json` (token → client mapping) and `data-manifest.json` (which months have data per client).
 
 **export_for_attribution** — This is the bridge to the ROI pipeline. It reads all the daily campaign CSVs for the current month, concatenates them into one file, renames the columns, and writes it to a different S3 path in the format the ROI pipeline expects. This replaced a manual monthly export that someone had to run by hand.
-
-**stop_instance** — Stops the EC2 instance. Uses `trigger_rule="all_done"` so the instance stops even if upstream tasks fail.
 
 ---
 
@@ -374,19 +364,27 @@ adspend_reports/{client}_{month}_daily.csv
 
 The pipeline runs on `auto-attribution-prod` (m5zn.6xlarge — 24 vCPUs, 192 GB RAM). This instance costs **~$1.18/hour**.
 
-### Before: always running
+### Current state: always running
 
 ```
 24 hours × $1.18/hr × 30 days = ~$850/month
 ```
 
-### After: start/stop automation
+### Ready-to-enable: start/stop automation
+
+An AWS Lambda (`start-airflow-ec2`) and EventBridge rule (`start-airflow-ec2-daily`) exist but are **currently disabled**. The DAG also has a commented-out `stop_instance` task. When enabled, the flow would be:
 
 ```
+EventBridge (7:50 AM UTC) → Lambda → Start EC2
+Airflow DAG runs (8:00 AM UTC)
+DAG final task → Stop EC2
+
 ~0.7 hours × $1.18/hr × 30 days = ~$25/month
 ```
 
-That's **$825/month saved** just from the start/stop automation. The Lambda + EventBridge rule that manages this costs fractions of a penny.
+That would save **~$825/month**. To enable:
+1. `aws events enable-rule --name start-airflow-ec2-daily --region us-west-2`
+2. Uncomment the `stop_instance` task in `dags/google_ads_to_s3_dag.py`
 
 ---
 
@@ -404,12 +402,12 @@ That's **$825/month saved** just from the start/stop automation. The Lambda + Ev
 |--|-----------------|----------------|
 | Cold start | 0 (already running) | 1–2 minutes (Spark cluster spin-up) |
 | Min cost per run | ~$0.01 (EC2 time) | ~$0.15 (2 DPUs × $0.44/hr, 10-min minimum) |
-| Monthly cost (daily runs) | ~$25 (with start/stop) | ~$4.50+ (Glue only, no orchestration) |
+| Monthly cost (daily runs) | ~$850 (always on), ~$25 (with start/stop) | ~$4.50+ (Glue only, no orchestration) |
 | Orchestration | Built-in (Airflow IS the orchestrator) | Need Step Functions or Airflow anyway |
 | Debugging | SSH into instance, check logs | CloudWatch logs, less interactive |
 | Dependencies | pip install in venv | Glue job parameters, wheel packaging |
 
-**You'd still need an orchestrator.** Glue runs compute jobs, but you still need something to decide: discover accounts → fan out per account → update dashboards → export → stop instance. That's Airflow's job. Moving to Glue doesn't eliminate Airflow — it adds a second system.
+**You'd still need an orchestrator.** Glue runs compute jobs, but you still need something to decide: discover accounts → fan out per account → update dashboards → export. That's Airflow's job. Moving to Glue doesn't eliminate Airflow — it adds a second system.
 
 ### When to revisit this decision
 
