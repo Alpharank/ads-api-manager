@@ -1,0 +1,450 @@
+date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value
+2026-01-01,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-01,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,0,0,0.0,0.0
+2026-01-01,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-01,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,17,6,2,37002.65,8203.051
+2026-01-01,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,1,0,0.0,0.0
+2026-01-01,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-01,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,coastal credit union,BROAD,2,2,1,10000.0,4900.0
+2026-01-01,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,2,1,19869.59,2781.7426000000005
+2026-01-01,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,0,0,0.0,0.0
+2026-01-02,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-02,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,3,2,0,0.0,0.0
+2026-01-02,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,auto refinance,BROAD,1,1,1,3000.0,780.0
+2026-01-02,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,1,12000.0,1680.0000000000002
+2026-01-02,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,31,15,9,180857.71,33035.0794
+2026-01-02,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoast san diego,BROAD,1,0,0,0.0,0.0
+2026-01-02,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu,BROAD,2,0,0,0.0,0.0
+2026-01-02,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,1,0,0,0.0,0.0
+2026-01-02,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,0,0,0.0,0.0
+2026-01-02,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-02,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784673,Search_Keyword Targeting_English_CD,9.5 cd,BROAD,1,0,0,0.0,0.0
+2026-01-02,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,0,0,0.0,0.0
+2026-01-02,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,0,0.0,0.0
+2026-01-02,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-03,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,2,2,10000.5,3000.0
+2026-01-03,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,5,2,1,22624.85,3167.4790000000003
+2026-01-03,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,1,1,38704.31,5418.6034
+2026-01-03,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,3,1,0,0.0,0.0
+2026-01-03,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,1,0,0.0,0.0
+2026-01-03,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,1,31650.0,4431.0
+2026-01-03,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,3,0,0,0.0,0.0
+2026-01-03,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast online banking,PHRASE,1,0,0,0.0,0.0
+2026-01-03,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,2,1,1,22715.46,3180.1644
+2026-01-03,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast credit union menifee,BROAD,1,0,0,0.0,0.0
+2026-01-03,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-03,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,2,0,0,0.0,0.0
+2026-01-03,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,0,0.0,0.0
+2026-01-03,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,3,2,1,61873.6,8662.304
+2026-01-03,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-03,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,1,1,22510.36,3151.4504
+2026-01-04,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-04,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-04,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-04,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,19,7,3,75088.13,15505.3382
+2026-01-04,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,1,1,20000.0,5200.0
+2026-01-04,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-04,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-04,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,3,1,1,36000.0,5040.000000000001
+2026-01-04,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-04,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,1,1,47532.76,6654.586400000001
+2026-01-04,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-04,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-05,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-05,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,2,0,0,0.0,0.0
+2026-01-05,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,29,15,7,134222.78,25300.5292
+2026-01-05,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoast near me,BROAD,1,1,0,0.0,0.0
+2026-01-05,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,15,7,4,53759.33,9808.8062
+2026-01-05,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,1,1,75.0,1500.0
+2026-01-05,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,0,0,0.0,0.0
+2026-01-05,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-05,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union deposit,BROAD,1,0,0,0.0,0.0
+2026-01-05,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,0,0,0.0,0.0
+2026-01-05,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,0,0,0.0,0.0
+2026-01-05,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,2,0,0,0.0,0.0
+2026-01-05,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,2,2,2,70881.49,9923.408600000002
+2026-01-05,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,1,1,16386.0,2294.0400000000004
+2026-01-06,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,1,1,25.0,1500.0
+2026-01-06,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,1,1,25.0,1500.0
+2026-01-06,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-06,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,1,1,46017.61,6442.465400000001
+2026-01-06,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,0,0,0.0,0.0
+2026-01-06,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,1,1,45491.9,6368.866000000001
+2026-01-06,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,18,7,4,156776.16,21948.6624
+2026-01-06,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,0,0,0.0,0.0
+2026-01-06,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-06,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu,BROAD,1,1,0,0.0,0.0
+2026-01-06,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu san diego,BROAD,1,0,0,0.0,0.0
+2026-01-06,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,1,1,0,0.0,0.0
+2026-01-06,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,0,0,0.0,0.0
+2026-01-06,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,coastal credit union,BROAD,1,1,1,36643.35,5130.069
+2026-01-06,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-06,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,2,1,25.0,1500.0
+2026-01-06,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union auto loan rates,BROAD,1,0,0,0.0,0.0
+2026-01-06,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,2,0,0,0.0,0.0
+2026-01-07,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,california credit union cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-07,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,4,2,1,10000.0,4900.0
+2026-01-07,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,1,0,0.0,0.0
+2026-01-07,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,4,2,0,0.0,0.0
+2026-01-07,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-07,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,0,0,0.0,0.0
+2026-01-07,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-07,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,19,9,5,114076.14,18939.159600000003
+2026-01-07,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,3,2,1,10000.0,4900.0
+2026-01-07,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast credit union menifee,BROAD,2,1,1,25.0,1500.0
+2026-01-07,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-07,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,ccu,BROAD,1,0,0,0.0,0.0
+2026-01-07,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,3,0,0,0.0,0.0
+2026-01-07,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,i need a bank account,BROAD,1,0,0,0.0,0.0
+2026-01-07,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-07,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-08,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,california credit union cd rates,BROAD,2,2,0,0.0,0.0
+2026-01-08,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-08,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,1,1,21075.57,2950.5798000000004
+2026-01-08,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,0,0,0.0,0.0
+2026-01-08,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,0,0,0.0,0.0
+2026-01-08,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-08,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-08,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,11,5,2,13619.28,3403.1992
+2026-01-08,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,2,0,0,0.0,0.0
+2026-01-08,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,0,0,0.0,0.0
+2026-01-08,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,9,3,1,20102.51,2814.3514
+2026-01-08,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,1,0,0.0,0.0
+2026-01-08,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-08,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union bank,BROAD,1,0,0,0.0,0.0
+2026-01-08,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,1,1,31734.0,4442.76
+2026-01-08,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,bankrate cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-08,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,5,2,1,10000.0,4900.0
+2026-01-08,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-08,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,0,0,0.0,0.0
+2026-01-08,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-08,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,1,0,0.0,0.0
+2026-01-08,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,0,0,0.0,0.0
+2026-01-08,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408695,Search_Keyword Targeting_English_Car-B,used car loan rates,BROAD,2,0,0,0.0,0.0
+2026-01-09,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,1,0,0.0,0.0
+2026-01-09,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,2,0,0.0,0.0
+2026-01-09,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,1,1,1,49000.0,6860.000000000001
+2026-01-09,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-09,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,1,0,0.0,0.0
+2026-01-09,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-09,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,13,5,4,28164.53,8416.4342
+2026-01-09,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast san diego,PHRASE,1,0,0,0.0,0.0
+2026-01-09,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoastcu org,BROAD,1,0,0,0.0,0.0
+2026-01-09,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california coast credit union chula vista,BROAD,1,0,0,0.0,0.0
+2026-01-09,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast,BROAD,3,2,1,24615.75,3446.2050000000004
+2026-01-09,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,7,3,2,20479.19,4267.0866000000005
+2026-01-09,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast temecula,BROAD,1,1,1,18074.35,2530.409
+2026-01-09,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-09,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union deposit,BROAD,1,0,0,0.0,0.0
+2026-01-09,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,0,0.0,0.0
+2026-01-09,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,1,1,46000.0,6440.000000000001
+2026-01-09,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,0,0,0.0,0.0
+2026-01-10,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-10,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-10,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,0,0,0.0,0.0
+2026-01-10,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,19,8,4,25765.739999999998,6475.203600000001
+2026-01-10,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,1,0,0.0,0.0
+2026-01-10,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-10,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,8,2,1,2500.0,1500.0
+2026-01-10,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-10,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu near me,BROAD,1,0,0,0.0,0.0
+2026-01-10,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,1,0,0.0,0.0
+2026-01-10,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,1,1,1000.0,490.0
+2026-01-10,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,1,1,31933.39,4470.6746
+2026-01-10,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,5,1,0,0.0,0.0
+2026-01-11,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-11,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,4,1,1,25.0,1500.0
+2026-01-11,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,3,2,0,0.0,0.0
+2026-01-11,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,1,1,22509.81,3151.3734000000004
+2026-01-11,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,1,0,0.0,0.0
+2026-01-11,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,11,5,4,118565.29000000001,18899.140600000002
+2026-01-11,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu,BROAD,2,1,0,0.0,0.0
+2026-01-11,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,coastal credit union san diego,PHRASE,1,0,0,0.0,0.0
+2026-01-11,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,2,0,0,0.0,0.0
+2026-01-11,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-11,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-11,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union cd,BROAD,1,0,0,0.0,0.0
+2026-01-11,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union deposit,BROAD,1,1,0,0.0,0.0
+2026-01-11,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,2,0,0,0.0,0.0
+2026-01-11,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,1,1,49132.53,6878.5542000000005
+2026-01-11,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-12,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-12,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,1,6126.16,1592.8016
+2026-01-12,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,i need a bank account,BROAD,1,0,0,0.0,0.0
+2026-01-12,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-12,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,auto refinance,BROAD,1,0,0,0.0,0.0
+2026-01-12,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,1,34120.47,4776.8658000000005
+2026-01-12,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,0,0,0.0,0.0
+2026-01-12,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,15,7,5,136244.57,25127.739800000003
+2026-01-12,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoast san diego,BROAD,1,1,1,50.0,1500.0
+2026-01-12,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-12,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,3,0,0,0.0,0.0
+2026-01-12,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,coastal credit union,BROAD,1,1,1,30043.13,4206.038200000001
+2026-01-12,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,2,1,0,0.0,0.0
+2026-01-12,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,0,0,0.0,0.0
+2026-01-12,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,i need a bank account,BROAD,1,0,0,0.0,0.0
+2026-01-12,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-12,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,1,1,65605.56,9184.7784
+2026-01-12,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,0,0,0.0,0.0
+2026-01-12,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,0,0,0.0,0.0
+2026-01-12,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,1,0,0.0,0.0
+2026-01-13,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,best cd rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-13,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,1,0,0.0,0.0
+2026-01-13,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,4,3,2,50.0,3000.0
+2026-01-13,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,auto refinance,BROAD,1,1,0,0.0,0.0
+2026-01-13,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-13,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,0,0,0.0,0.0
+2026-01-13,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,14,2,0,0.0,0.0
+2026-01-13,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu,BROAD,1,1,1,25.0,1500.0
+2026-01-13,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,ccu,BROAD,1,0,0,0.0,0.0
+2026-01-13,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,7,0,0,0.0,0.0
+2026-01-13,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,calcoast near me,BROAD,1,0,0,0.0,0.0
+2026-01-13,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu near me,BROAD,1,0,0,0.0,0.0
+2026-01-13,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,6,0,0,0.0,0.0
+2026-01-13,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-13,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,0,0,0.0,0.0
+2026-01-14,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,california credit union cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-14,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,1,0,0.0,0.0
+2026-01-14,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,i need a bank account,BROAD,1,0,0,0.0,0.0
+2026-01-14,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,1,0,0.0,0.0
+2026-01-14,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,0,0,0.0,0.0
+2026-01-14,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,22,9,5,71375.6,13353.584
+2026-01-14,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast san diego,PHRASE,2,1,1,28300.0,3962.000000000001
+2026-01-14,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,4,1,1,19855.93,2779.8302000000003
+2026-01-14,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,calcaost,BROAD,1,1,1,15732.0,2202.48
+2026-01-14,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-14,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,ccu,BROAD,1,0,0,0.0,0.0
+2026-01-14,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,0,0,0.0,0.0
+2026-01-14,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,1,1,1,50.0,1500.0
+2026-01-15,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,4,2,1,50.0,1500.0
+2026-01-15,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,1,0,0.0,0.0
+2026-01-15,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-15,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,1,0,0.0,0.0
+2026-01-15,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-15,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-15,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,13,4,1,45000.0,6300.000000000001
+2026-01-15,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california coast c u,PHRASE,1,0,0,0.0,0.0
+2026-01-15,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu near me,BROAD,1,1,1,3500.0,910.0
+2026-01-15,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-15,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,5,2,1,45610.09,6385.412600000001
+2026-01-15,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast credit union temecula,BROAD,1,1,1,25.0,1500.0
+2026-01-15,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,2,0,0,0.0,0.0
+2026-01-15,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,2,2,6000.0,3000.0
+2026-01-15,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union deposit,BROAD,1,0,0,0.0,0.0
+2026-01-15,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-15,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,0,0,0.0,0.0
+2026-01-15,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,0,0,0.0,0.0
+2026-01-15,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan rates today,BROAD,1,0,0,0.0,0.0
+2026-01-15,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,2,0,0,0.0,0.0
+2026-01-15,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,0,0,0.0,0.0
+2026-01-16,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,best cd rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-16,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,2,2,75.0,3000.0
+2026-01-16,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,best car loan rates san diego,EXACT,1,1,0,0.0,0.0
+2026-01-16,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-16,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,san diego auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-16,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534294,Search_Keyword Targeting_English_Car-B,used car loan rates,BROAD,3,0,0,0.0,0.0
+2026-01-16,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-16,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,16,7,5,59269.44,12240.7216
+2026-01-16,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,2,2,2,100.0,3000.0
+2026-01-16,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,ccu,BROAD,1,0,0,0.0,0.0
+2026-01-16,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,2,1,0,0.0,0.0
+2026-01-16,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast credit union murrieta,BROAD,1,1,1,24278.0,3398.9200000000005
+2026-01-16,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,1,1,25.0,1500.0
+2026-01-16,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,1,0,0.0,0.0
+2026-01-16,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,0,0,0.0,0.0
+2026-01-16,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,2,2,46581.59,6521.4226
+2026-01-17,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-17,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,1,60.0,1500.0
+2026-01-17,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-17,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-17,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,4,0,0,0.0,0.0
+2026-01-17,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcost,BROAD,1,0,0,0.0,0.0
+2026-01-17,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu san diego,BROAD,1,0,0,0.0,0.0
+2026-01-17,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,5,2,2,50.0,3000.0
+2026-01-17,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-17,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,0,0.0,0.0
+2026-01-17,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,1,0,0.0,0.0
+2026-01-17,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-17,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,0,0,0.0,0.0
+2026-01-17,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408695,Search_Keyword Targeting_English_Car-B,used car loan rates,BROAD,1,1,1,31728.27,4441.9578
+2026-01-18,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,1,1,5050.0,1500.0
+2026-01-18,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,1,1,25.0,1500.0
+2026-01-18,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-18,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,auto refinance,BROAD,1,0,0,0.0,0.0
+2026-01-18,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,1,0,0.0,0.0
+2026-01-18,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,7,1,1,25.0,1500.0
+2026-01-18,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union bank,BROAD,1,0,0,0.0,0.0
+2026-01-18,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,3,1,0,0.0,0.0
+2026-01-18,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best deposit interest rates,BROAD,2,1,0,0.0,0.0
+2026-01-18,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-18,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,6,0,0,0.0,0.0
+2026-01-18,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,3,1,1,4700.0,1222.0
+2026-01-18,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,0,0,0.0,0.0
+2026-01-18,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,0,0,0.0,0.0
+2026-01-19,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,0,0,0.0,0.0
+2026-01-19,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-19,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,0,0,0.0,0.0
+2026-01-19,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-19,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,0,0,0.0,0.0
+2026-01-19,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-19,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,12,2,1,125.0,1500.0
+2026-01-19,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,1,1,25.0,1500.0
+2026-01-19,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,8,1,0,0.0,0.0
+2026-01-19,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu near me,BROAD,1,0,0,0.0,0.0
+2026-01-19,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-19,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union cd,BROAD,1,0,0,0.0,0.0
+2026-01-19,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account bank,BROAD,1,0,0,0.0,0.0
+2026-01-19,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,1,50.0,1500.0
+2026-01-20,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,1,200.0,1500.0
+2026-01-20,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,16,4,2,21323.41,4478.277400000001
+2026-01-20,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,2,0,0,0.0,0.0
+2026-01-20,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,5,2,1,1000.0,490.0
+2026-01-20,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,1,0,0.0,0.0
+2026-01-20,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,checking account,BROAD,2,0,0,0.0,0.0
+2026-01-20,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,5,2,2,22975.0,7460.5
+2026-01-20,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,1,1,50.0,1500.0
+2026-01-20,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,1,0,0.0,0.0
+2026-01-21,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,3,0,0,0.0,0.0
+2026-01-21,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,1,1,7000.0,1820.0
+2026-01-21,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,debit account,BROAD,2,1,1,50.0,1500.0
+2026-01-21,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,0,0,0.0,0.0
+2026-01-21,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,1,0,0.0,0.0
+2026-01-21,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,22,9,5,71487.04000000001,16201.1856
+2026-01-21,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,1,1,34825.41,4875.557400000001
+2026-01-21,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,1,1,67153.2,9401.448
+2026-01-21,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-21,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,7,2,1,50.0,1500.0
+2026-01-21,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-21,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-21,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best cd rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-21,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-21,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,4,1,1,25.0,1500.0
+2026-01-21,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,1,0,0.0,0.0
+2026-01-21,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,1,0,0.0,0.0
+2026-01-22,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,5,0,0,0.0,0.0
+2026-01-22,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,0,0,0.0,0.0
+2026-01-22,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,2,1,1,3000.0,1470.0
+2026-01-22,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,1,1,10000.0,4900.0
+2026-01-22,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,16,4,2,38641.94,5759.8716
+2026-01-22,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,2,1,1,50.0,1500.0
+2026-01-22,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,0,0,0.0,0.0
+2026-01-22,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,1,1,17855.5,2499.7700000000004
+2026-01-22,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,1,0,0.0,0.0
+2026-01-22,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,3,2,1,11500.0,2990.0
+2026-01-22,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,1,0,0.0,0.0
+2026-01-23,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,1,1,50.0,1500.0
+2026-01-23,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-23,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,1,1,0,0.0,0.0
+2026-01-23,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,auto loan rates san diego,BROAD,1,0,0,0.0,0.0
+2026-01-23,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-23,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-23,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,24,9,6,32793.59,10073.1026
+2026-01-23,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,0,0,0.0,0.0
+2026-01-23,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoast san diego,BROAD,1,0,0,0.0,0.0
+2026-01-23,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,1,0,0.0,0.0
+2026-01-23,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,7,2,1,50.0,1500.0
+2026-01-23,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,calcoast near me,BROAD,1,0,0,0.0,0.0
+2026-01-23,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit,BROAD,1,0,0,0.0,0.0
+2026-01-23,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,2,0,0,0.0,0.0
+2026-01-23,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,1,1,50.0,1500.0
+2026-01-23,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,3,1,0,0.0,0.0
+2026-01-23,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,0,0,0.0,0.0
+2026-01-23,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,2,0,0,0.0,0.0
+2026-01-23,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,2,0,0,0.0,0.0
+2026-01-24,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-24,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,2,1,1,35500.0,4970.000000000001
+2026-01-24,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,1,1,1,25.0,1500.0
+2026-01-24,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,best interest rate auto loan,EXACT,1,0,0,0.0,0.0
+2026-01-24,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-24,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,1,0,0.0,0.0
+2026-01-24,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534294,Search_Keyword Targeting_English_Car-B,used car loan rates,BROAD,1,0,0,0.0,0.0
+2026-01-24,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-24,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,9,0,0,0.0,0.0
+2026-01-24,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast,BROAD,3,2,1,50.0,1500.0
+2026-01-24,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,2,1,1,500.0,1500.0
+2026-01-24,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-24,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best deposit interest rates,BROAD,1,0,0,0.0,0.0
+2026-01-24,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,1,0,0.0,0.0
+2026-01-24,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union cd,BROAD,1,0,0,0.0,0.0
+2026-01-24,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,0,0,0.0,0.0
+2026-01-24,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,2,0,0.0,0.0
+2026-01-24,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,6,2,1,3000.0,780.0
+2026-01-25,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,california credit union cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-25,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-25,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,1,1,1000.0,490.0
+2026-01-25,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-25,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,best auto loan rates san diego,BROAD,1,1,0,0.0,0.0
+2026-01-25,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-25,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,13,4,2,30986.95,6088.173
+2026-01-25,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoastcu org,BROAD,1,1,1,20594.88,2883.2832000000003
+2026-01-25,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,0,0,0.0,0.0
+2026-01-25,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,1,0,0,0.0,0.0
+2026-01-25,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,2,2,0,0.0,0.0
+2026-01-25,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-26,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,4,4,2,39352.35,9009.329000000002
+2026-01-26,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,3,1,1,15000.0,3900.0
+2026-01-26,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,auto refinance,BROAD,1,0,0,0.0,0.0
+2026-01-26,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,63664369110,Search_Keyword Targeting_English_Credit Union-B,best credit union to get a car loan,BROAD,1,1,1,25.0,1500.0
+2026-01-26,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-26,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,3,1,0,0.0,0.0
+2026-01-26,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,22,8,4,69735.44,13962.9616
+2026-01-26,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,6,4,1,35000.0,4900.000000000001
+2026-01-26,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-26,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-26,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-26,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,3,1,0,0.0,0.0
+2026-01-26,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-26,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-26,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,2,1,0,0.0,0.0
+2026-01-27,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,best auto loan rates san diego,BROAD,1,1,0,0.0,0.0
+2026-01-27,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-27,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,0,0,0.0,0.0
+2026-01-27,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,23,6,2,600.0,1745.0
+2026-01-27,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,12,4,1,50.0,1500.0
+2026-01-27,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast credit union menifee,BROAD,1,1,1,1100.0,1500.0
+2026-01-27,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,best cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-27,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,1,1,50056.34,7007.8876
+2026-01-27,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408695,Search_Keyword Targeting_English_Car-B,used car loan rates,BROAD,1,0,0,0.0,0.0
+2026-01-28,1578789530,Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion,58101804925,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-28,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,checking account,BROAD,1,0,0,0.0,0.0
+2026-01-28,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,free checking account,BROAD,2,1,0,0.0,0.0
+2026-01-28,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101821965,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-28,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,156274336461,Search_Keyword Targeting_English_Refinance-B,auto refinance,BROAD,2,0,0,0.0,0.0
+2026-01-28,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,95116534054,Search_Keyword Targeting_English_San Diego-B,best car loan rates san diego,EXACT,1,1,0,0.0,0.0
+2026-01-28,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,19,5,3,11434.53,4593.8342
+2026-01-28,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-28,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,coastal credit union,BROAD,1,1,0,0.0,0.0
+2026-01-28,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,1,0,0.0,0.0
+2026-01-28,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,11,4,2,36740.0,5143.6
+2026-01-28,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-28,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,2,0,0,0.0,0.0
+2026-01-28,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-28,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408215,Search_Keyword Targeting_English_Auto-B,auto loan,BROAD,1,0,0,0.0,0.0
+2026-01-28,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,0,0,0.0,0.0
+2026-01-28,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408655,Search_Keyword Targeting_English_Credit Union-B,credit union car loan,BROAD,1,1,0,0.0,0.0
+2026-01-28,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408455,Search_Keyword Targeting_English_Refinance-B,refinance car loan,BROAD,1,0,0,0.0,0.0
+2026-01-28,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408695,Search_Keyword Targeting_English_Car-B,used car loan rates,BROAD,1,0,0,0.0,0.0
+2026-01-29,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,debit account,BROAD,1,0,0,0.0,0.0
+2026-01-29,1578789542,Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion,58101825245,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,1,25.0,1500.0
+2026-01-29,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,1,0,0,0.0,0.0
+2026-01-29,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,20,8,5,27185.0,8456.400000000001
+2026-01-29,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal credit union,EXACT,1,0,0,0.0,0.0
+2026-01-29,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,calcoast near me,BROAD,1,0,0,0.0,0.0
+2026-01-29,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cccu,BROAD,2,1,1,25500.0,3570.0000000000005
+2026-01-29,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,8,3,3,29601.85,9123.259
+2026-01-29,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,1,0,0,0.0,0.0
+2026-01-29,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,cd rates,BROAD,1,0,0,0.0,0.0
+2026-01-29,22076650992,Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion,174380784633,Search_Keyword Targeting_English_Bank,credit union cd,BROAD,1,0,0,0.0,0.0
+2026-01-29,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,open checking account online,BROAD,1,1,0,0.0,0.0
+2026-01-29,22571396349,Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion,180117408375,Search_Keyword Targeting_English_Loan-B,car loans,BROAD,1,1,0,0.0,0.0
+2026-01-30,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,debit account,BROAD,2,1,1,3500.0,1715.0
+2026-01-30,1578789533,Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion,58101792685,Search_Keyword Targeting_English_Bank,i need a bank account,BROAD,1,1,0,0.0,0.0
+2026-01-30,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast,BROAD,2,1,1,50.0,1500.0
+2026-01-30,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,9,2,1,3000.0,780.0
+2026-01-30,1578789545,Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion,63664378710,Search_Keyword Targeting_English_Brand,cal coast cu,BROAD,1,1,1,55506.42,7770.898800000001
+2026-01-30,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cal coast credit union,BROAD,4,2,1,25.0,1500.0
+2026-01-30,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast credit union murrieta,BROAD,1,0,0,0.0,0.0
+2026-01-30,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california coast cu,PHRASE,17,0,0,0.0,0.0
+2026-01-30,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,california credit union,PHRASE,2,1,0,0.0,0.0
+2026-01-30,22071062520,Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion,172765765893,Search_Keyword Targeting_English_Brand,cccu bank,BROAD,1,0,0,0.0,0.0
+2026-01-30,22086561724,Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion,171623417023,Search_Keyword Targeting_English_Bank,free checking account,BROAD,4,0,0,0.0,0.0

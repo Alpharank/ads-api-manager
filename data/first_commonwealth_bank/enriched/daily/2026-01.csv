@@ -1,0 +1,88 @@
+date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value
+2026-01-01,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,fc banking,BROAD,1,0,0,0.0,0.0
+2026-01-01,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,10,2,2,2.1,3000.0
+2026-01-02,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,7,2,0,0.0,0.0
+2026-01-02,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local online banking,PHRASE,2,0,0,0.0,0.0
+2026-01-02,20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,best business account,BROAD,1,0,0,0.0,0.0
+2026-01-02,22919175247,WFX - Personal Checking -  North Plaza,190944156664,Personal Checking North Plaza,apply for checking account online,BROAD,2,1,0,0.0,0.0
+2026-01-03,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,3,1,0,0.0,0.0
+2026-01-03,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,6,4,3,3647.6,4500.0
+2026-01-04,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,3,2,2,100.0,3000.0
+2026-01-04,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local online banking,PHRASE,1,1,1,1.0,1500.0
+2026-01-05,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,1,0,0,0.0,0.0
+2026-01-05,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,6,5,3,102.0,4500.0
+2026-01-05,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local banks,PHRASE,1,0,0,0.0,0.0
+2026-01-06,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,commonwealth bank pa,BROAD,1,1,1,60000.0,1500.0
+2026-01-06,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,2,1,0,0.0,0.0
+2026-01-06,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,10,8,4,5280.0,5852.0
+2026-01-06,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local banks,PHRASE,1,1,1,44000.0,1500.0
+2026-01-06,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local online banking,PHRASE,2,0,0,0.0,0.0
+2026-01-06,22919175250,WFX - Personal Checking -  Massillon,190944156704,Personal Checking Massillon,apply for checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-07,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,2,1,0,0.0,0.0
+2026-01-07,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,7,3,3,180.0,4500.0
+2026-01-07,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,locally owned banks,PHRASE,2,0,0,0.0,0.0
+2026-01-07,22919175247,WFX - Personal Checking -  North Plaza,190944156664,Personal Checking North Plaza,apply for checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-08,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,3,3,1,100.0,1500.0
+2026-01-09,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,1st commonwealth bank,BROAD,1,1,1,800.0,1500.0
+2026-01-09,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,2,0,0,0.0,0.0
+2026-01-09,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,7,1,1,50.0,1500.0
+2026-01-09,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-10,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,4,2,1,100.0,1500.0
+2026-01-10,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,1,1,0,0.0,0.0
+2026-01-10,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local online banking,PHRASE,1,1,0,0.0,0.0
+2026-01-11,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,4,1,0,0.0,0.0
+2026-01-11,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,locally owned banks,PHRASE,1,0,0,0.0,0.0
+2026-01-12,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,1,1,1,50.0,1500.0
+2026-01-12,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,9,3,2,875.0,3000.0
+2026-01-12,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,2,1,1,5000.0,2450.0
+2026-01-12,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local banks,PHRASE,2,2,0,0.0,0.0
+2026-01-13,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,3,1,0,0.0,0.0
+2026-01-13,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,9,5,1,75000.0,27000.0
+2026-01-14,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,5,0,0,0.0,0.0
+2026-01-14,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,personal checking account,BROAD,1,0,0,0.0,0.0
+2026-01-15,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,1st commonwealth bank,BROAD,1,1,0,0.0,0.0
+2026-01-15,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,fcb,BROAD,1,1,0,0.0,0.0
+2026-01-15,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,1,1,1,50.0,1500.0
+2026-01-15,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,4,3,1,50.0,1500.0
+2026-01-15,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,2,0,0,0.0,0.0
+2026-01-15,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local banks,PHRASE,1,0,0,0.0,0.0
+2026-01-16,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,2,1,0,0.0,0.0
+2026-01-16,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,11,4,2,60.0,3000.0
+2026-01-16,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,3,1,1,50.0,1500.0
+2026-01-16,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local banks,PHRASE,1,1,1,100.0,1500.0
+2026-01-17,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,1,0,0,0.0,0.0
+2026-01-17,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,10,5,3,10125.0,4500.0
+2026-01-18,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,7,4,3,2725.01,3695.5
+2026-01-18,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-19,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,4,1,1,111.0,1500.0
+2026-01-19,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local online banking,PHRASE,1,1,0,0.0,0.0
+2026-01-20,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local online banking,PHRASE,4,2,2,110.0,3000.0
+2026-01-20,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,locally owned banks,PHRASE,1,0,0,0.0,0.0
+2026-01-21,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,9,3,2,30.0,3000.0
+2026-01-21,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,locally owned banks,PHRASE,1,0,0,0.0,0.0
+2026-01-22,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,10,2,1,2600.0,1500.0
+2026-01-22,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local online banking,PHRASE,2,2,1,300.0,147.0
+2026-01-23,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,3,2,0,0.0,0.0
+2026-01-23,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,6,3,1,100.0,1500.0
+2026-01-24,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,5,1,1,56.0,1500.0
+2026-01-24,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,1,1,0,0.0,0.0
+2026-01-25,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,5,2,1,50.0,1500.0
+2026-01-25,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank massillon,PHRASE,1,1,0,0.0,0.0
+2026-01-25,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,1,0,0,0.0,0.0
+2026-01-26,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,5,1,0,0.0,0.0
+2026-01-26,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,2,1,0,0.0,0.0
+2026-01-27,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,2,1,0,0.0,0.0
+2026-01-27,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,4,3,2,83010.0,3000.0
+2026-01-27,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local online banking,PHRASE,2,2,1,1.0,1500.0
+2026-01-28,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,9,5,3,3030.0,4500.0
+2026-01-28,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,2,0,0,0.0,0.0
+2026-01-28,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local banks,PHRASE,1,0,0,0.0,0.0
+2026-01-29,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,1,0,0,0.0,0.0
+2026-01-29,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,3,0,0,0.0,0.0
+2026-01-29,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,1,1,1,50.0,1500.0
+2026-01-29,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,190965501963,AllRegions_NotProductSpecific,local online banking,PHRASE,1,0,0,0.0,0.0
+2026-01-30,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,1,0,0,0.0,0.0
+2026-01-30,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,8,7,4,13100.0,5280.0
+2026-01-30,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,2,0,0,0.0,0.0
+2026-01-31,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,2,1,0,0.0,0.0
+2026-01-31,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,4,0,0,0.0,0.0
