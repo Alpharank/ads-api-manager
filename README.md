@@ -1,5 +1,7 @@
 # Google Ads to S3 Pipeline
 
+**Dashboard:** [https://alpharank.github.io/Google-Ads-Automation/](https://alpharank.github.io/Google-Ads-Automation/)
+
 Pulls daily campaign metrics, keyword metrics, and GCLID click data from all Google Ads accounts under our MCC, uploads to S3, and serves per-client dashboards via GitHub Pages.
 
 New accounts added to the MCC are **automatically discovered** — no config changes or code deploys needed.
@@ -149,6 +151,10 @@ google_ads_to_s3/
 │   ├── google_ads_to_s3.py  # Main pipeline class + CLI entrypoint
 │   └── slack.py             # Slack notification helper
 ├── scripts/
+│   ├── gclid_attribution.py       # GCLID-based keyword-level attribution
+│   ├── generate_daily_attribution.py  # Synthetic proportional attribution (fallback)
+│   ├── export_athena_data.py      # Export enriched data from Athena
+│   ├── import_s3_funded_data.py   # Import funded data from S3
 │   ├── export_account_ids.py      # List MCC child accounts
 │   └── generate_refresh_token.py  # OAuth setup helper
 ├── output/                  # Local daily CSVs (gitignored)
@@ -194,23 +200,31 @@ s3://ai.alpharank.core/adspend_reports/
 - campaign_id, campaign_name, ad_group_id, ad_group_name
 - network, city, region, country
 
-## GCLID Mapping
+## GCLID Attribution
 
-Map funded loan GCLIDs back to campaigns and keywords:
+`scripts/gclid_attribution.py` produces real keyword-level attribution by joining GCLID click data (from S3) with application data (from `prod.application_data` in Athena). Each application is mapped to the exact click (date + campaign + keyword) that generated it.
 
-```python
-import pandas as pd
+```bash
+# Dry run — print match stats without writing files
+python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
 
-# Funded loans with GCLIDs
-funded_loans = pd.read_csv('funded_loans.csv')
+# Run for one client
+python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
 
-# Load click data from S3
-clicks = pd.read_csv('s3://ai.alpharank.core/ad-spend-reports/californiacoast_cu/clicks/2024-01-15.csv')
-
-# Join to get campaign + keyword info
-result = funded_loans.merge(clicks, on='gclid', how='left')
-print(result[['loan_id', 'gclid', 'campaign_name', 'keyword', 'match_type', 'ad_group_name']])
+# Run for all clients
+python scripts/gclid_attribution.py --all --month 2026-01
 ```
+
+**How it works:**
+
+1. Loads click CSVs from S3 (`ad-spend-reports/{client_id}/clicks/{month}-*.csv`)
+2. Queries `prod.application_data` in Athena, extracting GCLIDs from `attributed_tag_event_url`
+3. Inner joins on GCLID — each application gets the exact keyword that drove it
+4. Writes two outputs that the dashboard already consumes:
+   - `data/{client_id}/enriched/{month}.csv` — campaign-level totals
+   - `data/{client_id}/enriched/daily/{month}.csv` — daily keyword-level attribution
+
+This replaces the synthetic proportional distribution in `generate_daily_attribution.py` with real per-click attribution.
 
 ## Adding New Clients
 

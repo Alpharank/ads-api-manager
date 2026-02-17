@@ -6,6 +6,7 @@
 #   google_ads_id   – Google Ads customer ID (no dashes)
 #   s3_path         – S3 folder for first-party DPR data
 #   athena_id       – client_id in staging.google_ads_campaign_data (may differ from key)
+#   prod_id         – client_id in prod.application_data (may differ from athena_id)
 #   dashboard_token – SHA-256 token for the GitHub Pages dashboard
 
 altura_ad_account:
@@ -13,6 +14,7 @@ altura_ad_account:
   google_ads_id: "6608894256"
   s3_path: "customers/altura_cu"
   athena_id: "altura_cu"
+  prod_id: "altura_cu"
   dashboard_token: "0dd9606ac3b4801f14798f39da0da59a752536fd82484564efbf51d97049a805"
 
 californiacoast_cu:
@@ -20,6 +22,7 @@ californiacoast_cu:
   google_ads_id: "9001645164"
   s3_path: "customers/californiacoast/downloads"
   athena_id: "california_coast_cu"
+  prod_id: "californiacoast_cu"
   dashboard_token: "0f72e02a2ecb57f724288d7dab4fbbdd2d1640b45ad59e34ff260ed591dad92f"
   strip_prefix: "Ark Marketing_CCCU_"
 
@@ -28,6 +31,7 @@ commonwealth_one_fcu:
   google_ads_id: "7306319113"
   s3_path: "customers/commonwealth/downloads"
   athena_id: "commonwealth_one_fcu"
+  prod_id: "commonwealthone"
   dashboard_token: "27579ec0b32f0584b26197dc8e9fb46a190d4ef97a7931a7d71ddd3356b57a5e"
 
 first_commonwealth_bank:
@@ -35,6 +39,7 @@ first_commonwealth_bank:
   google_ads_id: "2941063412"
   s3_path: "customers/fc_bank"
   athena_id: "fc_bank"
+  prod_id: "fc_bank"
   dashboard_token: "d5d3084b4125d4c6bc8cd83d97df8f20df5da8458caff16a897335a81070dcd2"
 
 firstcommunity_cu:
@@ -42,6 +47,7 @@ firstcommunity_cu:
   google_ads_id: "4668771744"
   s3_path: "customers/firstcommunity/downloads"
   athena_id: "first_community_cu"
+  prod_id: "first_ccu"
   dashboard_token: "05979da34c7285484c85deed78e6fd75cefef705b3d9ec87f1c9cd9954475530"
 
 kitsap_cu:
@@ -49,6 +55,7 @@ kitsap_cu:
   google_ads_id: "7543892333"
   s3_path: "customers/kitsap/downloads"
   athena_id: "kitsap_cu"
+  prod_id: "kitsap"
   dashboard_token: "d49d866d6e58accdfc6b0a57099c04d349ceafedcefa8f249d3cee7bd8ebb472"
 
 publicservice_cu:
@@ -56,4 +63,5 @@ publicservice_cu:
   google_ads_id: "7636280979"
   s3_path: "customers/publicservice/downloads"
   athena_id: "public_service_cu"
+  prod_id: "publicservice_cu"
   dashboard_token: "92ec66122ab956def432f3ba0d4f5f142db0f211270256bf12fc27beba80fd9a"
