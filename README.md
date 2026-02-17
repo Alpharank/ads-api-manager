@@ -1,6 +1,6 @@
 # Google Ads to S3 Pipeline
 
-**Dashboard:** [https://alpharank.github.io/Google-Ads-Automation/](https://alpharank.github.io/Google-Ads-Automation/)
+**Dashboard:** `https://alpharank.github.io/Google-Ads-Automation/?client=TOKEN` — see [`clients/`](clients/) for per-client tokens
 
 Pulls daily campaign metrics, keyword metrics, and GCLID click data from all Google Ads accounts under our MCC, uploads to S3, and serves per-client dashboards via GitHub Pages.
 
