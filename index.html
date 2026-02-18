@@ -2023,7 +2023,12 @@
                             production: parseFloat(r.production) || 0,
                             value: parseFloat(r.value) || 0,
                             cpf: parseFloat(r.cpf) || 0,
-                            avg_funded_value: parseFloat(r.avg_funded_value) || 0
+                            avg_funded_value: parseFloat(r.avg_funded_value) || 0,
+                            cc_appvd: parseFloat(r.cc_appvd) || 0,
+                            deposit_appvd: parseFloat(r.deposit_appvd) || 0,
+                            personal_appvd: parseFloat(r.personal_appvd) || 0,
+                            vehicle_appvd: parseFloat(r.vehicle_appvd) || 0,
+                            heloc_appvd: parseFloat(r.heloc_appvd) || 0
                         };
                     });
                 }
@@ -2042,7 +2047,12 @@
                         approved: parseFloat(r.approved) || 0,
                         funded: parseFloat(r.funded) || 0,
                         production: parseFloat(r.production) || 0,
-                        value: parseFloat(r.value) || 0
+                        value: parseFloat(r.value) || 0,
+                        cc_appvd: parseFloat(r.cc_appvd) || 0,
+                        deposit_appvd: parseFloat(r.deposit_appvd) || 0,
+                        personal_appvd: parseFloat(r.personal_appvd) || 0,
+                        vehicle_appvd: parseFloat(r.vehicle_appvd) || 0,
+                        heloc_appvd: parseFloat(r.heloc_appvd) || 0
                     }))
                     .filter(r => r.date) : [];
 
@@ -2051,13 +2061,18 @@
                 dailyEnrichedData.forEach(r => {
                     const key = `${r.campaign_id}|${r.ad_group_id}|${r.keyword}`;
                     if (!keywordEnrichedMap[key]) {
-                        keywordEnrichedMap[key] = { apps: 0, approved: 0, funded: 0, production: 0, value: 0 };
+                        keywordEnrichedMap[key] = { apps: 0, approved: 0, funded: 0, production: 0, value: 0, cc_appvd: 0, deposit_appvd: 0, personal_appvd: 0, vehicle_appvd: 0, heloc_appvd: 0 };
                     }
                     keywordEnrichedMap[key].apps += r.apps;
                     keywordEnrichedMap[key].approved += r.approved;
                     keywordEnrichedMap[key].funded += r.funded;
                     keywordEnrichedMap[key].production += r.production;
                     keywordEnrichedMap[key].value += r.value;
+                    keywordEnrichedMap[key].cc_appvd += r.cc_appvd;
+                    keywordEnrichedMap[key].deposit_appvd += r.deposit_appvd;
+                    keywordEnrichedMap[key].personal_appvd += r.personal_appvd;
+                    keywordEnrichedMap[key].vehicle_appvd += r.vehicle_appvd;
+                    keywordEnrichedMap[key].heloc_appvd += r.heloc_appvd;
                 });
 
                 campaignData = Papa.parse(campText, { header: true, skipEmptyLines: true }).data
@@ -2078,7 +2093,12 @@
                             production: enriched.production || 0,
                             value: enriched.value || 0,
                             cpf: enriched.cpf || 0,
-                            avg_funded_value: enriched.avg_funded_value || 0
+                            avg_funded_value: enriched.avg_funded_value || 0,
+                            cc_appvd: enriched.cc_appvd || 0,
+                            deposit_appvd: enriched.deposit_appvd || 0,
+                            personal_appvd: enriched.personal_appvd || 0,
+                            vehicle_appvd: enriched.vehicle_appvd || 0,
+                            heloc_appvd: enriched.heloc_appvd || 0
                         };
                     })
                     .filter(r => r.impressions > 0 || r.clicks > 0)
@@ -2109,7 +2129,12 @@
                             approved: Math.round((kwEnriched.approved || 0) * 10) / 10,
                             funded: Math.round((kwEnriched.funded || 0) * 10) / 10,
                             production: Math.round((kwEnriched.production || 0) * 100) / 100,
-                            value: Math.round((kwEnriched.value || 0) * 100) / 100
+                            value: Math.round((kwEnriched.value || 0) * 100) / 100,
+                            cc_appvd: kwEnriched.cc_appvd || 0,
+                            deposit_appvd: kwEnriched.deposit_appvd || 0,
+                            personal_appvd: kwEnriched.personal_appvd || 0,
+                            vehicle_appvd: kwEnriched.vehicle_appvd || 0,
+                            heloc_appvd: kwEnriched.heloc_appvd || 0
                         };
                     })
                     .filter(r => r.impressions > 0 || r.clicks > 0)
@@ -2163,7 +2188,12 @@
                                     approved: parseFloat(r.approved) || 0,
                                     funded: parseFloat(r.funded) || 0,
                                     production: parseFloat(r.production) || 0,
-                                    value: parseFloat(r.value) || 0
+                                    value: parseFloat(r.value) || 0,
+                                    cc_appvd: parseFloat(r.cc_appvd) || 0,
+                                    deposit_appvd: parseFloat(r.deposit_appvd) || 0,
+                                    personal_appvd: parseFloat(r.personal_appvd) || 0,
+                                    vehicle_appvd: parseFloat(r.vehicle_appvd) || 0,
+                                    heloc_appvd: parseFloat(r.heloc_appvd) || 0
                                 }))
                                 .filter(r => r.date);
                             dailyEnrichedData = dailyEnrichedData.concat(parsed);
@@ -2656,7 +2686,12 @@
                 ['conversions', 'Conv.', true],
                 ['funded', 'Funded', true],
                 ['_cpf', 'CPF', true],
-                ['_avg_funded_value', 'Avg Funded Val', true]
+                ['_avg_funded_value', 'Avg Funded Val', true],
+                ['cc_appvd', 'CC', true],
+                ['deposit_appvd', 'Deposit', true],
+                ['personal_appvd', 'Personal', true],
+                ['vehicle_appvd', 'Vehicle', true],
+                ['heloc_appvd', 'HELOC', true]
             ]);
 
             let data = campaignData.map(r => ({
@@ -2691,7 +2726,12 @@
                     <td class="text-right">${fmtDec(r.conversions)}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
                     <td class="text-right">${r._cpf !== null ? fmtCur(r._cpf) : '\u2014'}</td>
-                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>`;
+                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>
+                    <td class="text-right">${r.cc_appvd > 0 ? fmtNum(r.cc_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.deposit_appvd > 0 ? fmtNum(r.deposit_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.personal_appvd > 0 ? fmtNum(r.personal_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.vehicle_appvd > 0 ? fmtNum(r.vehicle_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.heloc_appvd > 0 ? fmtNum(r.heloc_appvd) : '\u2014'}</td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -2763,7 +2803,12 @@
                 ['_conv_rate', 'Conv. rate', true],
                 ['_cpa', 'Cost / conv.', true],
                 ['funded', 'Funded', true],
-                ['_avg_funded_value', 'Avg Funded Val', true]
+                ['_avg_funded_value', 'Avg Funded Val', true],
+                ['cc_appvd', 'CC', true],
+                ['deposit_appvd', 'Deposit', true],
+                ['personal_appvd', 'Personal', true],
+                ['vehicle_appvd', 'Vehicle', true],
+                ['heloc_appvd', 'HELOC', true]
             ]);
 
             let data = getScopedKeywords().map(r => ({
@@ -2799,7 +2844,12 @@
                     <td class="text-right">${fmtPct(r._conv_rate)}</td>
                     <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
-                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>`;
+                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>
+                    <td class="text-right">${r.cc_appvd > 0 ? fmtNum(r.cc_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.deposit_appvd > 0 ? fmtNum(r.deposit_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.personal_appvd > 0 ? fmtNum(r.personal_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.vehicle_appvd > 0 ? fmtNum(r.vehicle_appvd) : '\u2014'}</td>
+                    <td class="text-right">${r.heloc_appvd > 0 ? fmtNum(r.heloc_appvd) : '\u2014'}</td>`;
                 tbody.appendChild(tr);
             });
         }
@@ -3042,6 +3092,11 @@
             value: { title: 'Funded Revenue', desc: 'Total dollar value of all funded applications attributed to ad campaigns. Represents actual production/loan amounts from first-party Athena data.' },
             _cpf: { title: 'CPF (Cost Per Funded)', desc: 'Cost to acquire one funded application.', formula: 'Cost ÷ Funded' },
             _avg_funded_value: { title: 'Avg Funded Value', desc: 'Average dollar value per funded application.', formula: 'Value ÷ Funded' },
+            cc_appvd: { title: 'Credit Card Approved', desc: 'Number of approved Credit Card applications attributed to this campaign/keyword via GCLID tracking.' },
+            deposit_appvd: { title: 'Deposit Approved', desc: 'Number of approved Deposit (Xpress App) applications attributed to this campaign/keyword via GCLID tracking.' },
+            personal_appvd: { title: 'Personal Loan Approved', desc: 'Number of approved Personal Loan applications attributed to this campaign/keyword via GCLID tracking.' },
+            vehicle_appvd: { title: 'Vehicle Loan Approved', desc: 'Number of approved Vehicle Loan applications attributed to this campaign/keyword via GCLID tracking.' },
+            heloc_appvd: { title: 'HELOC Approved', desc: 'Number of approved Home Equity Loan (HELOC) applications attributed to this campaign/keyword via GCLID tracking.' },
             search_term: { title: 'Search Term', desc: 'The actual search query that triggered your ad. This is what the user typed into Google.' },
             network: { title: 'Network', desc: 'The Google Ads network where your ad appeared: Search, Display, YouTube, etc.' },
             dimension: { title: 'Dimension', desc: 'The breakdown category for this row (device type or geographic location).' },

@@ -47,7 +47,8 @@ SELECT
     CASE WHEN approved = true THEN 1 ELSE 0 END AS approved,
     CASE WHEN funded = true THEN 1 ELSE 0 END AS funded,
     COALESCE(production_value, 0) AS production_value,
-    COALESCE(lifetime_value, 0) AS lifetime_value
+    COALESCE(lifetime_value, 0) AS lifetime_value,
+    COALESCE(product_family, '') AS product_family
 FROM prod.application_data
 WHERE client_id = ?
     AND report_completion_timestamp >= CAST(? AS TIMESTAMP)
@@ -186,6 +187,10 @@ def query_applications(athena_client, athena_id: str, month: str) -> pd.DataFram
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors="coerce").fillna(0)
 
+    # Ensure product_family is a clean string
+    if "product_family" in df.columns:
+        df["product_family"] = df["product_family"].fillna("").astype(str).str.strip()
+
     return df
 
 
@@ -206,6 +211,13 @@ def build_attribution(clicks_df: pd.DataFrame, apps_df: pd.DataFrame, dry_run: b
     if joined.empty:
         print("  No GCLID matches found")
         return None, None
+
+    # Product-level breakdown columns (approved only)
+    joined["cc_appvd"] = ((joined["product_family"] == "Credit Card") & (joined["approved"] == 1)).astype(int)
+    joined["deposit_appvd"] = ((joined["product_family"] == "Xpress App") & (joined["approved"] == 1)).astype(int)
+    joined["personal_appvd"] = ((joined["product_family"] == "Personal Loan") & (joined["approved"] == 1)).astype(int)
+    joined["vehicle_appvd"] = ((joined["product_family"] == "Vehicle Loan") & (joined["approved"] == 1)).astype(int)
+    joined["heloc_appvd"] = ((joined["product_family"] == "Home Equity Loan") & (joined["approved"] == 1)).astype(int)
 
     # Stats
     n_clicks = len(clicks_df)
@@ -229,6 +241,11 @@ def build_attribution(clicks_df: pd.DataFrame, apps_df: pd.DataFrame, dry_run: b
             funded=("funded", "sum"),
             production=("production_value", "sum"),
             value=("lifetime_value", "sum"),
+            cc_appvd=("cc_appvd", "sum"),
+            deposit_appvd=("deposit_appvd", "sum"),
+            personal_appvd=("personal_appvd", "sum"),
+            vehicle_appvd=("vehicle_appvd", "sum"),
+            heloc_appvd=("heloc_appvd", "sum"),
         )
     )
     campaign_agg["cpf"] = 0  # dashboard computes from cost data
@@ -249,6 +266,11 @@ def build_attribution(clicks_df: pd.DataFrame, apps_df: pd.DataFrame, dry_run: b
             funded=("funded", "sum"),
             production=("production_value", "sum"),
             value=("lifetime_value", "sum"),
+            cc_appvd=("cc_appvd", "sum"),
+            deposit_appvd=("deposit_appvd", "sum"),
+            personal_appvd=("personal_appvd", "sum"),
+            vehicle_appvd=("vehicle_appvd", "sum"),
+            heloc_appvd=("heloc_appvd", "sum"),
         )
     )
 
@@ -266,6 +288,7 @@ def write_campaign_csv(df: pd.DataFrame, client_id: str, month: str) -> Path:
     cols = [
         "campaign_id", "campaign_name", "apps", "approved", "funded",
         "production", "value", "cpf", "avg_funded_value",
+        "cc_appvd", "deposit_appvd", "personal_appvd", "vehicle_appvd", "heloc_appvd",
     ]
     df[cols].to_csv(out_path, index=False)
     print(f"  Wrote {out_path} ({len(df)} campaigns)")
@@ -282,6 +305,7 @@ def write_daily_keyword_csv(df: pd.DataFrame, client_id: str, month: str) -> Pat
         "date", "campaign_id", "campaign_name",
         "ad_group_id", "ad_group_name", "keyword", "match_type",
         "apps", "approved", "funded", "production", "value",
+        "cc_appvd", "deposit_appvd", "personal_appvd", "vehicle_appvd", "heloc_appvd",
     ]
     df[cols].sort_values(["date", "campaign_id", "keyword"]).to_csv(out_path, index=False)
     print(f"  Wrote {out_path} ({len(df)} rows)")
