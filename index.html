@@ -1068,6 +1068,99 @@
             display: none;
         }
 
+        /* ── Keyword Charts Modal ── */
+        .kw-charts-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.45);
+            align-items: center;
+            justify-content: center;
+        }
+        .kw-charts-overlay.visible {
+            display: flex;
+        }
+        .kw-charts-modal {
+            background: #fff;
+            max-width: 920px;
+            width: 90vw;
+            max-height: 85vh;
+            border-radius: 14px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .kw-charts-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .kw-charts-header h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+        .kw-charts-close {
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            line-height: 1;
+        }
+        .kw-charts-close:hover {
+            background: var(--hover-bg);
+            color: var(--text);
+        }
+        .kw-charts-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            padding: 20px 24px 24px;
+            overflow-y: auto;
+        }
+        .kw-chart-col {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .kw-chart-label {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        .kw-chart-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 6px;
+            vertical-align: middle;
+            color: var(--text-secondary);
+            transition: background 0.15s, color 0.15s;
+        }
+        .kw-chart-icon:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .kw-chart-icon svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+        }
+
         /* ── Table Expand ── */
         .main-content.table-expanded .widget-row,
         .main-content.table-expanded .chart-controls,
@@ -1780,6 +1873,26 @@
                     </div>
                 </div>
 
+                <!-- Keyword Charts Modal -->
+                <div class="kw-charts-overlay" id="kwChartsOverlay">
+                    <div class="kw-charts-modal">
+                        <div class="kw-charts-header">
+                            <h3 id="kwChartsTitle">Keyword Breakdown</h3>
+                            <button class="kw-charts-close" onclick="closeKwCharts()">&times;</button>
+                        </div>
+                        <div class="kw-charts-body">
+                            <div class="kw-chart-col">
+                                <div class="kw-chart-label">Cost per Approved</div>
+                                <canvas id="kwCpaChart"></canvas>
+                            </div>
+                            <div class="kw-chart-col">
+                                <div class="kw-chart-label">ROI</div>
+                                <canvas id="kwRoiChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Table Card -->
                 <div class="table-card">
                     <!-- Toolbar -->
@@ -1884,6 +1997,10 @@
             const d = document.createElement('div');
             d.textContent = str;
             return d.innerHTML;
+        }
+
+        function escapeAttr(s) {
+            return s.replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
         function formatMonth(m) {
@@ -2712,11 +2829,15 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             data.forEach(r => {
+                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.approved > 0);
+                const kwIcon = hasKwApproved
+                    ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
+                    : '';
                 const tr = document.createElement('tr');
                 tr.className = 'clickable';
                 tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
                 tr.innerHTML = `
-                    <td class="name-cell">${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td class="name-cell">${kwIcon}${escapeHtml(displayName(r.campaign_name))}</td>
                     <td class="dim">${escapeHtml(r.campaign_id)}</td>
                     <td class="text-right">${fmtNum(r.impressions)}</td>
                     <td class="text-right">${fmtNum(r.clicks)}</td>
@@ -3523,6 +3644,157 @@
 
             updateKpiSelected();
         }
+
+        // ── Keyword Drill-Down Charts ──
+        let kwCpaChartInstance = null;
+        let kwRoiChartInstance = null;
+
+        function showKwCharts(campaignName, campaignId) {
+            const kwData = keywordData.filter(k => k.campaign_id === campaignId);
+            const byKeyword = {};
+            kwData.forEach(k => {
+                if (!byKeyword[k.keyword]) byKeyword[k.keyword] = { cost: 0, approved: 0, value: 0 };
+                byKeyword[k.keyword].cost += k.cost;
+                byKeyword[k.keyword].approved += k.approved;
+                byKeyword[k.keyword].value += k.value;
+            });
+
+            const entries = Object.entries(byKeyword)
+                .filter(([_, v]) => v.approved > 0)
+                .map(([kw, v]) => ({
+                    keyword: kw,
+                    cpa: v.cost / v.approved,
+                    roi: v.cost > 0 ? (v.value - v.cost) / v.cost : 0
+                }))
+                .sort((a, b) => a.cpa - b.cpa);
+
+            if (!entries.length) return;
+
+            const labels = entries.map(e => e.keyword);
+            const cpaValues = entries.map(e => e.cpa);
+            const roiValues = entries.map(e => e.roi);
+
+            const chartH = Math.max(200, entries.length * 32);
+            document.getElementById('kwCpaChart').parentElement.style.height = chartH + 'px';
+            document.getElementById('kwRoiChart').parentElement.style.height = chartH + 'px';
+
+            if (kwCpaChartInstance) { kwCpaChartInstance.destroy(); kwCpaChartInstance = null; }
+            if (kwRoiChartInstance) { kwRoiChartInstance.destroy(); kwRoiChartInstance = null; }
+
+            const sharedOpts = {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                interaction: { intersect: false, mode: 'index' },
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        grid: { color: '#f0f0f0' },
+                        ticks: { font: { size: 11 } }
+                    },
+                    y: {
+                        grid: { display: false },
+                        ticks: { font: { size: 11 }, autoSkip: false }
+                    }
+                }
+            };
+
+            kwCpaChartInstance = new Chart(document.getElementById('kwCpaChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: cpaValues,
+                        backgroundColor: '#296f5e99',
+                        borderColor: '#296f5e',
+                        borderWidth: 1,
+                        borderRadius: 3,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    ...sharedOpts,
+                    scales: {
+                        ...sharedOpts.scales,
+                        x: {
+                            ...sharedOpts.scales.x,
+                            ticks: {
+                                ...sharedOpts.scales.x.ticks,
+                                callback: v => fmtCur(v)
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...sharedOpts.plugins,
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => 'Cost/Approved: ' + fmtCur(ctx.raw)
+                            }
+                        }
+                    }
+                }
+            });
+
+            const roiColors = roiValues.map(v => v >= 0 ? '#296f5e99' : '#dc262699');
+            const roiBorders = roiValues.map(v => v >= 0 ? '#296f5e' : '#dc2626');
+
+            kwRoiChartInstance = new Chart(document.getElementById('kwRoiChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: roiValues,
+                        backgroundColor: roiColors,
+                        borderColor: roiBorders,
+                        borderWidth: 1,
+                        borderRadius: 3,
+                        barPercentage: 0.7
+                    }]
+                },
+                options: {
+                    ...sharedOpts,
+                    scales: {
+                        ...sharedOpts.scales,
+                        x: {
+                            ...sharedOpts.scales.x,
+                            ticks: {
+                                ...sharedOpts.scales.x.ticks,
+                                callback: v => (v * 100).toFixed(0) + '%'
+                            }
+                        }
+                    },
+                    plugins: {
+                        ...sharedOpts.plugins,
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => 'ROI: ' + (ctx.raw * 100).toFixed(1) + '%'
+                            }
+                        }
+                    }
+                }
+            });
+
+            document.getElementById('kwChartsTitle').textContent = 'Keyword Breakdown — ' + displayName(campaignName);
+            document.getElementById('kwChartsOverlay').classList.add('visible');
+        }
+
+        function closeKwCharts() {
+            document.getElementById('kwChartsOverlay').classList.remove('visible');
+            if (kwCpaChartInstance) { kwCpaChartInstance.destroy(); kwCpaChartInstance = null; }
+            if (kwRoiChartInstance) { kwRoiChartInstance.destroy(); kwRoiChartInstance = null; }
+        }
+
+        document.getElementById('kwChartsOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeKwCharts();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('kwChartsOverlay').classList.contains('visible')) {
+                closeKwCharts();
+            }
+        });
 
         function selectKpiChart(kpiKey) {
             if (!metricConfig[kpiKey]) return;
