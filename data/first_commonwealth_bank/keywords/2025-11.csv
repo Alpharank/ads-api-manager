@@ -1,0 +1,77 @@
+campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth bank,BROAD,29562,11221,4456.571004,3237.6671460000002
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local banks,PHRASE,9527,2524,1493.221918,1480.474562
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth,BROAD,5261,1998,777.223786,607.934659
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local online banking,PHRASE,2265,1157,152.200508,343.675712
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,locally owned banks,PHRASE,3740,1092,717.237128,600.69728
+22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,183665142676,AllRegions_AllConsumerProducts,apply for checking account online,BROAD,2105,405,485.038702,204.0
+22597252504,WFX - Personal Checking -  Altoona,185198471172,Personal Checking Altoona,apply for checking account online,BROAD,2274,382,578.241806,197.610034
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,6 month cd rates,BROAD,2379,355,867.074945,84.585898
+22027070076,WFX - CD and Money Market Promo,184262007807,Money Market,high yield savings account,BROAD,1732,296,751.892598,85.649575
+22919175247,WFX - Personal Checking -  North Plaza,190944156664,Personal Checking North Plaza,apply for checking account online,BROAD,2751,215,486.777724,67.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,1st commonwealth bank,BROAD,478,196,42.316381,72.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,first commonwealth bank cd rates,PHRASE,359,181,355.677839,43.666666
+22841889806,WFX - Branded - State College,178329459250,Branded State College,first commonwealth bank,PHRASE,637,178,141.56004,54.55044
+22919175244,WFX - Personal Checking -  West Mifflin,190944156624,Personal Checking West Mifflin,apply for checking account online,BROAD,1538,169,239.411753,47.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,best cd rates today,BROAD,1494,154,323.508586,31.0
+22919175250,WFX - Personal Checking -  Massillon,190944156704,Personal Checking Massillon,apply for checking account online,BROAD,1727,137,421.193901,31.0
+22876064828,WFX - Personal Checking - Punxy Plaza,192087603748,Personal Checking Punxy Plaza,apply for checking account online,BROAD,993,121,478.897026,60.0
+22919175118,WFX - Personal Checking -  Union Square,190944156424,Personal Checking Union Square,apply for checking account online,BROAD,1278,107,481.464036,22.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,best local banks near me,PHRASE,423,106,88.647472,52.5
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,fc banking,BROAD,217,104,18.733664,28.0
+22597252504,WFX - Personal Checking -  Altoona,185198471172,Personal Checking Altoona,personal checking account,BROAD,572,102,137.068886,67.777384
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,first commonwealth cd rates,PHRASE,193,96,223.071626,17.821452999999998
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local community banks,PHRASE,379,94,84.77,45.00026
+22876061951,WFX - Personal Checking - Natrona Heights,192087603828,Personal Checking Natrona Heights,apply for checking account online,BROAD,958,87,382.020631,35.007722
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,cd interest rates,BROAD,768,85,218.053708,23.0
+22876064855,WFX - Personal Checking - Allegheny Township,187193316641,Personal Checking Allegheny Township,apply for checking account online,BROAD,620,74,242.30576200000002,26.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,business bank account for llc,BROAD,1832,65,986.287389,12.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,fcb,BROAD,175,62,25.218866000000002,17.0
+22027070076,WFX - CD and Money Market Promo,184262007807,Money Market,money market account,BROAD,572,45,140.873498,14.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,business bank account for llc,BROAD,1156,41,1067.923035,8.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,177478470697,General Banking,local banks in my area,PHRASE,157,38,29.467259,23.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,best business account,BROAD,639,36,509.802519,9.0
+22027070076,WFX - CD and Money Market Promo,184262007807,Money Market,money market rate,BROAD,282,31,75.036354,6.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,commonwealth bank pa,BROAD,91,23,16.19795,10.0
+22841889806,WFX - Branded - State College,178329459250,Branded State College,commonwealth bank pa,PHRASE,68,23,35.879656000000004,8.523848000000001
+22919175250,WFX - Personal Checking -  Massillon,190944156704,Personal Checking Massillon,personal checking account,BROAD,296,22,61.104703,2.0
+22876061951,WFX - Personal Checking - Natrona Heights,192087603828,Personal Checking Natrona Heights,personal checking account,BROAD,228,20,100.813703,8.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,best business account,BROAD,487,16,368.27,1.0
+22841889806,WFX - Branded - State College,178329459250,Branded State College,first commonwealth bank near me,PHRASE,52,13,10.548297,7.0
+22027070076,WFX - CD and Money Market Promo,184262007807,Money Market,money market interest rates,BROAD,152,13,24.85,5.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,banks that do business accounts,BROAD,245,10,62.800841000000005,2.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,first commonwealth bank CD,BROAD,53,9,14.768696,1.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,new business account,BROAD,118,7,114.78999999999999,1.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,small business checking,BROAD,214,7,151.690146,1.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,commonwealth bank pittsburgh,BROAD,17,6,2.922463,4.0
+22841889806,WFX - Branded - State College,178329459250,Branded State College,first commonwealth bank state college,PHRASE,21,4,6.12,2.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,best business bank accounts for llc,BROAD,254,4,70.13000000000001,1.0
+22841889806,WFX - Branded - State College,178329459250,Branded State College,1st commonwealth bank,PHRASE,27,3,2.42,0.0
+22919175247,WFX - Personal Checking -  North Plaza,190944156664,Personal Checking North Plaza,first commonwealth bank checking account,PHRASE,4,2,5.13,0.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,i need to open a business account,BROAD,64,2,16.03,0.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,new business account,BROAD,57,2,58.186712,0.0
+22597252504,WFX - Personal Checking -  Altoona,185198471172,Personal Checking Altoona,first commonwealth bank checking account,PHRASE,2,2,3.5300000000000002,2.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,best bank account for non profit,BROAD,24,1,13.87,0.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,i need to open a business account,BROAD,73,1,22.01,0.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,best business bank accounts for llc,BROAD,3,1,20.61,1.0
+22919175250,WFX - Personal Checking -  Massillon,190944156704,Personal Checking Massillon,first commonwealth checking account,PHRASE,1,1,2.49,0.0
+22919175244,WFX - Personal Checking -  West Mifflin,190944156624,Personal Checking West Mifflin,first commonwealth checking account,PHRASE,11,1,2.51,1.0
+22919175244,WFX - Personal Checking -  West Mifflin,190944156624,Personal Checking West Mifflin,first commonwealth bank checking account,PHRASE,1,1,4.68,1.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,highest cd rates,BROAD,13,1,4.63,1.0
+20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,149266356445,AllRegions_AllBusinessProducts,starting a bank account for a business,BROAD,23,1,23.56,1.0
+22876064828,WFX - Personal Checking - Punxy Plaza,192087603748,Personal Checking Punxy Plaza,first commonwealth bank checking account,PHRASE,6,1,8.83,1.0
+22841889806,WFX - Branded - State College,178329459250,Branded State College,fc banking,PHRASE,10,1,1.11,0.0
+22919175247,WFX - Personal Checking -  North Plaza,190944156664,Personal Checking North Plaza,personal checking account,BROAD,6,0,0.0,0.0
+22919175250,WFX - Personal Checking -  Massillon,190944156704,Personal Checking Massillon,first commonwealth bank checking account,PHRASE,2,0,0.0,0.0
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,118483168289,AllRegions_NotProductSpecific,first commonwealth zelle,BROAD,2,0,0.0,0.0
+22027070076,WFX - CD and Money Market Promo,184262007807,Money Market,best money market rates today,BROAD,1,0,0.0,0.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,best 1 year cd rates,BROAD,2,0,0.0,0.0
+22876061951,WFX - Personal Checking - Natrona Heights,192087603828,Personal Checking Natrona Heights,first commonwealth bank checking account,PHRASE,1,0,0.0,0.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,get a business account,BROAD,8,0,0.0,0.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,certificate of deposit investment,BROAD,3,0,0.0,0.0
+22841889806,WFX - Branded - State College,178329459250,Branded State College,fcb,PHRASE,6,0,0.0,0.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,certificate of deposit rates,BROAD,9,0,0.0,0.0
+20328798225,WFX- Business Checking- Central Ohio,151696577238,Business Checking Accounts,business checking,PHRASE,1,0,0.0,0.0
+22027070076,WFX - CD and Money Market Promo,184262007807,Money Market,money market investments,BROAD,2,0,0.0,0.0
+22027070076,WFX - CD and Money Market Promo,172720080456,CD Promo,high yield cd rates,BROAD,2,0,0.0,0.0
+22597252504,WFX - Personal Checking -  Altoona,185198471172,Personal Checking Altoona,first commonwealth checking account,PHRASE,1,0,0.0,0.0
