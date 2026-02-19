@@ -1,237 +1,401 @@
 # Google Ads to S3 Pipeline
 
-**Dashboard:** `https://alpharank.github.io/Google-Ads-Automation/?client=TOKEN` — see [`clients/`](clients/) for per-client tokens
+Pulls daily Google Ads data, enriches it with first-party attribution, and serves per-client dashboards via GitHub Pages.
 
-Pulls daily campaign metrics, keyword metrics, and GCLID click data from all Google Ads accounts under our MCC, uploads to S3, and serves per-client dashboards via GitHub Pages.
+**Dashboard:** `https://alpharank.github.io/Google-Ads-Automation/?client=TOKEN` — see [`clients/`](clients/) for tokens
 
-New accounts added to the MCC are **automatically discovered** — no config changes or code deploys needed.
+---
 
-## How It Works
+## Table of Contents
 
-The Airflow DAG (`google_ads_to_s3_daily`) runs daily at **8:00 AM UTC (3 AM EST)** and does the following:
+- [System Overview](#system-overview)
+- [Data Flow](#data-flow)
+- [What the Dashboard Shows](#what-the-dashboard-shows)
+- [Enrichment Pipeline](#enrichment-pipeline)
+- [Adding a New Client](#adding-a-new-client)
+- [Dry Runs & Validation](#dry-runs--validation)
+- [Setup](#setup)
+- [CLI Reference](#cli-reference)
+- [Project Structure](#project-structure)
 
-```
-discover_accounts ──> pull_account.expand(N) ──> update_dashboard_files ──> export_for_attribution
-                  \──> notify_account_changes (parallel, fires only when accounts change)
-```
+---
 
-1. **Discover accounts** — queries the MCC for all enabled child accounts, reconciles against an S3 registry (`_registry/accounts.json`), and auto-generates slugs + dashboard tokens for any new accounts
-2. **Pull data** — for each active account (dynamic task mapping), pulls campaign, keyword, and click/GCLID data for yesterday and uploads to S3
-3. **Update dashboard files** — rebuilds `clients.json` and `data-manifest.json` so the GitHub Pages dashboard picks up new data and new clients
-4. **Export for attribution** — produces a monthly campaign file per client in the format the ROI attribution pipeline (`update_google_ads_roi`) expects, eliminating the previous manual monthly export
-5. **Notify account changes** — sends a Slack alert to `#customer-success` when accounts are added to or removed from the MCC
-
-## Auto-Discovery
-
-When a new account appears under the MCC:
-
-- A `client_id` slug is generated from the account name (e.g. "Altura Credit Union" → `altura_credit_union`)
-- A SHA-256 dashboard token is generated
-- The account is added to the S3 registry and included in all subsequent runs
-- A Slack notification is sent to `#customer-success`
-- Dashboard files are updated so the new client's dashboard is immediately available
-
-When an account is removed from the MCC, the registry entry gets a `removed_at` timestamp and data pulls stop. If the account reappears later, it's automatically reactivated.
-
-## Attribution Export
-
-After each daily pull, the pipeline writes a monthly attribution file for each client:
+## System Overview
 
 ```
-s3://ai.alpharank.core/adspend_reports/{client_id}_{YYYY-MM}_daily.csv
+                        DAILY (8 AM UTC)
+                             │
+                             ▼
+┌──────────────────────────────────────────────────────────────────┐
+│  Airflow DAG: google_ads_to_s3_daily                            │
+│                                                                  │
+│  1. Discover accounts under MCC (auto-onboard new ones)         │
+│  2. Pull campaigns + keywords + clicks per account  ──► S3      │
+│  3. Rebuild dashboard manifest files                ──► S3      │
+│  4. Export monthly attribution file                 ──► S3      │
+│  5. Slack notify #customer-success if accounts changed          │
+└──────────────────────────────────────────────────────────────────┘
+                             │
+            ┌────────────────┼────────────────┐
+            ▼                ▼                ▼
+     ┌────────────┐  ┌─────────────┐  ┌─────────────────┐
+     │  Dashboard  │  │  ROI        │  │  Enrichment     │
+     │  (GitHub    │  │  Pipeline   │  │  Scripts         │
+     │   Pages)    │  │  (11:30 AM) │  │  (on-demand)    │
+     └────────────┘  └─────────────┘  └─────────────────┘
 ```
 
-This file has 2 blank rows followed by a header row with columns: `Campaign ID`, `Ad group`, `Day`, `Clicks`, `Cost`, `Conversions`. The ROI attribution pipeline reads this file with `skiprows=2`.
+---
 
-The file is overwritten daily with the full month-to-date data, so it always contains every day pulled so far for that month.
+## Data Flow
 
-### Timing
+### 1. Google Ads API → S3 (Daily, Automated)
 
-| Pipeline | Schedule | What it does |
-|----------|----------|-------------|
-| `google_ads_to_s3_daily` | 8:00 AM UTC (3 AM EST) | Pull daily data, rebuild dashboards, export attribution file |
-| `update_google_ads_roi` | 11:30 AM UTC (6:30 AM EST) | Read attribution file, join with app data, write to staging |
+The [pipeline](pipeline/google_ads_to_s3.py) pulls three datasets per account per day:
 
-The export finishes hours before the ROI pipeline reads it.
+| Dataset | Description | S3 Path |
+|---------|-------------|---------|
+| Campaigns | Daily spend, clicks, conversions per campaign | `ad-spend-reports/{client}/campaigns/{date}.csv` |
+| Keywords | Performance by keyword within each ad group | `ad-spend-reports/{client}/keywords/{date}.csv` |
+| Clicks | Individual click events with GCLIDs + geo | `ad-spend-reports/{client}/clicks/{date}.csv` |
 
-## Dashboard
+### 2. S3 → Enrichment → Local CSVs (On-Demand)
 
-Each client has a token-gated dashboard deployed to GitHub Pages. See [`clients/`](clients/) for tokens and URLs.
+Enrichment scripts join Google Ads data with first-party application/funded data:
 
-### Dashboard Features
+```
+S3 Click Data ─────┐
+                    ├──► GCLID Attribution ──► data/{client}/enriched/{month}.csv
+Athena App Data ───┘                          data/{client}/enriched/daily/{month}.csv
+```
 
-- **Auto-Month Selection**: Loads the most recent available month
-- **Month Dropdown**: Switch between available months
-- **KPI Cards**: Impressions, Clicks, Spend, Conversions (with CPA)
-- **Campaign Performance Chart**: Horizontal bar chart, click to filter
-- **Keyword Table**: Sortable columns, match type badges (Broad/Phrase/Exact)
-- **Text Filter**: Search by campaign or keyword name
-- **Campaign Filter**: Click any campaign bar to drill down
+### 3. Local CSVs → GitHub Pages Dashboard
+
+The [dashboard](index.html) loads CSV files directly from the repo via GitHub Pages:
+
+```
+data/{client}/campaigns/{month}.csv     ← campaign metrics (required)
+data/{client}/keywords/{month}.csv      ← keyword metrics
+data/{client}/daily/{month}.csv         ← daily timeseries
+data/{client}/enriched/{month}.csv      ← funded/attribution data
+data/{client}/search_terms/{month}.csv  ← search query data
+data/{client}/channels/{month}.csv      ← network breakdown
+```
+
+### 4. Attribution Bridge → ROI Pipeline
+
+After each daily pull, a monthly file is exported for the downstream ROI pipeline:
+
+```
+ad-spend-reports/{client}/campaigns/*.csv
+        │
+        ▼  export_for_attribution (daily)
+        │
+adspend_reports/{client}_{month}_daily.csv
+        │
+        ▼  update_google_ads_roi (11:30 AM UTC)
+        │
+staging.google_ads_campaign_data (Athena)
+```
+
+---
+
+## What the Dashboard Shows
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│  [=] AlphaRank  │  Client Name  │                  Month: Jan 2026 ▼│
+├─────────┬────────────────────────────────────────────────────────────┤
+│         │  Impr │ Clicks │ CTR │ Cost │ CPA │ Funded │ Rev │ CPF    │
+│Campaigns│  ════════════════════════════════════════════════════════   │
+│Ad groups│                                                            │
+│─────────│  ┌──────────────────────┐  ┌──────────────────────┐       │
+│Keywords │  │  Multi-Metric Chart  │  │  Funded Over Time    │       │
+│Search   │  │  (select up to 3)    │  │                      │       │
+│ terms   │  └──────────────────────┘  └──────────────────────┘       │
+│─────────│                                                            │
+│Channels │  ┌────────────────────────────────────────────────┐       │
+│When &   │  │  Sortable, Filterable Data Table               │       │
+│ Where   │  │  (click any row to drill down)                 │       │
+│         │  └────────────────────────────────────────────────┘       │
+└─────────┴────────────────────────────────────────────────────────────┘
+```
+
+### KPI Metrics
+
+| Metric | Source | Description |
+|--------|--------|-------------|
+| Impressions | Google Ads | Ad impressions |
+| Clicks | Google Ads | Click count |
+| CTR | Derived | Clicks / Impressions |
+| Cost | Google Ads | Ad spend |
+| CPA | Derived | Cost / Conversions |
+| Funded | First-party | Funded loan applications |
+| Funded Rev | First-party | Revenue from funded loans |
+| CPF | Derived | Cost / Funded |
+| Avg Fund Val | Derived | Revenue / Funded |
+
+Funded metrics require [enriched data](#enrichment-pipeline). Without it, those chips show `--`.
+
+### Drill-Down Navigation
+
+```
+All Campaigns
+  │  click row
+  ▼
+Campaign: KCU - Personal - Brand       ← KPIs + charts scoped to this campaign
+  │  click row
+  ▼
+Ad Group: Personal Loans                ← KPIs + charts scoped to this ad group
+  │
+  └── Keywords table (leaf level)
+```
+
+Breadcrumbs and sidebar selection chips let you navigate back to any level.
+
+### User Flow: Investigating a Campaign
+
+```
+User opens dashboard URL
+  │
+  ├─► Sees KPI strip with month-level totals
+  ├─► Sees campaign table sorted by clicks
+  │
+  ├─► Clicks "KCU - Personal - Brand" row
+  │     ├─► KPIs recalculate for that campaign only
+  │     ├─► Charts re-render scoped to campaign
+  │     └─► Table switches to ad groups within that campaign
+  │
+  ├─► Clicks "Personal Loans" ad group row
+  │     ├─► KPIs recalculate for that ad group only
+  │     └─► Table switches to keywords within that ad group
+  │
+  └─► Clicks breadcrumb "All campaigns" to reset
+```
+
+### User Flow: Comparing Metrics Over Time
+
+```
+User clicks KPI chips (up to 3)
+  │
+  ├─► Left chart overlays selected metrics (e.g., Cost + Clicks + Funded)
+  ├─► Uses date range filter (30d / 60d / 90d / This Month)
+  ├─► Toggles Daily vs. Day-of-Week view
+  │
+  └─► Right chart always shows funded applications over time
+```
+
+---
+
+## Enrichment Pipeline
+
+Three methods to add first-party funded data. All produce `data/{client}/enriched/{month}.csv`.
+
+### Method 1: GCLID Attribution (Recommended)
+
+Real keyword-level attribution — joins click GCLIDs from S3 with application data from Athena.
+
+```
+S3: clicks/{date}.csv (gclid, keyword, campaign)
+                    │
+                    ├──► Inner join on GCLID
+                    │
+Athena: prod.application_data (gclid, funded, value)
+                    │
+                    ▼
+        data/{client}/enriched/{month}.csv          (campaign-level)
+        data/{client}/enriched/daily/{month}.csv    (daily keyword-level)
+```
+
+```bash
+python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
+python scripts/gclid_attribution.py --all --month 2026-01
+```
+
+**Script:** [`scripts/gclid_attribution.py`](scripts/gclid_attribution.py)
+
+### Method 2: S3 Funded Data Import
+
+Reads Digital Performance Ranking (DPR) files from S3. Campaign-level only.
+
+```bash
+python scripts/import_s3_funded_data.py --client kitsap_cu --month 2026-01
+```
+
+**Script:** [`scripts/import_s3_funded_data.py`](scripts/import_s3_funded_data.py)
+
+### Method 3: Athena Export
+
+Queries `staging.google_ads_campaign_data` (populated by the ROI pipeline).
+
+```bash
+python scripts/export_athena_data.py 2026-01
+```
+
+**Script:** [`scripts/export_athena_data.py`](scripts/export_athena_data.py)
+
+### Enrichment Status by Client
+
+| Client | Has Enriched Data | Method |
+|--------|:-:|--------|
+| California Coast CU | Yes | GCLID Attribution |
+| First Commonwealth Bank | Yes | GCLID Attribution |
+| First Community CU | Yes | GCLID Attribution |
+| Kitsap CU | Yes | GCLID Attribution |
+| Public Service CU | Yes | GCLID Attribution |
+| Altura Ad Account | **No** | Config ready — run GCLID attribution |
+| CommonWealth One FCU | **No** | Config ready — run GCLID attribution |
+
+---
+
+## Adding a New Client
+
+New clients are **automatically onboarded** when added to the MCC. The pipeline:
+
+1. Detects the new account via MCC query
+2. Generates a `client_id` slug and SHA-256 dashboard token
+3. Starts pulling data on the next daily run
+4. Updates dashboard manifest files
+5. Sends Slack notification to `#customer-success`
+
+**To enable funded metrics** for a new client:
+
+1. Add the client to [`config/clients.yaml`](config/clients.yaml) with `prod_id`, `s3_path`, and `athena_id`
+2. Validate data availability — see [Dry Runs & Validation](#dry-runs--validation)
+3. Run enrichment:
+   ```bash
+   python scripts/gclid_attribution.py --client {client_id} --month {YYYY-MM}
+   ```
+4. Commit enriched CSVs and push to deploy to the dashboard
+
+---
+
+## Dry Runs & Validation
+
+Before running enrichment, validate that upstream data exists.
+
+```bash
+# GCLID attribution dry run — checks S3 clicks + Athena apps, prints stats, writes nothing
+python scripts/gclid_attribution.py --client {client_id} --month 2026-01 --dry-run
+```
+
+For the full list of validation commands and troubleshooting steps, see **[`docs/dry-runs/`](docs/dry-runs/)**.
+
+---
 
 ## Setup
 
 ### 1. Install Dependencies
 
 ```bash
-cd google_ads_to_s3
 pip install -r requirements.txt
 ```
 
 ### 2. Configure Credentials
 
-Copy the example config and fill in credentials:
-
 ```bash
 cp config/config.example.yaml config/config.yaml
 ```
 
-Edit `config/config.yaml` with our credentials:
+Edit with Google Ads and AWS credentials. See [`config/config.example.yaml`](config/config.example.yaml).
 
-```yaml
-google_ads:
-  developer_token: "OUR_DEVELOPER_TOKEN"
-  client_id: "OUR_OAUTH_CLIENT_ID"
-  client_secret: "OUR_OAUTH_CLIENT_SECRET"
-  refresh_token: "OUR_REFRESH_TOKEN"
-  login_customer_id: "OUR_MCC_ID"  # No dashes, e.g., "1234567890"
-```
-
-### 3. Generate OAuth Refresh Token (if needed)
-
-If we don't have a refresh token yet:
+### 3. Generate OAuth Token (if needed)
 
 ```bash
-pip install google-auth-oauthlib
 python scripts/generate_refresh_token.py
 ```
 
-## Usage
+---
 
-### List all accessible accounts
+## CLI Reference
+
+### Pipeline
+
 ```bash
-python pipeline/google_ads_to_s3.py --list-accounts
+python pipeline/google_ads_to_s3.py                               # Pull yesterday's data
+python pipeline/google_ads_to_s3.py --date 2026-01-15             # Pull specific date
+python pipeline/google_ads_to_s3.py --backfill 90                 # Last 90 days
+python pipeline/google_ads_to_s3.py --client kitsap_cu --backfill 7  # Single client
+python pipeline/google_ads_to_s3.py --list-accounts               # List MCC accounts
 ```
 
-### Pull yesterday's data (default)
+### Enrichment
+
 ```bash
-python pipeline/google_ads_to_s3.py
+python scripts/gclid_attribution.py --client {id} --month 2026-01           # GCLID attribution
+python scripts/gclid_attribution.py --all --month 2026-01 --dry-run         # Dry run all
+python scripts/import_s3_funded_data.py --client {id} --month 2026-01       # S3 funded import
+python scripts/export_athena_data.py 2026-01                                # Athena export
+python scripts/export_athena_data.py --list-clients                         # List Athena clients
 ```
 
-### Backfill last 90 days
+### Utilities
+
 ```bash
-python pipeline/google_ads_to_s3.py --backfill 90
+python scripts/aggregate_monthly.py               # Aggregate daily CSVs → monthly
+python scripts/export_insights_data.py             # Pull search terms, channels, devices, locations
+python scripts/sync_registry.py                    # Preview dashboard file sync
+python scripts/sync_registry.py --commit           # Sync + git commit + push
+python scripts/export_account_ids.py               # List all MCC child accounts
 ```
 
-### Pull specific date
-```bash
-python pipeline/google_ads_to_s3.py --date 2024-01-15
-```
-
-### Pull for a single client
-```bash
-python pipeline/google_ads_to_s3.py --backfill 90 --client californiacoast_cu
-```
+---
 
 ## Project Structure
 
 ```
 google_ads_to_s3/
-├── index.html               # Dashboard application (GitHub Pages)
+├── index.html                              # Dashboard (GitHub Pages)
+├── data-manifest.json                      # Available months per client
 ├── clients/
-│   └── README.md            # Dashboard tokens and URLs per client
-├── .github/workflows/
-│   └── deploy.yml           # GitHub Pages deployment
+│   └── README.md                           # Dashboard tokens and URLs
 ├── config/
-│   ├── config.example.yaml  # Template with placeholder values
-│   └── config.yaml          # Real credentials (gitignored)
+│   ├── config.example.yaml                 # Credential template
+│   ├── config.yaml                         # Real credentials (gitignored)
+│   └── clients.yaml                        # Client config (prod_id, s3_path, etc.)
 ├── dags/
-│   └── google_ads_to_s3_dag.py  # Airflow DAG (daily @ 8 AM UTC)
+│   └── google_ads_to_s3_dag.py             # Airflow DAG (daily @ 8 AM UTC)
 ├── pipeline/
-│   ├── __init__.py
-│   ├── google_ads_to_s3.py  # Main pipeline class + CLI entrypoint
-│   └── slack.py             # Slack notification helper
+│   ├── google_ads_to_s3.py                 # Main pipeline class + CLI
+│   └── slack.py                            # Slack notifications
 ├── scripts/
-│   ├── gclid_attribution.py       # GCLID-based keyword-level attribution
-│   ├── generate_daily_attribution.py  # Synthetic proportional attribution (fallback)
-│   ├── export_athena_data.py      # Export enriched data from Athena
-│   ├── import_s3_funded_data.py   # Import funded data from S3
-│   ├── export_account_ids.py      # List MCC child accounts
-│   └── generate_refresh_token.py  # OAuth setup helper
-├── output/                  # Local daily CSVs (gitignored)
+│   ├── gclid_attribution.py                # GCLID-based keyword-level attribution
+│   ├── import_s3_funded_data.py            # Import funded data from S3 DPR files
+│   ├── export_athena_data.py               # Export enriched data from Athena
+│   ├── generate_daily_attribution.py       # Proportional daily attribution (fallback)
+│   ├── aggregate_monthly.py                # Aggregate daily CSVs → monthly
+│   ├── export_insights_data.py             # Pull search terms, channels, devices, geo
+│   ├── sync_registry.py                    # Sync S3 registry → local dashboard files
+│   ├── export_account_ids.py               # List MCC child accounts
+│   └── generate_refresh_token.py           # OAuth setup helper
+├── docs/
+│   ├── pipeline-walkthrough.md             # Detailed architecture walkthrough
+│   ├── future_state.md                     # Multi-model attribution roadmap
+│   └── dry-runs/                           # Validation commands & troubleshooting
+│       └── README.md
+├── data/                                   # Per-client CSV data (served by GitHub Pages)
+│   └── {client_id}/
+│       ├── campaigns/{month}.csv
+│       ├── keywords/{month}.csv
+│       ├── daily/{month}.csv
+│       ├── enriched/{month}.csv
+│       ├── search_terms/{month}.csv
+│       ├── channels/{month}.csv
+│       ├── devices/{month}.csv
+│       └── locations/{month}.csv
+├── output/                                 # Local daily CSVs (gitignored)
 ├── requirements.txt
 └── .gitignore
 ```
 
-## S3 Output Structure
+---
 
-### Daily data (per account, per date)
+## Further Reading
 
-```
-s3://ai.alpharank.core/ad-spend-reports/
-├── _registry/
-│   └── accounts.json              # Auto-discovery account registry
-├── _dashboard/
-│   ├── clients.json               # Token -> client config mapping
-│   └── data-manifest.json         # Available months per client
-└── {client_id}/
-    ├── campaigns/YYYY-MM-DD.csv
-    ├── keywords/YYYY-MM-DD.csv
-    └── clicks/YYYY-MM-DD.csv
-```
+- [Pipeline Architecture Walkthrough](docs/pipeline-walkthrough.md) — detailed team-facing breakdown of every component
+- [Multi-Model Attribution Roadmap](docs/future_state.md) — future state for first-click / linear attribution
+- [Dry Runs & Validation](docs/dry-runs/) — commands to verify data before running enrichment
 
-### Attribution export (per client, per month)
-
-```
-s3://ai.alpharank.core/adspend_reports/
-└── {client_id}_{YYYY-MM}_daily.csv
-```
-
-### Campaign Data Columns
-- date, campaign_id, campaign_name, campaign_status
-- impressions, clicks, cost, conversions
-
-### Keyword Data Columns
-- date, campaign_id, campaign_name, ad_group_id, ad_group_name
-- keyword, match_type
-- impressions, clicks, cost, conversions
-
-### Click/GCLID Data Columns
-- date, gclid, keyword, match_type
-- campaign_id, campaign_name, ad_group_id, ad_group_name
-- network, city, region, country
-
-## GCLID Attribution
-
-`scripts/gclid_attribution.py` produces real keyword-level attribution by joining GCLID click data (from S3) with application data (from `prod.application_data` in Athena). Each application is mapped to the exact click (date + campaign + keyword) that generated it.
-
-```bash
-# Dry run — print match stats without writing files
-python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
-
-# Run for one client
-python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
-
-# Run for all clients
-python scripts/gclid_attribution.py --all --month 2026-01
-```
-
-**How it works:**
-
-1. Loads click CSVs from S3 (`ad-spend-reports/{client_id}/clicks/{month}-*.csv`)
-2. Queries `prod.application_data` in Athena, extracting GCLIDs from `attributed_tag_event_url`
-3. Inner joins on GCLID — each application gets the exact keyword that drove it
-4. Writes two outputs that the dashboard already consumes:
-   - `data/{client_id}/enriched/{month}.csv` — campaign-level totals
-   - `data/{client_id}/enriched/daily/{month}.csv` — daily keyword-level attribution
-
-This replaces the synthetic proportional distribution in `generate_daily_attribution.py` with real per-click attribution.
-
-## Adding New Clients
-
-New clients are **automatically onboarded** when they appear under the MCC. No manual steps needed.
-
-The `client_mapping` in `config/config.yaml` seeds the initial set of accounts on first run. After that, the S3 registry is the source of truth and new accounts are discovered via the MCC query.
-
-## License
+---
 
 Proprietary - Alpharank

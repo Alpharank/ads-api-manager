@@ -1,23 +1,29 @@
-# Google Ads Pipeline: Team Walkthrough
+# Pipeline Architecture Walkthrough
 
-## What this document covers
+Detailed breakdown of how the Google Ads to S3 pipeline works, what data it captures, how the dashboard displays it, and how it scales.
 
-1. What the pipeline does end-to-end
-2. How the dashboard works and drill-down navigation
-3. The three data layers (campaign → keyword → click)
-4. How much data we store vs. what we actually use today
-5. How it scales as we onboard more clients
-6. How the attribution bridge works
-7. EC2 cost optimization (ready to enable)
-8. Recommendation: Airflow DAGs vs. PySpark/Glue
+For a concise overview, see the [main README](../README.md).
 
 ---
 
-## 1. End-to-End Process
+## Table of Contents
 
-### The daily cycle
+- [1. End-to-End Daily Process](#1-end-to-end-daily-process)
+- [2. What Data Gets Captured](#2-what-data-gets-captured)
+- [3. GCLID Attribution Pipeline](#3-gclid-attribution-pipeline)
+- [4. How the Dashboard Works](#4-how-the-dashboard-works)
+- [5. Data Volume & Scaling](#5-data-volume--scaling)
+- [6. Attribution Bridge to ROI Pipeline](#6-attribution-bridge-to-roi-pipeline)
+- [7. EC2 Cost Optimization](#7-ec2-cost-optimization)
+- [8. Architecture Recommendation](#8-architecture-recommendation)
 
-Every day at **8:00 AM UTC**, Airflow runs the DAG:
+---
+
+## 1. End-to-End Daily Process
+
+### DAG: `google_ads_to_s3_daily`
+
+Runs daily at **8:00 AM UTC (3 AM EST)** via Airflow. Source: [`dags/google_ads_to_s3_dag.py`](../dags/google_ads_to_s3_dag.py)
 
 ```
 8:00 AM UTC   Airflow DAG kicks off:
@@ -30,7 +36,7 @@ Every day at **8:00 AM UTC**, Airflow runs the DAG:
      │            │
      ▼            ▼
   ┌──────────┐  ┌──────────────────────────┐
-  │ pull ×N  │  │ notify_account_changes   │  Slack alert if accounts added/removed
+  │ pull ×N  │  │ notify_account_changes   │  Slack #customer-success
   │ (parallel│  └──────────────────────────┘
   │  per     │
   │ account) │
@@ -50,395 +56,416 @@ Every day at **8:00 AM UTC**, Airflow runs the DAG:
 11:30 AM UTC   ROI attribution pipeline reads the exported file
 ```
 
-### What happens at each step
+### Step Details
 
-**discover_accounts** — Queries the Google Ads MCC (Manager Account) for every enabled child account. Compares against an S3 registry. If a new account appears under the MCC, it automatically generates a slug, a dashboard token, and starts pulling data for it. No config changes needed. If an account disappears from the MCC, it's marked as removed and skipped.
+**discover_accounts** — Queries the Google Ads MCC for every enabled child account. Compares against an S3 registry ([`_registry/accounts.json`](#s3-registry)). New accounts get an auto-generated slug and dashboard token. Removed accounts get a `removed_at` timestamp and are skipped.
 
-**pull_account (×N in parallel)** — For each active account, pulls three datasets from the Google Ads API for yesterday's date and writes them to S3 as CSVs:
+**pull_account (×N in parallel)** — For each active account, the [pipeline](../pipeline/google_ads_to_s3.py) pulls three datasets via the Google Ads API and writes them to S3:
 
-| Dataset | What it contains | S3 path |
+| Dataset | What it Contains | S3 Path |
 |---------|-----------------|---------|
-| Campaigns | Daily campaign-level metrics | `ad-spend-reports/{client}/campaigns/YYYY-MM-DD.csv` |
-| Keywords | Keyword-level metrics within each ad group | `ad-spend-reports/{client}/keywords/YYYY-MM-DD.csv` |
-| Clicks | Individual click events with GCLIDs and geo | `ad-spend-reports/{client}/clicks/YYYY-MM-DD.csv` |
+| Campaigns | Daily campaign-level metrics | `ad-spend-reports/{client}/campaigns/{date}.csv` |
+| Keywords | Keyword-level metrics within each ad group | `ad-spend-reports/{client}/keywords/{date}.csv` |
+| Clicks | Individual click events with GCLIDs and geo | `ad-spend-reports/{client}/clicks/{date}.csv` |
 
-**update_dashboard_files** — Rebuilds two JSON files that power the GitHub Pages dashboard: `clients.json` (token → client mapping) and `data-manifest.json` (which months have data per client).
+**update_dashboard_files** — Rebuilds `clients.json` (token → client mapping) and `data-manifest.json` (available months per client) so the GitHub Pages dashboard picks up new data.
 
-**export_for_attribution** — This is the bridge to the ROI pipeline. It reads all the daily campaign CSVs for the current month, concatenates them into one file, renames the columns, and writes it to a different S3 path in the format the ROI pipeline expects. This replaced a manual monthly export that someone had to run by hand.
+**export_for_attribution** — Reads all daily campaign CSVs for the current month, concatenates them, renames columns to match the ROI pipeline format, and writes to S3. See [Attribution Bridge](#6-attribution-bridge-to-roi-pipeline).
+
+**notify_account_changes** — Sends a Slack alert to `#customer-success` when accounts are added to or removed from the MCC.
 
 ---
 
-## 2. How the Dashboard Works
+## 2. What Data Gets Captured
 
-The dashboard is a single-page app (`index.html`) deployed to GitHub Pages. Each client gets a unique URL with a SHA-256 token:
+Three layers of Google Ads data, each more granular than the last.
+
+### Layer 1: Campaign (What Attribution Uses Today)
 
 ```
-https://alpharank.github.io/Google-Ads-Automation/?client=0f72e02a...
+date, campaign_id, campaign_name, campaign_status, impressions, clicks, cost, conversions
 ```
 
-No login page — if the token is valid, the dashboard loads. If not, it shows an error. Tokens are generated automatically when accounts are discovered.
+One row per campaign per day. This is what the ROI pipeline reads.
 
-### What you see when it loads
+### Layer 2: Keyword (10x More Granular)
+
+```
+date, campaign_id, campaign_name, ad_group_id, ad_group_name, keyword, match_type,
+impressions, clicks, cost, conversions
+```
+
+One row per keyword per day. Shows which keywords within each ad group drive performance.
+
+### Layer 3: Click / GCLID (100-1000x More Granular)
+
+```
+date, gclid, keyword, match_type, campaign_id, campaign_name,
+ad_group_id, ad_group_name, network, city, region, country
+```
+
+One row per individual click. The `gclid` is the key for joining with first-party loan data — when a click turns into a funded loan, the origination system captures the GCLID.
+
+### What Each Layer Unlocks
+
+```
+Campaign ──► "Brand campaign spent $80 and got 24 conversions"
+    │
+    ▼
+Keyword  ──► "Within Brand, the keyword 'best personal loan rates' got 12 clicks at $4.50"
+    │
+    ▼
+Click    ──► "This click from Portland, OR searched 'personal loan rates' — GCLID: EAIaIQ..."
+    │
+    ▼
+GCLID Join ► "That click became a funded $25,000 personal loan"
+```
+
+---
+
+## 3. GCLID Attribution Pipeline
+
+The [`gclid_attribution.py`](../scripts/gclid_attribution.py) script joins click-level GCLID data from S3 with application data from Athena to produce real keyword-level attribution.
+
+### How It Works
+
+```
+┌────────────────────────────────────────────┐
+│  S3: ad-spend-reports/{client}/clicks/     │
+│  ┌──────────────────────────────────────┐  │
+│  │ date, gclid, keyword, campaign_id,  │  │
+│  │ ad_group_id, match_type, city, ...  │  │
+│  └──────────────────────────────────────┘  │
+└──────────────────┬─────────────────────────┘
+                   │  Inner join on GCLID
+┌──────────────────┴─────────────────────────┐
+│  Athena: prod.application_data             │
+│  ┌──────────────────────────────────────┐  │
+│  │ gclid (from attributed_tag_event_url)│  │
+│  │ funded_status, product_family,       │  │
+│  │ funded_amount, lifetime_value        │  │
+│  └──────────────────────────────────────┘  │
+└──────────────────┬─────────────────────────┘
+                   │
+                   ▼
+┌────────────────────────────────────────────┐
+│  Output:                                    │
+│  data/{client}/enriched/{month}.csv        │  Campaign-level totals
+│  data/{client}/enriched/daily/{month}.csv  │  Daily keyword-level
+└────────────────────────────────────────────┘
+```
+
+### Output Schema
+
+**Campaign-level** (`enriched/{month}.csv`):
+
+| Column | Description |
+|--------|-------------|
+| `campaign_id` | Google Ads campaign ID |
+| `campaign_name` | Campaign name |
+| `apps` | Total applications received |
+| `approved` | Approved applications |
+| `funded` | Funded applications |
+| `production` | Production value |
+| `value` | Lifetime value |
+| `cpf` | Cost per funded |
+| `avg_funded_value` | Revenue per funded app |
+| `cc_appvd` | Credit card approvals |
+| `deposit_appvd` | Deposit/checking approvals |
+| `personal_appvd` | Personal loan approvals |
+| `vehicle_appvd` | Vehicle loan approvals |
+| `heloc_appvd` | HELOC/home equity approvals |
+
+**Daily keyword-level** (`enriched/daily/{month}.csv`) adds: `date`, `ad_group_id`, `ad_group_name`, `keyword`, `match_type`.
+
+### Running It
+
+```bash
+# Dry run — validate data, write nothing
+python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
+
+# Run for one client
+python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
+
+# Run for all clients
+python scripts/gclid_attribution.py --all --month 2026-01
+```
+
+For more validation commands, see [`docs/dry-runs/`](dry-runs/).
+
+### Alternative Enrichment Methods
+
+| Method | Script | Source | Granularity |
+|--------|--------|--------|-------------|
+| **GCLID Attribution** | [`gclid_attribution.py`](../scripts/gclid_attribution.py) | S3 clicks + Athena apps | Daily keyword-level |
+| **S3 Funded Import** | [`import_s3_funded_data.py`](../scripts/import_s3_funded_data.py) | S3 DPR files | Campaign-level |
+| **Athena Export** | [`export_athena_data.py`](../scripts/export_athena_data.py) | staging.google_ads_campaign_data | Campaign-level |
+
+---
+
+## 4. How the Dashboard Works
+
+The [dashboard](../index.html) is a single-page app deployed to GitHub Pages. Each client gets a unique URL with a SHA-256 token. No login — valid token loads the dashboard, invalid token shows an error.
+
+### Dashboard Layout
 
 ```
 ┌──────────────────────────────────────────────────────────────────────┐
-│  AlphaRank  │  California Coast Credit Union  │  Data Month: Jan ▼  │
+│  [=] AlphaRank  │  Client Name  │                  Month: Jan 2026 ▼│
 ├─────────┬────────────────────────────────────────────────────────────┤
-│         │  Impr. │ Clicks │ CTR │ Cost │ CPA │ Funded │ Rev │ CPF  │
-│ CAMPAIGNS│  ══════════════════════════════════════════════════════   │
-│ Ad groups│                                                          │
-│─────────│  ┌─────────────────────┐  ┌──────────────────────┐       │
-│ KEYWORDS │  │  Multi-Metric Chart │  │   Funded Chart       │       │
-│ Search   │  │  (up to 3 metrics)  │  │   (apps over time)   │       │
-│  terms   │  └─────────────────────┘  └──────────────────────┘       │
-│─────────│                                                          │
-│ INSIGHTS │  ┌────────────────────────────────────────────────┐      │
-│ Channels │  │  Data Table                                     │      │
-│ When &   │  │  (sortable, filterable, clickable rows)        │      │
-│  Where   │  └────────────────────────────────────────────────┘      │
-├─────────┤                                                          │
-│Selection:│                                                          │
-│ Campaign │                                                          │
-│ Ad Group │                                                          │
+│         │  Impr │ Clicks │ CTR │ Cost │ CPA │ Funded │ Rev │ CPF    │
+│         │  ════════════════════════════════════════════════════════   │
+│Campaigns│                                                            │
+│Ad groups│  ┌──────────────────────┐  ┌──────────────────────┐       │
+│─────────│  │  Multi-Metric Chart  │  │  Funded Over Time    │       │
+│Keywords │  │  (select up to 3)    │  │                      │       │
+│Search   │  └──────────────────────┘  └──────────────────────┘       │
+│ terms   │                                                            │
+│─────────│  ┌────────────────────────────────────────────────┐       │
+│Channels │  │  Data Table                                     │       │
+│When &   │  │  (sortable, filterable, click rows to drill)   │       │
+│ Where   │  └────────────────────────────────────────────────┘       │
+├─────────┤                                                            │
+│Selection│                                                            │
 └─────────┴────────────────────────────────────────────────────────────┘
 ```
 
-### KPI strip (top row)
+### KPI Strip
 
-Nine clickable metric chips across the top. Click up to 3 at a time to overlay them on the left chart:
+Nine clickable chips. Click up to 3 to overlay on the left chart:
 
-| Metric | Source | What it shows |
-|--------|--------|--------------|
+| Metric | Source | Description |
+|--------|--------|-------------|
 | **Impr.** | Google Ads | Impressions |
 | **Clicks** | Google Ads | Click count |
 | **CTR** | Derived | Clicks / Impressions |
 | **Cost** | Google Ads | Ad spend (selected by default) |
 | **CPA** | Derived | Cost / Conversions |
-| **Funded** | First-party (Athena) | Funded loan applications |
-| **Funded Rev** | First-party (Athena) | Revenue from funded loans |
-| **CPF** | Derived | Cost per funded app |
-| **Avg Fund Val** | Derived | Revenue per funded app |
+| **Funded** | First-party (enriched) | Funded loan applications |
+| **Funded Rev** | First-party (enriched) | Revenue from funded loans |
+| **CPF** | Derived | Cost / Funded |
+| **Avg Fund Val** | Derived | Revenue / Funded |
 
-The first 5 metrics come from Google Ads data. The last 4 come from first-party attribution data (joined via the ROI pipeline through Athena). If attribution data isn't available for a client, those chips show "--".
+The first 5 come from Google Ads data. The last 4 come from first-party enriched data. Without enriched data, those chips show `--`.
 
-### Charts (two side-by-side)
+### Charts
 
-**Left chart** — Multi-metric. Shows whichever KPI chips are selected (up to 3 overlaid). Supports line or bar mode, daily or day-of-week aggregation, and date range filtering (last 30/60/90 days or this month). When Cost is selected and funded data exists, a dotted gold line overlays funded revenue for comparison.
+**Left chart** — Multi-metric. Shows whichever KPI chips are selected (up to 3 overlaid). Supports line/bar mode, daily/day-of-week aggregation, and date range filtering (30/60/90 days or this month). When Cost is selected and funded data exists, a dotted gold line overlays funded revenue.
 
-**Right chart** — Always shows funded applications over time. Dedicated view so you can see funded volume alongside whatever you're exploring on the left.
+**Right chart** — Always shows funded applications over time.
 
-### Drill-down navigation
+### Drill-Down Navigation
 
-This is the key interactive feature. **Click any row in a table to drill into it:**
+Click any table row to drill into it:
 
 ```
-All Campaigns                    ← sidebar shows "Campaigns" active
-  │
-  │  click "KCU - Personal - Brand" row
+All Campaigns                    ← sidebar: "Campaigns" active
+  │  click row
   ▼
-Campaign: KCU - Personal - Brand ← sidebar shows "Ad groups", breadcrumb appears
-  │
-  │  click "Personal Loans" ad group row
+Campaign: KCU - Personal - Brand ← sidebar: "Ad groups", breadcrumb appears
+  │  click row                     KPIs + charts scoped to this campaign
   ▼
-Ad Group: Personal Loans          ← sidebar shows "Keywords", breadcrumb extends
-  │
-  └── Keywords table shows all keywords in this ad group
+Ad Group: Personal Loans          ← sidebar: "Keywords", breadcrumb extends
+  │                                 KPIs + charts scoped to this ad group
+  └── Keywords table (leaf level)
 ```
 
-**What happens when you drill down:**
-- The KPI strip recalculates to show metrics for just the selected campaign/ad group
-- Both charts re-render scoped to the selection
-- The data table switches to the next level (campaigns → ad groups → keywords)
-- A breadcrumb trail appears: `All campaigns > KCU - Personal - Brand > Personal Loans`
-- The sidebar selection panel shows the current drill path with × buttons to go back
+Breadcrumbs navigate back. Selection chips in the sidebar show the current drill path with x buttons to clear.
 
-**Breadcrumb navigation** — Click any level in the breadcrumb to jump back. Click × on the sidebar selection chips to clear.
+### Six Sidebar Views
 
-### Six views (left sidebar)
-
-| View | What it shows | Drill-down? |
+| View | What it Shows | Drill-Down? |
 |------|--------------|-------------|
-| **Campaigns** | Campaign-level metrics, cost, conversions | Yes → Ad groups |
+| **Campaigns** | Campaign-level metrics | Yes → Ad groups |
 | **Ad groups** | Ad group metrics within a campaign | Yes → Keywords |
 | **Keywords** | Keyword performance with match type badges | No (leaf level) |
 | **Search terms** | Actual search queries that triggered ads | No |
 | **Channels** | Network breakdown (Search, Display, YouTube) | No |
-| **When & Where** | Device type + geographic location performance | No |
+| **When & Where** | Device type + geographic performance | No |
 
-### Filtering
+### Filtering Controls
 
-| Filter | Where | What it does |
-|--------|-------|-------------|
-| **Text search** | Top toolbar | Filters table rows by name (case-insensitive partial match) |
-| **Match type toggles** | Top toolbar (keywords/search terms only) | Show/hide Broad, Phrase, Exact keywords |
-| **Month selector** | Header dropdown | Loads entirely different month of data |
-| **Date range** | Toolbar dropdown | Filters charts to 30/60/90 days or current month |
-| **Chart view** | Toolbar dropdown | Daily actuals vs. day-of-week averages |
-| **Compact mode** | Toolbar toggle | Switches numbers from `1,234,567` to `1.2M` |
+| Filter | Location | Effect |
+|--------|----------|--------|
+| Text search | Toolbar | Filters table rows by name |
+| Match type toggles | Toolbar (keywords only) | Show/hide Broad, Phrase, Exact |
+| Month selector | Header | Loads different month of data |
+| Date range | Toolbar | Charts show 30/60/90 days or current month |
+| Chart view | Toolbar | Daily actuals vs. day-of-week averages |
+| Compact mode | Toolbar | `1,234,567` → `1.2M` |
 
-### How data gets into the dashboard
-
-The dashboard loads CSV files from the same GitHub Pages origin:
+### Data Files Loaded
 
 ```
-data/{client_id}/campaigns/{YYYY-MM}.csv      ← campaign metrics (required)
-data/{client_id}/keywords/{YYYY-MM}.csv       ← keyword metrics
-data/{client_id}/daily/{YYYY-MM}.csv          ← daily campaign aggregation
-data/{client_id}/enriched/{YYYY-MM}.csv       ← first-party attribution data
-data/{client_id}/search_terms/{YYYY-MM}.csv   ← search term data
-data/{client_id}/channels/{YYYY-MM}.csv       ← network breakdown
-data/{client_id}/devices/{YYYY-MM}.csv        ← device breakdown
-data/{client_id}/locations/{YYYY-MM}.csv      ← geographic data
+data/{client}/campaigns/{month}.csv     ← required
+data/{client}/keywords/{month}.csv
+data/{client}/daily/{month}.csv
+data/{client}/enriched/{month}.csv      ← enables funded metrics
+data/{client}/search_terms/{month}.csv
+data/{client}/channels/{month}.csv
+data/{client}/devices/{month}.csv
+data/{client}/locations/{month}.csv
 ```
 
-A `data-manifest.json` tells the dashboard which months have data per client. For charts spanning 90 days, it preloads up to 3 additional past months in parallel.
+A [`data-manifest.json`](../data-manifest.json) tells the dashboard which months have data. For 90-day chart spans, it preloads up to 3 past months in parallel.
 
-### What's not live yet
+### What's Not Live Yet
 
-**Attribution model selector** — The UI has Last Click / First Click / Linear buttons, but they're archived (commented out). Currently only last-click attribution is active. The code is ready to load different CSV files per model (e.g., `enriched/2025-01_first_click.csv`) once the multi-model attribution pipeline is implemented.
+**Attribution model selector** — The UI has Last Click / First Click / Linear buttons (archived/commented out). Only last-click is active. The code is ready to load different CSV files per model once multi-model attribution is implemented. See [`docs/future_state.md`](future_state.md).
 
 ---
 
-## 3. The Three Data Layers
+## 5. Data Volume & Scaling
 
-The Google Ads API gives us data at three levels of granularity. Think of it as a drill-down:
+### Per Client Per Day (Real Numbers, 2026-02-11)
 
-### Layer 1: Campaign (what attribution uses today)
+| Client | Campaign Rows | Keyword Rows | Click Rows |
+|--------|:--:|:--:|:--:|
+| Altura Ad Account | 8 | 5 | 48,573 |
+| California Coast CU | 10 | 108 | 1,531 |
+| CommonWealth One FCU | 0 | 0 | 0 |
+| First Commonwealth Bank | 6 | 18 | 57,930 |
+| First Community CU | 1 | 61 | 98 |
+| Kitsap CU | 14 | 96 | 10,862 |
+| Public Service CU | 13 | 25 | 422 |
+| **Total** | **52** | **313** | **119,416** |
 
-```
-date, campaign_id, campaign_name, campaign_status, impressions, clicks, cost, conversions
-2026-02-04, 23228929821, KCU - Personal - Brand, ENABLED, 1093, 350, 80.75, 23.75
-```
+The ROI attribution pipeline reads **52 rows/day**. We store **119,781 rows/day**. The extra granularity powers GCLID attribution and geographic insights.
 
-This tells you: "The Brand campaign spent $80.75 and got 24 conversions yesterday."
+### High-Traffic Accounts
 
-**That's it.** That's all the ROI attribution pipeline sees today. It can't tell you which keywords drove those conversions or where the clicks came from.
+Three accounts generate **99% of all click data**:
 
-### Layer 2: Keyword (10x more data, unused by attribution)
-
-```
-date, campaign_id, campaign_name, ad_group_id, ad_group_name, keyword, match_type, impressions, clicks, cost, conversions
-2026-02-04, 23228929821, KCU - Personal - Brand, 1557362, Personal Loans, best personal loan rates, BROAD, 89, 12, 4.50, 1.5
-```
-
-This tells you: "Within the Brand campaign, the 'Personal Loans' ad group's keyword 'best personal loan rates' got 12 clicks at $4.50."
-
-This data is **already in S3**. We pull it every day. The attribution pipeline just doesn't read it.
-
-### Layer 3: Click / GCLID (30–1,700x more data, also unused)
-
-```
-date, gclid, keyword, match_type, campaign_id, campaign_name, ad_group_id, ad_group_name, network, city, region, country
-2026-02-04, EAIaIQob..., personal loan rates, BROAD, 23228929821, KCU - Personal - Brand, 1557362, Personal Loans, SEARCH, Portland, Oregon, US
-```
-
-This tells you: "This specific click came from Portland, Oregon, searched 'personal loan rates', and we captured the GCLID."
-
-The GCLID is the key. When a click turns into a funded loan, the loan origination system captures the GCLID. By joining this click data against funded loans, you get **true ROI per keyword per region** — not just what Google's conversion pixel reports.
-
----
-
-## 4. Data Volume: What We Store vs. What We Use
-
-### Per client, per day (real numbers from 2026-02-11)
-
-| Client | Campaign rows | Keyword rows | Click rows | What attribution reads |
-|--------|--------------|-------------|-----------|----------------------|
-| Altura Ad Account | 8 | 5 | 48,573 | 8 |
-| California Coast CU | 10 | 108 | 1,531 | 10 |
-| CommonWealth One FCU | 0 | 0 | 0 | 0 |
-| First Commonwealth Bank | 6 | 18 | 57,930 | 6 |
-| First Community CU | 1 | 61 | 98 | 1 |
-| Kitsap CU | 14 | 96 | 10,862 | 14 |
-| Public Service CU | 13 | 25 | 422 | 13 |
-| **Total** | **52** | **313** | **119,416** | **52** |
-
-The attribution pipeline reads **52 rows/day**. We store **119,781 rows/day**. That's a **2,300:1 ratio** of data collected to data used.
-
-### Multipliers by data layer
-
-| Layer | Multiplier vs. campaigns | What it unlocks |
-|-------|-------------------------|----------------|
-| Keywords | **~10x** (range: 2x–29x) | Which keywords convert, match type efficiency, ad group performance |
-| Clicks | **~30–100x** typical, **6,000–10,000x** for high-traffic accounts (Altura, First Commonwealth) | GCLID → funded loan join, geographic ROI, true per-click attribution |
-
-### Monthly storage per client
-
-| Layer | Rows/month (typical client) | Rows/month (high-traffic) | CSV size/month |
-|-------|----------------------------|--------------------------|----------------|
-| Campaigns | ~300 | ~300 | ~20 KB |
-| Keywords | ~3,000 | ~3,000 | ~300 KB |
-| Clicks | ~5,000–30,000 | ~1.5M (Altura, First Commonwealth) | ~3 MB–160 MB |
-| **Total** | ~8,000–33,000 | ~1.5M | ~3–160 MB |
-
-For 70 clients over 12 months: roughly **100M+ rows / 10+ GB** of click data if several accounts have Altura/First Commonwealth-level traffic. Campaign and keyword data is negligible in comparison.
-
----
-
-## 5. How It Scales
-
-### Client onboarding
-
-Adding a new client to the MCC requires **zero pipeline changes**. The discover step automatically:
-1. Detects the new account
-2. Generates a client_id slug from the account name
-3. Generates a dashboard token
-4. Starts pulling data on the next run
-5. Sends a Slack notification to #customer-success
-
-### Scaling from 7 → 70 clients
-
-| Metric | 7 clients (today) | 70 clients (target) | Notes |
-|--------|-------------------|---------------------|-------|
-| Campaign rows/day | 52 | ~500 | Trivial |
-| Keyword rows/day | 313 | ~4,000 | Still trivial |
-| Click rows/day | 119,416 | ~500K–2M | Depends on how many high-traffic accounts |
-| Daily CSV storage | ~30 MB | ~150–500 MB | S3 cost is negligible |
-| Monthly attribution file | 7 files, ~1 KB each | 70 files, ~1 KB each | Negligible |
-| Google Ads API calls | 21 (3 per account) | 210 (3 per account) | Well within rate limits |
-| DAG runtime | ~1–2 min | ~20–40 min | API calls are the bottleneck, not compute |
-
-### What actually takes time
-
-The bottleneck is **Google Ads API latency**, not data processing. Each API call takes 2–5 seconds. With 70 accounts × 3 data types = 210 calls. Airflow runs accounts in parallel (dynamic task mapping), so with a parallelism of 16 workers the API pull phase takes ~70 seconds. The pandas operations (concat, rename, write CSV) take milliseconds.
-
-### The high-traffic accounts
-
-Three accounts dominate click volume:
-
-| Client | Clicks/day | % of total |
-|--------|-----------|-----------|
+| Client | Clicks/Day | % of Total |
+|--------|:--:|:--:|
 | First Commonwealth Bank | 57,930 | 49% |
 | Altura Ad Account | 48,573 | 41% |
 | Kitsap CU | 10,862 | 9% |
-| All other accounts | 2,051 | 1% |
+| All others | 2,051 | 1% |
 
-These three accounts generate **99% of all click data**. If the 70-account roster includes more accounts at this traffic level, daily click volume could reach 1–2M rows. This is still fine for pandas (a 2M-row CSV concat takes <3 seconds), but it's the metric to watch.
+### Scaling to 70 Clients
+
+| Metric | 7 Clients (Today) | 70 Clients (Target) |
+|--------|:--:|:--:|
+| Campaign rows/day | 52 | ~500 |
+| Keyword rows/day | 313 | ~4,000 |
+| Click rows/day | 119,416 | ~500K–2M |
+| Daily CSV storage | ~30 MB | ~150–500 MB |
+| Google Ads API calls | 21 | 210 |
+| DAG runtime | ~1–2 min | ~20–40 min |
+
+The bottleneck is **Google Ads API latency** (2–5s per call), not compute. Airflow runs accounts in parallel via dynamic task mapping, so 70 accounts with parallelism of 16 takes ~70 seconds for the API phase.
 
 ---
 
-## 6. The Attribution Bridge
+## 6. Attribution Bridge to ROI Pipeline
 
-### Before (manual monthly process)
+### Before (Manual Monthly)
 
-1. Someone manually exports campaign data from one S3 path
-2. Reformats columns to match the ROI pipeline's expectations
+1. Someone manually exports campaign data from S3
+2. Reformats columns to match the ROI pipeline
 3. Uploads to a different S3 path
-4. Hopes the format is right
-5. The ROI pipeline runs hours later and either works or fails silently
+4. ROI pipeline runs hours later — works or fails silently
 
-### After (automated daily)
+### After (Automated Daily)
 
-The `export_for_attribution` task runs automatically after every daily pull. It:
-
-1. Reads all daily campaign CSVs for the current month from `ad-spend-reports/{client}/campaigns/`
-2. Concatenates into one DataFrame
-3. Renames columns: `campaign_id` → `Campaign ID`, `campaign_name` → `Ad group`, `date` → `Day`
-4. Drops unused columns (`campaign_status`, `impressions`)
-5. Writes to `adspend_reports/{client}_{YYYY-MM}_daily.csv` with 2 blank rows prepended
-6. The ROI pipeline (`update_google_ads_roi` at 11:30 AM UTC) reads this file with `skiprows=2`
-
-The file is overwritten daily with the full month-to-date, so it always has every day pulled so far. The ROI pipeline's `check_if_file_exists` validates exactly one file exists per client-month, and `get_year_month_values` validates all rows belong to a single month.
-
-### What the ROI pipeline does with it
+The `export_for_attribution` task in the [DAG](../dags/google_ads_to_s3_dag.py) runs automatically after every daily pull:
 
 ```
+ad-spend-reports/{client}/campaigns/{date}.csv  (daily files)
+        │
+        ▼  Concat all days in month
+        │
+        ▼  Rename columns: campaign_id → Campaign ID, campaign_name → Ad group
+        │
+        ▼  Prepend 2 blank rows (ROI pipeline reads with skiprows=2)
+        │
 adspend_reports/{client}_{month}_daily.csv
         │
-        ▼
-  Read CSV (skiprows=2)
+        ▼  ROI pipeline (11:30 AM UTC) reads this file
         │
-        ▼
-  Join with prod.application_data (funded loans, app counts, values)
+staging.google_ads_campaign_data (Athena)
         │
-        ▼
-  Write to staging.google_ads_campaign_data (Athena)
+        ▼  Powers ROI reporting
         │
-        ▼
-  Powers ROI reporting: "Campaign X spent $5,000 and generated $50,000 in funded loans"
+"Campaign X spent $5,000 and generated $50,000 in funded loans"
 ```
+
+### Timing
+
+| Pipeline | Schedule | Purpose |
+|----------|----------|---------|
+| `google_ads_to_s3_daily` | 8:00 AM UTC | Pull data, rebuild dashboards, export attribution file |
+| `update_google_ads_roi` | 11:30 AM UTC | Read attribution file, join with app data, write to staging |
+
+The export finishes hours before the ROI pipeline reads it.
 
 ---
 
 ## 7. EC2 Cost Optimization
 
-The pipeline runs on `auto-attribution-prod` (m5zn.6xlarge — 24 vCPUs, 192 GB RAM). This instance costs **~$1.18/hour**.
+The pipeline runs on `auto-attribution-prod` (m5zn.6xlarge — 24 vCPUs, 192 GB RAM) at **~$1.18/hour**.
 
-### Current state: always running
+### Current: Always Running
 
 ```
 24 hours × $1.18/hr × 30 days = ~$850/month
 ```
 
-### Ready-to-enable: start/stop automation
+### Ready to Enable: Start/Stop Automation
 
-An AWS Lambda (`start-airflow-ec2`) and EventBridge rule (`start-airflow-ec2-daily`) exist but are **currently disabled**. The DAG also has a commented-out `stop_instance` task. When enabled, the flow would be:
+An AWS Lambda and EventBridge rule exist but are **disabled**. The DAG also has a commented-out `stop_instance` task:
 
 ```
 EventBridge (7:50 AM UTC) → Lambda → Start EC2
 Airflow DAG runs (8:00 AM UTC)
 DAG final task → Stop EC2
 
-~0.7 hours × $1.18/hr × 30 days = ~$25/month
+~0.7 hours × $1.18/hr × 30 days = ~$25/month   (saves ~$825/month)
 ```
 
-That would save **~$825/month**. To enable:
+To enable:
 1. `aws events enable-rule --name start-airflow-ec2-daily --region us-west-2`
-2. Uncomment the `stop_instance` task in `dags/google_ads_to_s3_dag.py`
+2. Uncomment `stop_instance` task in [`dags/google_ads_to_s3_dag.py`](../dags/google_ads_to_s3_dag.py)
 
 ---
 
-## 8. Recommendation: Stick with DAGs or Move to PySpark/Glue?
+## 8. Architecture Recommendation
 
-### Stick with Airflow DAGs. Here's why.
+### Stick with Airflow DAGs
 
-**The workload doesn't need distributed compute.** PySpark and Glue solve the problem of processing data that's too large for a single machine. Your pipeline's compute step — concat CSVs and rename columns — processes 16K rows/day in milliseconds. Even at 70 clients with 500K click rows/day, pandas handles this in under 5 seconds on a single core.
+**The workload doesn't need distributed compute.** The pipeline's compute step — concat CSVs and rename columns — processes ~16K rows/day in milliseconds. Even at 70 clients, pandas handles this in under 5 seconds on a single core.
 
-**The bottleneck is I/O, not compute.** The pipeline spends 90% of its time waiting on Google Ads API responses. Switching to Spark doesn't make API calls faster. The actual data transformation (rename columns, drop fields, write CSV) is trivially small.
-
-**Glue has overhead that hurts small workloads.**
+**The bottleneck is I/O, not compute.** 90% of runtime is waiting on Google Ads API responses. Switching to Spark doesn't make API calls faster.
 
 | | Airflow + pandas | Glue + PySpark |
-|--|-----------------|----------------|
-| Cold start | 0 (already running) | 1–2 minutes (Spark cluster spin-up) |
-| Min cost per run | ~$0.01 (EC2 time) | ~$0.15 (2 DPUs × $0.44/hr, 10-min minimum) |
-| Monthly cost (daily runs) | ~$850 (always on), ~$25 (with start/stop) | ~$4.50+ (Glue only, no orchestration) |
-| Orchestration | Built-in (Airflow IS the orchestrator) | Need Step Functions or Airflow anyway |
-| Debugging | SSH into instance, check logs | CloudWatch logs, less interactive |
-| Dependencies | pip install in venv | Glue job parameters, wheel packaging |
+|--|:--|:--|
+| Cold start | 0 (already running) | 1–2 min (Spark cluster spin-up) |
+| Min cost per run | ~$0.01 | ~$0.15 (2 DPUs × $0.44/hr, 10-min min) |
+| Monthly cost | ~$25 (with start/stop) | ~$4.50+ (no orchestration) |
+| Orchestration | Built-in | Need Step Functions or Airflow anyway |
+| Debugging | SSH, check logs | CloudWatch, less interactive |
 
-**You'd still need an orchestrator.** Glue runs compute jobs, but you still need something to decide: discover accounts → fan out per account → update dashboards → export. That's Airflow's job. Moving to Glue doesn't eliminate Airflow — it adds a second system.
+### When to Revisit
 
-### When to revisit this decision
+Move to Glue/PySpark **if and when**:
+1. **Click-level GCLID joins at scale** — 1M+ rows/day with multi-touch attribution windows
+2. **Backfills across years** — hundreds of millions of rows in one shot
+3. **Real-time needs** — hourly attribution instead of daily
 
-Move compute to Glue/PySpark **if and when**:
+**None of these apply today.**
 
-1. **Click-level GCLID joins at scale** — If you start joining 1M+ click rows/day against a large funded-loans table with multi-touch attribution windows, and that join takes more than a few minutes in pandas, Spark's distributed join becomes worth the overhead.
+### Higher-ROI Investments
 
-2. **Backfills across years of data** — If someone needs to reprocess 12 months × 70 clients × click-level data in one shot (hundreds of millions of rows), a Glue job with 10+ DPUs will finish in minutes vs. hours.
+1. **GCLID → funded loan matching** — already implemented via [`gclid_attribution.py`](../scripts/gclid_attribution.py)
+2. **Keyword + click data in attribution** — data is in S3, expand ROI pipeline to use it
+3. **Monitoring and alerting** — did the export land? Did the ROI pipeline succeed?
 
-3. **Real-time or near-real-time needs** — If the business wants hourly attribution updates instead of daily, Glue Streaming or Spark Structured Streaming would be the right tool.
+---
 
-**None of these apply today.** The pipeline pulls 16K rows, renames 4 columns, and writes a CSV. Pandas does this before you finish reading this sentence.
+## Related Documentation
 
-### What IS worth investing in
-
-Instead of changing the compute engine, the higher-ROI investments are:
-
-1. **Feed keyword + click data into attribution** — The data is already in S3. Expanding the ROI pipeline to read keyword and click CSVs (not just campaigns) would unlock keyword-level ROI and geographic performance without changing any infrastructure.
-
-2. **GCLID → funded loan matching** — Join the click-level GCLIDs against loan origination data to get true first-party attribution instead of relying on Google's conversion pixel. This is the highest-value unlock and doesn't require Spark.
-
-3. **Monitoring and alerting** — Add checks for: did the export file land? Does it have the expected row count? Did the ROI pipeline succeed? A few Airflow sensors or a lightweight data quality check is more valuable than a compute engine migration.
-
-### Summary
-
-| Question | Answer |
-|----------|--------|
-| Is the current architecture handling the load? | Yes, comfortably |
-| Will it handle 70 clients? | Yes, with room to spare |
-| Does PySpark solve a problem we have? | No — our bottleneck is API I/O, not compute |
-| Would Glue save money? | No — it would cost more for this workload |
-| Would it add complexity? | Yes — second system to manage, package, debug |
-| When should we switch? | When we're doing click-level joins across 100M+ rows |
-| What should we invest in instead? | Keyword/click attribution, GCLID matching, monitoring |
+- [Main README](../README.md) — concise project overview
+- [Multi-Model Attribution Roadmap](future_state.md) — first-click / linear attribution future state
+- [Dry Runs & Validation](dry-runs/) — commands to verify data before running enrichment
+- [Client Dashboard Tokens](../clients/README.md) — per-client URLs and tokens
