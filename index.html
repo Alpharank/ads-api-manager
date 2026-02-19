@@ -234,6 +234,7 @@
             display: flex;
             flex: 1;
             overflow: hidden;
+            position: relative;
         }
 
         /* ── Left Sidebar ── */
@@ -244,6 +245,7 @@
             border-right: 1px solid var(--border);
             overflow-y: auto;
             padding: 8px 0;
+            transition: width 0.2s ease, min-width 0.2s ease, padding 0.2s ease;
         }
 
         .sidebar-section-label {
@@ -291,6 +293,32 @@
             height: 1px;
             background: var(--border);
             margin: 8px 0;
+        }
+
+        /* ── Sidebar Toggle Button ── */
+        .sidebar-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            color: white;
+            transition: background 0.15s;
+        }
+        .sidebar-toggle:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* ── Sidebar Collapsed State ── */
+        .sidebar.collapsed {
+            width: 0;
+            min-width: 0;
+            padding: 0;
+            overflow: hidden;
+            border-right: none;
         }
 
         /* ── Main Content ── */
@@ -1463,23 +1491,19 @@
 
         /* ── Responsive ── */
         @media (max-width: 900px) {
-            .sidebar {
-                width: 56px;
-                min-width: 56px;
-            }
-            .sidebar-item span { display: none; }
-            .sidebar-item { padding: 0 18px; justify-content: center; }
-            .sidebar-section-label { display: none; }
-            :root { --sidebar-width: 56px; }
             .kpi-chip { min-width: 110px; }
             .toolbar { flex-wrap: wrap; }
             .filter-input { width: 100%; min-width: 0; }
         }
 
         @media (max-width: 640px) {
-            /* Hide sidebar entirely on small screens */
-            .sidebar { display: none; }
-            :root { --sidebar-width: 0px; }
+            /* Sidebar overlay on mobile */
+            .sidebar:not(.collapsed) {
+                position: absolute;
+                z-index: 50;
+                height: 100%;
+                box-shadow: 4px 0 16px rgba(0,0,0,0.15);
+            }
 
             /* Header adjustments */
             .top-header {
@@ -1534,6 +1558,10 @@
             /* Data dictionary */
             .data-dict-panel { margin: 0 8px 12px; padding: 14px; }
             .dict-grid { grid-template-columns: 1fr; }
+
+            /* Keyword charts modal — stack vertically on mobile */
+            .kw-charts-body { grid-template-columns: 1fr; }
+            .kw-charts-modal { width: 95vw; }
         }
 
         @media (max-width: 400px) {
@@ -1560,6 +1588,11 @@
     <div id="dashboard" class="dashboard">
         <!-- Top Header -->
         <div class="top-header">
+            <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="Toggle sidebar">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
             <div class="header-logo">
                 <svg class="owl-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none">
                     <line x1="0" y1="195" x2="200" y2="195" stroke="white" stroke-width="2.5"/>
@@ -2429,6 +2462,24 @@
             return campaignData;
         }
 
+        // ── Sidebar Toggle ──
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        }
+
+        function closeSidebarOnMobile() {
+            if (window.innerWidth <= 640) {
+                document.querySelector('.sidebar').classList.add('collapsed');
+            }
+        }
+
+        // Auto-collapse sidebar on small screens at load and on resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth <= 640) {
+                document.querySelector('.sidebar').classList.add('collapsed');
+            }
+        });
+
         // ── Navigation ──
         function navigateToLevel(level) {
             if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
@@ -2440,6 +2491,7 @@
             sortColumn = level === 'channels' ? 'cost' : (level === 'whenwhere' ? 'cost' : 'clicks');
             sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
+            closeSidebarOnMobile();
             render();
         }
 
@@ -2449,6 +2501,7 @@
             currentLevel = 'adgroups';
             sortColumn = 'clicks'; sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
+            closeSidebarOnMobile();
             render();
         }
 
@@ -2457,6 +2510,7 @@
             currentLevel = 'keywords';
             sortColumn = 'clicks'; sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
+            closeSidebarOnMobile();
             render();
         }
 
@@ -4194,6 +4248,10 @@
                 document.getElementById('compactLabel').textContent = compactMode ? 'Full' : 'Compact';
                 updateKPIs();
             });
+            // Auto-collapse sidebar on small screens at initial load
+            if (window.innerWidth <= 640) {
+                document.querySelector('.sidebar').classList.add('collapsed');
+            }
             init();
         });
     </script>
