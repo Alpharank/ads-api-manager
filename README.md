@@ -189,34 +189,297 @@ User clicks KPI chips (up to 3)
 
 ## Enrichment Pipeline
 
-Three methods to add first-party funded data. All produce `data/{client}/enriched/{month}.csv`.
-
-### Method 1: GCLID Attribution (Recommended)
-
-Real keyword-level attribution — joins click GCLIDs from S3 with application data from Athena.
+There are **two completely separate paths** to attach first-party funded-loan data to
+Google Ads metrics. They read different source tables, join at different granularities,
+and produce different levels of detail. Understanding which path you are using is
+critical — it determines whether you can see funded metrics at the keyword/ad-group
+level or only at the campaign level.
 
 ```
-S3: clicks/{date}.csv (gclid, keyword, campaign)
-                    │
-                    ├──► Inner join on GCLID
-                    │
-Athena: prod.application_data (gclid, funded, value)
-                    │
-                    ▼
-        data/{client}/enriched/{month}.csv          (campaign-level)
-        data/{client}/enriched/daily/{month}.csv    (daily keyword-level)
+                          ┌──────────────────────────────────────────────────────┐
+                          │           Two Attribution Paths                     │
+                          └──────────────────────────────────────────────────────┘
+
+  PATH A — Athena Export (campaign-level only)        PATH B — GCLID Attribution (keyword-level)
+  ───────────────────────────────────────────         ──────────────────────────────────────────
+
+  ROI Pipeline                                        Google Ads API (click_view)
+       │                                                   │
+       ▼                                                   │  GAQL pulls every click with its
+  staging.google_ads_campaign_data                         │  gclid, keyword, ad_group, campaign
+  ┌──────────────────────────────────┐                     ▼
+  │ campaign_id, campaign,           │                S3: clicks/{date}.csv
+  │ clicks, cost, apps,              │                ┌──────────────────────────────────┐
+  │ funded, value                    │                │ gclid          ◄── direct column │
+  │                                  │                │ keyword, match_type              │
+  │ ** NO gclid column **            │                │ campaign_id, ad_group_id, ...    │
+  └──────────────┬───────────────────┘                └───────────────┬──────────────────┘
+                 │                                                    │
+                 ▼                                                    │
+  export_athena_data.py                               Athena: prod.application_data
+                 │                                    ┌──────────────────────────────────────────┐
+                 ▼                                    │ attributed_tag_event_url contains:       │
+  data/{client}/enriched/{month}.csv                  │ "https://...?gclid=EAIaIQo...&utm_..."  │
+  (campaign-level ONLY)                               │                    │                     │
+                                                      │     REGEXP_EXTRACT(url,                  │
+                                                      │       '(gclid)=([^&#\?]+)', 2)          │
+                                                      │                    │                     │
+                                                      │                    ▼                     │
+                                                      │  gclid = "EAIaIQo..."  ◄── parsed out   │
+                                                      │  funded, approved, production_value, ... │
+                                                      └───────────────┬──────────────────────────┘
+                                                                      │
+                                                      ┌───────────────┴──────────────────┐
+                                                      │                                  │
+                                                 clicks_df                          apps_df
+                                                 (has gclid                    (has gclid parsed
+                                                  as a column)                  from URL above)
+                                                      │                              │
+                                                      └───────────┬──────────────────┘
+                                                                  │
+                                                                  ▼
+                                                      clicks_df.merge(apps_df,
+                                                        on="gclid", how="inner")
+                                                                  │
+                                                      Each matched application now
+                                                      inherits the click's keyword,
+                                                      ad group, campaign, and geo
+                                                                  │
+                                                                  ▼
+                                                      gclid_attribution.py
+                                                                  │
+                                                        ┌─────────┴──────────┐
+                                                        ▼                    ▼
+                                                  enriched/            enriched/daily/
+                                                  {month}.csv          {month}.csv
+                                                  (campaign)           (keyword-level)
 ```
+
+### Path A: Athena Export (Campaign-Level Only)
+
+**What it reads:** `staging.google_ads_campaign_data` — a table populated by the
+upstream ROI pipeline. This table contains pre-aggregated campaign-level metrics.
+It has **no `gclid` column**, so there is no way to trace an individual click back to
+a keyword or ad group.
+
+**Available columns:** `campaign_id`, `campaign`, `clicks`, `cost`, `apps`, `approved`,
+`funded`, `production`, `value` — all aggregated at the campaign level per day.
+
+**Query (from [`scripts/export_athena_data.py`](scripts/export_athena_data.py) lines 62–93):**
+
+```sql
+WITH campaign_level AS (
+  SELECT
+    campaign_id,
+    campaign,
+    sum(clicks)        AS clicks,
+    sum(cost)          AS cost,
+    sum(apps)          AS apps,
+    sum(approved)      AS approved,
+    sum(funded)        AS funded,
+    sum(production)    AS production,
+    sum("value")       AS "value"
+  FROM staging.google_ads_campaign_data
+  WHERE day BETWEEN date ? AND date ?
+    AND client_id = ?
+  GROUP BY campaign_id, campaign
+)
+SELECT
+  campaign_id,
+  campaign AS campaign_name,
+  COALESCE(clicks, 0) AS clicks,
+  ROUND(COALESCE(cost, 0), 2) AS cost,
+  COALESCE(apps, 0) AS apps,
+  COALESCE(approved, 0) AS approved,
+  COALESCE(funded, 0) AS funded,
+  ROUND(COALESCE(production, 0), 2) AS production,
+  ROUND(COALESCE("value", 0), 2) AS value,
+  CASE WHEN cost > 0 THEN ROUND((("value" / cost) - 1), 2) ELSE NULL END AS roas,
+  CASE WHEN funded > 0 THEN ROUND(cost / funded, 2) ELSE NULL END AS cpf,
+  CASE WHEN funded > 0 THEN ROUND("value" / funded, 2) ELSE NULL END AS avg_funded_value
+FROM campaign_level
+ORDER BY cost DESC
+```
+
+**Output:** `data/{client}/enriched/{month}.csv` (campaign-level only)
 
 ```bash
+python scripts/export_athena_data.py 2026-01
+```
+
+> **Limitation:** Because the source table has no GCLID, you **cannot** break down
+> funded loans by ad group, keyword, or match type. You only know "Campaign X had
+> Y funded loans." If you need keyword-level attribution, use Path B.
+
+### Path B: GCLID Attribution (Keyword-Level) — Recommended
+
+> **Deep dive:** [`docs/gclid-attribution.md`](docs/gclid-attribution.md) — full ADR
+> covering the GCLID mechanism, design decisions, client ID mapping, input/output
+> schemas, and tradeoffs.
+
+This path produces real keyword-level funded-loan attribution by joining two
+independent data sources on the GCLID (Google Click Identifier). It is a three-step
+process.
+
+#### Step 1 — Click data from S3
+
+The daily pipeline (`pipeline/google_ads_to_s3.py`) pulls click-level data from the
+Google Ads API via the `click_view` resource. Each row represents a single click and
+carries the GCLID plus the keyword, ad group, campaign, and geographic context for
+that click.
+
+**GAQL query and column mapping (from [`pipeline/google_ads_to_s3.py`](pipeline/google_ads_to_s3.py) lines 375–412):**
+
+```python
+query = f"""
+    SELECT
+        click_view.gclid,
+        click_view.keyword,
+        click_view.keyword_info.text,
+        click_view.keyword_info.match_type,
+        click_view.area_of_interest.city,
+        click_view.area_of_interest.region,
+        click_view.area_of_interest.country,
+        campaign.id,
+        campaign.name,
+        ad_group.id,
+        ad_group.name,
+        segments.date,
+        segments.ad_network_type
+    FROM click_view
+    WHERE segments.date = '{safe_date}'
+"""
+
+# Each row mapped to:
+{
+    'date':          row.segments.date,
+    'gclid':         row.click_view.gclid,
+    'keyword':       row.click_view.keyword_info.text,
+    'match_type':    row.click_view.keyword_info.match_type.name,
+    'campaign_id':   str(row.campaign.id),
+    'campaign_name': row.campaign.name,
+    'ad_group_id':   str(row.ad_group.id),
+    'ad_group_name': row.ad_group.name,
+    'network':       row.segments.ad_network_type.name,
+    'city':          row.click_view.area_of_interest.city,
+    'region':        row.click_view.area_of_interest.region,
+    'country':       row.click_view.area_of_interest.country,
+}
+```
+
+These CSVs are stored at `s3://{bucket}/{client}/clicks/{date}.csv` and locally at
+`data/{client}/clicks/{date}.csv`.
+
+#### Step 2 — Application data from Athena
+
+`gclid_attribution.py` queries `prod.application_data` (**not**
+`staging.google_ads_campaign_data` — that is Path A's table). It extracts the GCLID
+from each application's `attributed_tag_event_url` using a regex.
+
+**Query (from [`scripts/gclid_attribution.py`](scripts/gclid_attribution.py) lines 43–57):**
+
+```sql
+SELECT
+    REGEXP_EXTRACT(attributed_tag_event_url, '(gclid)=([^&#\?]+)', 2) AS gclid,
+    1 AS received,
+    CASE WHEN approved = true THEN 1 ELSE 0 END AS approved,
+    CASE WHEN funded = true THEN 1 ELSE 0 END AS funded,
+    COALESCE(production_value, 0) AS production_value,
+    COALESCE(lifetime_value, 0) AS lifetime_value,
+    COALESCE(product_family, '') AS product_family
+FROM prod.application_data
+WHERE client_id = ?
+    AND report_completion_timestamp >= CAST(? AS TIMESTAMP)
+    AND report_completion_timestamp < CAST(? AS TIMESTAMP)
+    AND attributed_tag_event_url LIKE '%gclid=%'
+```
+
+Each row represents one loan application that had a GCLID in its attribution URL.
+
+#### Step 3 — Inner join on GCLID
+
+The two DataFrames are joined on the `gclid` column
+([`scripts/gclid_attribution.py`](scripts/gclid_attribution.py) line 209):
+
+```python
+joined = clicks_df.merge(apps_df, on="gclid", how="inner")
+```
+
+Every matched application **inherits** the click's keyword, ad group, campaign, and
+geographic data. Unmatched clicks (no application) and unmatched applications (no
+click in the date range) are dropped.
+
+The joined data is then aggregated at two levels
+([lines 236–277](scripts/gclid_attribution.py)):
+
+**Campaign-level aggregation:**
+
+```python
+campaign_agg = (
+    joined.groupby(["campaign_id", "campaign_name"], as_index=False)
+    .agg(
+        apps=("received", "sum"),
+        approved=("approved", "sum"),
+        funded=("funded", "sum"),
+        production=("production_value", "sum"),
+        value=("lifetime_value", "sum"),
+        # ... plus product-family breakdowns
+    )
+)
+```
+
+**Daily keyword-level aggregation:**
+
+```python
+group_cols = [
+    "date", "campaign_id", "campaign_name",
+    "ad_group_id", "ad_group_name", "keyword", "match_type",
+]
+daily_kw_agg = (
+    joined.groupby(group_cols, as_index=False)
+    .agg(
+        apps=("received", "sum"),
+        approved=("approved", "sum"),
+        funded=("funded", "sum"),
+        production=("production_value", "sum"),
+        value=("lifetime_value", "sum"),
+        # ... plus product-family breakdowns
+    )
+)
+```
+
+**Output files:**
+- `data/{client}/enriched/{month}.csv` — campaign-level (comparable to Path A output)
+- `data/{client}/enriched/daily/{month}.csv` — daily keyword-level (Path B exclusive)
+
+```bash
+# Single client
 python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
+
+# All configured clients
 python scripts/gclid_attribution.py --all --month 2026-01
 ```
 
-**Script:** [`scripts/gclid_attribution.py`](scripts/gclid_attribution.py)
+### Why This Matters
 
-### Method 2: S3 Funded Data Import
+| Question | Path A (Athena Export) | Path B (GCLID Attribution) |
+|----------|:-:|:-:|
+| Campaign spent $X, funded Y loans | Yes | Yes |
+| Which ad group drove the most funded loans? | **No** | Yes |
+| Which keyword drove the most funded loans? | **No** | Yes |
+| Cost per funded loan by keyword? | **No** | Yes |
+| Daily funded trend by keyword? | **No** | Yes |
+| Geographic attribution (city/region)? | **No** | Yes (click has city/region) |
 
-Reads Digital Performance Ranking (DPR) files from S3. Campaign-level only.
+Path A is a fallback for clients where click-level data is not yet collected or where
+the ROI pipeline is the only available data source. **Path B (GCLID Attribution) is
+the recommended approach** for all clients — it is the only way to answer "which
+keyword is actually driving funded loans."
+
+### Alternative: S3 Funded Data Import
+
+Reads Digital Performance Ranking (DPR) files from S3. Campaign-level only (similar
+granularity to Path A).
 
 ```bash
 python scripts/import_s3_funded_data.py --client kitsap_cu --month 2026-01
@@ -224,27 +487,17 @@ python scripts/import_s3_funded_data.py --client kitsap_cu --month 2026-01
 
 **Script:** [`scripts/import_s3_funded_data.py`](scripts/import_s3_funded_data.py)
 
-### Method 3: Athena Export
-
-Queries `staging.google_ads_campaign_data` (populated by the ROI pipeline).
-
-```bash
-python scripts/export_athena_data.py 2026-01
-```
-
-**Script:** [`scripts/export_athena_data.py`](scripts/export_athena_data.py)
-
 ### Enrichment Status by Client
 
-| Client | Has Enriched Data | Method |
-|--------|:-:|--------|
-| California Coast CU | Yes | GCLID Attribution |
-| First Commonwealth Bank | Yes | GCLID Attribution |
-| First Community CU | Yes | GCLID Attribution |
-| Kitsap CU | Yes | GCLID Attribution |
-| Public Service CU | Yes | GCLID Attribution |
-| Altura Ad Account | **No** | Config ready — run GCLID attribution |
-| CommonWealth One FCU | **No** | Config ready — run GCLID attribution |
+| Client | Has Enriched Data | Method | Granularity |
+|--------|:-:|--------|--------|
+| California Coast CU | Yes | Path B — GCLID Attribution | Keyword-level |
+| First Commonwealth Bank | Yes | Path B — GCLID Attribution | Keyword-level |
+| First Community CU | Yes | Path B — GCLID Attribution | Keyword-level |
+| Kitsap CU | Yes | Path B — GCLID Attribution | Keyword-level |
+| Public Service CU | Yes | Path B — GCLID Attribution | Keyword-level |
+| Altura Ad Account | **No** | Config ready — run GCLID attribution | — |
+| CommonWealth One FCU | **No** | Config ready — run GCLID attribution | — |
 
 ---
 
