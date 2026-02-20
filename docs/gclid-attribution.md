@@ -45,9 +45,7 @@ Identifier):
    campaign, and geography.
 
 2. **Application data** — queried on-demand from `prod.application_data` in Athena.
-   Each row is one loan application. The GCLID is not a dedicated column — it is
-   embedded inside the `attributed_tag_event_url` field and must be extracted via
-   regex.
+   Each row is one loan application. The GCLID is stored in the `click_id` column.
 
 Inner-joining these two DataFrames on `gclid` gives us exact click-to-application
 mapping at the keyword level.
@@ -71,24 +69,16 @@ it alongside the keyword, ad group, campaign, and geographic data for that click
 ### Where the GCLID ends up in application data
 
 If that user eventually submits a loan application, the AlphaRank tracking tag
-captures the page URL (including the `gclid` query parameter) and stores it in the
-`attributed_tag_event_url` column of `prod.application_data`. The raw value looks
-like:
+captures the GCLID and stores it in the `click_id` column of `prod.application_data`.
 
-```
-https://www.examplecu.com/apply?gclid=EAIaIQobChMI8f...&utm_source=google&utm_medium=cpc
-```
+### How the script reads it
 
-The GCLID is **not** stored as its own column. It is buried inside this URL string.
-
-### How the script extracts it
-
-The Athena query uses `REGEXP_EXTRACT` to parse the GCLID out of the URL:
+The Athena query reads `click_id` directly — no URL parsing needed:
 
 ```sql
--- scripts/gclid_attribution.py lines 43-57
+-- scripts/gclid_attribution.py lines 44-57 (parameterized version)
 SELECT
-    REGEXP_EXTRACT(attributed_tag_event_url, '(gclid)=([^&#\?]+)', 2) AS gclid,
+    click_id AS gclid,
     1 AS received,
     CASE WHEN approved = true THEN 1 ELSE 0 END AS approved,
     CASE WHEN funded = true THEN 1 ELSE 0 END AS funded,
@@ -99,12 +89,19 @@ FROM prod.application_data
 WHERE client_id = ?
     AND report_completion_timestamp >= CAST(? AS TIMESTAMP)
     AND report_completion_timestamp < CAST(? AS TIMESTAMP)
-    AND attributed_tag_event_url LIKE '%gclid=%'
+    AND click_id IS NOT NULL AND click_id != ''
 ```
 
-The regex `'(gclid)=([^&#\?]+)'` captures group 2 — everything after `gclid=` up to
-the next `&`, `#`, `?`, or end of string. The `LIKE '%gclid=%'` pre-filter ensures
-only rows with a GCLID are scanned.
+A **scheduled version** replaces the date parameters with dynamic Athena functions
+so the query can run without passing explicit dates:
+
+```sql
+-- scripts/gclid_attribution.py lines 59-75 (scheduled version)
+WHERE client_id = ?
+    AND report_completion_timestamp >= date_trunc('month', current_date - interval '1' month)
+    AND report_completion_timestamp < date_trunc('month', current_date + interval '1' month)
+    AND click_id IS NOT NULL AND click_id != ''
+```
 
 ### The join
 
@@ -113,8 +110,8 @@ Now both sides have a `gclid` column:
 ```
 clicks_df                              apps_df
 ┌──────────────────────────┐           ┌──────────────────────────┐
-│ gclid   ◄── from API    │           │ gclid   ◄── parsed from │
-│ keyword                  │           │              URL above  │
+│ gclid   ◄── from API    │           │ gclid   ◄── click_id    │
+│ keyword                  │           │              column     │
 │ match_type               │           │ funded                  │
 │ campaign_id              │           │ approved                │
 │ campaign_name            │           │ production_value        │
@@ -167,7 +164,7 @@ matching clicks are dropped.
         │    from S3 into clicks_df                      │
         │                                                │
         │                               Step 2: query_applications()
-        │                                 REGEXP_EXTRACT(url) → gclid
+        │                                 click_id → gclid
         │                                 Returns apps_df
         │                                                │
         │               Step 3: build_attribution()      │
@@ -284,7 +281,7 @@ Returns a DataFrame with columns: `gclid`, `received`, `approved`, `funded`,
 
 | Column | Type | Derivation |
 |--------|------|------------|
-| `gclid` | string | `REGEXP_EXTRACT(attributed_tag_event_url, ...)` |
+| `gclid` | string | `click_id` column (aliased as `gclid`) |
 | `received` | int | Always `1` (one row = one application) |
 | `approved` | int | `1` if `approved = true`, else `0` |
 | `funded` | int | `1` if `funded = true`, else `0` |
@@ -407,17 +404,11 @@ Cost data lives in the daily pipeline CSVs, not in the enrichment output. The
 dashboard merges enriched data with cost data and computes `cpf = cost / funded`
 at render time.
 
-### 6. GCLID regex tolerance
+### 6. Direct `click_id` column
 
-The regex `'(gclid)=([^&#\?]+)'` handles:
-
-- `?gclid=abc123` — GCLID as first parameter
-- `&gclid=abc123` — GCLID after other parameters
-- `gclid=abc123#section` — GCLID before a fragment
-- URLs with or without trailing parameters
-
-The `LIKE '%gclid=%'` pre-filter is a performance optimization — Athena can skip
-rows without a GCLID before applying the more expensive regex.
+The `click_id` column in `prod.application_data` stores the GCLID directly — no
+URL parsing needed. The query filters with `click_id IS NOT NULL AND click_id != ''`
+to skip rows without a GCLID.
 
 ## 8. Client ID Mapping
 
@@ -442,8 +433,12 @@ python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
 # All configured clients
 python scripts/gclid_attribution.py --all --month 2026-01
 
+# Scheduled (no --month, auto-computes last month via CURRENT_DATE)
+python scripts/gclid_attribution.py --all
+
 # Dry run — prints match statistics, writes nothing
 python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
+python scripts/gclid_attribution.py --all --dry-run    # scheduled dry run
 ```
 
 **Dry-run output example:**
@@ -482,7 +477,7 @@ python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
 
 - **Requires click data in S3** — if the daily pipeline didn't run for a date range,
   those clicks are missing and applications from those clicks will be unmatched
-- **GCLID coverage** — only applications with a GCLID in the URL are matchable.
+- **GCLID coverage** — only applications with a GCLID in the `click_id` field are matchable.
   Applications from direct visits, organic search, or non-Google channels are excluded
 - **Delayed attribution** — a January click may not fund until March. The +2 month
   window helps but running too early undercounts. Re-run after 60 days for accuracy

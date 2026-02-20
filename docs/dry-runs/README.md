@@ -14,6 +14,9 @@ python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
 
 # All clients
 python scripts/gclid_attribution.py --all --month 2026-01 --dry-run
+
+# Scheduled (no --month, auto-computes last month via CURRENT_DATE)
+python scripts/gclid_attribution.py --all --dry-run
 ```
 
 **Example output:**

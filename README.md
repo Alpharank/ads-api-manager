@@ -74,12 +74,15 @@ Athena App Data ───┘                          data/{client}/enriched/dai
 The [dashboard](index.html) loads CSV files directly from the repo via GitHub Pages:
 
 ```
-data/{client}/campaigns/{month}.csv     ← campaign metrics (required)
-data/{client}/keywords/{month}.csv      ← keyword metrics
-data/{client}/daily/{month}.csv         ← daily timeseries
-data/{client}/enriched/{month}.csv      ← funded/attribution data
-data/{client}/search_terms/{month}.csv  ← search query data
-data/{client}/channels/{month}.csv      ← network breakdown
+data/{client}/campaigns/{month}.csv         ← campaign metrics (required)
+data/{client}/keywords/{month}.csv          ← keyword metrics
+data/{client}/daily/{month}.csv             ← daily timeseries
+data/{client}/enriched/{month}.csv          ← funded/attribution data
+data/{client}/search_terms/{month}.csv      ← search query data
+data/{client}/channels/{month}.csv          ← network breakdown
+data/{client}/devices/{month}.csv           ← device type breakdown
+data/{client}/locations/{month}.csv         ← geographic breakdown
+data/{client}/negative_keywords/{month}.csv ← negative keyword exclusions (snapshot)
 ```
 
 ### 4. Attribution Bridge → ROI Pipeline
@@ -113,10 +116,12 @@ staging.google_ads_campaign_data (Athena)
 │Keywords │  │  Multi-Metric Chart  │  │  Funded Over Time    │       │
 │Search   │  │  (select up to 3)    │  │                      │       │
 │ terms   │  └──────────────────────┘  └──────────────────────┘       │
-│─────────│                                                            │
-│Channels │  ┌────────────────────────────────────────────────┐       │
-│When &   │  │  Sortable, Filterable Data Table               │       │
-│ Where   │  │  (click any row to drill down)                 │       │
+│Negative │                                                            │
+│ keywords│                                                            │
+│─────────│  ┌────────────────────────────────────────────────┐       │
+│Channels │  │  Sortable, Filterable Data Table               │       │
+│When &   │  │  (click any row to drill down)                 │       │
+│ Where   │  │                                                │       │
 │         │  └────────────────────────────────────────────────┘       │
 └─────────┴────────────────────────────────────────────────────────────┘
 ```
@@ -218,22 +223,15 @@ level or only at the campaign level.
                  ▼                                                    │
   export_athena_data.py                               Athena: prod.application_data
                  │                                    ┌──────────────────────────────────────────┐
-                 ▼                                    │ attributed_tag_event_url contains:       │
-  data/{client}/enriched/{month}.csv                  │ "https://...?gclid=EAIaIQo...&utm_..."  │
-  (campaign-level ONLY)                               │                    │                     │
-                                                      │     REGEXP_EXTRACT(url,                  │
-                                                      │       '(gclid)=([^&#\?]+)', 2)          │
-                                                      │                    │                     │
-                                                      │                    ▼                     │
-                                                      │  gclid = "EAIaIQo..."  ◄── parsed out   │
-                                                      │  funded, approved, production_value, ... │
-                                                      └───────────────┬──────────────────────────┘
+                 ▼                                    │ click_id   ◄── direct column (GCLID)    │
+  data/{client}/enriched/{month}.csv                  │ funded, approved, production_value, ...  │
+  (campaign-level ONLY)                               └───────────────┬──────────────────────────┘
                                                                       │
                                                       ┌───────────────┴──────────────────┐
                                                       │                                  │
                                                  clicks_df                          apps_df
-                                                 (has gclid                    (has gclid parsed
-                                                  as a column)                  from URL above)
+                                                 (has gclid                    (has gclid from
+                                                  as a column)                  click_id column)
                                                       │                              │
                                                       └───────────┬──────────────────┘
                                                                   │
@@ -373,14 +371,14 @@ These CSVs are stored at `s3://{bucket}/{client}/clicks/{date}.csv` and locally 
 #### Step 2 — Application data from Athena
 
 `gclid_attribution.py` queries `prod.application_data` (**not**
-`staging.google_ads_campaign_data` — that is Path A's table). It extracts the GCLID
-from each application's `attributed_tag_event_url` using a regex.
+`staging.google_ads_campaign_data` — that is Path A's table). It reads the GCLID
+directly from the `click_id` column.
 
-**Query (from [`scripts/gclid_attribution.py`](scripts/gclid_attribution.py) lines 43–57):**
+**Parameterized query (from [`scripts/gclid_attribution.py`](scripts/gclid_attribution.py) lines 44–57):**
 
 ```sql
 SELECT
-    REGEXP_EXTRACT(attributed_tag_event_url, '(gclid)=([^&#\?]+)', 2) AS gclid,
+    click_id AS gclid,
     1 AS received,
     CASE WHEN approved = true THEN 1 ELSE 0 END AS approved,
     CASE WHEN funded = true THEN 1 ELSE 0 END AS funded,
@@ -391,10 +389,18 @@ FROM prod.application_data
 WHERE client_id = ?
     AND report_completion_timestamp >= CAST(? AS TIMESTAMP)
     AND report_completion_timestamp < CAST(? AS TIMESTAMP)
-    AND attributed_tag_event_url LIKE '%gclid=%'
+    AND click_id IS NOT NULL AND click_id != ''
 ```
 
-Each row represents one loan application that had a GCLID in its attribution URL.
+A **scheduled version** replaces the date parameters with dynamic Athena functions:
+
+```sql
+WHERE ...
+    AND report_completion_timestamp >= date_trunc('month', current_date - interval '1' month)
+    AND report_completion_timestamp < date_trunc('month', current_date + interval '1' month)
+```
+
+Each row represents one loan application that had a GCLID in its `click_id` field.
 
 #### Step 3 — Inner join on GCLID
 
@@ -458,6 +464,9 @@ python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
 
 # All configured clients
 python scripts/gclid_attribution.py --all --month 2026-01
+
+# Scheduled (no --month, uses last month via CURRENT_DATE)
+python scripts/gclid_attribution.py --all
 ```
 
 ### Why This Matters
@@ -577,6 +586,7 @@ python pipeline/google_ads_to_s3.py --list-accounts               # List MCC acc
 ```bash
 python scripts/gclid_attribution.py --client {id} --month 2026-01           # GCLID attribution
 python scripts/gclid_attribution.py --all --month 2026-01 --dry-run         # Dry run all
+python scripts/gclid_attribution.py --all                                   # Scheduled: uses last month
 python scripts/import_s3_funded_data.py --client {id} --month 2026-01       # S3 funded import
 python scripts/export_athena_data.py 2026-01                                # Athena export
 python scripts/export_athena_data.py --list-clients                         # List Athena clients
@@ -586,7 +596,7 @@ python scripts/export_athena_data.py --list-clients                         # Li
 
 ```bash
 python scripts/aggregate_monthly.py               # Aggregate daily CSVs → monthly
-python scripts/export_insights_data.py             # Pull search terms, channels, devices, locations
+python scripts/export_insights_data.py             # Pull search terms, channels, devices, locations, negative keywords
 python scripts/sync_registry.py                    # Preview dashboard file sync
 python scripts/sync_registry.py --commit           # Sync + git commit + push
 python scripts/export_account_ids.py               # List all MCC child accounts
@@ -617,7 +627,7 @@ google_ads_to_s3/
 │   ├── export_athena_data.py               # Export enriched data from Athena
 │   ├── generate_daily_attribution.py       # Proportional daily attribution (fallback)
 │   ├── aggregate_monthly.py                # Aggregate daily CSVs → monthly
-│   ├── export_insights_data.py             # Pull search terms, channels, devices, geo
+│   ├── export_insights_data.py             # Pull search terms, channels, devices, geo, negative keywords
 │   ├── sync_registry.py                    # Sync S3 registry → local dashboard files
 │   ├── export_account_ids.py               # List MCC child accounts
 │   └── generate_refresh_token.py           # OAuth setup helper
@@ -635,7 +645,8 @@ google_ads_to_s3/
 │       ├── search_terms/{month}.csv
 │       ├── channels/{month}.csv
 │       ├── devices/{month}.csv
-│       └── locations/{month}.csv
+│       ├── locations/{month}.csv
+│       └── negative_keywords/{month}.csv
 ├── output/                                 # Local daily CSVs (gitignored)
 ├── requirements.txt
 └── .gitignore

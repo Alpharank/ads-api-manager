@@ -141,7 +141,7 @@ The [`gclid_attribution.py`](../scripts/gclid_attribution.py) script joins click
 ┌──────────────────┴─────────────────────────┐
 │  Athena: prod.application_data             │
 │  ┌──────────────────────────────────────┐  │
-│  │ gclid (from attributed_tag_event_url)│  │
+│  │ click_id (GCLID, direct column)     │  │
 │  │ funded_status, product_family,       │  │
 │  │ funded_amount, lifetime_value        │  │
 │  └──────────────────────────────────────┘  │
@@ -189,6 +189,9 @@ python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
 
 # Run for all clients
 python scripts/gclid_attribution.py --all --month 2026-01
+
+# Scheduled (no --month, auto-computes last month via CURRENT_DATE)
+python scripts/gclid_attribution.py --all
 ```
 
 For more validation commands, see [`docs/dry-runs/`](dry-runs/).
@@ -221,10 +224,12 @@ The [dashboard](../index.html) is a single-page app deployed to GitHub Pages. Ea
 │Keywords │  │  (select up to 3)    │  │                      │       │
 │Search   │  └──────────────────────┘  └──────────────────────┘       │
 │ terms   │                                                            │
-│─────────│  ┌────────────────────────────────────────────────┐       │
-│Channels │  │  Data Table                                     │       │
-│When &   │  │  (sortable, filterable, click rows to drill)   │       │
-│ Where   │  └────────────────────────────────────────────────┘       │
+│Negative │  ┌────────────────────────────────────────────────┐       │
+│ keywords│  │  Data Table                                     │       │
+│─────────│  │  (sortable, filterable, click rows to drill)   │       │
+│Channels │  └────────────────────────────────────────────────┘       │
+│When &   │                                                            │
+│ Where   │                                                            │
 ├─────────┤                                                            │
 │Selection│                                                            │
 └─────────┴────────────────────────────────────────────────────────────┘
@@ -280,6 +285,7 @@ Breadcrumbs navigate back. Selection chips in the sidebar show the current drill
 | **Ad groups** | Ad group metrics within a campaign | Yes → Keywords |
 | **Keywords** | Keyword performance with match type badges | No (leaf level) |
 | **Search terms** | Actual search queries that triggered ads | No |
+| **Negative keywords** | Ad-group-level negative keyword exclusions | No |
 | **Channels** | Network breakdown (Search, Display, YouTube) | No |
 | **When & Where** | Device type + geographic performance | No |
 
@@ -305,6 +311,7 @@ data/{client}/search_terms/{month}.csv
 data/{client}/channels/{month}.csv
 data/{client}/devices/{month}.csv
 data/{client}/locations/{month}.csv
+data/{client}/negative_keywords/{month}.csv ← account state snapshot
 ```
 
 A [`data-manifest.json`](../data-manifest.json) tells the dashboard which months have data. For 90-day chart spans, it preloads up to 3 past months in parallel.
