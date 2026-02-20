@@ -82,7 +82,7 @@ data/{client}/search_terms/{month}.csv      ← search query data
 data/{client}/channels/{month}.csv          ← network breakdown
 data/{client}/devices/{month}.csv           ← device type breakdown
 data/{client}/locations/{month}.csv         ← geographic breakdown
-data/{client}/negative_keywords/{month}.csv ← negative keyword exclusions (snapshot)
+data/{client}/negative_keywords/{month}.csv ← negative keyword exclusions (account state snapshot, not month-specific)
 ```
 
 ### 4. Attribution Bridge → ROI Pipeline
@@ -646,7 +646,7 @@ google_ads_to_s3/
 │       ├── channels/{month}.csv
 │       ├── devices/{month}.csv
 │       ├── locations/{month}.csv
-│       └── negative_keywords/{month}.csv
+│       └── negative_keywords/{month}.csv    # Account state snapshot; dashboard loads latest
 ├── output/                                 # Local daily CSVs (gitignored)
 ├── requirements.txt
 └── .gitignore

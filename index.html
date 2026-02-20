@@ -2219,7 +2219,7 @@
                     fetch(`${base}/channels/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/devices/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/locations/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
-                    fetch(`${base}/negative_keywords/${currentMonth}.csv`).then(r => r.ok ? r.text() : '')
+                    fetch(`${base}/negative_keywords/${availableMonths[0]}.csv`).then(r => r.ok ? r.text() : '')
                 ]);
 
                 // Parse enriched Athena data (first-party: apps, funded, value, etc.)
