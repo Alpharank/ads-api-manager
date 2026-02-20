@@ -2,9 +2,9 @@
 """
 GCLID-based keyword-level attribution.
 
-Joins click-level GCLID data (from S3) with application data (from Athena)
-to produce real keyword-level attribution — replacing synthetic proportional
-distribution with exact click-to-application mapping.
+Joins click-level GCLID data (from S3) with application data (from Athena,
+using the click_id field) to produce real keyword-level attribution —
+replacing synthetic proportional distribution with exact click-to-application mapping.
 
 Usage:
     python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
@@ -39,10 +39,10 @@ ATHENA_OUTPUT_BUCKET = "s3://etl.alpharank.airflow/athena-results/"
 AWS_REGION = "us-west-2"
 ATHENA_QUERY_TIMEOUT_SECONDS = 300
 
-# Application data query — extracts GCLID from attributed_tag_event_url
+# Application data query — uses click_id field directly
 APPLICATION_QUERY = """
 SELECT
-    REGEXP_EXTRACT(attributed_tag_event_url, '(gclid)=([^&#\\?]+)', 2) AS gclid,
+    click_id AS gclid,
     1 AS received,
     CASE WHEN approved = true THEN 1 ELSE 0 END AS approved,
     CASE WHEN funded = true THEN 1 ELSE 0 END AS funded,
@@ -53,7 +53,7 @@ FROM prod.application_data
 WHERE client_id = ?
     AND report_completion_timestamp >= CAST(? AS TIMESTAMP)
     AND report_completion_timestamp < CAST(? AS TIMESTAMP)
-    AND attributed_tag_event_url LIKE '%gclid=%'
+    AND click_id IS NOT NULL AND click_id != ''
 """
 
 
@@ -317,7 +317,6 @@ def write_daily_keyword_csv(df: pd.DataFrame, client_id: str, month: str) -> Pat
 def process_client(client_id: str, client_cfg: dict, month: str,
                    s3_client, athena_client, aws_cfg: dict, dry_run: bool = False):
     """Run GCLID attribution for a single client/month."""
-    prod_id = client_cfg["prod_id"]
     bucket = aws_cfg["aws"]["bucket"]
     prefix = aws_cfg["aws"]["prefix"]
 
@@ -333,8 +332,8 @@ def process_client(client_id: str, client_cfg: dict, month: str,
         return
     print(f"  Loaded {len(clicks_df):,} clicks")
 
-    # 2. Query application data from Athena (uses prod_id for prod.application_data)
-    apps_df = query_applications(athena_client, prod_id, month)
+    # 2. Query application data from Athena (same client_id as click data)
+    apps_df = query_applications(athena_client, client_id, month)
     if apps_df.empty:
         print("  No application data found — skipping")
         return

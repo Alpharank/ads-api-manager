@@ -1,94 +1,94 @@
-date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value
-2026-01-01,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,1,15000.0,3900.0
-2026-01-01,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap federal credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-01,23238626386,KCU - Personal - NB,185493406702,General Banking,online banking,PHRASE,1,0,0,0.0,0.0
-2026-01-01,23238626389,KCU - Personal - NB Locations,185493407222,Location - Bremerton,credit union bremerton,PHRASE,1,0,0,0.0,0.0
-2026-01-01,23278396982,KCU - Business - NB,189213901575,General Banking,business banking,PHRASE,1,0,0,0.0,0.0
-2026-01-01,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,1,1,1100.0,1500.0
-2026-01-02,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,4,3,2,30000.0,12400.0
-2026-01-02,23238626386,KCU - Personal - NB,189213901175,Certificates,best cd rates,PHRASE,1,1,1,500.0,1500.0
-2026-01-02,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,0,0,0.0,0.0
-2026-01-03,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,1,100000.0,36000.0
-2026-01-03,23238626386,KCU - Personal - NB,185493406702,General Banking,credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-03,23238626386,KCU - Personal - NB,185493406702,General Banking,online banking,PHRASE,1,0,0,0.0,0.0
-2026-01-04,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,5,1,1,9488.37,1328.3718000000003
-2026-01-04,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,best cd rates,PHRASE,1,0,0,0.0,0.0
-2026-01-04,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,1,0,0.0,0.0
-2026-01-05,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,1,1,50.0,1500.0
-2026-01-05,23228929821,KCU - Personal - Brand,185493406542,Personal Banking,kitsap credit union banking,PHRASE,1,0,0,0.0,0.0
-2026-01-05,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,credit union near me,PHRASE,1,0,0,0.0,0.0
-2026-01-05,23282664394,KCU - Business - Brand,189751929798,General Banking,kitsap credit union business,PHRASE,1,0,0,0.0,0.0
-2026-01-06,23228929821,KCU - Personal - Brand,185493406542,Personal Banking,kitsap credit union rates,PHRASE,1,1,0,0.0,0.0
-2026-01-06,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,kitsap county credit union,PHRASE,1,1,1,1250.0,612.5
-2026-01-06,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,0,0,0.0,0.0
-2026-01-07,23278396982,KCU - Business - NB,189213901575,General Banking,banking small business,PHRASE,1,1,1,100.0,1500.0
-2026-01-07,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,1,0,0,0.0,0.0
-2026-01-08,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,2,1,50.0,1500.0
-2026-01-08,23238626386,KCU - Personal - NB,185493406742,Digital Accounts,online account opening,PHRASE,1,1,0,0.0,0.0
-2026-01-09,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0
-2026-01-09,23238626386,KCU - Personal - NB,185493406702,General Banking,credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-09,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,kitsap county credit union,PHRASE,2,1,0,0.0,0.0
-2026-01-09,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0
-2026-01-10,23238626386,KCU - Personal - NB,185493406782,Checking Accounts,free checking account,PHRASE,1,0,0,0.0,0.0
-2026-01-10,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0
-2026-01-10,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,3,0,0,0.0,0.0
-2026-01-11,23238626386,KCU - Personal - NB,185493406742,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0
-2026-01-11,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,3,2,1,50.0,1500.0
-2026-01-12,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,1,2025.0,1500.0
-2026-01-12,23238626386,KCU - Personal - NB,185493406942,Savings Accounts,online savings account,PHRASE,1,0,0,0.0,0.0
-2026-01-12,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,1,0,0,0.0,0.0
-2026-01-13,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,1,25.0,1500.0
-2026-01-13,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-14,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0
-2026-01-14,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap cu,PHRASE,1,1,1,50.0,1500.0
-2026-01-14,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,2,0,0,0.0,0.0
-2026-01-14,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0
-2026-01-14,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,1,1,95264.24,13336.993600000002
-2026-01-15,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,9,6,3,9910.0,6326.5
-2026-01-15,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap cu,PHRASE,1,0,0,0.0,0.0
-2026-01-15,23278396982,KCU - Business - NB,189213901575,General Banking,banking small business,PHRASE,1,0,0,0.0,0.0
-2026-01-16,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,0,0.0,0.0
-2026-01-16,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-17,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,0,0.0,0.0
-2026-01-17,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,kitsap county credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-17,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,1,0,0,0.0,0.0
-2026-01-18,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0
-2026-01-18,23238626386,KCU - Personal - NB,185493406702,General Banking,credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-18,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,mobile banking,PHRASE,1,0,0,0.0,0.0
-2026-01-18,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-19,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,1,25.0,1500.0
-2026-01-19,23282664394,KCU - Business - Brand,189751929798,General Banking,kitsap credit union business,PHRASE,1,1,1,50.0,1500.0
-2026-01-19,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-20,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,1,0,0.0,0.0
-2026-01-20,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,1,1,25.0,1500.0
-2026-01-21,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,1,1,2000.0,1500.0
-2026-01-21,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,certificate of deposit rates,PHRASE,1,1,1,25000.0,1500.0
-2026-01-21,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-22,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,1,30.0,1500.0
-2026-01-22,23238626386,KCU - Personal - NB,185493406942,Savings Accounts,high yield savings account,PHRASE,1,0,0,0.0,0.0
-2026-01-22,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0
-2026-01-23,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,5,1,0,0.0,0.0
-2026-01-23,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,certificate of deposit,PHRASE,1,1,0,0.0,0.0
-2026-01-23,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0
-2026-01-23,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0
-2026-01-24,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,1,0,0.0,0.0
-2026-01-24,23228929821,KCU - Personal - Brand,185493406462,Banking Location,kitsap credit union silverdale,PHRASE,2,1,0,0.0,0.0
-2026-01-24,23238626386,KCU - Personal - NB,185493406702,General Banking,open bank account,PHRASE,1,0,0,0.0,0.0
-2026-01-25,23238626389,KCU - Personal - NB Locations,185493407702,Location - Poulsbo,credit union poulsbo,PHRASE,1,0,0,0.0,0.0
-2026-01-25,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0
-2026-01-25,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-26,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,4,1,1,2200.0,572.0
-2026-01-26,23282664394,KCU - Business - Brand,189751929798,General Banking,kitsap credit union business,PHRASE,1,1,1,100.0,1500.0
-2026-01-26,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,0,0,0.0,0.0
-2026-01-27,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,6,4,3,84600.0,32505.0
-2026-01-27,23238626386,KCU - Personal - NB,189213901335,Money Market Accounts,money market account,PHRASE,1,0,0,0.0,0.0
-2026-01-27,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,certificate of deposit,PHRASE,1,1,1,500.0,1500.0
-2026-01-27,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-28,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,4,2,1,15489.23,1500.0
-2026-01-28,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0
-2026-01-28,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-29,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-29,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-30,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0
-2026-01-30,23228929821,KCU - Personal - Brand,185493406462,Banking Location,kitsap credit union near me,PHRASE,1,0,0,0.0,0.0
-2026-01-31,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,2,2,4700.0,2112.5
+date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
+2026-01-01,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,1,15000.0,3900.0,1,0,1,0,0
+2026-01-01,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap federal credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-01,23238626386,KCU - Personal - NB,185493406702,General Banking,online banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-01,23238626389,KCU - Personal - NB Locations,185493407222,Location - Bremerton,credit union bremerton,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-01,23278396982,KCU - Business - NB,189213901575,General Banking,business banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-01,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,1,1,1100.0,1500.0,0,1,0,0,0
+2026-01-02,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,4,3,2,30000.0,12400.0,1,0,1,1,0
+2026-01-02,23238626386,KCU - Personal - NB,189213901175,Certificates,best cd rates,PHRASE,1,1,1,500.0,1500.0,0,1,0,0,0
+2026-01-02,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-01-03,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,1,100000.0,36000.0,0,0,0,0,1
+2026-01-03,23238626386,KCU - Personal - NB,185493406702,General Banking,credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-03,23238626386,KCU - Personal - NB,185493406702,General Banking,online banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-04,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,5,1,1,9488.37,1328.3718000000003,0,0,0,1,0
+2026-01-04,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,best cd rates,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-04,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,1,0,0.0,0.0,0,1,0,0,0
+2026-01-05,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,1,1,50.0,1500.0,0,1,0,0,0
+2026-01-05,23228929821,KCU - Personal - Brand,185493406542,Personal Banking,kitsap credit union banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-05,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,credit union near me,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-05,23282664394,KCU - Business - Brand,189751929798,General Banking,kitsap credit union business,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-06,23228929821,KCU - Personal - Brand,185493406542,Personal Banking,kitsap credit union rates,PHRASE,1,1,0,0.0,0.0,0,0,0,1,0
+2026-01-06,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,kitsap county credit union,PHRASE,1,1,1,1250.0,612.5,1,0,0,0,0
+2026-01-06,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-01-07,23278396982,KCU - Business - NB,189213901575,General Banking,banking small business,PHRASE,1,1,1,100.0,1500.0,0,1,0,0,0
+2026-01-07,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-08,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,2,1,50.0,1500.0,0,2,0,0,0
+2026-01-08,23238626386,KCU - Personal - NB,185493406742,Digital Accounts,online account opening,PHRASE,1,1,0,0.0,0.0,0,1,0,0,0
+2026-01-09,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0,0,0,0,1,0
+2026-01-09,23238626386,KCU - Personal - NB,185493406702,General Banking,credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-09,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,kitsap county credit union,PHRASE,2,1,0,0.0,0.0,0,1,0,0,0
+2026-01-09,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-10,23238626386,KCU - Personal - NB,185493406782,Checking Accounts,free checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-10,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-10,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,3,0,0,0.0,0.0,0,0,0,0,0
+2026-01-11,23238626386,KCU - Personal - NB,185493406742,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-11,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,3,2,1,50.0,1500.0,1,1,0,0,0
+2026-01-12,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,1,2025.0,1500.0,0,2,0,0,0
+2026-01-12,23238626386,KCU - Personal - NB,185493406942,Savings Accounts,online savings account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-12,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-13,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,1,25.0,1500.0,0,2,0,0,0
+2026-01-13,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-14,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0,0,0,0,1,0
+2026-01-14,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap cu,PHRASE,1,1,1,50.0,1500.0,0,1,0,0,0
+2026-01-14,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-01-14,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-14,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,1,1,95264.24,13336.993600000002,0,0,0,1,0
+2026-01-15,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,9,6,3,9910.0,6326.5,2,3,1,0,0
+2026-01-15,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap cu,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-15,23278396982,KCU - Business - NB,189213901575,General Banking,banking small business,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-16,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,2,0,0.0,0.0,0,2,0,0,0
+2026-01-16,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-17,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,0,0.0,0.0,0,1,0,0,0
+2026-01-17,23238626389,KCU - Personal - NB Locations,185493406982,Location - Kitsap,kitsap county credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-17,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online account opening,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-18,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0,0,0,0,0,1
+2026-01-18,23238626386,KCU - Personal - NB,185493406702,General Banking,credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-18,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,mobile banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-18,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-19,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,1,25.0,1500.0,0,1,0,0,0
+2026-01-19,23282664394,KCU - Business - Brand,189751929798,General Banking,kitsap credit union business,PHRASE,1,1,1,50.0,1500.0,0,1,0,0,0
+2026-01-19,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-20,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,1,0,0.0,0.0,0,1,0,0,0
+2026-01-20,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,1,1,25.0,1500.0,0,1,0,0,0
+2026-01-21,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,1,1,2000.0,1500.0,0,1,0,0,0
+2026-01-21,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,certificate of deposit rates,PHRASE,1,1,1,25000.0,1500.0,0,1,0,0,0
+2026-01-21,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-22,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,2,1,1,30.0,1500.0,0,1,0,0,0
+2026-01-22,23238626386,KCU - Personal - NB,185493406942,Savings Accounts,high yield savings account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-22,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-23,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,5,1,0,0.0,0.0,0,1,0,0,0
+2026-01-23,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,certificate of deposit,PHRASE,1,1,0,0.0,0.0,0,1,0,0,0
+2026-01-23,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-23,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,1,0,0.0,0.0,0,0,0,0,1
+2026-01-24,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,1,0,0.0,0.0,0,0,0,1,0
+2026-01-24,23228929821,KCU - Personal - Brand,185493406462,Banking Location,kitsap credit union silverdale,PHRASE,2,1,0,0.0,0.0,0,1,0,0,0
+2026-01-24,23238626386,KCU - Personal - NB,185493406702,General Banking,open bank account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-25,23238626389,KCU - Personal - NB Locations,185493407702,Location - Poulsbo,credit union poulsbo,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-25,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-25,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-26,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,4,1,1,2200.0,572.0,0,0,1,0,0
+2026-01-26,23282664394,KCU - Business - Brand,189751929798,General Banking,kitsap credit union business,PHRASE,1,1,1,100.0,1500.0,0,1,0,0,0
+2026-01-26,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-01-27,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,6,4,3,84600.0,32505.0,1,1,0,1,1
+2026-01-27,23238626386,KCU - Personal - NB,189213901335,Money Market Accounts,money market account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-27,23371442105,KCU - Personal - NB Extended,191180609438,Certificates,certificate of deposit,PHRASE,1,1,1,500.0,1500.0,0,1,0,0,0
+2026-01-27,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-28,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,4,2,1,15489.23,1500.0,0,2,0,0,0
+2026-01-28,23371442105,KCU - Personal - NB Extended,191180609278,Digital Accounts,online banking,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-28,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-29,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-29,23379709610,KCU - Personal - Brand Brand Geo Test,191301547438,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-30,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-30,23228929821,KCU - Personal - Brand,185493406462,Banking Location,kitsap credit union near me,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-01-31,23228929821,KCU - Personal - Brand,185493406502,General Banking,kitsap credit union,PHRASE,3,2,2,4700.0,2112.5,1,1,0,0,0

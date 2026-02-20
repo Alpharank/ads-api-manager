@@ -1688,6 +1688,10 @@
                     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                     <span>Search terms</span>
                 </div>
+                <div class="sidebar-item" data-level="negativekeywords" onclick="navigateToLevel('negativekeywords')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>
+                    <span>Negative keywords</span>
+                </div>
                 <div class="sidebar-divider"></div>
                 <div class="sidebar-section-label">Insights</div>
                 <div class="sidebar-item" data-level="channels" onclick="navigateToLevel('channels')">
@@ -2012,6 +2016,7 @@
         let channelData = [];
         let deviceData = [];
         let locationData = [];
+        let negativeKeywordsData = [];
         let enrichedDataByModel = {};  // Store enriched data for each attribution model
         let currentAttributionModel = 'last_click';  // last_click | first_click | linear
         let availableMonths = [];
@@ -2204,7 +2209,7 @@
             try {
                 const base = `data/${clientConfig.id}`;
                 const modelSuffix = currentAttributionModel === 'last_click' ? '' : `_${currentAttributionModel}`;
-                const [campText, kwText, dailyText, enrichedText, dailyEnrichedText, searchTermsText, channelText, deviceText, locationText] = await Promise.all([
+                const [campText, kwText, dailyText, enrichedText, dailyEnrichedText, searchTermsText, channelText, deviceText, locationText, negKeywordsText] = await Promise.all([
                     fetch(`${base}/campaigns/${currentMonth}.csv`).then(r => { if (!r.ok) throw new Error('No campaign data'); return r.text(); }),
                     fetch(`${base}/keywords/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/daily/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
@@ -2213,7 +2218,8 @@
                     fetch(`${base}/search_terms/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/channels/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/devices/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
-                    fetch(`${base}/locations/${currentMonth}.csv`).then(r => r.ok ? r.text() : '')
+                    fetch(`${base}/locations/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/negative_keywords/${currentMonth}.csv`).then(r => r.ok ? r.text() : '')
                 ]);
 
                 // Parse enriched Athena data (first-party: apps, funded, value, etc.)
@@ -2468,6 +2474,19 @@
                     .filter(r => r.impressions > 0 || r.clicks > 0)
                     .sort((a, b) => b.cost - a.cost) : [];
 
+                // Negative keywords (account state snapshot)
+                negativeKeywordsData = negKeywordsText ? Papa.parse(negKeywordsText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        keyword: (r.keyword || '').trim(),
+                        match_type: (r.match_type || '').trim(),
+                        campaign_id: (r.campaign_id || '').trim(),
+                        campaign_name: (r.campaign_name || '').trim(),
+                        ad_group_id: (r.ad_group_id || '').trim(),
+                        ad_group_name: (r.ad_group_name || '').trim()
+                    }))
+                    .filter(r => r.keyword)
+                    .sort((a, b) => a.campaign_name.localeCompare(b.campaign_name) || a.ad_group_name.localeCompare(b.ad_group_name) || a.keyword.localeCompare(b.keyword)) : [];
+
                 showDashboard();
                 render();
             } catch (e) {
@@ -2535,11 +2554,11 @@
         function navigateToLevel(level) {
             if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
             else if (level === 'adgroups') { selectedAdGroup = null; }
-            else if (['searchterms', 'channels', 'whenwhere'].includes(level)) {
+            else if (['searchterms', 'negativekeywords', 'channels', 'whenwhere'].includes(level)) {
                 selectedCampaign = null; selectedAdGroup = null;
             }
             currentLevel = level;
-            sortColumn = level === 'channels' ? 'cost' : (level === 'whenwhere' ? 'cost' : 'clicks');
+            sortColumn = level === 'channels' ? 'cost' : (level === 'whenwhere' ? 'cost' : (level === 'negativekeywords' ? 'keyword' : 'clicks'));
             sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
             closeSidebarOnMobile();
@@ -2831,6 +2850,8 @@
                 bar.appendChild(makeCurrent(selectedAdGroup ? selectedAdGroup.ad_group_name : 'All keywords'));
             } else if (currentLevel === 'searchterms') {
                 bar.appendChild(makeCurrent('Search terms'));
+            } else if (currentLevel === 'negativekeywords') {
+                bar.appendChild(makeCurrent('Negative keywords'));
             } else if (currentLevel === 'channels') {
                 bar.appendChild(makeCurrent('Channel performance'));
             } else if (currentLevel === 'whenwhere') {
@@ -2844,6 +2865,7 @@
                 adgroups: 'Ad groups',
                 keywords: 'Keywords',
                 searchterms: 'Search terms',
+                negativekeywords: 'Negative Keywords',
                 channels: 'Channel Performance',
                 whenwhere: 'When & Where'
             };
@@ -2856,13 +2878,14 @@
                 adgroups: 'Filter ad groups...',
                 keywords: 'Filter keywords...',
                 searchterms: 'Filter search terms...',
+                negativekeywords: 'Filter negative keywords...',
                 channels: 'Filter channels...',
                 whenwhere: 'Filter...'
             };
             document.getElementById('textFilter').placeholder = ph[currentLevel] || 'Filter...';
             // Show match type filters only on keywords or search terms view
             const mfg = document.getElementById('matchFilterGroup');
-            mfg.classList.toggle('visible', currentLevel === 'keywords' || currentLevel === 'searchterms');
+            mfg.classList.toggle('visible', currentLevel === 'keywords' || currentLevel === 'searchterms' || currentLevel === 'negativekeywords');
         }
 
         function toggleMatchFilter(type) {
@@ -2899,6 +2922,7 @@
             else if (currentLevel === 'adgroups') renderAdGroups();
             else if (currentLevel === 'keywords') renderKeywords();
             else if (currentLevel === 'searchterms') renderSearchTerms();
+            else if (currentLevel === 'negativekeywords') renderNegativeKeywords();
             else if (currentLevel === 'channels') renderChannels();
             else if (currentLevel === 'whenwhere') renderWhenWhere();
         }
@@ -3146,6 +3170,51 @@
                     <td class="text-right">${fmtCur(r.cost)}</td>
                     <td class="text-right">${fmtDec(r.conversions)}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── Negative Keywords Table ──
+        function renderNegativeKeywords() {
+            setHead([
+                ['keyword', 'Keyword', false],
+                ['match_type', 'Match', false],
+                ['campaign_name', 'Campaign', false],
+                ['ad_group_name', 'Ad Group', false]
+            ]);
+
+            let data = [...negativeKeywordsData];
+
+            // Match type filter
+            data = data.filter(r => matchFilters[r.match_type] !== false);
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r =>
+                    r.keyword.toLowerCase().includes(t) ||
+                    r.campaign_name.toLowerCase().includes(t) ||
+                    r.ad_group_name.toLowerCase().includes(t)
+                );
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'negative keyword');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (data.length === 0 && negativeKeywordsData.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-secondary);padding:40px;">No negative keywords data available. Run the negative keywords export script to populate this view.</td></tr>';
+                return;
+            }
+
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.keyword)}</td>
+                    <td><span class="match-badge match-${r.match_type}">${r.match_type}</span></td>
+                    <td>${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td>${escapeHtml(r.ad_group_name)}</td>`;
                 tbody.appendChild(tr);
             });
         }

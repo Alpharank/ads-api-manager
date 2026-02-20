@@ -7,6 +7,7 @@ This script exports:
 - Channel data: Performance by network (Search, Display, YouTube, etc.)
 - Device data: Performance by device type (Mobile, Desktop, Tablet)
 - Location data: Performance by geographic location
+- Negative keywords: Ad-group-level negative keyword exclusions (account state snapshot)
 
 Usage:
     python scripts/export_insights_data.py                    # Pull yesterday's data
@@ -280,6 +281,44 @@ class InsightsExporter:
             })
         return pd.DataFrame(rows)
 
+    def pull_negative_keywords(self, customer_id: str) -> pd.DataFrame:
+        """Pull ad-group-level negative keywords (account state, not time-series)."""
+        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+
+        query = """
+            SELECT
+                ad_group_criterion.keyword.text,
+                ad_group_criterion.keyword.match_type,
+                campaign.id,
+                campaign.name,
+                ad_group.id,
+                ad_group.name
+            FROM ad_group_criterion
+            WHERE ad_group_criterion.type = 'KEYWORD'
+                AND ad_group_criterion.negative = TRUE
+                AND ad_group_criterion.status != 'REMOVED'
+        """
+
+        rows = []
+        try:
+            response = ga_service.search(customer_id=customer_id, query=query)
+            for row in response:
+                rows.append({
+                    'keyword': row.ad_group_criterion.keyword.text,
+                    'match_type': row.ad_group_criterion.keyword.match_type.name,
+                    'campaign_id': str(row.campaign.id),
+                    'campaign_name': row.campaign.name,
+                    'ad_group_id': str(row.ad_group.id),
+                    'ad_group_name': row.ad_group.name,
+                })
+        except GoogleAdsException as e:
+            logger.warning(f"Error pulling negative keywords for {customer_id}: {e}")
+
+        df = pd.DataFrame(rows)
+        if not df.empty:
+            df = df.sort_values(['campaign_name', 'ad_group_name', 'keyword']).reset_index(drop=True)
+        return df
+
     def save_data(self, df: pd.DataFrame, client_id: str, data_type: str, month: str):
         """Save dataframe to local CSV file."""
         if df.empty:
@@ -330,6 +369,10 @@ class InsightsExporter:
         self.save_data(net_df, client_id, 'channels', month)
         self.save_data(dev_df, client_id, 'devices', month)
         self.save_data(loc_df, client_id, 'locations', month)
+
+        # Negative keywords (account state snapshot, no date range needed)
+        neg_df = self.pull_negative_keywords(customer_id)
+        self.save_data(neg_df, client_id, 'negative_keywords', month)
 
     def run(self, month: str = None, client_filter: Optional[str] = None):
         """Run the export for a specific month."""

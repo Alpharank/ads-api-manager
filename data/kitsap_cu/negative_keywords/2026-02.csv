@@ -1,0 +1,6 @@
+keyword,match_type,campaign_id,campaign_name,ad_group_id,ad_group_name
+cd,BROAD,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cd interest rates,PHRASE,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cd rates,PHRASE,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cds,BROAD,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+certificate of deposit,PHRASE,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
