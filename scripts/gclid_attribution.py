@@ -9,7 +9,8 @@ replacing synthetic proportional distribution with exact click-to-application ma
 Usage:
     python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01
     python scripts/gclid_attribution.py --all --month 2026-01
-    python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
+    python scripts/gclid_attribution.py --all                              # scheduled: uses last month
+    python scripts/gclid_attribution.py --client kitsap_cu --dry-run       # scheduled dry-run
 """
 
 import argparse
@@ -40,6 +41,7 @@ AWS_REGION = "us-west-2"
 ATHENA_QUERY_TIMEOUT_SECONDS = 300
 
 # Application data query — uses click_id field directly
+# Parameterized version (for ad-hoc runs with --month)
 APPLICATION_QUERY = """
 SELECT
     click_id AS gclid,
@@ -53,6 +55,23 @@ FROM prod.application_data
 WHERE client_id = ?
     AND report_completion_timestamp >= CAST(? AS TIMESTAMP)
     AND report_completion_timestamp < CAST(? AS TIMESTAMP)
+    AND click_id IS NOT NULL AND click_id != ''
+"""
+
+# Scheduled version (auto-computes last month + 2 month window from CURRENT_DATE)
+APPLICATION_QUERY_SCHEDULED = """
+SELECT
+    click_id AS gclid,
+    1 AS received,
+    CASE WHEN approved = true THEN 1 ELSE 0 END AS approved,
+    CASE WHEN funded = true THEN 1 ELSE 0 END AS funded,
+    COALESCE(production_value, 0) AS production_value,
+    COALESCE(lifetime_value, 0) AS lifetime_value,
+    COALESCE(product_family, '') AS product_family
+FROM prod.application_data
+WHERE client_id = ?
+    AND report_completion_timestamp >= date_trunc('month', current_date - interval '1' month)
+    AND report_completion_timestamp < date_trunc('month', current_date + interval '1' month)
     AND click_id IS NOT NULL AND click_id != ''
 """
 
@@ -157,26 +176,33 @@ def load_click_data(s3_client, bucket: str, prefix: str, client_id: str, month: 
 
 # ── Athena application query ───────────────────────────────────────
 
-def query_applications(athena_client, athena_id: str, month: str) -> pd.DataFrame:
-    """Query application data from Athena for a given client and month.
+def query_applications(athena_client, athena_id: str, month: str = None) -> pd.DataFrame:
+    """Query application data from Athena for a given client.
 
-    Date range: first of month through +2 months (captures delayed applications).
+    If month is provided: uses explicit date range (first of month through +2 months).
+    If month is None: uses scheduled query with dynamic dates (last month + 2 month window).
     """
-    year, mo = month.split("-")
-    start_ts = f"{year}-{mo}-01 00:00:00"
+    if month:
+        year, mo = month.split("-")
+        start_ts = f"{year}-{mo}-01 00:00:00"
 
-    # End date: +2 months from start of target month
-    end_month = int(mo) + 2
-    end_year = int(year)
-    if end_month > 12:
-        end_month -= 12
-        end_year += 1
-    end_ts = f"{end_year}-{end_month:02d}-01 00:00:00"
+        # End date: +2 months from start of target month
+        end_month = int(mo) + 2
+        end_year = int(year)
+        if end_month > 12:
+            end_month -= 12
+            end_year += 1
+        end_ts = f"{end_year}-{end_month:02d}-01 00:00:00"
 
-    print(f"  Querying Athena: client_id={athena_id}, range=[{start_ts}, {end_ts})")
-    execution_id = run_athena_query(
-        athena_client, APPLICATION_QUERY, params=[athena_id, start_ts, end_ts]
-    )
+        print(f"  Querying Athena: client_id={athena_id}, range=[{start_ts}, {end_ts})")
+        execution_id = run_athena_query(
+            athena_client, APPLICATION_QUERY, params=[athena_id, start_ts, end_ts]
+        )
+    else:
+        print(f"  Querying Athena: client_id={athena_id}, range=[last month, +2 months from CURRENT_DATE]")
+        execution_id = run_athena_query(
+            athena_client, APPLICATION_QUERY_SCHEDULED, params=[athena_id]
+        )
     df = fetch_results(athena_client, execution_id)
 
     if df.empty:
@@ -317,6 +343,7 @@ def write_daily_keyword_csv(df: pd.DataFrame, client_id: str, month: str) -> Pat
 def process_client(client_id: str, client_cfg: dict, month: str,
                    s3_client, athena_client, aws_cfg: dict, dry_run: bool = False):
     """Run GCLID attribution for a single client/month."""
+    prod_id = client_cfg["prod_id"]
     bucket = aws_cfg["aws"]["bucket"]
     prefix = aws_cfg["aws"]["prefix"]
 
@@ -332,8 +359,8 @@ def process_client(client_id: str, client_cfg: dict, month: str,
         return
     print(f"  Loaded {len(clicks_df):,} clicks")
 
-    # 2. Query application data from Athena (same client_id as click data)
-    apps_df = query_applications(athena_client, client_id, month)
+    # 2. Query application data from Athena (uses prod_id for prod.application_data)
+    apps_df = query_applications(athena_client, prod_id, month)
     if apps_df.empty:
         print("  No application data found — skipping")
         return
@@ -361,10 +388,18 @@ def main():
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--client", help="Process a single client_id (e.g. kitsap_cu)")
     group.add_argument("--all", action="store_true", help="Process all clients")
-    parser.add_argument("--month", required=True, help="Target month (YYYY-MM)")
+    parser.add_argument("--month", help="Target month (YYYY-MM). If omitted, uses last month via CURRENT_DATE")
     parser.add_argument("--dry-run", action="store_true",
                         help="Print match statistics without writing files")
     args = parser.parse_args()
+
+    # Default to last month if --month not provided
+    month = args.month
+    if not month:
+        from datetime import datetime, timedelta
+        last_month = datetime.utcnow().replace(day=1) - timedelta(days=1)
+        month = last_month.strftime("%Y-%m")
+        print(f"No --month specified, defaulting to last month: {month}")
 
     clients = load_clients()
     aws_cfg = load_aws_config()
@@ -382,7 +417,7 @@ def main():
     for client_id, client_cfg in targets:
         try:
             process_client(
-                client_id, client_cfg, args.month,
+                client_id, client_cfg, month,
                 s3_client, athena_client, aws_cfg,
                 dry_run=args.dry_run,
             )
