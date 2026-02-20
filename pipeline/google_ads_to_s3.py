@@ -411,6 +411,146 @@ class GoogleAdsToS3:
 
         return pd.DataFrame(rows)
 
+    def pull_bidding_config(self, customer_id: str, date: str) -> pd.DataFrame:
+        """Pull bidding strategy config per campaign/ad group (snapshot, no date filter)."""
+        query = """
+            SELECT
+                campaign.id,
+                campaign.name,
+                campaign.bidding_strategy_type,
+                campaign.target_cpa.target_cpa_micros,
+                campaign.maximize_conversions.target_cpa_micros,
+                campaign.target_roas.target_roas,
+                campaign.target_impression_share.location,
+                campaign.target_impression_share.location_fraction_micros,
+                ad_group.id,
+                ad_group.name,
+                ad_group.type,
+                ad_group.cpc_bid_micros
+            FROM ad_group
+            WHERE campaign.status = 'ENABLED'
+                AND ad_group.status = 'ENABLED'
+        """
+
+        rows = []
+        response = self._search_with_retry(customer_id, query, "bidding config")
+        for row in response:
+            # Coalesce target CPA from two possible fields
+            target_cpa_micros = (
+                row.campaign.target_cpa.target_cpa_micros
+                or row.campaign.maximize_conversions.target_cpa_micros
+            )
+            target_cpa = target_cpa_micros / 1_000_000 if target_cpa_micros else None
+
+            cpc_bid = row.ad_group.cpc_bid_micros / 1_000_000 if row.ad_group.cpc_bid_micros else None
+
+            rows.append({
+                'campaign_id': str(row.campaign.id),
+                'campaign_name': row.campaign.name,
+                'bidding_strategy': row.campaign.bidding_strategy_type.name,
+                'target_cpa': target_cpa,
+                'target_roas': row.campaign.target_roas.target_roas or None,
+                'impression_share_location': row.campaign.target_impression_share.location.name if row.campaign.target_impression_share.location else None,
+                'impression_share_fraction': row.campaign.target_impression_share.location_fraction_micros / 1_000_000 if row.campaign.target_impression_share.location_fraction_micros else None,
+                'ad_group_id': str(row.ad_group.id),
+                'ad_group_name': row.ad_group.name,
+                'ad_group_type': row.ad_group.type.name,
+                'ad_group_cpc_bid': cpc_bid,
+            })
+
+        return pd.DataFrame(rows)
+
+    def pull_conversion_actions(self, customer_id: str, date: str) -> pd.DataFrame:
+        """Pull account-level conversion action definitions (snapshot, no date filter)."""
+        query = """
+            SELECT
+                conversion_action.id,
+                conversion_action.name,
+                conversion_action.type,
+                conversion_action.category,
+                conversion_action.status,
+                conversion_action.include_in_conversions_metric,
+                conversion_action.counting_type
+            FROM conversion_action
+            WHERE conversion_action.status != 'REMOVED'
+        """
+
+        rows = []
+        response = self._search_with_retry(customer_id, query, "conversion actions")
+        for row in response:
+            rows.append({
+                'conversion_action_id': str(row.conversion_action.id),
+                'name': row.conversion_action.name,
+                'type': row.conversion_action.type.name,
+                'category': row.conversion_action.category.name,
+                'status': row.conversion_action.status.name,
+                'included_in_conversions': row.conversion_action.include_in_conversions_metric,
+                'counting_type': row.conversion_action.counting_type.name,
+            })
+
+        return pd.DataFrame(rows)
+
+    def pull_ad_creatives(self, customer_id: str, date: str) -> pd.DataFrame:
+        """Pull ad copy, creative assets, and per-ad metrics for a specific date."""
+        safe_date = _validate_date(date)
+
+        query = f"""
+            SELECT
+                campaign.id,
+                campaign.name,
+                ad_group.id,
+                ad_group.name,
+                ad_group_ad.ad.id,
+                ad_group_ad.ad.type,
+                ad_group_ad.ad.responsive_search_ad.headlines,
+                ad_group_ad.ad.responsive_search_ad.descriptions,
+                ad_group_ad.ad.final_urls,
+                ad_group_ad.status,
+                ad_group_ad.ad.strength,
+                metrics.impressions,
+                metrics.clicks,
+                metrics.cost_micros,
+                metrics.conversions,
+                segments.date
+            FROM ad_group_ad
+            WHERE segments.date = '{safe_date}'
+                AND ad_group_ad.status != 'REMOVED'
+                AND metrics.impressions > 0
+        """
+
+        rows = []
+        response = self._search_with_retry(customer_id, query, "ad creatives")
+        for row in response:
+            # Concatenate RSA headlines/descriptions; guard for non-RSA ad types
+            headlines_list = row.ad_group_ad.ad.responsive_search_ad.headlines
+            headlines = ' | '.join([h.text for h in headlines_list]) if headlines_list else ''
+
+            descriptions_list = row.ad_group_ad.ad.responsive_search_ad.descriptions
+            descriptions = ' | '.join([d.text for d in descriptions_list]) if descriptions_list else ''
+
+            final_urls = ' | '.join(row.ad_group_ad.ad.final_urls) if row.ad_group_ad.ad.final_urls else ''
+
+            rows.append({
+                'date': row.segments.date,
+                'campaign_id': str(row.campaign.id),
+                'campaign_name': row.campaign.name,
+                'ad_group_id': str(row.ad_group.id),
+                'ad_group_name': row.ad_group.name,
+                'ad_id': str(row.ad_group_ad.ad.id),
+                'ad_type': row.ad_group_ad.ad.type.name,
+                'headlines': headlines,
+                'descriptions': descriptions,
+                'final_urls': final_urls,
+                'status': row.ad_group_ad.status.name,
+                'ad_strength': row.ad_group_ad.ad.strength.name if row.ad_group_ad.ad.strength else None,
+                'impressions': row.metrics.impressions,
+                'clicks': row.metrics.clicks,
+                'cost': row.metrics.cost_micros / 1_000_000,
+                'conversions': row.metrics.conversions,
+            })
+
+        return pd.DataFrame(rows)
+
     def upload_to_s3(self, df: pd.DataFrame, client_id: str, data_type: str, date: str):
         """Upload dataframe to S3 as CSV and save locally."""
         if df.empty:
@@ -459,11 +599,26 @@ class GoogleAdsToS3:
         click_df = self.pull_click_data(customer_id, date)
         self.upload_to_s3(click_df, client_id, 'clicks', date)
 
+        # Pull and upload bidding config
+        bidding_df = self.pull_bidding_config(customer_id, date)
+        self.upload_to_s3(bidding_df, client_id, 'bidding_config', date)
+
+        # Pull and upload conversion actions
+        conv_df = self.pull_conversion_actions(customer_id, date)
+        self.upload_to_s3(conv_df, client_id, 'conversion_actions', date)
+
+        # Pull and upload ad creatives
+        creative_df = self.pull_ad_creatives(customer_id, date)
+        self.upload_to_s3(creative_df, client_id, 'creatives', date)
+
         return {
             'client_id': client_id,
             'campaigns': len(campaign_df),
             'keywords': len(keyword_df),
-            'clicks': len(click_df)
+            'clicks': len(click_df),
+            'bidding_config': len(bidding_df),
+            'conversion_actions': len(conv_df),
+            'creatives': len(creative_df),
         }
 
     def export_for_attribution(self, year_month: str) -> list[str]:
@@ -578,7 +733,10 @@ class GoogleAdsToS3:
                 try:
                     result = self.process_account(account, date_str)
                     logger.info(f"  {result['client_id']}: {result['campaigns']} campaigns, "
-                                f"{result['keywords']} keywords, {result['clicks']} clicks")
+                                f"{result['keywords']} keywords, {result['clicks']} clicks, "
+                                f"{result['bidding_config']} bidding configs, "
+                                f"{result['conversion_actions']} conversion actions, "
+                                f"{result['creatives']} creatives")
                 except Exception as e:
                     logger.error(f"  Error processing {account['client_id']}: {e}")
 
