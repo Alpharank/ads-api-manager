@@ -607,26 +607,26 @@ After each optimization run:
 **Slack Digest Format:**
 
 ```
-📊 Optimization Report: Kitsap CU (2026-02-20)
+Optimization Report: Kitsap CU (2026-02-20)
 
-🔻 Recommended Bid Decreases (5):
+Recommended Bid Decreases (5):
   • "auto loan rates" — CPA $142 vs target $75 → reduce bid $2.50 → $2.13
   • "credit union near me" — 0 conversions on 52 clicks → reduce bid 30%
   ...
 
-🔺 Recommended Bid Increases (2):
+Recommended Bid Increases (2):
   • "free checking account" — CPA $31 vs target $75, 72% imp share → increase bid 10%
   ...
 
-⏸️ Recommended Pauses (3):
+Recommended Pauses (3):
   • Keyword "loan calculator" — 68 clicks, 0 conversions, $204 spend
   • Ad #12345678 — POOR strength, 0.8% CTR vs 2.1% group avg
   ...
 
-💡 Creative Refresh Needed (1):
+Creative Refresh Needed (1):
   • Ad Group "Auto Loans - Broad" — top ad CTR declined 31% over 30 days
 
-💰 Budget Shift Opportunity:
+Budget Shift Opportunity:
   • Move 10% ($15/day) from "Display - Awareness" (CPA $210) to "Brand - Search" (CPA $28)
 ```
 
