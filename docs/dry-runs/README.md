@@ -23,7 +23,7 @@ python scripts/gclid_attribution.py --all --dry-run
 
 ```
 ============================================================
-  Kitsap Credit Union (kitsap_cu)  —  2026-01
+  Kitsap Credit Union (kitsap_cu),  2026-01
 ============================================================
   Loading click data from S3...
   Loaded 10,862 clicks
@@ -35,10 +35,10 @@ python scripts/gclid_attribution.py --all --dry-run
 ```
 
 **What to look for:**
-- `Loaded N clicks` — confirms click data exists in S3 for that month
-- `Loaded N applications with GCLIDs` — confirms Athena has application data for the client's `prod_id`
-- `Matched: N` — how many applications could be traced back to a specific click
-- `Unmatched apps: N` — applications with GCLIDs that don't appear in click data (may have clicked before the month window)
+- `Loaded N clicks`: confirms click data exists in S3 for that month
+- `Loaded N applications with GCLIDs`: confirms Athena has application data for the client's `prod_id`
+- `Matched: N`: how many applications could be traced back to a specific click
+- `Unmatched apps: N`: applications with GCLIDs that don't appear in click data (may have clicked before the month window)
 
 ---
 
@@ -117,6 +117,6 @@ Add `--commit` to actually commit and push.
 |---------|-------------|-----|
 | `Loaded 0 clicks` | Click data not in S3 for that month | Run pipeline backfill: `python pipeline/google_ads_to_s3.py --client {id} --backfill 30` |
 | `Loaded 0 applications` | No application data in Athena for this `prod_id` | Verify `prod_id` in `config/clients.yaml` matches Athena `prod.application_data.client_id` |
-| `Matched: 0` | GCLIDs don't overlap | Applications may have clicked in a different month — widen the query window |
+| `Matched: 0` | GCLIDs don't overlap | Applications may have clicked in a different month, widen the query window |
 | `No DPR file found` | S3 path in `clients.yaml` doesn't point to a valid file | Run `aws s3 ls s3://ai.alpharank.core/{s3_path}/` to check |
 | Dashboard shows `--` for funded metrics | No `enriched/` data for that client/month | Run one of the enrichment scripts below |

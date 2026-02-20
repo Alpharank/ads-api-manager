@@ -58,9 +58,9 @@ Runs daily at **8:00 AM UTC (3 AM EST)** via Airflow. Source: [`dags/google_ads_
 
 ### Step Details
 
-**discover_accounts** — Queries the Google Ads MCC for every enabled child account. Compares against an S3 registry ([`_registry/accounts.json`](#s3-registry)). New accounts get an auto-generated slug and dashboard token. Removed accounts get a `removed_at` timestamp and are skipped.
+**discover_accounts**: Queries the Google Ads MCC for every enabled child account. Compares against an S3 registry ([`_registry/accounts.json`](#s3-registry)). New accounts get an auto-generated slug and dashboard token. Removed accounts get a `removed_at` timestamp and are skipped.
 
-**pull_account (×N in parallel)** — For each active account, the [pipeline](../pipeline/google_ads_to_s3.py) pulls three datasets via the Google Ads API and writes them to S3:
+**pull_account (×N in parallel)**: For each active account, the [pipeline](../pipeline/google_ads_to_s3.py) pulls three datasets via the Google Ads API and writes them to S3:
 
 | Dataset | What it Contains | S3 Path |
 |---------|-----------------|---------|
@@ -68,11 +68,11 @@ Runs daily at **8:00 AM UTC (3 AM EST)** via Airflow. Source: [`dags/google_ads_
 | Keywords | Keyword-level metrics within each ad group | `ad-spend-reports/{client}/keywords/{date}.csv` |
 | Clicks | Individual click events with GCLIDs and geo | `ad-spend-reports/{client}/clicks/{date}.csv` |
 
-**update_dashboard_files** — Rebuilds `clients.json` (token → client mapping) and `data-manifest.json` (available months per client) so the GitHub Pages dashboard picks up new data.
+**update_dashboard_files**: Rebuilds `clients.json` (token → client mapping) and `data-manifest.json` (available months per client) so the GitHub Pages dashboard picks up new data.
 
-**export_for_attribution** — Reads all daily campaign CSVs for the current month, concatenates them, renames columns to match the ROI pipeline format, and writes to S3. See [Attribution Bridge](#6-attribution-bridge-to-roi-pipeline).
+**export_for_attribution**: Reads all daily campaign CSVs for the current month, concatenates them, renames columns to match the ROI pipeline format, and writes to S3. See [Attribution Bridge](#6-attribution-bridge-to-roi-pipeline).
 
-**notify_account_changes** — Sends a Slack alert to `#customer-success` when accounts are added to or removed from the MCC.
+**notify_account_changes**: Sends a Slack alert to `#customer-success` when accounts are added to or removed from the MCC.
 
 ---
 
@@ -104,7 +104,7 @@ date, gclid, keyword, match_type, campaign_id, campaign_name,
 ad_group_id, ad_group_name, network, city, region, country
 ```
 
-One row per individual click. The `gclid` is the key for joining with first-party loan data — when a click turns into a funded loan, the origination system captures the GCLID.
+One row per individual click. The `gclid` is the key for joining with first-party loan data: when a click turns into a funded loan, the origination system captures the GCLID.
 
 ### What Each Layer Unlocks
 
@@ -115,7 +115,7 @@ Campaign ──► "Brand campaign spent $80 and got 24 conversions"
 Keyword  ──► "Within Brand, the keyword 'best personal loan rates' got 12 clicks at $4.50"
     │
     ▼
-Click    ──► "This click from Portland, OR searched 'personal loan rates' — GCLID: EAIaIQ..."
+Click    ──► "This click from Portland, OR searched 'personal loan rates', GCLID: EAIaIQ..."
     │
     ▼
 GCLID Join ► "That click became a funded $25,000 personal loan"
@@ -181,7 +181,7 @@ The [`gclid_attribution.py`](../scripts/gclid_attribution.py) script joins click
 ### Running It
 
 ```bash
-# Dry run — validate data, write nothing
+# Dry run: validate data, write nothing
 python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
 
 # Run for one client
@@ -208,7 +208,7 @@ For more validation commands, see [`docs/dry-runs/`](dry-runs/).
 
 ## 4. How the Dashboard Works
 
-The [dashboard](../index.html) is a single-page app deployed to GitHub Pages. Each client gets a unique URL with a SHA-256 token. No login — valid token loads the dashboard, invalid token shows an error.
+The [dashboard](../index.html) is a single-page app deployed to GitHub Pages. Each client gets a unique URL with a SHA-256 token. No login: valid token loads the dashboard, invalid token shows an error.
 
 ### Dashboard Layout
 
@@ -255,9 +255,9 @@ The first 5 come from Google Ads data. The last 4 come from first-party enriched
 
 ### Charts
 
-**Left chart** — Multi-metric. Shows whichever KPI chips are selected (up to 3 overlaid). Supports line/bar mode, daily/day-of-week aggregation, and date range filtering (30/60/90 days or this month). When Cost is selected and funded data exists, a dotted gold line overlays funded revenue.
+**Left chart**: Multi-metric. Shows whichever KPI chips are selected (up to 3 overlaid). Supports line/bar mode, daily/day-of-week aggregation, and date range filtering (30/60/90 days or this month). When Cost is selected and funded data exists, a dotted gold line overlays funded revenue.
 
-**Right chart** — Always shows funded applications over time.
+**Right chart**: Always shows funded applications over time.
 
 ### Drill-Down Navigation
 
@@ -318,7 +318,7 @@ A [`data-manifest.json`](../data-manifest.json) tells the dashboard which months
 
 ### What's Not Live Yet
 
-**Attribution model selector** — The UI has Last Click / First Click / Linear buttons (archived/commented out). Only last-click is active. The code is ready to load different CSV files per model once multi-model attribution is implemented. See [`docs/future_state.md`](future_state.md).
+**Attribution model selector**: The UI has Last Click / First Click / Linear buttons (archived/commented out). Only last-click is active. The code is ready to load different CSV files per model once multi-model attribution is implemented. See [`docs/future_state.md`](future_state.md).
 
 ---
 
@@ -372,7 +372,7 @@ The bottleneck is **Google Ads API latency** (2–5s per call), not compute. Air
 1. Someone manually exports campaign data from S3
 2. Reformats columns to match the ROI pipeline
 3. Uploads to a different S3 path
-4. ROI pipeline runs hours later — works or fails silently
+4. ROI pipeline runs hours later, works or fails silently
 
 ### After (Automated Daily)
 
@@ -411,7 +411,7 @@ The export finishes hours before the ROI pipeline reads it.
 
 ## 7. EC2 Cost Optimization
 
-The pipeline runs on `auto-attribution-prod` (m5zn.6xlarge — 24 vCPUs, 192 GB RAM) at **~$1.18/hour**.
+The pipeline runs on `auto-attribution-prod` (m5zn.6xlarge, 24 vCPUs, 192 GB RAM) at **~$1.18/hour**.
 
 ### Current: Always Running
 
@@ -441,7 +441,7 @@ To enable:
 
 ### Stick with Airflow DAGs
 
-**The workload doesn't need distributed compute.** The pipeline's compute step — concat CSVs and rename columns — processes ~16K rows/day in milliseconds. Even at 70 clients, pandas handles this in under 5 seconds on a single core.
+**The workload doesn't need distributed compute.** The pipeline's compute step, concat CSVs and rename columns, processes ~16K rows/day in milliseconds. Even at 70 clients, pandas handles this in under 5 seconds on a single core.
 
 **The bottleneck is I/O, not compute.** 90% of runtime is waiting on Google Ads API responses. Switching to Spark doesn't make API calls faster.
 
@@ -456,23 +456,23 @@ To enable:
 ### When to Revisit
 
 Move to Glue/PySpark **if and when**:
-1. **Click-level GCLID joins at scale** — 1M+ rows/day with multi-touch attribution windows
-2. **Backfills across years** — hundreds of millions of rows in one shot
-3. **Real-time needs** — hourly attribution instead of daily
+1. **Click-level GCLID joins at scale**: 1M+ rows/day with multi-touch attribution windows
+2. **Backfills across years**: hundreds of millions of rows in one shot
+3. **Real-time needs**: hourly attribution instead of daily
 
 **None of these apply today.**
 
 ### Higher-ROI Investments
 
-1. **GCLID → funded loan matching** — already implemented via [`gclid_attribution.py`](../scripts/gclid_attribution.py)
-2. **Keyword + click data in attribution** — data is in S3, expand ROI pipeline to use it
-3. **Monitoring and alerting** — did the export land? Did the ROI pipeline succeed?
+1. **GCLID → funded loan matching**: already implemented via [`gclid_attribution.py`](../scripts/gclid_attribution.py)
+2. **Keyword + click data in attribution**: data is in S3, expand ROI pipeline to use it
+3. **Monitoring and alerting**: did the export land? Did the ROI pipeline succeed?
 
 ---
 
 ## Related Documentation
 
-- [Main README](../README.md) — concise project overview
-- [Multi-Model Attribution Roadmap](future_state.md) — first-click / linear attribution future state
-- [Dry Runs & Validation](dry-runs/) — commands to verify data before running enrichment
-- [Client Dashboard Tokens](../clients/README.md) — per-client URLs and tokens
+- [Main README](../README.md): concise project overview
+- [Multi-Model Attribution Roadmap](future_state.md): first-click / linear attribution future state
+- [Dry Runs & Validation](dry-runs/): commands to verify data before running enrichment
+- [Client Dashboard Tokens](../clients/README.md): per-client URLs and tokens

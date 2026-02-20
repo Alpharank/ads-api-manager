@@ -30,8 +30,8 @@ table and produces campaign-level enriched CSVs.
 `campaign_id` + `campaign`. You can say "Campaign X drove 5 funded loans," but you
 **cannot** say which keyword, ad group, or match type drove those loans.
 
-For Google Ads optimization — pausing underperforming keywords, increasing bids on
-high-ROAS terms, comparing match types — you need keyword-level attribution. That
+For Google Ads optimization, pausing underperforming keywords, increasing bids on
+high-ROAS terms, comparing match types, you need keyword-level attribution. That
 requires tracing individual clicks all the way to individual funded applications.
 
 ## 2. Decision
@@ -40,11 +40,11 @@ Build a separate attribution path that bypasses `staging.google_ads_campaign_dat
 entirely. Instead, join two independent data sources on the GCLID (Google Click
 Identifier):
 
-1. **Click data** — pulled daily from the Google Ads API `click_view` resource and
+1. **Click data**: pulled daily from the Google Ads API `click_view` resource and
    stored as CSVs in S3. Each row is one click with its GCLID, keyword, ad group,
    campaign, and geography.
 
-2. **Application data** — queried on-demand from `prod.application_data` in Athena.
+2. **Application data**: queried on-demand from `prod.application_data` in Athena.
    Each row is one loan application. The GCLID is stored in the `click_id` column.
 
 Inner-joining these two DataFrames on `gclid` gives us exact click-to-application
@@ -73,7 +73,7 @@ captures the GCLID and stores it in the `click_id` column of `prod.application_d
 
 ### How the script reads it
 
-The Athena query reads `click_id` directly — no URL parsing needed:
+The Athena query reads `click_id` directly, no URL parsing needed:
 
 ```sql
 -- scripts/gclid_attribution.py lines 44-57 (parameterized version)
@@ -133,7 +133,7 @@ clicks_df                              apps_df
              └──────────────────────────────────────┘
 ```
 
-This is an **inner join** — only clicks that have a matching application (and vice
+This is an **inner join**: only clicks that have a matching application (and vice
 versa) appear in the output. Clicks without applications and applications without
 matching clicks are dropped.
 
@@ -192,7 +192,7 @@ matching clicks are dropped.
                                 (daily keyword breakdown)
 ```
 
-### Step 1 — Load click data from S3
+### Step 1: Load click data from S3
 
 [`load_click_data()`](../scripts/gclid_attribution.py) (line 131) reads all CSV files
 matching `s3://{bucket}/{prefix}/{client_id}/clicks/{month}-*.csv` and concatenates
@@ -238,7 +238,7 @@ Each row is mapped to:
 | `region` | `click_view.area_of_interest.region` |
 | `country` | `click_view.area_of_interest.country` |
 
-### Step 2 — Query applications from Athena
+### Step 2: Query applications from Athena
 
 [`query_applications()`](../scripts/gclid_attribution.py) (line 160) runs the
 `APPLICATION_QUERY` against `prod.application_data` with parameters:
@@ -249,7 +249,7 @@ Each row is mapped to:
 Returns a DataFrame with columns: `gclid`, `received`, `approved`, `funded`,
 `production_value`, `lifetime_value`, `product_family`.
 
-### Step 3 — Join and aggregate
+### Step 3: Join and aggregate
 
 [`build_attribution()`](../scripts/gclid_attribution.py) (line 199):
 
@@ -291,7 +291,7 @@ Returns a DataFrame with columns: `gclid`, `received`, `approved`, `funded`,
 
 ## 6. Output Schemas
 
-### Campaign-level — `data/{client}/enriched/{month}.csv`
+### Campaign-level: `data/{client}/enriched/{month}.csv`
 
 | Column | Description |
 |--------|-------------|
@@ -302,7 +302,7 @@ Returns a DataFrame with columns: `gclid`, `received`, `approved`, `funded`,
 | `funded` | Funded applications |
 | `production` | Total production value |
 | `value` | Total lifetime value |
-| `cpf` | Set to `0` — the dashboard computes this from cost data |
+| `cpf` | Set to `0`, the dashboard computes this from cost data |
 | `avg_funded_value` | `value / funded` (or `0` if no funded) |
 | `cc_appvd` | Credit card approvals |
 | `deposit_appvd` | Deposit/checking approvals (product_family = `Xpress App`) |
@@ -310,7 +310,7 @@ Returns a DataFrame with columns: `gclid`, `received`, `approved`, `funded`,
 | `vehicle_appvd` | Vehicle loan approvals |
 | `heloc_appvd` | Home equity loan approvals |
 
-### Daily keyword-level — `data/{client}/enriched/daily/{month}.csv`
+### Daily keyword-level: `data/{client}/enriched/daily/{month}.csv`
 
 Same columns as campaign-level, plus:
 
@@ -361,8 +361,8 @@ applications are still in progress. Re-running after 60+ days captures late arri
 The `prod.application_data` table uses a different client identifier than
 `staging.google_ads_campaign_data`. In `config/clients.yaml`, each client has:
 
-- `athena_id` — used by `export_athena_data.py` to query `staging.google_ads_campaign_data`
-- `prod_id` — used by `gclid_attribution.py` to query `prod.application_data`
+- `athena_id`: used by `export_athena_data.py` to query `staging.google_ads_campaign_data`
+- `prod_id`: used by `gclid_attribution.py` to query `prod.application_data`
 
 These often differ:
 
@@ -406,7 +406,7 @@ at render time.
 
 ### 6. Direct `click_id` column
 
-The `click_id` column in `prod.application_data` stores the GCLID directly — no
+The `click_id` column in `prod.application_data` stores the GCLID directly, no
 URL parsing needed. The query filters with `click_id IS NOT NULL AND click_id != ''`
 to skip rows without a GCLID.
 
@@ -436,7 +436,7 @@ python scripts/gclid_attribution.py --all --month 2026-01
 # Scheduled (no --month, auto-computes last month via CURRENT_DATE)
 python scripts/gclid_attribution.py --all
 
-# Dry run — prints match statistics, writes nothing
+# Dry run: prints match statistics, writes nothing
 python scripts/gclid_attribution.py --client kitsap_cu --month 2026-01 --dry-run
 python scripts/gclid_attribution.py --all --dry-run    # scheduled dry run
 ```
@@ -445,7 +445,7 @@ python scripts/gclid_attribution.py --all --dry-run    # scheduled dry run
 
 ```
 ============================================================
-  Kitsap Credit Union (kitsap_cu)  —  2026-01
+  Kitsap Credit Union (kitsap_cu),  2026-01
 ============================================================
   Loading click data from S3...
   Loaded 12,483 clicks
@@ -465,24 +465,24 @@ python scripts/gclid_attribution.py --all --dry-run    # scheduled dry run
 
 ### Benefits
 
-- **Keyword-level attribution** — the only path that can answer "which keyword drove
+- **Keyword-level attribution**: the only path that can answer "which keyword drove
   funded loans"
-- **Ad-group-level attribution** — enables pausing underperforming ad groups
-- **Daily granularity** — funded trends by keyword over time
-- **Geographic attribution** — click data includes city/region/country
-- **Product-family breakdown** — which loan types each keyword drives
-- **Deterministic** — exact click-to-application mapping, not statistical estimation
+- **Ad-group-level attribution**: enables pausing underperforming ad groups
+- **Daily granularity**: funded trends by keyword over time
+- **Geographic attribution**: click data includes city/region/country
+- **Product-family breakdown**: which loan types each keyword drives
+- **Deterministic**: exact click-to-application mapping, not statistical estimation
 
 ### Limitations
 
-- **Requires click data in S3** — if the daily pipeline didn't run for a date range,
+- **Requires click data in S3**: if the daily pipeline didn't run for a date range,
   those clicks are missing and applications from those clicks will be unmatched
-- **GCLID coverage** — only applications with a GCLID in the `click_id` field are matchable.
+- **GCLID coverage**: only applications with a GCLID in the `click_id` field are matchable.
   Applications from direct visits, organic search, or non-Google channels are excluded
-- **Delayed attribution** — a January click may not fund until March. The +2 month
+- **Delayed attribution**: a January click may not fund until March. The +2 month
   window helps but running too early undercounts. Re-run after 60 days for accuracy
-- **Inner join drops unmatched** — applications whose click happened outside the target
+- **Inner join drops unmatched**: applications whose click happened outside the target
   month, or clicks without an application, are silently dropped. The dry-run output
   reports unmatched counts for monitoring
-- **No cost data in output** — the dashboard must merge enriched CSVs with cost data
+- **No cost data in output**: the dashboard must merge enriched CSVs with cost data
   separately to compute CPF and ROAS
