@@ -534,73 +534,19 @@ New clients are **automatically onboarded** when added to the MCC. The pipeline:
 
 ## Dry Runs & Validation
 
-Before running enrichment, validate that upstream data exists.
-
-```bash
-# GCLID attribution dry run — checks S3 clicks + Athena apps, prints stats, writes nothing
-python scripts/gclid_attribution.py --client {client_id} --month 2026-01 --dry-run
-```
-
-For the full list of validation commands and troubleshooting steps, see **[`docs/dry-runs/`](docs/dry-runs/)**.
+Before running enrichment, validate that upstream data exists. See **[Dry Runs & Validation](docs/dry-runs/)** for the full list of commands and troubleshooting steps.
 
 ---
 
 ## Setup
 
-### 1. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Configure Credentials
-
-```bash
-cp config/config.example.yaml config/config.yaml
-```
-
-Edit with Google Ads and AWS credentials. See [`config/config.example.yaml`](config/config.example.yaml).
-
-### 3. Generate OAuth Token (if needed)
-
-```bash
-python scripts/generate_refresh_token.py
-```
+Install dependencies, configure credentials, and generate OAuth tokens. See **[Setup Guide](docs/setup.md)**.
 
 ---
 
 ## CLI Reference
 
-### Pipeline
-
-```bash
-python pipeline/google_ads_to_s3.py                               # Pull yesterday's data
-python pipeline/google_ads_to_s3.py --date 2026-01-15             # Pull specific date
-python pipeline/google_ads_to_s3.py --backfill 90                 # Last 90 days
-python pipeline/google_ads_to_s3.py --client kitsap_cu --backfill 7  # Single client
-python pipeline/google_ads_to_s3.py --list-accounts               # List MCC accounts
-```
-
-### Enrichment
-
-```bash
-python scripts/gclid_attribution.py --client {id} --month 2026-01           # GCLID attribution
-python scripts/gclid_attribution.py --all --month 2026-01 --dry-run         # Dry run all
-python scripts/gclid_attribution.py --all                                   # Scheduled: uses last month
-python scripts/import_s3_funded_data.py --client {id} --month 2026-01       # S3 funded import
-python scripts/export_athena_data.py 2026-01                                # Athena export
-python scripts/export_athena_data.py --list-clients                         # List Athena clients
-```
-
-### Utilities
-
-```bash
-python scripts/aggregate_monthly.py               # Aggregate daily CSVs → monthly
-python scripts/export_insights_data.py             # Pull search terms, channels, devices, locations, negative keywords
-python scripts/sync_registry.py                    # Preview dashboard file sync
-python scripts/sync_registry.py --commit           # Sync + git commit + push
-python scripts/export_account_ids.py               # List all MCC child accounts
-```
+Pipeline commands, enrichment scripts, and utilities. See **[CLI Reference](docs/cli-reference.md)**.
 
 ---
 
@@ -633,6 +579,9 @@ google_ads_to_s3/
 │   └── generate_refresh_token.py           # OAuth setup helper
 ├── docs/
 │   ├── pipeline-walkthrough.md             # Detailed architecture walkthrough
+│   ├── gclid-attribution.md                # GCLID attribution ADR
+│   ├── setup.md                            # Installation & credential setup
+│   ├── cli-reference.md                    # Pipeline, enrichment & utility commands
 │   ├── future_state.md                     # Multi-model attribution roadmap
 │   └── dry-runs/                           # Validation commands & troubleshooting
 │       └── README.md
