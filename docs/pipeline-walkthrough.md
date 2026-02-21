@@ -60,13 +60,16 @@ Runs daily at **8:00 AM UTC (3 AM EST)** via Airflow. Source: [`dags/google_ads_
 
 **discover_accounts**: Queries the Google Ads MCC for every enabled child account. Compares against an S3 registry ([`_registry/accounts.json`](#s3-registry)). New accounts get an auto-generated slug and dashboard token. Removed accounts get a `removed_at` timestamp and are skipped.
 
-**pull_account (×N in parallel)**: For each active account, the [pipeline](../pipeline/google_ads_to_s3.py) pulls three datasets via the Google Ads API and writes them to S3:
+**pull_account (×N in parallel)**: For each active account, the [pipeline](../pipeline/google_ads_to_s3.py) pulls six datasets via the Google Ads API and writes them to S3:
 
 | Dataset | What it Contains | S3 Path |
 |---------|-----------------|---------|
 | Campaigns | Daily campaign-level metrics | `ad-spend-reports/{client}/campaigns/{date}.csv` |
 | Keywords | Keyword-level metrics within each ad group | `ad-spend-reports/{client}/keywords/{date}.csv` |
 | Clicks | Individual click events with GCLIDs and geo | `ad-spend-reports/{client}/clicks/{date}.csv` |
+| Bidding Config | Bidding strategy type, target CPA/ROAS, impression share settings, ad group CPC bids (daily snapshot) | `ad-spend-reports/{client}/bidding_config/{date}.csv` |
+| Conversion Actions | All configured conversion action definitions: type, category, counting type, inclusion status (daily snapshot) | `ad-spend-reports/{client}/conversion_actions/{date}.csv` |
+| Creatives | Ad copy (RSA headlines/descriptions), final URLs, ad type, ad strength, plus daily impressions/clicks/cost/conversions per ad | `ad-spend-reports/{client}/creatives/{date}.csv` |
 
 **update_dashboard_files**: Rebuilds `clients.json` (token → client mapping) and `data-manifest.json` (available months per client) so the GitHub Pages dashboard picks up new data.
 
@@ -78,7 +81,7 @@ Runs daily at **8:00 AM UTC (3 AM EST)** via Airflow. Source: [`dags/google_ads_
 
 ## 2. What Data Gets Captured
 
-Three layers of Google Ads data, each more granular than the last.
+Six layers of Google Ads data, from aggregate metrics down to individual clicks, plus strategy and creative context.
 
 ### Layer 1: Campaign (What Attribution Uses Today)
 
@@ -106,19 +109,50 @@ ad_group_id, ad_group_name, network, city, region, country
 
 One row per individual click. The `gclid` is the key for joining with first-party loan data: when a click turns into a funded loan, the origination system captures the GCLID.
 
+### Layer 4: Bidding Config (Strategy Snapshot)
+
+```
+campaign_id, campaign_name, bidding_strategy, target_cpa, target_roas,
+impression_share_location, impression_share_fraction,
+ad_group_id, ad_group_name, ad_group_type, ad_group_cpc_bid
+```
+
+One row per ad group. Daily snapshot of bidding strategies so you can track when targets change. No date filter (config data); the `date` parameter is used for file naming only.
+
+### Layer 5: Conversion Actions (Account Config)
+
+```
+conversion_action_id, name, type, category, status, included_in_conversions, counting_type
+```
+
+One row per conversion action. All non-removed conversion action definitions for the account. Shows what is being tracked as a conversion and whether each action is included in the conversions metric.
+
+### Layer 6: Creatives (Ad Copy + Performance)
+
+```
+date, campaign_id, campaign_name, ad_group_id, ad_group_name, ad_id, ad_type,
+headlines, descriptions, final_urls, status, ad_strength, impressions, clicks, cost, conversions
+```
+
+One row per ad per day. RSA headlines and descriptions are pipe-separated (`|`). Non-RSA ad types (expanded text ads, etc.) have empty headline/description fields. Date-filtered with `impressions > 0`.
+
 ### What Each Layer Unlocks
 
 ```
-Campaign ──► "Brand campaign spent $80 and got 24 conversions"
+Campaign    ──► "Brand campaign spent $80 and got 24 conversions"
     │
     ▼
-Keyword  ──► "Within Brand, the keyword 'best personal loan rates' got 12 clicks at $4.50"
+Keyword     ──► "Within Brand, the keyword 'best personal loan rates' got 12 clicks at $4.50"
     │
     ▼
-Click    ──► "This click from Portland, OR searched 'personal loan rates', GCLID: EAIaIQ..."
+Click       ──► "This click from Portland, OR searched 'personal loan rates', GCLID: EAIaIQ..."
     │
     ▼
-GCLID Join ► "That click became a funded $25,000 personal loan"
+GCLID Join  ──► "That click became a funded $25,000 personal loan"
+
+Bidding     ──► "This campaign uses TARGET_CPA at $75, ad group CPC bid is $2.50"
+Conversions ──► "The account tracks 22 conversion actions, 8 are included in the conversions metric"
+Creatives   ──► "Ad #123 has POOR strength, 0.8% CTR, headlines: 'Low Rates | Apply Now | ...'"
 ```
 
 ---
@@ -324,20 +358,20 @@ A [`data-manifest.json`](../data-manifest.json) tells the dashboard which months
 
 ## 5. Data Volume & Scaling
 
-### Per Client Per Day (Real Numbers, 2026-02-11)
+### Per Client Per Day (Real Numbers, 2026-02-19)
 
-| Client | Campaign Rows | Keyword Rows | Click Rows |
-|--------|:--:|:--:|:--:|
-| Altura Ad Account | 8 | 5 | 48,573 |
-| California Coast CU | 10 | 108 | 1,531 |
-| CommonWealth One FCU | 0 | 0 | 0 |
-| First Commonwealth Bank | 6 | 18 | 57,930 |
-| First Community CU | 1 | 61 | 98 |
-| Kitsap CU | 14 | 96 | 10,862 |
-| Public Service CU | 13 | 25 | 422 |
-| **Total** | **52** | **313** | **119,416** |
+| Client | Campaigns | Keywords | Clicks | Bidding Config | Conv Actions | Creatives |
+|--------|:--:|:--:|:--:|:--:|:--:|:--:|
+| Altura Ad Account | 7 | 10 | 17,809 | 5 | 55 | 5 |
+| California Coast CU | 10 | 110 | 1,459 | 15 | 40 | 40 |
+| CommonWealth One FCU | 0 | 0 | 0 | 8 | 34 | 0 |
+| First Commonwealth Bank | 6 | 61 | 59,697 | 85 | 130 | 6 |
+| First Community CU | 1 | 54 | 120 | 4 | 69 | 7 |
+| Kitsap CU | 13 | 85 | 10,545 | 40 | 22 | 39 |
+| Public Service CU | 22 | 70 | 456 | 23 | 16 | 29 |
+| **Total** | **59** | **390** | **90,086** | **180** | **366** | **126** |
 
-The ROI attribution pipeline reads **52 rows/day**. We store **119,781 rows/day**. The extra granularity powers GCLID attribution and geographic insights.
+The ROI attribution pipeline reads **59 campaign rows/day**. We store **91,207 rows/day** across all six datasets. The extra granularity powers GCLID attribution, geographic insights, bidding strategy tracking, and creative performance analysis.
 
 ### High-Traffic Accounts
 
@@ -473,6 +507,6 @@ Move to Glue/PySpark **if and when**:
 ## Related Documentation
 
 - [Main README](../README.md): concise project overview
-- [Multi-Model Attribution Roadmap](future_state.md): first-click / linear attribution future state
+- [Future State Roadmap](future_state.md): multi-model attribution, ad group optimization, retargeting
 - [Dry Runs & Validation](dry-runs/): commands to verify data before running enrichment
 - [Client Dashboard Tokens](../clients/README.md): per-client URLs and tokens

@@ -30,7 +30,8 @@ Pulls daily Google Ads data, enriches it with first-party attribution, and serve
 │  Airflow DAG: google_ads_to_s3_daily                            │
 │                                                                  │
 │  1. Discover accounts under MCC (auto-onboard new ones)         │
-│  2. Pull campaigns + keywords + clicks per account  ──► S3      │
+│  2. Pull campaigns, keywords, clicks, bidding config,           │
+│     conversion actions, creatives per account        ──► S3      │
 │  3. Rebuild dashboard manifest files                ──► S3      │
 │  4. Export monthly attribution file                 ──► S3      │
 │  5. Slack notify #customer-success if accounts changed          │
@@ -51,13 +52,16 @@ Pulls daily Google Ads data, enriches it with first-party attribution, and serve
 
 ### 1. Google Ads API → S3 (Daily, Automated)
 
-The [pipeline](pipeline/google_ads_to_s3.py) pulls three datasets per account per day:
+The [pipeline](pipeline/google_ads_to_s3.py) pulls six datasets per account per day:
 
 | Dataset | Description | S3 Path |
 |---------|-------------|---------|
 | Campaigns | Daily spend, clicks, conversions per campaign | `ad-spend-reports/{client}/campaigns/{date}.csv` |
 | Keywords | Performance by keyword within each ad group | `ad-spend-reports/{client}/keywords/{date}.csv` |
 | Clicks | Individual click events with GCLIDs + geo | `ad-spend-reports/{client}/clicks/{date}.csv` |
+| Bidding Config | Bidding strategy, target CPA/ROAS, ad group CPC bids | `ad-spend-reports/{client}/bidding_config/{date}.csv` |
+| Conversion Actions | Account-level conversion action definitions | `ad-spend-reports/{client}/conversion_actions/{date}.csv` |
+| Creatives | Ad copy, headlines, descriptions, ad strength + metrics | `ad-spend-reports/{client}/creatives/{date}.csv` |
 
 ### 2. S3 → Enrichment → Local CSVs (On-Demand)
 
@@ -582,7 +586,7 @@ google_ads_to_s3/
 │   ├── gclid-attribution.md                # GCLID attribution ADR
 │   ├── setup.md                            # Installation & credential setup
 │   ├── cli-reference.md                    # Pipeline, enrichment & utility commands
-│   ├── future_state.md                     # Multi-model attribution roadmap
+│   ├── future_state.md                     # Attribution, optimization & retargeting roadmap
 │   └── dry-runs/                           # Validation commands & troubleshooting
 │       └── README.md
 ├── data/                                   # Per-client CSV data (served by GitHub Pages)
@@ -606,7 +610,7 @@ google_ads_to_s3/
 ## Further Reading
 
 - [Pipeline Architecture Walkthrough](docs/pipeline-walkthrough.md): detailed team-facing breakdown of every component
-- [Multi-Model Attribution Roadmap](docs/future_state.md): future state for first-click / linear attribution
+- [Future State Roadmap](docs/future_state.md): multi-model attribution, ad group optimization, retargeting
 - [Dry Runs & Validation](docs/dry-runs/): commands to verify data before running enrichment
 
 ---
