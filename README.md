@@ -580,6 +580,7 @@ google_ads_to_s3/
 │   ├── export_insights_data.py             # Pull search terms, channels, devices, geo, negative keywords
 │   ├── sync_registry.py                    # Sync S3 registry → local dashboard files
 │   ├── export_account_ids.py               # List MCC child accounts
+│   ├── backfill_new_types.py              # Backfill bidding_config, conversion_actions, creatives
 │   └── generate_refresh_token.py           # OAuth setup helper
 ├── docs/
 │   ├── pipeline-walkthrough.md             # Detailed architecture walkthrough
