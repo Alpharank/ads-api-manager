@@ -1,0 +1,45 @@
+date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
+2025-12-01,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-01,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,emergency personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-02,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-03,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-03,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-04,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-04,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-04,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-05,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,Michigan credit unions,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-06,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-06,23236422937,CD - Search - 6/11/2025,193413943652,Ad group 1,certificate of deposit rates,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-07,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-08,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-09,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,3,0,0,0.0,0.0,0,0,0,0,0
+2025-12-10,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-10,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-11,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,3,0,0,0.0,0.0,0,0,0,0,0
+2025-12-12,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-13,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,1,1,24617.14,3446.3996,0,0,0,1,0
+2025-12-13,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-14,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-14,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,1,1,65730.7,9202.298,0,0,0,1,0
+2025-12-15,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-15,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-16,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-16,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-18,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,1,1,6000.0,1560.0,0,0,1,0,0
+2025-12-18,22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,RV loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-18,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-20,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-20,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-21,22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto financing,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-21,22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto loans,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-21,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,4,1,0,0.0,0.0,0,0,1,0,0
+2025-12-21,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,emergency personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-21,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-22,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,3,0,0,0.0,0.0,0,0,0,0,0
+2025-12-24,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2025-12-25,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-26,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-26,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-27,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,1,1,1200.0,312.0,0,0,1,0,0
+2025-12-28,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2025-12-29,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
