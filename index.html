@@ -2069,7 +2069,7 @@
                         <div class="kw-charts-body" style="padding-bottom: 25px;">
                             <div class="kw-chart-col">
                                 <div class="kw-chart-top">
-                                    <div class="kw-chart-label">Cost per Approved</div>
+                                    <div class="kw-chart-label">Cost per Application</div>
                                     <div class="kw-axis-controls">
                                         <button class="kw-axis-btn" onclick="zoomKwAxis('cpa', -1)" title="Zoom in (narrow range)">&minus;</button>
                                         <button class="kw-axis-btn" onclick="zoomKwAxis('cpa', 1)" title="Zoom out (wider range)">+</button>
@@ -3083,7 +3083,7 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             data.forEach(r => {
-                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.approved >= 1);
+                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.apps >= 1);
                 const kwIcon = hasKwApproved
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
                     : '';
@@ -3954,18 +3954,17 @@
             const kwData = keywordData.filter(k => k.campaign_id === campaignId);
             const byKeyword = {};
             kwData.forEach(k => {
-                if (!byKeyword[k.keyword]) byKeyword[k.keyword] = { cost: 0, approved: 0, value: 0 };
+                if (!byKeyword[k.keyword]) byKeyword[k.keyword] = { cost: 0, apps: 0, value: 0 };
                 byKeyword[k.keyword].cost += k.cost;
-                byKeyword[k.keyword].approved += k.approved;
+                byKeyword[k.keyword].apps += k.apps;
                 byKeyword[k.keyword].value += k.value;
             });
 
-            // Require at least 1 full approved application to avoid absurd CPA from fractional attribution
             const entries = Object.entries(byKeyword)
-                .filter(([_, v]) => v.approved >= 1)
+                .filter(([_, v]) => v.apps >= 1)
                 .map(([kw, v]) => ({
                     keyword: kw,
-                    cpa: v.cost / v.approved,
+                    cpa: v.cost / v.apps,
                     roi: v.cost > 0 ? (v.value - v.cost) / v.cost : 0
                 }))
                 .sort((a, b) => a.cpa - b.cpa);
@@ -4032,7 +4031,7 @@
                         ...sharedOpts.plugins,
                         tooltip: {
                             callbacks: {
-                                label: ctx => 'Cost/Approved: ' + fmtCur(ctx.raw)
+                                label: ctx => 'Cost/App: ' + fmtCur(ctx.raw)
                             }
                         }
                     }
@@ -4148,18 +4147,17 @@
         function showGlobalKwCharts() {
             const byKeyword = {};
             keywordData.forEach(k => {
-                if (!byKeyword[k.keyword]) byKeyword[k.keyword] = { cost: 0, approved: 0, value: 0 };
+                if (!byKeyword[k.keyword]) byKeyword[k.keyword] = { cost: 0, apps: 0, value: 0 };
                 byKeyword[k.keyword].cost += k.cost;
-                byKeyword[k.keyword].approved += k.approved;
+                byKeyword[k.keyword].apps += k.apps;
                 byKeyword[k.keyword].value += k.value;
             });
 
-            // Require at least 1 full approved application to avoid absurd CPA from fractional attribution
             const entries = Object.entries(byKeyword)
-                .filter(([_, v]) => v.approved >= 1)
+                .filter(([_, v]) => v.apps >= 1)
                 .map(([kw, v]) => ({
                     keyword: kw,
-                    cpa: v.cost / v.approved,
+                    cpa: v.cost / v.apps,
                     roi: v.cost > 0 ? (v.value - v.cost) / v.cost : 0
                 }))
                 .sort((a, b) => a.cpa - b.cpa);
@@ -4198,7 +4196,7 @@
                 options: {
                     ...sharedOpts,
                     scales: { ...sharedOpts.scales, x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, callback: v => fmtCur(v) } } },
-                    plugins: { ...sharedOpts.plugins, tooltip: { callbacks: { label: ctx => 'Cost/Approved: ' + fmtCur(ctx.raw) } } }
+                    plugins: { ...sharedOpts.plugins, tooltip: { callbacks: { label: ctx => 'Cost/App: ' + fmtCur(ctx.raw) } } }
                 }
             });
 
@@ -4218,7 +4216,7 @@
                 }
             });
 
-            document.getElementById('kwChartsTitle').textContent = 'All Keywords — Cost per Approved & ROI';
+            document.getElementById('kwChartsTitle').textContent = 'All Keywords — Cost per Application & ROI';
             document.getElementById('kwChartsOverlay').classList.add('visible');
         }
 
