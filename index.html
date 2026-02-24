@@ -1154,6 +1154,17 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: max-width 0.25s, max-height 0.25s, width 0.25s, border-radius 0.25s;
+        }
+        .kw-charts-overlay.fullscreen .kw-charts-modal {
+            max-width: 100vw;
+            width: 100vw;
+            max-height: 100vh;
+            height: 100vh;
+            border-radius: 0;
+        }
+        .kw-charts-overlay.fullscreen .kw-charts-body {
+            flex: 1;
         }
         .kw-charts-header {
             display: flex;
@@ -1166,6 +1177,32 @@
             font-size: 16px;
             font-weight: 600;
             color: var(--text);
+        }
+        .kw-charts-header-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .kw-charts-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 4px 8px;
+            border-radius: 6px;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .kw-charts-btn:hover {
+            background: var(--hover-bg);
+            color: var(--text);
+        }
+        .kw-charts-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
         }
         .kw-charts-close {
             background: none;
@@ -1180,6 +1217,39 @@
         .kw-charts-close:hover {
             background: var(--hover-bg);
             color: var(--text);
+        }
+        .kw-axis-controls {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: auto;
+        }
+        .kw-axis-btn {
+            background: var(--hover-bg);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            color: var(--text-secondary);
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .kw-axis-btn:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+        .kw-chart-top {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .kw-chart-top .kw-chart-label {
+            margin-bottom: 0;
         }
         .kw-charts-body {
             display: grid;
@@ -1988,15 +2058,35 @@
                     <div class="kw-charts-modal">
                         <div class="kw-charts-header">
                             <h3 id="kwChartsTitle">Keyword Breakdown</h3>
-                            <button class="kw-charts-close" onclick="closeKwCharts()">&times;</button>
+                            <div class="kw-charts-header-actions">
+                                <button class="kw-charts-btn" id="kwFullscreenBtn" onclick="toggleKwFullscreen()" title="Toggle fullscreen">
+                                    <svg id="kwExpandIcon" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                                    <svg id="kwShrinkIcon" viewBox="0 0 24 24" style="display:none"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+                                </button>
+                                <button class="kw-charts-close" onclick="closeKwCharts()">&times;</button>
+                            </div>
                         </div>
-                        <div class="kw-charts-body">
+                        <div class="kw-charts-body" style="padding-bottom: 25px;">
                             <div class="kw-chart-col">
-                                <div class="kw-chart-label">Cost per Approved</div>
+                                <div class="kw-chart-top">
+                                    <div class="kw-chart-label">Cost per Approved</div>
+                                    <div class="kw-axis-controls">
+                                        <button class="kw-axis-btn" onclick="zoomKwAxis('cpa', -1)" title="Zoom in (narrow range)">&minus;</button>
+                                        <button class="kw-axis-btn" onclick="zoomKwAxis('cpa', 1)" title="Zoom out (wider range)">+</button>
+                                        <button class="kw-axis-btn" onclick="zoomKwAxis('cpa', 0)" title="Reset axis" style="font-size:11px;">R</button>
+                                    </div>
+                                </div>
                                 <canvas id="kwCpaChart"></canvas>
                             </div>
                             <div class="kw-chart-col">
-                                <div class="kw-chart-label">ROI</div>
+                                <div class="kw-chart-top">
+                                    <div class="kw-chart-label">ROI</div>
+                                    <div class="kw-axis-controls">
+                                        <button class="kw-axis-btn" onclick="zoomKwAxis('roi', -1)" title="Zoom in (narrow range)">&minus;</button>
+                                        <button class="kw-axis-btn" onclick="zoomKwAxis('roi', 1)" title="Zoom out (wider range)">+</button>
+                                        <button class="kw-axis-btn" onclick="zoomKwAxis('roi', 0)" title="Reset axis" style="font-size:11px;">R</button>
+                                    </div>
+                                </div>
                                 <canvas id="kwRoiChart"></canvas>
                             </div>
                         </div>
@@ -3992,9 +4082,55 @@
         }
 
         function closeKwCharts() {
-            document.getElementById('kwChartsOverlay').classList.remove('visible');
+            const overlay = document.getElementById('kwChartsOverlay');
+            overlay.classList.remove('visible', 'fullscreen');
+            document.getElementById('kwExpandIcon').style.display = '';
+            document.getElementById('kwShrinkIcon').style.display = 'none';
             if (kwCpaChartInstance) { kwCpaChartInstance.destroy(); kwCpaChartInstance = null; }
             if (kwRoiChartInstance) { kwRoiChartInstance.destroy(); kwRoiChartInstance = null; }
+        }
+
+        function toggleKwFullscreen() {
+            const overlay = document.getElementById('kwChartsOverlay');
+            const isFs = overlay.classList.toggle('fullscreen');
+            document.getElementById('kwExpandIcon').style.display = isFs ? 'none' : '';
+            document.getElementById('kwShrinkIcon').style.display = isFs ? '' : 'none';
+            // Resize charts to fill new space
+            if (kwCpaChartInstance) kwCpaChartInstance.resize();
+            if (kwRoiChartInstance) kwRoiChartInstance.resize();
+        }
+
+        function zoomKwAxis(which, direction) {
+            const chart = which === 'cpa' ? kwCpaChartInstance : kwRoiChartInstance;
+            if (!chart) return;
+            const xScale = chart.options.scales.x;
+            if (direction === 0) {
+                // Reset
+                delete xScale.min;
+                delete xScale.max;
+            } else {
+                const dataValues = chart.data.datasets[0].data;
+                const dataMin = Math.min(...dataValues);
+                const dataMax = Math.max(...dataValues);
+                const currentMin = xScale.min !== undefined ? xScale.min : dataMin;
+                const currentMax = xScale.max !== undefined ? xScale.max : dataMax;
+                const range = currentMax - currentMin || Math.abs(currentMax) || 1;
+                const step = range * 0.25;
+                if (direction === 1) {
+                    // Zoom out — expand range
+                    xScale.min = currentMin - step;
+                    xScale.max = currentMax + step;
+                } else {
+                    // Zoom in — narrow range
+                    const newMin = currentMin + step;
+                    const newMax = currentMax - step;
+                    if (newMax > newMin) {
+                        xScale.min = newMin;
+                        xScale.max = newMax;
+                    }
+                }
+            }
+            chart.update();
         }
 
         document.getElementById('kwChartsOverlay').addEventListener('click', function(e) {
