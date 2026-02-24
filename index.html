@@ -3083,7 +3083,7 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             data.forEach(r => {
-                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.approved > 0);
+                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.approved >= 1);
                 const kwIcon = hasKwApproved
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
                     : '';
@@ -3960,8 +3960,9 @@
                 byKeyword[k.keyword].value += k.value;
             });
 
+            // Require at least 1 full approved application to avoid absurd CPA from fractional attribution
             const entries = Object.entries(byKeyword)
-                .filter(([_, v]) => v.approved > 0)
+                .filter(([_, v]) => v.approved >= 1)
                 .map(([kw, v]) => ({
                     keyword: kw,
                     cpa: v.cost / v.approved,
@@ -4153,8 +4154,9 @@
                 byKeyword[k.keyword].value += k.value;
             });
 
+            // Require at least 1 full approved application to avoid absurd CPA from fractional attribution
             const entries = Object.entries(byKeyword)
-                .filter(([_, v]) => v.approved > 0)
+                .filter(([_, v]) => v.approved >= 1)
                 .map(([kw, v]) => ({
                     keyword: kw,
                     cpa: v.cost / v.approved,
