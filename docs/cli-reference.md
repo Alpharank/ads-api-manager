@@ -8,10 +8,11 @@ python pipeline/google_ads_to_s3.py --date 2026-01-15             # Pull specifi
 python pipeline/google_ads_to_s3.py --backfill 90                 # Last 90 days
 python pipeline/google_ads_to_s3.py --client kitsap_cu --backfill 7  # Single client
 python pipeline/google_ads_to_s3.py --list-accounts               # List MCC accounts
-python scripts/backfill_new_types.py 30                            # Backfill bidding_config, conversion_actions, creatives only
 ```
 
 Datasets pulled per run: campaigns, keywords, clicks, bidding_config, conversion_actions, creatives.
+
+To backfill only specific date ranges, use `--backfill` with `--client` for targeted re-pulls.
 
 ## Enrichment
 

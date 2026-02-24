@@ -15,7 +15,7 @@ This document outlines how to connect the Google Ads dashboard to the auto-attri
 │                                                                                      │
 │  GOOGLE_ADS_TO_S3 (this repo)                                                        │
 │  ─────────────────────────────                                                       │
-│  google_ads_to_s3_dag.py @ 6:00 AM UTC                                              │
+│  google_ads_to_s3_dag.py @ 8:00 AM UTC                                              │
 │                                                                                      │
 │  Writes to:                                                                          │
 │    s3://ai.alpharank.core/ad-spend-reports/{client_id}/campaigns/{date}.csv         │
@@ -43,7 +43,7 @@ This document outlines how to connect the Google Ads dashboard to the auto-attri
 |--------|------------------|------------------|
 | **S3 Prefix** | `ad-spend-reports/` | `adspend_reports/` |
 | **File Format** | `{client}/campaigns/{date}.csv` | `{client}_{month}_daily.csv` |
-| **Schedule** | 6:00 AM UTC | 6:30 AM EST |
+| **Schedule** | 8:00 AM UTC | 6:30 AM EST |
 | **Output** | Raw campaign/keyword/click data | Enriched data with apps/funded/value |
 
 ---
