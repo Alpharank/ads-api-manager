@@ -152,16 +152,15 @@ def google_ads_to_s3_daily():
         logger.info(f"Exported attribution files for {len(exported)} clients: {exported}")
         return exported
 
-    # # EC2 stop — commented out until we confirm which instance runs this DAG
-    # INSTANCE_ID = "i-044c661e5fb2c0c37"  # auto-attribution-prod
-    #
-    # @task(trigger_rule="all_done")
-    # def stop_instance() -> None:
-    #     """Stop the EC2 instance after the DAG completes."""
-    #     import boto3
-    #     ec2 = boto3.client("ec2", region_name="us-west-2")
-    #     ec2.stop_instances(InstanceIds=[INSTANCE_ID])
-    #     logger.info(f"Stopping EC2 instance {INSTANCE_ID}")
+    INSTANCE_ID = "i-044c661e5fb2c0c37"  # auto-attribution-prod
+
+    @task(trigger_rule="all_done")
+    def stop_instance() -> None:
+        """Stop the EC2 instance after the DAG completes."""
+        import boto3
+        ec2 = boto3.client("ec2", region_name="us-west-2")
+        ec2.stop_instances(InstanceIds=[INSTANCE_ID])
+        logger.info(f"Stopping EC2 instance {INSTANCE_ID}")
 
     @task
     def notify_account_changes(discovery_result: dict) -> None:
@@ -209,7 +208,8 @@ def google_ads_to_s3_daily():
     pulls = pull_account.expand(account=discovery_result["accounts"])
     dashboard = update_dashboard_files()
     attribution = export_for_attribution()
-    pulls >> dashboard >> attribution
+    shutdown = stop_instance()
+    pulls >> dashboard >> attribution >> shutdown
 
     # notify runs in parallel with pulls (no dependency on pull completion)
     notify_account_changes(discovery_result)
