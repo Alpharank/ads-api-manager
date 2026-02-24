@@ -10,6 +10,7 @@ Automated daily pipeline: extracts campaigns, keywords, clicks, bidding config, 
 
 - [System Overview](#system-overview)
 - [Data Flow](#data-flow)
+- [Data Locations (for Explo / BI Queries)](#data-locations-for-explo--bi-queries)
 - [What the Dashboard Shows](#what-the-dashboard-shows)
 - [Enrichment Pipeline](#enrichment-pipeline)
 - [Adding a New Client](#adding-a-new-client)
@@ -104,6 +105,94 @@ adspend_reports/{client}_{month}_daily.csv
         │
 staging.google_ads_campaign_data (Athena)
 ```
+
+---
+
+## Data Locations (for Explo / BI Queries)
+
+Everything lives in one S3 bucket with Athena tables for the attribution side.
+
+### S3 Bucket
+
+**Bucket:** `ai.alpharank.core`
+**Region:** `us-east-1`
+
+#### Raw Daily Data (Google Ads API → Pipeline)
+
+| Dataset | S3 Path | Format | Key Columns |
+|---------|---------|--------|-------------|
+| Campaigns | `ad-spend-reports/{client_id}/campaigns/{YYYY-MM-DD}.csv` | CSV | `date, campaign_id, campaign_name, campaign_status, impressions, clicks, cost, conversions` |
+| Keywords | `ad-spend-reports/{client_id}/keywords/{YYYY-MM-DD}.csv` | CSV | `date, campaign_id, campaign_name, ad_group_id, ad_group_name, keyword, match_type, impressions, clicks, cost, conversions` |
+| Clicks | `ad-spend-reports/{client_id}/clicks/{YYYY-MM-DD}.csv` | CSV | `date, gclid, keyword, match_type, campaign_id, campaign_name, ad_group_id, ad_group_name, network, city, region, country` |
+| Bidding Config | `ad-spend-reports/{client_id}/bidding_config/{YYYY-MM-DD}.csv` | CSV | `campaign_id, campaign_name, bidding_strategy, target_cpa, target_roas, ad_group_id, ad_group_name, ad_group_cpc_bid` |
+| Conversion Actions | `ad-spend-reports/{client_id}/conversion_actions/{YYYY-MM-DD}.csv` | CSV | `conversion_action_id, name, type, category, status, included_in_conversions, counting_type` |
+| Creatives | `ad-spend-reports/{client_id}/creatives/{YYYY-MM-DD}.csv` | CSV | `date, campaign_id, campaign_name, ad_group_id, ad_group_name, ad_id, ad_type, headlines, descriptions, final_urls, status, ad_strength, impressions, clicks, cost, conversions` |
+
+#### Attribution Export (for ROI Pipeline)
+
+| S3 Path | Format | Key Columns |
+|---------|--------|-------------|
+| `ad-spend-reports/adspend_reports/{client_id}_{YYYY-MM}_daily.csv` | CSV | `Campaign ID, Ad group, Day, Clicks, Cost, Conversions` (2 blank header rows, `skiprows=2`) |
+
+#### Internal Files
+
+| S3 Path | Format | Purpose |
+|---------|--------|---------|
+| `ad-spend-reports/_registry/accounts.json` | JSON | Master registry of all MCC child accounts: `{ customer_id: { client_id, name, dashboard_token, discovered_at } }` |
+| `ad-spend-reports/_dashboard/clients.json` | JSON | Dashboard client metadata: `{ dashboard_token: { id, name, stripPrefix? } }` |
+| `ad-spend-reports/_dashboard/data-manifest.json` | JSON | Available months per client: `{ client_id: ["2026-02", "2026-01", ...] }` |
+
+### Athena Tables
+
+**Region:** `us-west-2`
+**Workgroup:** `primary`
+**Output Location:** `s3://etl.alpharank.airflow/athena-results/`
+
+| Database.Table | Used By | Key Columns | Join Key |
+|----------------|---------|-------------|----------|
+| `prod.application_data` | GCLID Attribution (Path B) | `click_id` (= gclid), `approved`, `funded`, `production_value`, `lifetime_value`, `product_family`, `client_id`, `report_completion_timestamp` | `click_id` → `gclid` in clicks CSV |
+| `staging.google_ads_campaign_data` | Athena Export (Path A) | `day`, `campaign_id`, `campaign`, `client_id`, `clicks`, `cost`, `apps`, `approved`, `funded`, `production`, `value` | `campaign_id` |
+| `digital_lending_value_by_source` | LTV analysis | `client_id`, `month`, `source`, `accounts`, `total_ltv`, `avg_ltv` | `client_id` |
+
+### Client ID Mapping
+
+IDs differ across systems. Use `config/clients.yaml` for the canonical mapping:
+
+| Client | Google Ads ID | `client_id` (S3 key) | `athena_id` (staging) | `prod_id` (prod) |
+|--------|-------------|---------------------|---------------------|-----------------|
+| Altura CU | 6608894256 | `altura_ad_account` | `altura_cu` | `altura_cu` |
+| California Coast CU | 9001645164 | `californiacoast_cu` | `california_coast_cu` | `californiacoast_cu` |
+| CommonWealth One FCU | 7306319113 | `commonwealth_one_fcu` | `commonwealth_one_fcu` | `commonwealthone` |
+| First Commonwealth Bank | 2941063412 | `first_commonwealth_bank` | `fc_bank` | `fc_bank` |
+| First Community CU | 4668771744 | `firstcommunity_cu` | `first_community_cu` | `first_ccu` |
+| Kitsap CU | 7543892333 | `kitsap_cu` | `kitsap_cu` | `kitsap` |
+| Public Service CU | 7636280979 | `publicservice_cu` | `public_service_cu` | `publicservice_cu` |
+
+### Explo Quick Start
+
+To query this data in Explo, point at Athena (`us-west-2`, workgroup `primary`) and use these example queries:
+
+**All funded applications for a client (keyword-level):**
+```sql
+SELECT click_id AS gclid, product_family, production_value, lifetime_value
+FROM prod.application_data
+WHERE client_id = 'kitsap'
+  AND funded = true
+  AND click_id IS NOT NULL AND click_id != ''
+  AND report_completion_timestamp >= TIMESTAMP '2026-01-01'
+```
+
+**Campaign-level spend + funded (from ROI pipeline):**
+```sql
+SELECT campaign_id, campaign, SUM(cost) AS cost, SUM(funded) AS funded, SUM(value) AS value
+FROM staging.google_ads_campaign_data
+WHERE client_id = 'kitsap_cu'
+  AND day BETWEEN DATE '2026-01-01' AND DATE '2026-01-31'
+GROUP BY campaign_id, campaign
+ORDER BY cost DESC
+```
+
+**S3 CSVs via Explo:** If Explo connects to S3 directly, use `s3://ai.alpharank.core/ad-spend-reports/{client_id}/` with the subfolder and date pattern from the table above.
 
 ---
 
