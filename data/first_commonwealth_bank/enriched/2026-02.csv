@@ -1,0 +1,6 @@
+campaign_id,campaign_name,apps,approved,funded,production,value,cpf,avg_funded_value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,72,30,12,1169.51,18000.0,0,1500.0,3,26,1,0,0
+17825136682,FCB_PMAX_Checking_Consumer_AllRegions,44,14,5,185.0,7500.0,0,1500.0,0,14,0,0,0
+22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,12,5,2,2550.0,2150.0,0,1075.0,0,4,1,0,0
+23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,1,1,0,0.0,0.0,0,0.0,1,0,0,0,0
+23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,13,9,3,5070.0,4300.0,0,1433.33,0,8,1,0,0

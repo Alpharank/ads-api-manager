@@ -1,0 +1,39 @@
+date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
+2026-02-01,22600681592,Recreational Loan Campaign,183845373487,Recreational Loan Adgroup - 1,motorcycle loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-02,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,Michigan credit unions,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-02,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-03,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-03,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-03,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-02-05,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-02-05,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-02-06,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-07,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-08,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-09,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-10,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-11,22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto financing,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-11,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-12,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-12,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-12,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-15,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-16,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-16,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-17,22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto loans,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-18,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,emergency personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-18,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-18,23575605815,Auto Loans Search Campaign (02-2026),196136014249,Auto Loans Search Campaign (02-2026),auto loans,BROAD,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-18,23580282388,Personal Loans Search Campaign (02-2026),195000988284,Personal Loans Search Campaign (02-2026),personal loan,BROAD,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-19,22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto loans,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-19,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-19,23580282388,Personal Loans Search Campaign (02-2026),195000988284,Personal Loans Search Campaign (02-2026),personal loan,BROAD,3,0,0,0.0,0.0,0,0,0,0,0
+2026-02-20,22359768469,Leads - Auto Loan,175368477094,Auto Loan Keywords,Auto financing,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-20,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,2,1,1,800.0,208.0,0,0,1,0,0
+2026-02-20,23580282388,Personal Loans Search Campaign (02-2026),195000988284,Personal Loans Search Campaign (02-2026),personal loan,BROAD,2,0,0,0.0,0.0,0,0,0,0,0
+2026-02-21,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
+2026-02-22,22600644893,General Membership Campaign,178826043566,General Membership Ad Group - 1,public service credit union,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-22,22604458072,Personal Loan Campaign,176993953101,Personal Loan Adgroup - 1,easy approval personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-22,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-22,23580282388,Personal Loans Search Campaign (02-2026),195000988284,Personal Loans Search Campaign (02-2026),personal loan,BROAD,1,0,0,0.0,0.0,0,0,0,0,0
+2026-02-23,22604458072,Personal Loan Campaign,176993953141,Personal Loan Ad Group - 2,personal loan,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0

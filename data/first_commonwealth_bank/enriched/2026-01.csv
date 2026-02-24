@@ -1,8 +1,6 @@
-campaign_id,campaign_name,apps,approved,funded,production,value,cpf,avg_funded_value
-11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,241,104,54,305384.70999999996,104827.5,0,1941.25
-17825136682,FCB_PMAX_Checking_Consumer_AllRegions,121,40,12,2170.0,18000.0,0,1500.0
-20328798225,WFX- Business Checking- Central Ohio,1,0,0,0.0,0.0,0,0.0
-22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,20,6,3,5100.0,5450.0,0,1816.67
-22919175247,WFX - Personal Checking -  North Plaza,3,1,0,0.0,0.0,0,0.0
-22919175250,WFX - Personal Checking -  Massillon,1,0,0,0.0,0.0,0,0.0
-23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,19,11,5,511.0,6147.0,0,1229.4
+campaign_id,campaign_name,apps,approved,funded,production,value,cpf,avg_funded_value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
+11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,106,43,18,96664.01,27000.0,0,1500.0,0,42,0,0,1
+17825136682,FCB_PMAX_Checking_Consumer_AllRegions,41,11,3,1830.0,4500.0,0,1500.0,0,11,0,0,0
+22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,14,3,2,5050.0,3950.0,0,1975.0,1,2,0,0,0
+22919175247,WFX - Personal Checking -  North Plaza,1,1,0,0.0,0.0,0,0.0,0,1,0,0,0
+23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,10,6,2,400.0,1647.0,0,823.5,1,5,0,0,0

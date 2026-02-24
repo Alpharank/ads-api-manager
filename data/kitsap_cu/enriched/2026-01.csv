@@ -1,10 +1,8 @@
 campaign_id,campaign_name,apps,approved,funded,production,value,cpf,avg_funded_value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
-23228929821,KCU - Personal - Brand,81,43,23,275642.6,108644.3718,0,4723.67,6,23,4,7,3
-23229263037,KCU - YT - AWA,3,2,2,1830.0,2382.0,0,1191.0,1,1,0,0,0
-23238626386,KCU - Personal - NB,13,2,1,500.0,1500.0,0,1500.0,0,2,0,0,0
-23238626389,KCU - Personal - NB Locations,7,2,1,1250.0,612.5,0,612.5,1,1,0,0,0
-23278396982,KCU - Business - NB,3,1,1,100.0,1500.0,0,1500.0,0,1,0,0,0
-23282664394,KCU - Business - Brand,3,2,2,150.0,3000.0,0,1500.0,0,2,0,0,0
-23371442105,KCU - Personal - NB Extended,18,4,2,25500.0,3000.0,0,1500.0,0,4,0,0,0
-23379709610,KCU - Personal - Brand Brand Geo Test,28,7,4,96439.24,17836.9936,0,4459.25,1,4,0,1,1
-23435834843,X KCU - Business Checking - pMax,22,9,3,18200.0,3520.0,0,1173.33,0,4,2,3,0
+23228929821,KCU - Personal - Brand,11,6,3,20039.23,5205.0,0,1735.0,1,4,0,1,0
+23229263037,KCU - YT - AWA,1,0,0,0.0,0.0,0,0.0,0,0,0,0,0
+23238626386,KCU - Personal - NB,1,0,0,0.0,0.0,0,0.0,0,0,0,0,0
+23238626389,KCU - Personal - NB Locations,1,0,0,0.0,0.0,0,0.0,0,0,0,0,0
+23371442105,KCU - Personal - NB Extended,8,1,1,500.0,1500.0,0,1500.0,0,1,0,0,0
+23379709610,KCU - Personal - Brand Brand Geo Test,7,1,0,0.0,0.0,0,0.0,1,0,0,0,0
+23435834843,X KCU - Business Checking - pMax,3,1,0,0.0,0.0,0,0.0,0,1,0,0,0
