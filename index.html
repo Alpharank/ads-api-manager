@@ -1224,6 +1224,29 @@
             fill: currentColor;
         }
 
+        /* Column resize handle */
+        .col-resizer {
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 5px;
+            cursor: col-resize;
+            z-index: 6;
+        }
+        .col-resizer:hover,
+        .col-resizer.active {
+            background: var(--accent);
+            opacity: 0.4;
+        }
+        body.col-resizing {
+            cursor: col-resize !important;
+            user-select: none;
+        }
+        body.col-resizing * {
+            cursor: col-resize !important;
+        }
+
         /* ── Table Expand ── */
         .main-content.table-expanded .widget-row,
         .main-content.table-expanded .chart-controls,
@@ -1702,6 +1725,10 @@
                     <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                     <span>When & Where</span>
                 </div>
+                <div class="sidebar-item" onclick="showGlobalKwCharts()">
+                    <svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1" fill="currentColor"/><rect x="10" y="9" width="4" height="12" rx="1" fill="currentColor"/><rect x="17" y="4" width="4" height="17" rx="1" fill="currentColor"/></svg>
+                    <span>Keyword Charts</span>
+                </div>
 
                 <!-- Current Selection Panel -->
                 <div id="currentSelectionPanel" class="current-selection hidden">
@@ -1889,18 +1916,18 @@
                             <span class="dict-desc">The average amount you pay each time someone clicks your ad. Varies by keyword competition and quality score.</span>
                         </div>
                         <div class="dict-item">
-                            <span class="dict-term">Conversions</span>
+                            <span class="dict-term">Google Conv.</span>
                             <span class="dict-desc">Actions defined in Google Ads as valuable (e.g., form submissions, phone calls, account sign-ups). Uses <strong>data-driven attribution</strong>, so fractional values are possible when credit is shared across multiple clicks.</span>
                         </div>
                         <div class="dict-item">
-                            <span class="dict-term">Conv. Rate</span>
-                            <span class="dict-formula">Conversions &divide; Clicks &times; 100</span>
-                            <span class="dict-desc">The percentage of clicks that resulted in a conversion. Measures how effectively clicks turn into desired actions.</span>
+                            <span class="dict-term">Google Conv. Rate</span>
+                            <span class="dict-formula">Google Conv. &divide; Clicks &times; 100</span>
+                            <span class="dict-desc">The percentage of clicks that resulted in a Google Ads conversion. Measures how effectively clicks turn into desired actions.</span>
                         </div>
                         <div class="dict-item">
-                            <span class="dict-term">CPA (Cost per Acquisition)</span>
-                            <span class="dict-formula">Cost &divide; Conversions</span>
-                            <span class="dict-desc">The average cost to acquire one conversion. Lower CPA means more efficient ad spend.</span>
+                            <span class="dict-term">CPA (Cost per Google Conv.)</span>
+                            <span class="dict-formula">Cost &divide; Google Conv.</span>
+                            <span class="dict-desc">The average cost to acquire one Google Ads conversion. Lower CPA means more efficient ad spend.</span>
                         </div>
                     </div>
 
@@ -2937,7 +2964,7 @@
                 ['_ctr', 'CTR', true],
                 ['cost', 'Cost', true],
                 ['_cpc', 'Avg. CPC', true],
-                ['conversions', 'Conv.', true],
+                ['conversions', 'Google Conv.', true],
                 ['funded', 'Funded', true],
                 ['_cpf', 'CPF', true],
                 ['_total_funded_value', 'Total Fund Val', true],
@@ -3003,9 +3030,9 @@
                 ['_ctr', 'CTR', true],
                 ['cost', 'Cost', true],
                 ['_cpc', 'Avg. CPC', true],
-                ['conversions', 'Conv.', true],
-                ['_conv_rate', 'Conv. rate', true],
-                ['_cpa', 'Cost / conv.', true],
+                ['conversions', 'Google Conv.', true],
+                ['_conv_rate', 'Google Conv. rate', true],
+                ['_cpa', 'Cost / Google conv.', true],
                 ['_roas', 'ROAS', true]
             ]);
 
@@ -3057,9 +3084,9 @@
                 ['_ctr', 'CTR', true],
                 ['cost', 'Cost', true],
                 ['_cpc', 'Avg. CPC', true],
-                ['conversions', 'Conv.', true],
-                ['_conv_rate', 'Conv. rate', true],
-                ['_cpa', 'Cost / conv.', true],
+                ['conversions', 'Google Conv.', true],
+                ['_conv_rate', 'Google Conv. rate', true],
+                ['_cpa', 'Cost / Google conv.', true],
                 ['funded', 'Funded', true],
                 ['_total_funded_value', 'Total Fund Val', true],
                 ['cc_appvd', 'CC', true],
@@ -3123,7 +3150,7 @@
                 ['clicks', 'Clicks', true],
                 ['_ctr', 'CTR', true],
                 ['cost', 'Cost', true],
-                ['conversions', 'Conv.', true],
+                ['conversions', 'Google Conv.', true],
                 ['funded', 'Funded', true]
             ]);
 
@@ -3228,8 +3255,8 @@
                 ['_ctr', 'CTR', true],
                 ['cost', 'Cost', true],
                 ['_cpc', 'Avg. CPC', true],
-                ['conversions', 'Conv.', true],
-                ['_conv_rate', 'Conv. rate', true],
+                ['conversions', 'Google Conv.', true],
+                ['_conv_rate', 'Google Conv. rate', true],
                 ['_cpa', 'CPA', true]
             ]);
 
@@ -3297,8 +3324,8 @@
                 ['clicks', 'Clicks', true],
                 ['_ctr', 'CTR', true],
                 ['cost', 'Cost', true],
-                ['conversions', 'Conv.', true],
-                ['_conv_rate', 'Conv. rate', true],
+                ['conversions', 'Google Conv.', true],
+                ['_conv_rate', 'Google Conv. rate', true],
                 ['_cpa', 'CPA', true]
             ]);
 
@@ -3386,9 +3413,9 @@
             _ctr: { title: 'CTR', desc: 'Click-through rate. The percentage of impressions that resulted in a click.', formula: 'Clicks \u00F7 Impressions \u00D7 100' },
             cost: { title: 'Cost', desc: 'The total dollar amount spent on ad clicks for this period.' },
             _cpc: { title: 'Avg. CPC', desc: 'Average cost per click. The average amount paid each time someone clicks your ad.', formula: 'Cost \u00F7 Clicks' },
-            conversions: { title: 'Conversions', desc: 'Completed actions defined in Google Ads as valuable (form fills, phone calls, sign-ups). Uses data-driven attribution, so values can be fractional when credit is shared across clicks.' },
-            _conv_rate: { title: 'Conv. Rate', desc: 'The percentage of clicks that resulted in a conversion action.', formula: 'Conversions \u00F7 Clicks \u00D7 100' },
-            _cpa: { title: 'Cost / Conv.', desc: 'Cost per acquisition. The average cost to generate one conversion.', formula: 'Cost \u00F7 Conversions' },
+            conversions: { title: 'Google Conversions', desc: 'Completed actions defined in Google Ads as valuable (form fills, phone calls, sign-ups). Uses data-driven attribution, so values can be fractional when credit is shared across clicks.' },
+            _conv_rate: { title: 'Google Conv. Rate', desc: 'The percentage of clicks that resulted in a Google Ads conversion action.', formula: 'Google Conv. \u00F7 Clicks \u00D7 100' },
+            _cpa: { title: 'Cost / Google Conv.', desc: 'Cost per Google conversion. The average cost to generate one Google Ads conversion.', formula: 'Cost \u00F7 Google Conv.' },
             _roas: { title: 'ROAS', desc: 'Return on ad spend. Revenue generated per dollar of ad spend. Requires Athena value data. Red if < 1.5\u00D7, green if > 4.0\u00D7.', formula: '(Value \u00F7 Cost) \u2212 1' },
             apps: { title: 'Apps Completed', desc: 'Number of loan or membership applications completed and attributed to ad campaigns via click ID tracking.' },
             funded: { title: 'Funded', desc: 'Number of applications that reached funded status. Attributed via GCLID click tracking from Athena first-party data.' },
@@ -3472,9 +3499,11 @@
         }
 
         function setHead(cols) {
-            document.getElementById('tableHead').innerHTML = '<tr>' + cols.map(([key, label, right]) =>
-                `<th${right ? ' class="text-right"' : ''} onclick="sortTable('${key}')" onmouseenter="showColTooltip(event,'${key}')" onmouseleave="hideColTooltip()">${label} <span class="sort-arrow" id="sort-${key}"></span></th>`
-            ).join('') + '</tr>';
+            document.getElementById('tableHead').innerHTML = '<tr>' + cols.map(([key, label, right], idx) => {
+                const cls = right ? ' class="text-right"' : '';
+                const resizer = idx === 0 ? '<span class="col-resizer" onmousedown="startColResize(event)"></span>' : '';
+                return `<th${cls} onclick="sortTable('${key}')" onmouseenter="showColTooltip(event,'${key}')" onmouseleave="hideColTooltip()">${label} <span class="sort-arrow" id="sort-${key}"></span>${resizer}</th>`;
+            }).join('') + '</tr>';
         }
 
         function setCount(n, noun) {
@@ -3976,6 +4005,109 @@
             if (e.key === 'Escape' && document.getElementById('kwChartsOverlay').classList.contains('visible')) {
                 closeKwCharts();
             }
+        });
+
+        // ── Global Keyword Charts ──
+        function showGlobalKwCharts() {
+            const byKeyword = {};
+            keywordData.forEach(k => {
+                if (!byKeyword[k.keyword]) byKeyword[k.keyword] = { cost: 0, approved: 0, value: 0 };
+                byKeyword[k.keyword].cost += k.cost;
+                byKeyword[k.keyword].approved += k.approved;
+                byKeyword[k.keyword].value += k.value;
+            });
+
+            const entries = Object.entries(byKeyword)
+                .filter(([_, v]) => v.approved > 0)
+                .map(([kw, v]) => ({
+                    keyword: kw,
+                    cpa: v.cost / v.approved,
+                    roi: v.cost > 0 ? (v.value - v.cost) / v.cost : 0
+                }))
+                .sort((a, b) => a.cpa - b.cpa);
+
+            if (!entries.length) return;
+
+            const labels = entries.map(e => e.keyword);
+            const cpaValues = entries.map(e => e.cpa);
+            const roiValues = entries.map(e => e.roi);
+
+            const chartH = Math.max(200, entries.length * 32);
+            document.getElementById('kwCpaChart').parentElement.style.height = chartH + 'px';
+            document.getElementById('kwRoiChart').parentElement.style.height = chartH + 'px';
+
+            if (kwCpaChartInstance) { kwCpaChartInstance.destroy(); kwCpaChartInstance = null; }
+            if (kwRoiChartInstance) { kwRoiChartInstance.destroy(); kwRoiChartInstance = null; }
+
+            const sharedOpts = {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                interaction: { intersect: false, mode: 'index' },
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 } } },
+                    y: { grid: { display: false }, ticks: { font: { size: 11 }, autoSkip: false } }
+                }
+            };
+
+            kwCpaChartInstance = new Chart(document.getElementById('kwCpaChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ data: cpaValues, backgroundColor: '#296f5e99', borderColor: '#296f5e', borderWidth: 1, borderRadius: 3, barPercentage: 0.7 }]
+                },
+                options: {
+                    ...sharedOpts,
+                    scales: { ...sharedOpts.scales, x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, callback: v => fmtCur(v) } } },
+                    plugins: { ...sharedOpts.plugins, tooltip: { callbacks: { label: ctx => 'Cost/Approved: ' + fmtCur(ctx.raw) } } }
+                }
+            });
+
+            const roiColors = roiValues.map(v => v >= 0 ? '#296f5e99' : '#dc262699');
+            const roiBorders = roiValues.map(v => v >= 0 ? '#296f5e' : '#dc2626');
+
+            kwRoiChartInstance = new Chart(document.getElementById('kwRoiChart'), {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ data: roiValues, backgroundColor: roiColors, borderColor: roiBorders, borderWidth: 1, borderRadius: 3, barPercentage: 0.7 }]
+                },
+                options: {
+                    ...sharedOpts,
+                    scales: { ...sharedOpts.scales, x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, callback: v => (v * 100).toFixed(0) + '%' } } },
+                    plugins: { ...sharedOpts.plugins, tooltip: { callbacks: { label: ctx => 'ROI: ' + (ctx.raw * 100).toFixed(1) + '%' } } }
+                }
+            });
+
+            document.getElementById('kwChartsTitle').textContent = 'All Keywords — Cost per Approved & ROI';
+            document.getElementById('kwChartsOverlay').classList.add('visible');
+        }
+
+        // ── Column Resize ──
+        let colResizeState = { active: false, th: null, startX: 0, startW: 0 };
+
+        function startColResize(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const th = e.target.closest('th');
+            colResizeState = { active: true, th: th, startX: e.clientX, startW: th.offsetWidth };
+            e.target.classList.add('active');
+            document.body.classList.add('col-resizing');
+        }
+
+        document.addEventListener('mousemove', function(e) {
+            if (!colResizeState.active) return;
+            const newW = Math.max(80, colResizeState.startW + (e.clientX - colResizeState.startX));
+            colResizeState.th.style.minWidth = newW + 'px';
+            colResizeState.th.style.width = newW + 'px';
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (!colResizeState.active) return;
+            colResizeState.active = false;
+            document.body.classList.remove('col-resizing');
+            document.querySelectorAll('.col-resizer.active').forEach(el => el.classList.remove('active'));
         });
 
         function selectKpiChart(kpiKey) {
