@@ -2,11 +2,14 @@
 Airflow DAG: Google Ads to S3 Daily Pipeline
 
 Discovers all MCC child accounts automatically, pulls data in parallel via
-dynamic task mapping, and updates the dashboard files in S3.
+dynamic task mapping, updates the dashboard files in S3, and runs GCLID
+enrichment to produce keyword-level funded attribution.
 
 Flow:
-  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files  -->  export_for_attribution
-                     \--> notify_account_changes (parallel, only when changes)
+  discover_accounts  -->  pull_account.expand(N)  -->  update_dashboard_files
+                     \--> notify_account_changes       --> export_for_attribution
+                                                         --> enrich_funded_data
+                                                           --> stop_instance
 """
 
 import json
@@ -152,6 +155,56 @@ def google_ads_to_s3_daily():
         logger.info(f"Exported attribution files for {len(exported)} clients: {exported}")
         return exported
 
+    @task(trigger_rule="all_done")
+    def enrich_funded_data(**context) -> dict:
+        """Run GCLID attribution for the current month and previous month.
+
+        Re-running previous months catches late-funded applications (a click
+        in January may not fund until March).  The script's +2 month Athena
+        lookahead window handles this automatically.
+        """
+        import boto3
+        import yaml
+        from scripts.gclid_attribution import (
+            load_clients, load_aws_config, process_client,
+        )
+
+        ds = context.get("ds")
+        if ds is None:
+            ds = (datetime.utcnow() - timedelta(days=1)).strftime("%Y-%m-%d")
+
+        current_month = ds[:7]  # YYYY-MM
+
+        # Also re-run previous month to catch late fundings
+        year, month = int(ds[:4]), int(ds[5:7])
+        if month == 1:
+            prev_month = f"{year - 1}-12"
+        else:
+            prev_month = f"{year}-{month - 1:02d}"
+
+        months_to_process = [current_month, prev_month]
+
+        clients = load_clients()
+        aws_cfg = load_aws_config()
+        s3_client = boto3.client("s3", region_name=aws_cfg["aws"]["region"])
+        athena_client = boto3.client("athena", region_name="us-west-2")
+
+        results = {}
+        for target_month in months_to_process:
+            results[target_month] = []
+            for client_id, client_cfg in clients.items():
+                try:
+                    process_client(
+                        client_id, client_cfg, target_month,
+                        s3_client, athena_client, aws_cfg,
+                    )
+                    results[target_month].append(client_id)
+                except Exception as e:
+                    logger.warning(f"Enrichment failed for {client_id} ({target_month}): {e}")
+
+        logger.info(f"Enrichment complete: {results}")
+        return results
+
     INSTANCE_ID = "i-044c661e5fb2c0c37"  # auto-attribution-prod
 
     @task(trigger_rule="all_done")
@@ -208,8 +261,9 @@ def google_ads_to_s3_daily():
     pulls = pull_account.expand(account=discovery_result["accounts"])
     dashboard = update_dashboard_files()
     attribution = export_for_attribution()
+    enrichment = enrich_funded_data()
     shutdown = stop_instance()
-    pulls >> dashboard >> attribution >> shutdown
+    pulls >> dashboard >> attribution >> enrichment >> shutdown
 
     # notify runs in parallel with pulls (no dependency on pull completion)
     notify_account_changes(discovery_result)
