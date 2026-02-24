@@ -1765,8 +1765,8 @@
                             <div class="kpi-chip-label">CPF</div>
                             <div class="kpi-chip-value" id="kpiCPF">&mdash;</div>
                         </div>
-                        <div class="kpi-chip" data-key="_avg_funded_value" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipAFV">
-                            <div class="kpi-chip-label">Avg Fund Val</div>
+                        <div class="kpi-chip" data-key="_total_funded_value" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipAFV">
+                            <div class="kpi-chip-label">Total Fund Val</div>
                             <div class="kpi-chip-value" id="kpiAFV">&mdash;</div>
                         </div>
                     </div>
@@ -1928,9 +1928,9 @@
                             <span class="dict-desc">Total dollar value of funded applications. Calculated from loan amounts and expected lifetime value.</span>
                         </div>
                         <div class="dict-item">
-                            <span class="dict-term">Avg Funded Value</span>
-                            <span class="dict-formula">Value &divide; Funded</span>
-                            <span class="dict-desc">Average revenue per funded application. Helps identify which keywords drive higher-value customers.</span>
+                            <span class="dict-term">Total Funded Value</span>
+                            <span class="dict-formula">Sum of Value</span>
+                            <span class="dict-desc">Total dollar value of all funded applications. Shows the aggregate revenue attributed to each campaign or keyword.</span>
                         </div>
                         <div class="dict-item">
                             <span class="dict-term">ROAS (Return on Ad Spend)</span>
@@ -2914,7 +2914,7 @@
             document.getElementById('kpiFunded').textContent = tfunded > 0 ? fmtNumC(tfunded) : '\u2014';
             document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCurC(tval) : '\u2014';
             document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCurC(tco / tfunded) : '\u2014';
-            document.getElementById('kpiAFV').textContent = tfunded > 0 ? fmtCurC(tval / tfunded) : '\u2014';
+            document.getElementById('kpiAFV').textContent = tval > 0 ? fmtCurC(tval) : '\u2014';
         }
 
         function renderTable() {
@@ -2940,7 +2940,7 @@
                 ['conversions', 'Conv.', true],
                 ['funded', 'Funded', true],
                 ['_cpf', 'CPF', true],
-                ['_avg_funded_value', 'Avg Funded Val', true],
+                ['_total_funded_value', 'Total Fund Val', true],
                 ['cc_appvd', 'CC', true],
                 ['deposit_appvd', 'Deposit', true],
                 ['personal_appvd', 'Personal', true],
@@ -2952,7 +2952,7 @@
                 ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
                 _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
                 _cpf: r.funded > 0 ? r.cost / r.funded : null,
-                _avg_funded_value: r.funded > 0 ? r.value / r.funded : null
+                _total_funded_value: r.value || 0
             }));
 
             if (textFilterValue) {
@@ -2984,7 +2984,7 @@
                     <td class="text-right">${fmtDec(r.conversions)}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
                     <td class="text-right">${r._cpf !== null ? fmtCur(r._cpf) : '\u2014'}</td>
-                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>
+                    <td class="text-right">${r._total_funded_value ? fmtCur(r._total_funded_value) : '\u2014'}</td>
                     <td class="text-right">${r.cc_appvd > 0 ? fmtNum(r.cc_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.deposit_appvd > 0 ? fmtNum(r.deposit_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.personal_appvd > 0 ? fmtNum(r.personal_appvd) : '\u2014'}</td>
@@ -3061,7 +3061,7 @@
                 ['_conv_rate', 'Conv. rate', true],
                 ['_cpa', 'Cost / conv.', true],
                 ['funded', 'Funded', true],
-                ['_avg_funded_value', 'Avg Funded Val', true],
+                ['_total_funded_value', 'Total Fund Val', true],
                 ['cc_appvd', 'CC', true],
                 ['deposit_appvd', 'Deposit', true],
                 ['personal_appvd', 'Personal', true],
@@ -3072,7 +3072,7 @@
             let data = getScopedKeywords().map(r => ({
                 ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
                 _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
-                _avg_funded_value: r.funded > 0 ? r.value / r.funded : null
+                _total_funded_value: r.value || 0
             }));
 
             // Match type filter
@@ -3102,7 +3102,7 @@
                     <td class="text-right">${fmtPct(r._conv_rate)}</td>
                     <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
-                    <td class="text-right">${r._avg_funded_value !== null ? fmtCur(r._avg_funded_value) : '\u2014'}</td>
+                    <td class="text-right">${r._total_funded_value ? fmtCur(r._total_funded_value) : '\u2014'}</td>
                     <td class="text-right">${r.cc_appvd > 0 ? fmtNum(r.cc_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.deposit_appvd > 0 ? fmtNum(r.deposit_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.personal_appvd > 0 ? fmtNum(r.personal_appvd) : '\u2014'}</td>
@@ -3394,7 +3394,7 @@
             funded: { title: 'Funded', desc: 'Number of applications that reached funded status. Attributed via GCLID click tracking from Athena first-party data.' },
             value: { title: 'Funded Revenue', desc: 'Total dollar value of all funded applications attributed to ad campaigns. Represents actual production/loan amounts from first-party Athena data.' },
             _cpf: { title: 'CPF (Cost Per Funded)', desc: 'Cost to acquire one funded application.', formula: 'Cost ÷ Funded' },
-            _avg_funded_value: { title: 'Avg Funded Value', desc: 'Average dollar value per funded application.', formula: 'Value ÷ Funded' },
+            _total_funded_value: { title: 'Total Funded Value', desc: 'Total dollar value of all funded applications.', formula: 'Sum of Value' },
             cc_appvd: { title: 'Credit Card Approved', desc: 'Number of approved Credit Card applications attributed to this campaign/keyword via GCLID tracking.' },
             deposit_appvd: { title: 'Deposit Approved', desc: 'Number of approved Deposit (Xpress App) applications attributed to this campaign/keyword via GCLID tracking.' },
             personal_appvd: { title: 'Personal Loan Approved', desc: 'Number of approved Personal Loan applications attributed to this campaign/keyword via GCLID tracking.' },
