@@ -2090,6 +2090,26 @@
                                 <canvas id="kwRoiChart"></canvas>
                             </div>
                         </div>
+                        <div style="padding: 0 24px 20px; border-top: 1px solid var(--border); margin-top: 8px;">
+                            <div id="kwChartsSummary" style="font-size: 12px; color: var(--text-secondary); padding: 12px 0 10px; font-weight: 500;"></div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; font-size: 12px; color: var(--text-secondary); line-height: 1.7;">
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">Cost per Application</div>
+                                    <div><span style="display:inline-block;width:10px;height:10px;background:#296f5e99;border:1px solid #296f5e;border-radius:2px;margin-right:4px;vertical-align:middle;"></span> <strong>Green bar</strong> — Ad spend &divide; applications received. Only shown for keywords with &ge;1 application (integer values, no fractional attribution).</div>
+                                    <div><span style="display:inline-block;width:10px;height:10px;background:#d1d5db99;border:1px solid #9ca3af;border-radius:2px;margin-right:4px;vertical-align:middle;"></span> <strong>Gray (no bar)</strong> — Keyword received clicks but no tracked applications. CPA cannot be calculated.</div>
+                                    <div style="margin-top: 4px;"><strong>Formula:</strong> <code style="background:#f1f3f4;padding:1px 5px;border-radius:3px;">Cost &divide; Apps</code></div>
+                                </div>
+                                <div>
+                                    <div style="font-weight: 600; color: var(--text); margin-bottom: 4px;">ROI (Return on Investment)</div>
+                                    <div><span style="display:inline-block;width:10px;height:10px;background:#296f5e99;border:1px solid #296f5e;border-radius:2px;margin-right:4px;vertical-align:middle;"></span> <strong>Green</strong> — Positive ROI: funded value exceeds ad spend.</div>
+                                    <div><span style="display:inline-block;width:10px;height:10px;background:#dc262699;border:1px solid #dc2626;border-radius:2px;margin-right:4px;vertical-align:middle;"></span> <strong>Red</strong> — Negative ROI: ad spend exceeds funded value. &minus;100% means no funded value at all.</div>
+                                    <div style="margin-top: 4px;"><strong>Formula:</strong> <code style="background:#f1f3f4;padding:1px 5px;border-radius:3px;">(Funded Value &minus; Cost) &divide; Cost</code></div>
+                                </div>
+                            </div>
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-top: 10px; padding-top: 8px; border-top: 1px solid #f1f3f4;">
+                                <strong>Data source:</strong> Applications are matched to keywords via GCLID (Google Click ID) tracking. Each click carries a unique GCLID that links to applications in first-party data. Only exact integer matches are shown — no fractional or proportional attribution.
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -3083,7 +3103,7 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             data.forEach(r => {
-                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.apps >= 1);
+                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.cost > 0);
                 const kwIcon = hasKwApproved
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
                     : '';
@@ -3961,124 +3981,17 @@
             });
 
             const entries = Object.entries(byKeyword)
-                .filter(([_, v]) => v.apps >= 1)
+                .filter(([_, v]) => v.cost > 0)
                 .map(([kw, v]) => ({
                     keyword: kw,
-                    cpa: v.cost / v.apps,
+                    apps: v.apps,
+                    cpa: v.apps >= 1 ? v.cost / v.apps : null,
                     roi: v.cost > 0 ? (v.value - v.cost) / v.cost : 0
                 }))
-                .sort((a, b) => a.cpa - b.cpa);
+                .sort((a, b) => (a.cpa ?? Infinity) - (b.cpa ?? Infinity));
 
             if (!entries.length) return;
-
-            const labels = entries.map(e => e.keyword);
-            const cpaValues = entries.map(e => e.cpa);
-            const roiValues = entries.map(e => e.roi);
-
-            const chartH = Math.max(200, entries.length * 32);
-            document.getElementById('kwCpaChart').parentElement.style.height = chartH + 'px';
-            document.getElementById('kwRoiChart').parentElement.style.height = chartH + 'px';
-
-            if (kwCpaChartInstance) { kwCpaChartInstance.destroy(); kwCpaChartInstance = null; }
-            if (kwRoiChartInstance) { kwRoiChartInstance.destroy(); kwRoiChartInstance = null; }
-
-            const sharedOpts = {
-                responsive: true,
-                maintainAspectRatio: false,
-                indexAxis: 'y',
-                interaction: { intersect: false, mode: 'index' },
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: {
-                        grid: { color: '#f0f0f0' },
-                        ticks: { font: { size: 11 } }
-                    },
-                    y: {
-                        grid: { display: false },
-                        ticks: { font: { size: 11 }, autoSkip: false }
-                    }
-                }
-            };
-
-            kwCpaChartInstance = new Chart(document.getElementById('kwCpaChart'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: cpaValues,
-                        backgroundColor: '#296f5e99',
-                        borderColor: '#296f5e',
-                        borderWidth: 1,
-                        borderRadius: 3,
-                        barPercentage: 0.7
-                    }]
-                },
-                options: {
-                    ...sharedOpts,
-                    scales: {
-                        ...sharedOpts.scales,
-                        x: {
-                            ...sharedOpts.scales.x,
-                            ticks: {
-                                ...sharedOpts.scales.x.ticks,
-                                callback: v => fmtCur(v)
-                            }
-                        }
-                    },
-                    plugins: {
-                        ...sharedOpts.plugins,
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => 'Cost/App: ' + fmtCur(ctx.raw)
-                            }
-                        }
-                    }
-                }
-            });
-
-            const roiColors = roiValues.map(v => v >= 0 ? '#296f5e99' : '#dc262699');
-            const roiBorders = roiValues.map(v => v >= 0 ? '#296f5e' : '#dc2626');
-
-            kwRoiChartInstance = new Chart(document.getElementById('kwRoiChart'), {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: roiValues,
-                        backgroundColor: roiColors,
-                        borderColor: roiBorders,
-                        borderWidth: 1,
-                        borderRadius: 3,
-                        barPercentage: 0.7
-                    }]
-                },
-                options: {
-                    ...sharedOpts,
-                    scales: {
-                        ...sharedOpts.scales,
-                        x: {
-                            ...sharedOpts.scales.x,
-                            ticks: {
-                                ...sharedOpts.scales.x.ticks,
-                                callback: v => (v * 100).toFixed(0) + '%'
-                            }
-                        }
-                    },
-                    plugins: {
-                        ...sharedOpts.plugins,
-                        tooltip: {
-                            callbacks: {
-                                label: ctx => 'ROI: ' + (ctx.raw * 100).toFixed(1) + '%'
-                            }
-                        }
-                    }
-                }
-            });
-
-            document.getElementById('kwChartsTitle').textContent = 'Keyword Breakdown — ' + displayName(campaignName);
-            document.getElementById('kwChartsOverlay').classList.add('visible');
+            renderKwChartsShared(entries, 'Keyword Breakdown — ' + displayName(campaignName));
         }
 
         function closeKwCharts() {
@@ -4154,16 +4067,21 @@
             });
 
             const entries = Object.entries(byKeyword)
-                .filter(([_, v]) => v.apps >= 1)
+                .filter(([_, v]) => v.cost > 0)
                 .map(([kw, v]) => ({
                     keyword: kw,
-                    cpa: v.cost / v.apps,
+                    apps: v.apps,
+                    cpa: v.apps >= 1 ? v.cost / v.apps : null,
                     roi: v.cost > 0 ? (v.value - v.cost) / v.cost : 0
                 }))
-                .sort((a, b) => a.cpa - b.cpa);
+                .sort((a, b) => (a.cpa ?? Infinity) - (b.cpa ?? Infinity));
 
             if (!entries.length) return;
 
+            renderKwChartsShared(entries, 'All Keywords — Cost per Application & ROI');
+        }
+
+        function renderKwChartsShared(entries, title) {
             const labels = entries.map(e => e.keyword);
             const cpaValues = entries.map(e => e.cpa);
             const roiValues = entries.map(e => e.roi);
@@ -4187,16 +4105,33 @@
                 }
             };
 
+            // CPA: green if has apps, gray if no apps (null CPA)
+            const cpaColors = cpaValues.map(v => v !== null ? '#296f5e99' : '#d1d5db99');
+            const cpaBorders = cpaValues.map(v => v !== null ? '#296f5e' : '#9ca3af');
+            // For chart display, null CPA → 0 bar (no bar shown)
+            const cpaDisplay = cpaValues.map(v => v !== null ? v : 0);
+
             kwCpaChartInstance = new Chart(document.getElementById('kwCpaChart'), {
                 type: 'bar',
                 data: {
                     labels: labels,
-                    datasets: [{ data: cpaValues, backgroundColor: '#296f5e99', borderColor: '#296f5e', borderWidth: 1, borderRadius: 3, barPercentage: 0.7 }]
+                    datasets: [{ data: cpaDisplay, backgroundColor: cpaColors, borderColor: cpaBorders, borderWidth: 1, borderRadius: 3, barPercentage: 0.7 }]
                 },
                 options: {
                     ...sharedOpts,
                     scales: { ...sharedOpts.scales, x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, callback: v => fmtCur(v) } } },
-                    plugins: { ...sharedOpts.plugins, tooltip: { callbacks: { label: ctx => 'Cost/App: ' + fmtCur(ctx.raw) } } }
+                    plugins: {
+                        ...sharedOpts.plugins,
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => {
+                                    const e = entries[ctx.dataIndex];
+                                    if (e.cpa !== null) return 'Cost/App: ' + fmtCur(e.cpa) + ' (' + e.apps + ' apps)';
+                                    return 'No applications tracked';
+                                }
+                            }
+                        }
+                    }
                 }
             });
 
@@ -4212,11 +4147,27 @@
                 options: {
                     ...sharedOpts,
                     scales: { ...sharedOpts.scales, x: { ...sharedOpts.scales.x, ticks: { ...sharedOpts.scales.x.ticks, callback: v => (v * 100).toFixed(0) + '%' } } },
-                    plugins: { ...sharedOpts.plugins, tooltip: { callbacks: { label: ctx => 'ROI: ' + (ctx.raw * 100).toFixed(1) + '%' } } }
+                    plugins: {
+                        ...sharedOpts.plugins,
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => {
+                                    const e = entries[ctx.dataIndex];
+                                    return 'ROI: ' + (ctx.raw * 100).toFixed(1) + '% | Apps: ' + e.apps;
+                                }
+                            }
+                        }
+                    }
                 }
             });
 
-            document.getElementById('kwChartsTitle').textContent = 'All Keywords — Cost per Application & ROI';
+            // Update summary counts
+            const withApps = entries.filter(e => e.apps >= 1).length;
+            const noApps = entries.length - withApps;
+            document.getElementById('kwChartsSummary').textContent =
+                entries.length + ' keywords | ' + withApps + ' with applications, ' + noApps + ' without';
+
+            document.getElementById('kwChartsTitle').textContent = title;
             document.getElementById('kwChartsOverlay').classList.add('visible');
         }
 
