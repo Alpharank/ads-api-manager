@@ -205,56 +205,46 @@ critical: it determines whether you can see funded metrics at the keyword/ad-gro
 level or only at the campaign level.
 
 ```
-                          ┌──────────────────────────────────────────────────────┐
-                          │           Two Attribution Paths                     │
-                          └──────────────────────────────────────────────────────┘
+PATH A: Athena Export              PATH B: GCLID Attribution
+(campaign-level only)              (keyword-level)
+─────────────────────              ─────────────────────────
 
-  PATH A: Athena Export (campaign-level only)          PATH B: GCLID Attribution (keyword-level)
-  ───────────────────────────────────────────         ──────────────────────────────────────────
-
-  ROI Pipeline                                        Google Ads API (click_view)
-       │                                                   │
-       ▼                                                   │  GAQL pulls every click with its
-  staging.google_ads_campaign_data                         │  gclid, keyword, ad_group, campaign
-  ┌──────────────────────────────────┐                     ▼
-  │ campaign_id, campaign,           │                S3: clicks/{date}.csv
-  │ clicks, cost, apps,              │                ┌──────────────────────────────────┐
-  │ funded, value                    │                │ gclid          ◄── direct column │
-  │                                  │                │ keyword, match_type              │
-  │ ** NO gclid column **            │                │ campaign_id, ad_group_id, ...    │
-  └──────────────┬───────────────────┘                └───────────────┬──────────────────┘
-                 │                                                    │
-                 ▼                                                    │
-  export_athena_data.py                               Athena: prod.application_data
-                 │                                    ┌──────────────────────────────────────────┐
-                 ▼                                    │ click_id   ◄── direct column (GCLID)    │
-  data/{client}/enriched/{month}.csv                  │ funded, approved, production_value, ...  │
-  (campaign-level ONLY)                               └───────────────┬──────────────────────────┘
-                                                                      │
-                                                      ┌───────────────┴──────────────────┐
-                                                      │                                  │
-                                                 clicks_df                          apps_df
-                                                 (has gclid                    (has gclid from
-                                                  as a column)                  click_id column)
-                                                      │                              │
-                                                      └───────────┬──────────────────┘
-                                                                  │
-                                                                  ▼
-                                                      clicks_df.merge(apps_df,
-                                                        on="gclid", how="inner")
-                                                                  │
-                                                      Each matched application now
-                                                      inherits the click's keyword,
-                                                      ad group, campaign, and geo
-                                                                  │
-                                                                  ▼
-                                                      gclid_attribution.py
-                                                                  │
-                                                        ┌─────────┴──────────┐
-                                                        ▼                    ▼
-                                                  enriched/            enriched/daily/
-                                                  {month}.csv          {month}.csv
-                                                  (campaign)           (keyword-level)
+ROI Pipeline                       Google Ads API (click_view)
+     │                                  │
+     ▼                                  ▼
+staging.google_ads_                S3: clicks/{date}.csv
+  campaign_data                    ┌─────────────────────────┐
+┌────────────────────┐             │ gclid    ◄── direct col │
+│ campaign_id,       │             │ keyword, match_type     │
+│ clicks, cost,      │             │ campaign_id, ...        │
+│ apps, funded,      │             └───────────┬─────────────┘
+│ value              │                         │
+│                    │             Athena: prod.application_data
+│ ** NO gclid **     │             ┌─────────────────────────┐
+└────────┬───────────┘             │ click_id ◄── GCLID col  │
+         │                         │ funded, approved,       │
+         ▼                         │ production_value, ...   │
+export_athena_data.py              └───────────┬─────────────┘
+         │                                     │
+         ▼                          ┌──────────┴──────────┐
+enriched/{month}.csv                ▼                     ▼
+(campaign-level ONLY)          clicks_df             apps_df
+                               (gclid col)      (click_id col)
+                                    │                 │
+                                    └────────┬────────┘
+                                             │
+                                             ▼
+                                    merge(on="gclid",
+                                      how="inner")
+                                             │
+                                             ▼
+                                  gclid_attribution.py
+                                             │
+                                    ┌────────┴────────┐
+                                    ▼                 ▼
+                              enriched/         enriched/daily/
+                              {month}.csv       {month}.csv
+                              (campaign)        (keyword-level)
 ```
 
 ### Path A: Athena Export (Campaign-Level Only)
