@@ -1274,6 +1274,26 @@
             margin-bottom: 10px;
             text-transform: uppercase;
         }
+        .drill-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 3px;
+            margin-right: 5px;
+            vertical-align: middle;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            line-height: 1;
+            flex-shrink: 0;
+        }
+        tr.clickable:hover .drill-icon {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
         .kw-chart-icon {
             display: inline-flex;
             align-items: center;
@@ -3141,7 +3161,7 @@
                 tr.className = 'clickable';
                 tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
                 tr.innerHTML = `
-                    <td class="name-cell">${kwIcon}${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td class="name-cell"><span class="drill-icon" title="Drill into ad groups">+</span>${kwIcon}${escapeHtml(displayName(r.campaign_name))}</td>
                     <td class="dim">${escapeHtml(r.campaign_id)}</td>
                     <td class="text-right">${fmtNum(r.impressions)}</td>
                     <td class="text-right">${fmtNum(r.clicks)}</td>
@@ -3200,7 +3220,7 @@
                     drillIntoAdGroup(r.ad_group_name, r.ad_group_id);
                 };
                 tr.innerHTML = `
-                    <td class="name-cell">${escapeHtml(r.ad_group_name)}</td>
+                    <td class="name-cell"><span class="drill-icon" title="Drill into keywords">+</span>${escapeHtml(r.ad_group_name)}</td>
                     <td class="text-right">${fmtNum(r.impressions)}</td>
                     <td class="text-right">${fmtNum(r.clicks)}</td>
                     <td class="text-right">${fmtPct(r._ctr)}</td>
