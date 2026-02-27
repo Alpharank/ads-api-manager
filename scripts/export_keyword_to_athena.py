@@ -268,10 +268,10 @@ def repair_partitions(athena_client, dry_run: bool = False):
 def process_client(client_id: str, client_cfg: dict, month: str,
                    s3_client, dry_run: bool = False):
     """Export keyword data for a single client/month."""
-    athena_id = client_cfg.get("athena_id", client_id)
+    prod_id = client_cfg.get("prod_id", client_id)
 
     print(f"\n{'='*60}")
-    print(f"  {client_cfg['name']} ({client_id})  →  athena_id={athena_id}  —  {month}")
+    print(f"  {client_cfg['name']} ({client_id})  →  prod_id={prod_id}  —  {month}")
     print(f"{'='*60}")
 
     # 1. Load keyword metrics
@@ -292,8 +292,8 @@ def process_client(client_id: str, client_cfg: dict, month: str,
 
     print(f"  Joined result: {len(result_df)} rows")
 
-    # 4. Write Parquet to S3
-    write_parquet_to_s3(result_df, s3_client, athena_id, month, dry_run=dry_run)
+    # 4. Write Parquet to S3 (use prod_id to match campaign_data partitioning)
+    write_parquet_to_s3(result_df, s3_client, prod_id, month, dry_run=dry_run)
 
 
 def main():
