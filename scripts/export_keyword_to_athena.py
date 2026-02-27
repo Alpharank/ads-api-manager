@@ -43,7 +43,7 @@ ATHENA_DATABASE = "staging"
 ATHENA_TABLE = "google_ads_keyword_data"
 ATHENA_WORKGROUP = "primary"
 ATHENA_OUTPUT_BUCKET = "s3://etl.alpharank.airflow/athena-results/"
-AWS_REGION = "us-east-1"
+AWS_REGION = "us-west-2"
 
 
 def load_clients() -> dict:
@@ -101,8 +101,8 @@ def load_keyword_metrics(client_id: str, month: str) -> pd.DataFrame:
 
 
 def load_enriched_attribution(client_id: str, month: str) -> pd.DataFrame:
-    """Load enriched daily attribution from data/{client_id}/enriched/daily/{month}.csv."""
-    path = DATA_DIR / client_id / "enriched" / "daily" / f"{month}.csv"
+    """Load enriched daily attribution from data/{client_id}/enriched/daily/{month}_gclid.csv."""
+    path = DATA_DIR / client_id / "enriched" / "daily" / f"{month}_gclid.csv"
     if not path.exists():
         print(f"  No enriched daily file: {path}")
         return pd.DataFrame()

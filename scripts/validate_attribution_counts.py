@@ -102,8 +102,8 @@ def validate_client(client_key, cfg, month, s3_client, verbose=False):
         "issues": [],
     }
 
-    # --- Source 1: GCLID attribution (enriched/{month}.csv) ---
-    gclid_path = data_dir / "enriched" / f"{month}.csv"
+    # --- Source 1: GCLID attribution (enriched/{month}_gclid.csv) ---
+    gclid_path = data_dir / "enriched" / f"{month}_gclid.csv"
     gclid_rows = read_local_csv(gclid_path)
     if gclid_rows is not None:
         result["gclid"] = {

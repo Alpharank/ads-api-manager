@@ -309,7 +309,7 @@ def write_campaign_csv(df: pd.DataFrame, client_id: str, month: str) -> Path:
     """Write campaign-level enriched CSV."""
     out_dir = DATA_DIR / client_id / "enriched"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{month}.csv"
+    out_path = out_dir / f"{month}_gclid.csv"
 
     cols = [
         "campaign_id", "campaign_name", "apps", "approved", "funded",
@@ -325,7 +325,7 @@ def write_daily_keyword_csv(df: pd.DataFrame, client_id: str, month: str) -> Pat
     """Write daily keyword-level enriched CSV."""
     out_dir = DATA_DIR / client_id / "enriched" / "daily"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{month}.csv"
+    out_path = out_dir / f"{month}_gclid.csv"
 
     cols = [
         "date", "campaign_id", "campaign_name",
