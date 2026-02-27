@@ -2387,12 +2387,19 @@
             try {
                 const base = `data/${clientConfig.id}`;
                 const modelSuffix = currentAttributionModel === 'last_click' ? '' : `_${currentAttributionModel}`;
+                // Try auto-attribution (_first_click) first for campaign enriched, fall back to GCLID
+                async function fetchEnrichedWithFallback(path) {
+                    const fc = await fetch(`${path}_first_click.csv`);
+                    if (fc.ok) return fc.text();
+                    const base_r = await fetch(`${path}${modelSuffix}.csv`);
+                    return base_r.ok ? base_r.text() : '';
+                }
                 const [campText, kwText, dailyText, enrichedText, dailyEnrichedText, searchTermsText, channelText, deviceText, locationText, negKeywordsText] = await Promise.all([
                     fetch(`${base}/campaigns/${currentMonth}.csv`).then(r => { if (!r.ok) throw new Error('No campaign data'); return r.text(); }),
                     fetch(`${base}/keywords/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/daily/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
-                    fetch(`${base}/enriched/${currentMonth}${modelSuffix}.csv`).then(r => r.ok ? r.text() : ''),
-                    fetch(`${base}/enriched/daily/${currentMonth}${modelSuffix}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetchEnrichedWithFallback(`${base}/enriched/${currentMonth}`),
+                    fetchEnrichedWithFallback(`${base}/enriched/daily/${currentMonth}`),
                     fetch(`${base}/search_terms/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/channels/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/devices/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
@@ -2561,7 +2568,7 @@
                             allDailyData = allDailyData.concat(parsed);
                         }
                         // Also load daily enriched data for this month
-                        const extraEnriched = await fetch(`${base}/enriched/daily/${month}${modelSuffix}.csv`).then(r => r.ok ? r.text() : '');
+                        const extraEnriched = await fetchEnrichedWithFallback(`${base}/enriched/daily/${month}`);
                         if (extraEnriched) {
                             const parsed = Papa.parse(extraEnriched, { header: true, skipEmptyLines: true }).data
                                 .map(r => ({
