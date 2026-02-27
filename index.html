@@ -3228,6 +3228,7 @@
                 ['conversions', 'Google Conv.', true],
                 ['_conv_rate', 'Google Conv. rate', true],
                 ['_cpa', 'Cost / Google conv.', true],
+                ['apps', 'Apps', true],
                 ['approved', 'Approved', true],
                 ['funded', 'Funded', true],
                 ['_roi', 'ROI', true],
@@ -3272,6 +3273,7 @@
                     <td class="text-right">${fmtDec(r.conversions)}</td>
                     <td class="text-right">${fmtPct(r._conv_rate)}</td>
                     <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>
+                    <td class="text-right">${(r.apps || 0) > 0 ? fmtNum(r.apps) : '\u2014'}</td>
                     <td class="text-right">${(r.approved || 0) > 0 ? fmtNum(r.approved) : '\u2014'}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
                     <td class="text-right">${r._roi !== null ? (r._roi * 100).toFixed(0) + '%' : '\u2014'}</td>
