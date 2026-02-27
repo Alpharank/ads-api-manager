@@ -254,6 +254,53 @@ def google_ads_to_s3_daily():
         message = "\n".join(lines)
         SlackNotifier().send_message(message, "#customer-success")
 
+    @task(trigger_rule="all_done")
+    def export_keywords_to_athena(**context) -> list:
+        """Export keyword-level data to Athena as Parquet for current + previous month."""
+        import subprocess
+
+        ds = context.get("ds")
+        year_month = ds[:7]
+
+        # Calculate previous month
+        year, month = int(ds[:4]), int(ds[5:7])
+        if month == 1:
+            prev_month = f"{year - 1}-12"
+        else:
+            prev_month = f"{year}-{month - 1:02d}"
+
+        script = os.path.join(PROJECT_ROOT, "scripts", "export_keyword_to_athena.py")
+        exported = []
+
+        for m in [prev_month, year_month]:
+            logger.info(f"Exporting keyword data for {m}")
+            result = subprocess.run(
+                [sys.executable, script, "--all", "--month", m, "--no-repair"],
+                capture_output=True,
+                text=True,
+                cwd=PROJECT_ROOT,
+            )
+            if result.returncode != 0:
+                logger.error(f"Keyword export failed for {m}: {result.stderr}")
+            else:
+                logger.info(result.stdout)
+                exported.append(m)
+
+        # Repair partitions once after all months
+        if exported:
+            import boto3 as _boto3
+            logger.info("Running MSCK REPAIR TABLE for keyword data...")
+            athena = _boto3.client("athena", region_name="us-east-1")
+            repair_response = athena.start_query_execution(
+                QueryString="MSCK REPAIR TABLE staging.google_ads_keyword_data",
+                QueryExecutionContext={"Database": "staging"},
+                WorkGroup="primary",
+                ResultConfiguration={"OutputLocation": "s3://etl.alpharank.airflow/athena-results/"},
+            )
+            logger.info(f"MSCK REPAIR TABLE submitted: {repair_response['QueryExecutionId']}")
+
+        return exported
+
     # --- Wire the DAG ---
     discovery_result = discover_accounts()
 
@@ -262,8 +309,9 @@ def google_ads_to_s3_daily():
     dashboard = update_dashboard_files()
     attribution = export_for_attribution()
     enrichment = enrich_funded_data()
+    keyword_export = export_keywords_to_athena()
     shutdown = stop_instance()
-    pulls >> dashboard >> attribution >> enrichment >> shutdown
+    pulls >> dashboard >> attribution >> enrichment >> keyword_export >> shutdown
 
     # notify runs in parallel with pulls (no dependency on pull completion)
     notify_account_changes(discovery_result)

@@ -1780,6 +1780,10 @@
                     <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                     <span>Keywords</span>
                 </div>
+                <div class="sidebar-item" data-level="allkeywords" onclick="navigateToLevel('allkeywords')">
+                    <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    <span>All keywords</span>
+                </div>
                 <div class="sidebar-item" data-level="searchterms" onclick="navigateToLevel('searchterms')">
                     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                     <span>Search terms</span>
@@ -1853,6 +1857,10 @@
                             <div class="kpi-chip-label">CPA</div>
                             <div class="kpi-chip-value" id="kpiCPA">&mdash;</div>
                         </div>
+                        <div class="kpi-chip" data-key="approved" onclick="selectKpiChart('approved')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipApproved">
+                            <div class="kpi-chip-label">Approved</div>
+                            <div class="kpi-chip-value" id="kpiApproved">&mdash;</div>
+                        </div>
                         <div class="kpi-chip" data-key="funded" onclick="selectKpiChart('funded')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipFunded">
                             <div class="kpi-chip-label">Funded</div>
                             <div class="kpi-chip-value" id="kpiFunded">&mdash;</div>
@@ -1868,6 +1876,10 @@
                         <div class="kpi-chip" data-key="_total_funded_value" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipAFV">
                             <div class="kpi-chip-label">Total Fund Val</div>
                             <div class="kpi-chip-value" id="kpiAFV">&mdash;</div>
+                        </div>
+                        <div class="kpi-chip" data-key="_roi" onclick="selectKpiChart('_roi')" onmouseenter="showKpiTooltip(event)" onmouseleave="hideColTooltip()" id="kpiChipROI">
+                            <div class="kpi-chip-label">ROI</div>
+                            <div class="kpi-chip-value" id="kpiROI">&mdash;</div>
                         </div>
                     </div>
                 </div>
@@ -2208,8 +2220,14 @@
                 return cv > 0 ? co / cv : 0;
             }},
             apps:         { label: 'Apps',        field: 'apps',        fmt: fmtNum, isCurrency: false },
+            approved:     { label: 'Approved',    field: 'approved',    fmt: fmtNum, isCurrency: false },
             funded:       { label: 'Funded',      field: 'funded',      fmt: fmtNum, isCurrency: false },
             value:        { label: 'Revenue',     field: 'value',       fmt: fmtCur, isCurrency: true },
+            _roi:         { label: 'ROI',         field: 'value',       fmt: v => (v * 100).toFixed(0) + '%', isCurrency: false, derived: (data) => {
+                const co = data.reduce((s, r) => s + (r.cost || 0), 0);
+                const val = data.reduce((s, r) => s + (r.value || 0), 0);
+                return co > 0 ? (val / co - 1) : 0;
+            }},
         };
 
         // ── Helpers ──
@@ -2663,6 +2681,7 @@
         }
 
         function getKPIData() {
+            if (currentLevel === 'allkeywords') return keywordData;
             if (currentLevel === 'keywords' && selectedAdGroup) return getScopedKeywords();
             if (selectedCampaign) return campaignData.filter(c => c.campaign_name === selectedCampaign.campaign_name);
             return campaignData;
@@ -2695,7 +2714,7 @@
         function navigateToLevel(level) {
             if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
             else if (level === 'adgroups') { selectedAdGroup = null; }
-            else if (['searchterms', 'negativekeywords', 'channels', 'whenwhere'].includes(level)) {
+            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere'].includes(level)) {
                 selectedCampaign = null; selectedAdGroup = null;
             }
             currentLevel = level;
@@ -2989,6 +3008,8 @@
                     bar.appendChild(makeSep());
                 }
                 bar.appendChild(makeCurrent(selectedAdGroup ? selectedAdGroup.ad_group_name : 'All keywords'));
+            } else if (currentLevel === 'allkeywords') {
+                bar.appendChild(makeCurrent('All keywords'));
             } else if (currentLevel === 'searchterms') {
                 bar.appendChild(makeCurrent('Search terms'));
             } else if (currentLevel === 'negativekeywords') {
@@ -3005,6 +3026,7 @@
                 campaigns: 'Campaigns',
                 adgroups: 'Ad groups',
                 keywords: 'Keywords',
+                allkeywords: 'All Keywords',
                 searchterms: 'Search terms',
                 negativekeywords: 'Negative Keywords',
                 channels: 'Channel Performance',
@@ -3018,6 +3040,7 @@
                 campaigns: 'Filter campaigns...',
                 adgroups: 'Filter ad groups...',
                 keywords: 'Filter keywords...',
+                allkeywords: 'Filter keywords...',
                 searchterms: 'Filter search terms...',
                 negativekeywords: 'Filter negative keywords...',
                 channels: 'Filter channels...',
@@ -3026,7 +3049,7 @@
             document.getElementById('textFilter').placeholder = ph[currentLevel] || 'Filter...';
             // Show match type filters only on keywords or search terms view
             const mfg = document.getElementById('matchFilterGroup');
-            mfg.classList.toggle('visible', currentLevel === 'keywords' || currentLevel === 'searchterms' || currentLevel === 'negativekeywords');
+            mfg.classList.toggle('visible', currentLevel === 'keywords' || currentLevel === 'allkeywords' || currentLevel === 'searchterms' || currentLevel === 'negativekeywords');
         }
 
         function toggleMatchFilter(type) {
@@ -3043,6 +3066,7 @@
             const tco = d.reduce((s, r) => s + r.cost, 0);
             const tv = d.reduce((s, r) => s + r.conversions, 0);
             const tval = d.reduce((s, r) => s + (r.value || 0), 0);
+            const tapproved = d.reduce((s, r) => s + (r.approved || 0), 0);
             const tfunded = d.reduce((s, r) => s + (r.funded || 0), 0);
 
             document.getElementById('kpiImpressions').textContent = fmtNumC(ti);
@@ -3051,17 +3075,20 @@
             document.getElementById('kpiCost').textContent = fmtCurC(tco);
             document.getElementById('kpiCPA').textContent = tv > 0 ? fmtCurC(cpa(tco, tv)) : '\u2014';
 
-            // Always show funded-related chips (they show "—" when no data)
+            // Approved + funded-related chips (show "—" when no data)
+            document.getElementById('kpiApproved').textContent = tapproved > 0 ? fmtNumC(tapproved) : '\u2014';
             document.getElementById('kpiFunded').textContent = tfunded > 0 ? fmtNumC(tfunded) : '\u2014';
             document.getElementById('kpiFundedRev').textContent = tval > 0 ? fmtCurC(tval) : '\u2014';
             document.getElementById('kpiCPF').textContent = tfunded > 0 ? fmtCurC(tco / tfunded) : '\u2014';
             document.getElementById('kpiAFV').textContent = tval > 0 ? fmtCurC(tval) : '\u2014';
+            document.getElementById('kpiROI').textContent = tco > 0 ? ((tval / tco - 1) * 100).toFixed(0) + '%' : '\u2014';
         }
 
         function renderTable() {
             if (currentLevel === 'campaigns') renderCampaigns();
             else if (currentLevel === 'adgroups') renderAdGroups();
             else if (currentLevel === 'keywords') renderKeywords();
+            else if (currentLevel === 'allkeywords') renderAllKeywords();
             else if (currentLevel === 'searchterms') renderSearchTerms();
             else if (currentLevel === 'negativekeywords') renderNegativeKeywords();
             else if (currentLevel === 'channels') renderChannels();
@@ -3201,7 +3228,9 @@
                 ['conversions', 'Google Conv.', true],
                 ['_conv_rate', 'Google Conv. rate', true],
                 ['_cpa', 'Cost / Google conv.', true],
+                ['approved', 'Approved', true],
                 ['funded', 'Funded', true],
+                ['_roi', 'ROI', true],
                 ['_total_funded_value', 'Total Fund Val', true],
                 ['cc_appvd', 'CC', true],
                 ['deposit_appvd', 'Deposit', true],
@@ -3213,6 +3242,7 @@
             let data = getScopedKeywords().map(r => ({
                 ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
                 _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
+                _roi: r.cost > 0 ? ((r.value || 0) / r.cost - 1) : null,
                 _total_funded_value: r.value || 0
             }));
 
@@ -3242,13 +3272,93 @@
                     <td class="text-right">${fmtDec(r.conversions)}</td>
                     <td class="text-right">${fmtPct(r._conv_rate)}</td>
                     <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>
+                    <td class="text-right">${(r.approved || 0) > 0 ? fmtNum(r.approved) : '\u2014'}</td>
                     <td class="text-right">${r.funded > 0 ? fmtNum(r.funded) : '\u2014'}</td>
+                    <td class="text-right">${r._roi !== null ? (r._roi * 100).toFixed(0) + '%' : '\u2014'}</td>
                     <td class="text-right">${r._total_funded_value ? fmtCur(r._total_funded_value) : '\u2014'}</td>
                     <td class="text-right">${r.cc_appvd > 0 ? fmtNum(r.cc_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.deposit_appvd > 0 ? fmtNum(r.deposit_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.personal_appvd > 0 ? fmtNum(r.personal_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.vehicle_appvd > 0 ? fmtNum(r.vehicle_appvd) : '\u2014'}</td>
                     <td class="text-right">${r.heloc_appvd > 0 ? fmtNum(r.heloc_appvd) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── All Keywords Table (flat, unscoped) ──
+        function renderAllKeywords() {
+            setHead([
+                ['keyword', 'Keyword', false],
+                ['campaign_name', 'Campaign', false],
+                ['ad_group_name', 'Ad Group', false],
+                ['match_type', 'Match', false],
+                ['_roas', 'ROAS', true],
+                ['cost', 'Cost', true],
+                ['clicks', 'Clicks', true],
+                ['_cpc', '$/Click', true],
+                ['_cpa_app', '$/App', true],
+                ['_cpa_funded', '$/Funded', true],
+                ['apps', 'Apps', true],
+                ['approved', 'Approved', true],
+                ['funded', 'Funded', true],
+                ['value', 'Booked $', true],
+                ['_roi', 'ROI', true],
+                ['cc_appvd', 'CC', true],
+                ['deposit_appvd', 'Deposit', true],
+                ['personal_appvd', 'Personal', true],
+                ['vehicle_appvd', 'Vehicle', true],
+                ['heloc_appvd', 'HELOC', true]
+            ]);
+
+            let data = keywordData.map(r => ({
+                ...r,
+                _roas: r.cost > 0 ? (r.value || 0) / r.cost : null,
+                _roi: r.cost > 0 ? ((r.value || 0) / r.cost - 1) : null,
+                _cpc: r.clicks > 0 ? r.cost / r.clicks : null,
+                _cpa_app: (r.apps || 0) > 0 ? r.cost / r.apps : null,
+                _cpa_funded: (r.funded || 0) > 0 ? r.cost / r.funded : null,
+            }));
+
+            // Match type filter
+            data = data.filter(r => matchFilters[r.match_type] !== false);
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r =>
+                    r.keyword.toLowerCase().includes(t) ||
+                    r.campaign_name.toLowerCase().includes(t) ||
+                    r.ad_group_name.toLowerCase().includes(t)
+                );
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'keyword');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.keyword)}</td>
+                    <td>${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td>${escapeHtml(r.ad_group_name)}</td>
+                    <td><span class="match-badge match-${r.match_type}">${r.match_type}</span></td>
+                    <td class="text-right">${r._roas !== null ? r._roas.toFixed(2) + 'x' : '\u2014'}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${r._cpc !== null ? fmtCur(r._cpc) : '\u2014'}</td>
+                    <td class="text-right">${r._cpa_app !== null ? fmtCur(r._cpa_app) : '\u2014'}</td>
+                    <td class="text-right">${r._cpa_funded !== null ? fmtCur(r._cpa_funded) : '\u2014'}</td>
+                    <td class="text-right">${(r.apps || 0) > 0 ? fmtNum(r.apps) : '\u2014'}</td>
+                    <td class="text-right">${(r.approved || 0) > 0 ? fmtNum(r.approved) : '\u2014'}</td>
+                    <td class="text-right">${(r.funded || 0) > 0 ? fmtNum(r.funded) : '\u2014'}</td>
+                    <td class="text-right">${(r.value || 0) > 0 ? fmtCur(r.value) : '\u2014'}</td>
+                    <td class="text-right">${r._roi !== null ? (r._roi * 100).toFixed(0) + '%' : '\u2014'}</td>
+                    <td class="text-right">${(r.cc_appvd || 0) > 0 ? fmtNum(r.cc_appvd) : '\u2014'}</td>
+                    <td class="text-right">${(r.deposit_appvd || 0) > 0 ? fmtNum(r.deposit_appvd) : '\u2014'}</td>
+                    <td class="text-right">${(r.personal_appvd || 0) > 0 ? fmtNum(r.personal_appvd) : '\u2014'}</td>
+                    <td class="text-right">${(r.vehicle_appvd || 0) > 0 ? fmtNum(r.vehicle_appvd) : '\u2014'}</td>
+                    <td class="text-right">${(r.heloc_appvd || 0) > 0 ? fmtNum(r.heloc_appvd) : '\u2014'}</td>`;
                 tbody.appendChild(tr);
             });
         }
