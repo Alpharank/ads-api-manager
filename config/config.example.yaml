@@ -1,25 +1,12 @@
-# Google Ads API Configuration
+# Google Ads API Configuration — FuturProof Labs
 # Copy this file to config.yaml and fill in your credentials.
 
 google_ads:
-  developer_token: "YOUR_DEVELOPER_TOKEN"
-  client_id: "YOUR_OAUTH_CLIENT_ID.apps.googleusercontent.com"
-  client_secret: "YOUR_OAUTH_CLIENT_SECRET"
-  refresh_token: "YOUR_REFRESH_TOKEN"
-  login_customer_id: "9738614464"  # Alpharank Manager Account (no dashes)
+  developer_token: "JFdotF3qY07DJrOOram05A"
+  client_id: "243432702432-ikai8elvur8t77tgt1ec62fg01k3t5mu.apps.googleusercontent.com"
+  client_secret: "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"
+  refresh_token: "YOUR_REFRESH_TOKEN"  # Run: python scripts/generate_refresh_token.py
+  login_customer_id: "4023987894"  # FuturProof MCC (402-398-7894, no dashes)
 
-aws:
-  bucket: "ai.alpharank.core"
-  prefix: "ad-spend-reports"
-  region: "us-east-1"
-
-# Map Google Ads Customer IDs to internal client_id names
-# Format: "google_ads_customer_id": "client_id" (no dashes in customer ID)
-client_mapping:
-  "6608894256": "altura_ad_account"
-  "9001645164": "californiacoast_cu"
-  "7306319113": "commonwealth_one_fcu"
-  "2941063412": "first_commonwealth_bank"
-  "4668771744": "firstcommunity_cu"
-  "7543892333": "kitsap_cu"
-  "7636280979": "publicservice_cu"
+# Client accounts will be auto-discovered from MCC
+client_mapping: {}
