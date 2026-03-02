@@ -1,0 +1,10 @@
+campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,car shipping canada,BROAD,2,0,0.0,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,vehicle transport,BROAD,4,1,0.152547,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipping,BROAD,2,1,0.51749,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car transport company,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,ship a car,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,transport services,BROAD,2,0,0.0,0.0
+22975956367,MOF - US to US,186415713044,MOF-US,auto transport,PHRASE,1,0,0.0,0.0
+22975956367,MOF - US to US,186415713044,MOF-US,car transport,PHRASE,1,0,0.0,0.0
+22975956367,MOF - US to US,186415713044,MOF-US,transport car transport,PHRASE,4,0,0.0,0.0

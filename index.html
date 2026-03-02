@@ -1868,6 +1868,16 @@
                     <svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1" fill="currentColor"/><rect x="10" y="9" width="4" height="12" rx="1" fill="currentColor"/><rect x="17" y="4" width="4" height="17" rx="1" fill="currentColor"/></svg>
                     <span>Keyword Charts</span>
                 </div>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Semrush Intelligence</div>
+                <div class="sidebar-item" data-level="recommendations" onclick="navigateToLevel('recommendations')">
+                    <svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z" fill="currentColor"/></svg>
+                    <span>Recommendations</span>
+                </div>
+                <div class="sidebar-item" data-level="competitors" onclick="navigateToLevel('competitors')">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/></svg>
+                    <span>Competitor Intel</span>
+                </div>
 
                 <!-- Current Selection Panel -->
                 <div id="currentSelectionPanel" class="current-selection hidden">
@@ -2350,7 +2360,9 @@
 
         // ── Client config (MCC 402-398-7894) ──
         // Will be populated dynamically as accounts are added to the MCC
-        const _clientMap = {};
+        const _clientMap = {
+            'embenauto': { id: 'embenauto', name: 'Snowbird Shipping', stripPrefix: '' }
+        };
 
         let authedUser = null;
 
@@ -2400,8 +2412,11 @@
                 if (token && _clientMap[token]) {
                     clientConfig = _clientMap[token];
                 } else {
-                    // Default: show MCC-level dashboard
-                    clientConfig = { id: 'mcc_overview', name: 'MCC Overview (402-398-7894)' };
+                    // Default: load first available client, or MCC overview
+                    const firstKey = Object.keys(_clientMap)[0];
+                    clientConfig = firstKey
+                        ? _clientMap[firstKey]
+                        : { id: 'mcc_overview', name: 'MCC Overview (499-723-5286)' };
                 }
 
                 dataManifest = await (await fetch('data-manifest.json')).json().catch(() => ({}));
@@ -3137,6 +3152,10 @@
                 bar.appendChild(makeCurrent('Channel performance'));
             } else if (currentLevel === 'whenwhere') {
                 bar.appendChild(makeCurrent('When & Where'));
+            } else if (currentLevel === 'recommendations') {
+                bar.appendChild(makeCurrent('Semrush Recommendations'));
+            } else if (currentLevel === 'competitors') {
+                bar.appendChild(makeCurrent('Competitor Intelligence'));
             }
         }
 
@@ -3149,7 +3168,9 @@
                 searchterms: 'Search terms',
                 negativekeywords: 'Negative Keywords',
                 channels: 'Channel Performance',
-                whenwhere: 'When & Where'
+                whenwhere: 'When & Where',
+                recommendations: 'Semrush Recommendations',
+                competitors: 'Competitor Intelligence'
             };
             document.getElementById('viewTitle').textContent = titles[currentLevel] || 'Dashboard';
         }
@@ -3212,6 +3233,8 @@
             else if (currentLevel === 'negativekeywords') renderNegativeKeywords();
             else if (currentLevel === 'channels') renderChannels();
             else if (currentLevel === 'whenwhere') renderWhenWhere();
+            else if (currentLevel === 'recommendations') renderRecommendations();
+            else if (currentLevel === 'competitors') renderCompetitors();
         }
 
         // ── Campaigns Table ──
@@ -4295,6 +4318,264 @@
                 closeKwCharts();
             }
         });
+
+        // ── Semrush Recommendations ──
+        let semrushRecommendations = null;
+
+        async function loadSemrushData() {
+            if (semrushRecommendations) return semrushRecommendations;
+            try {
+                const base = `data/${clientConfig.id}`;
+                const resp = await fetch(`${base}/recommendations/latest.json`);
+                if (!resp.ok) return null;
+                semrushRecommendations = await resp.json();
+                return semrushRecommendations;
+            } catch (e) {
+                console.warn('No Semrush recommendations found:', e);
+                return null;
+            }
+        }
+
+        async function renderRecommendations() {
+            const mc = document.querySelector('.main-content');
+            const recs = await loadSemrushData();
+            if (!recs) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Semrush Recommendations Available</h3>
+                    <p>Run <code>python scripts/semrush_analyzer.py</code> to generate recommendations.</p>
+                </div>`;
+                return;
+            }
+
+            const s = recs.summary;
+            let html = `
+            <div style="padding:24px;max-width:1200px;">
+                <!-- Summary Cards -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px;">
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#C9A227;">${s.new_keyword_opportunities}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">New Keyword Opps</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#1d1d1f;">${s.bid_adjustment_suggestions}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Bid Adjustments</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#dc2626;">${s.negative_keyword_suggestions}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Neg. Keyword Suggestions</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#1d1d1f;">${s.competitors_analyzed}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Competitors Analyzed</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#1d1d1f;">$${(s.total_spend || 0).toLocaleString(undefined, {minimumFractionDigits: 0, maximumFractionDigits: 0})}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Total Spend Analyzed</div>
+                    </div>
+                </div>
+
+                <!-- Bid Adjustments -->
+                ${recs.bid_adjustments.length ? `
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Bid Adjustment Recommendations</h3>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px;color:#86868b;">Action</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Keyword</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Your CPC</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Market CPC</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Volume</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Conv Rate</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${recs.bid_adjustments.map(b => `
+                                <tr style="border-bottom:1px solid #f1f1f1;">
+                                    <td style="padding:8px;"><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:${b.action === 'increase_bid' ? '#22c55e' : '#dc2626'};">${b.action === 'increase_bid' ? 'INCREASE' : 'DECREASE'}</span></td>
+                                    <td style="padding:8px;font-weight:500;">${b.keyword}</td>
+                                    <td style="padding:8px;text-align:right;">$${(b.current_cpc || 0).toFixed(2)}</td>
+                                    <td style="padding:8px;text-align:right;">$${(b.market_cpc || 0).toFixed(2)}</td>
+                                    <td style="padding:8px;text-align:right;">${(b.volume || 0).toLocaleString()}</td>
+                                    <td style="padding:8px;text-align:right;">${(b.your_conv_rate || 0).toFixed(1)}%</td>
+                                    <td style="padding:8px;color:#86868b;font-size:12px;max-width:300px;">${b.reason}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ` : ''}
+
+                <!-- Campaign Structure -->
+                ${recs.campaign_structure.length ? `
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Campaign Structure Suggestions</h3>
+                    ${recs.campaign_structure.map(c => `
+                        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f1f1f1;">
+                            <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:${c.priority === 'high' ? '#C9A227' : '#6b7280'};white-space:nowrap;">${c.priority.toUpperCase()}</span>
+                            <div>
+                                <div style="font-weight:600;color:#1d1d1f;">${c.campaign}</div>
+                                <div style="color:#86868b;font-size:13px;margin-top:4px;">${c.reason}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                ` : ''}
+
+                <!-- Keyword Opportunities -->
+                ${recs.keyword_opportunities.length ? `
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 4px 0;">Keyword Opportunities</h3>
+                    <p style="color:#86868b;font-size:13px;margin:0 0 16px 0;">Keywords you're not bidding on that have high search volume in your market.</p>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px;color:#86868b;">Priority</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Keyword</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Volume</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">CPC</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Competition</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Source</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${recs.keyword_opportunities.slice(0, 25).map(o => `
+                                <tr style="border-bottom:1px solid #f1f1f1;">
+                                    <td style="padding:8px;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${o.priority === 'high' ? '#C9A227' : '#d1d5db'};"></span></td>
+                                    <td style="padding:8px;font-weight:500;">${o.keyword}</td>
+                                    <td style="padding:8px;text-align:right;">${(o.volume || 0).toLocaleString()}</td>
+                                    <td style="padding:8px;text-align:right;">$${(o.cpc || 0).toFixed(2)}</td>
+                                    <td style="padding:8px;text-align:right;">${(o.competition || 0).toFixed(2)}</td>
+                                    <td style="padding:8px;color:#86868b;font-size:12px;">${(o.source || '').replace('competitor:', '').replace('semrush_related', 'Related KW')}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                    ${recs.keyword_opportunities.length > 25 ? `<div style="padding:12px 8px;color:#86868b;font-size:12px;">+ ${recs.keyword_opportunities.length - 25} more opportunities in recommendations/keyword_opportunities.csv</div>` : ''}
+                </div>
+                ` : ''}
+
+                <!-- Negative Keyword Suggestions -->
+                ${recs.negative_keyword_suggestions.length ? `
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Negative Keyword Suggestions</h3>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px;color:#86868b;">Search Term</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Reason</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Clicks</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Wasted Spend</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Matched Keyword</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${recs.negative_keyword_suggestions.map(n => `
+                                <tr style="border-bottom:1px solid #f1f1f1;">
+                                    <td style="padding:8px;font-weight:500;">${n.term}</td>
+                                    <td style="padding:8px;"><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:${n.reason === 'competitor_brand' ? '#fef3cd' : '#f3e8ff'};color:${n.reason === 'competitor_brand' ? '#856404' : '#6b21a8'};">${n.reason.replace('_', ' ')}</span></td>
+                                    <td style="padding:8px;text-align:right;">${n.clicks}</td>
+                                    <td style="padding:8px;text-align:right;color:#dc2626;">$${(n.cost || 0).toFixed(2)}</td>
+                                    <td style="padding:8px;color:#86868b;">${n.matched_keyword}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+                ` : ''}
+
+                <div style="text-align:center;color:#86868b;font-size:12px;padding:16px;">
+                    Generated: ${recs.generated_at ? new Date(recs.generated_at).toLocaleString() : 'Unknown'} | Data source: Semrush API + Google Ads
+                </div>
+            </div>`;
+
+            mc.innerHTML = html;
+        }
+
+        async function renderCompetitors() {
+            const mc = document.querySelector('.main-content');
+            const recs = await loadSemrushData();
+            if (!recs || !recs.competitor_insights || !recs.competitor_insights.length) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Competitor Data Available</h3>
+                    <p>Run <code>python scripts/semrush_analyzer.py</code> to analyze competitors.</p>
+                </div>`;
+                return;
+            }
+
+            let html = `<div style="padding:24px;max-width:1200px;">`;
+
+            for (const comp of recs.competitor_insights) {
+                html += `
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                        <h3 style="font-size:18px;font-weight:600;color:#1d1d1f;margin:0;">${comp.competitor}</h3>
+                        <div style="display:flex;gap:16px;">
+                            <div style="text-align:center;">
+                                <div style="font-size:20px;font-weight:700;color:#C9A227;">${comp.total_paid_keywords}</div>
+                                <div style="font-size:11px;color:#86868b;">Paid KWs</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:20px;font-weight:700;color:#22c55e;">${comp.overlap_with_you}</div>
+                                <div style="font-size:11px;color:#86868b;">Overlap</div>
+                            </div>
+                            <div style="text-align:center;">
+                                <div style="font-size:20px;font-weight:700;color:#dc2626;">${comp.unique_to_competitor}</div>
+                                <div style="font-size:11px;color:#86868b;">Unique to Them</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    ${comp.top_unique_keywords && comp.top_unique_keywords.length ? `
+                    <div style="margin-bottom:16px;">
+                        <h4 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 8px 0;">Keywords They Bid On (You Don't)</h4>
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="border-bottom:2px solid #e5e5e5;">
+                                    <th style="text-align:left;padding:6px 8px;color:#86868b;">Keyword</th>
+                                    <th style="text-align:right;padding:6px 8px;color:#86868b;">Volume</th>
+                                    <th style="text-align:right;padding:6px 8px;color:#86868b;">CPC</th>
+                                    <th style="text-align:right;padding:6px 8px;color:#86868b;">Ad Pos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${comp.top_unique_keywords.slice(0, 10).map(k => `
+                                    <tr style="border-bottom:1px solid #f1f1f1;">
+                                        <td style="padding:6px 8px;font-weight:500;">${k.keyword}</td>
+                                        <td style="padding:6px 8px;text-align:right;">${(k.volume || 0).toLocaleString()}</td>
+                                        <td style="padding:6px 8px;text-align:right;">$${(k.cpc || 0).toFixed(2)}</td>
+                                        <td style="padding:6px 8px;text-align:right;">${k.position || '-'}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                    ` : ''}
+
+                    ${comp.top_organic_keywords && comp.top_organic_keywords.length ? `
+                    <div>
+                        <h4 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 8px 0;">Top Organic Keywords</h4>
+                        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+                            ${comp.top_organic_keywords.slice(0, 10).map(k => `
+                                <span style="display:inline-block;padding:4px 12px;border-radius:16px;background:#f1f3f4;font-size:12px;color:#1d1d1f;">
+                                    ${k.keyword} <span style="color:#86868b;">(${(k.volume || 0).toLocaleString()})</span>
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>`;
+            }
+
+            html += `
+                <div style="text-align:center;color:#86868b;font-size:12px;padding:16px;">
+                    Generated: ${recs.generated_at ? new Date(recs.generated_at).toLocaleString() : 'Unknown'} | Data source: Semrush API
+                </div>
+            </div>`;
+
+            mc.innerHTML = html;
+        }
 
         // ── Global Keyword Charts ──
         function showGlobalKwCharts() {

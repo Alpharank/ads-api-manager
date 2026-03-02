@@ -1,9 +1,0 @@
-campaign_id,campaign_name,apps,approved,funded,production,value,cpf,avg_funded_value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
-23228929821,KCU - Personal - Brand,11,2,0,0.0,0.0,0,0.0,0,1,1,0,0
-23238626386,KCU - Personal - NB,2,1,0,0.0,0.0,0,0.0,0,1,0,0,0
-23379709610,KCU - Personal - Brand Brand Geo Test,6,2,0,0.0,0.0,0,0.0,0,0,0,1,1
-23434304363,KCU - pMax - 10 Mo Cert,25,1,1,2500.0,1500.0,0,1500.0,0,1,0,0,0
-23519040207,KCU - pMax - Peak,10,0,0,0.0,0.0,0,0.0,0,0,0,0,0
-23519667804,KCU - DG - Business Checking,5,0,0,0.0,0.0,0,0.0,0,0,0,0,0
-23523988022,KCU - DG - Peak,5,0,0,0.0,0.0,0,0.0,0,0,0,0,0
-23529409807,KCU - pMax - 7 Month Cert,13,1,1,11909.76,1667.3664,0,1667.37,0,0,0,1,0

@@ -1,3 +1,0 @@
-date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
-2025-11-17,22527054383,CWO_Checking_Search,180103857758,Checking,online checking account,PHRASE,1,1,1,11158.06,2901.0956,0,0,1,0,0
-2025-11-18,22527054383,CWO_Checking_Search,180103857758,Checking,bank checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0

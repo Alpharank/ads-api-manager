@@ -1,0 +1,631 @@
+{
+  "keyword_data": {
+    "auto shipping company": {
+      "keyword": "auto shipping company",
+      "volume": 1300,
+      "cpc": 7.98,
+      "competition": 0.29
+    },
+    "car moving": {
+      "keyword": "car moving",
+      "volume": 1300,
+      "cpc": 0.9,
+      "competition": 0.02
+    },
+    "car carrier": {
+      "keyword": "car carrier",
+      "volume": 4400,
+      "cpc": 4.76,
+      "competition": 0.35
+    },
+    "ship us": {
+      "keyword": "ship us",
+      "volume": 110,
+      "cpc": 4.88,
+      "competition": 0.15
+    },
+    "auto shipping cost": {
+      "keyword": "auto shipping cost",
+      "volume": 1000,
+      "cpc": 4.52,
+      "competition": 0.79
+    },
+    "shipping prices": {
+      "keyword": "shipping prices",
+      "volume": 1900,
+      "cpc": 1.29,
+      "competition": 0.56
+    },
+    "vehicle transport": {
+      "keyword": "vehicle transport",
+      "volume": 6600,
+      "cpc": 7.27,
+      "competition": 0.67
+    },
+    "car transport to florida": {
+      "keyword": "car transport to florida",
+      "volume": 480,
+      "cpc": 5.66,
+      "competition": 0.72
+    },
+    "ship your car": {
+      "keyword": "ship your car",
+      "volume": 1900,
+      "cpc": 7.63,
+      "competition": 0.86
+    },
+    "ship car from canada to usa": {
+      "keyword": "ship car from canada to usa",
+      "volume": 30,
+      "cpc": 3.92,
+      "competition": 0.32
+    },
+    "vehicle transport to florida": {
+      "keyword": "vehicle transport to florida",
+      "volume": 0,
+      "cpc": 7.35,
+      "competition": 0.63
+    },
+    "car shipping services": {
+      "keyword": "car shipping services",
+      "volume": 2900,
+      "cpc": 8.09,
+      "competition": 0.45
+    },
+    "auto moving companies": {
+      "keyword": "auto moving companies",
+      "volume": 590,
+      "cpc": 8.2,
+      "competition": 0.67
+    },
+    "car hauling near me": {
+      "keyword": "car hauling near me",
+      "volume": 480,
+      "cpc": 3.75,
+      "competition": 0.84
+    },
+    "montway auto transport quote": {
+      "keyword": "montway auto transport quote",
+      "volume": 30,
+      "cpc": 6.14,
+      "competition": 0.72
+    },
+    "transport services": {
+      "keyword": "transport services",
+      "volume": 2900,
+      "cpc": 2.97,
+      "competition": 0.34
+    },
+    "enclosed auto transport companies": {
+      "keyword": "enclosed auto transport companies",
+      "volume": 720,
+      "cpc": 7.73,
+      "competition": 0.58
+    },
+    "shipping rates": {
+      "keyword": "shipping rates",
+      "volume": 3600,
+      "cpc": 2.26,
+      "competition": 0.59
+    },
+    "cross border car shipping": {
+      "keyword": "cross border car shipping",
+      "volume": 20,
+      "cpc": 0.0,
+      "competition": 0.86
+    },
+    "car transport company": {
+      "keyword": "car transport company",
+      "volume": 2900,
+      "cpc": 7.94,
+      "competition": 0.36
+    },
+    "cars hauler": {
+      "keyword": "cars hauler",
+      "volume": 260,
+      "cpc": 3.86,
+      "competition": 0.82
+    },
+    "best rated auto transport companies": {
+      "keyword": "best rated auto transport companies",
+      "volume": 720,
+      "cpc": 7.35,
+      "competition": 0.81
+    },
+    "car hauling": {
+      "keyword": "car hauling",
+      "volume": 1900,
+      "cpc": 3.86,
+      "competition": 0.82
+    },
+    "vehicle transportation services": {
+      "keyword": "vehicle transportation services",
+      "volume": 1900,
+      "cpc": 7.05,
+      "competition": 0.66
+    },
+    "international car shipping canada": {
+      "keyword": "international car shipping canada",
+      "volume": 20,
+      "cpc": 0.0,
+      "competition": 0.29
+    },
+    "car transportation service": {
+      "keyword": "car transportation service",
+      "volume": 2400,
+      "cpc": 7.11,
+      "competition": 0.9
+    },
+    "car shipping quote": {
+      "keyword": "car shipping quote",
+      "volume": 2900,
+      "cpc": 7.74,
+      "competition": 0.46
+    },
+    "auto transport services": {
+      "keyword": "auto transport services",
+      "volume": 6600,
+      "cpc": 7.05,
+      "competition": 0.66
+    },
+    "snowbird auto transport": {
+      "keyword": "snowbird auto transport",
+      "volume": 140,
+      "cpc": 3.25,
+      "competition": 0.71
+    },
+    "snowbird auto shipping": {
+      "keyword": "snowbird auto shipping",
+      "volume": 30,
+      "cpc": 4.58,
+      "competition": 0.77
+    },
+    "car shipping cost": {
+      "keyword": "car shipping cost",
+      "volume": 8100,
+      "cpc": 4.52,
+      "competition": 0.79
+    },
+    "car transport": {
+      "keyword": "car transport",
+      "volume": 14800,
+      "cpc": 7.09,
+      "competition": 0.64
+    },
+    "car transport service": {
+      "keyword": "car transport service",
+      "volume": 12100,
+      "cpc": 7.05,
+      "competition": 0.66
+    },
+    "car shipping to usa": {
+      "keyword": "car shipping to usa",
+      "volume": 70,
+      "cpc": 5.25,
+      "competition": 0.7
+    },
+    "ship car": {
+      "keyword": "ship car",
+      "volume": 2900,
+      "cpc": 7.58,
+      "competition": 0.64
+    },
+    "car transport companies": {
+      "keyword": "car transport companies",
+      "volume": 9900,
+      "cpc": 7.94,
+      "competition": 0.36
+    },
+    "international shipping": {
+      "keyword": "international shipping",
+      "volume": 12100,
+      "cpc": 2.14,
+      "competition": 0.48
+    },
+    "shipping quote": {
+      "keyword": "shipping quote",
+      "volume": 3600,
+      "cpc": 4.55,
+      "competition": 0.78
+    },
+    "auto transport": {
+      "keyword": "auto transport",
+      "volume": 14800,
+      "cpc": 7.67,
+      "competition": 0.67
+    },
+    "reliable auto transport": {
+      "keyword": "reliable auto transport",
+      "volume": 1300,
+      "cpc": 4.26,
+      "competition": 0.7
+    },
+    "auto transport company": {
+      "keyword": "auto transport company",
+      "volume": 3600,
+      "cpc": 7.94,
+      "competition": 0.36
+    },
+    "car moving companies": {
+      "keyword": "car moving companies",
+      "volume": 2400,
+      "cpc": 7.39,
+      "competition": 0.81
+    },
+    "car truck transport": {
+      "keyword": "car truck transport",
+      "volume": 140,
+      "cpc": 3.81,
+      "competition": 0.38
+    },
+    "motor freight shipping": {
+      "keyword": "motor freight shipping",
+      "volume": 30,
+      "cpc": 7.14,
+      "competition": 0.67
+    },
+    "car shipping company": {
+      "keyword": "car shipping company",
+      "volume": 2900,
+      "cpc": 7.98,
+      "competition": 0.29
+    },
+    "car shipping michigan to florida": {
+      "keyword": "car shipping michigan to florida",
+      "volume": 0,
+      "cpc": 0.0,
+      "competition": 0.0
+    },
+    "shipping to usa": {
+      "keyword": "shipping to usa",
+      "volume": 260,
+      "cpc": 2.34,
+      "competition": 0.18
+    },
+    "car shipping": {
+      "keyword": "car shipping",
+      "volume": 22200,
+      "cpc": 7.58,
+      "competition": 0.64
+    },
+    "car ship guys": {
+      "keyword": "car ship guys",
+      "volume": 390,
+      "cpc": 3.9,
+      "competition": 0.9
+    },
+    "truck shipping rates": {
+      "keyword": "truck shipping rates",
+      "volume": 110,
+      "cpc": 5.87,
+      "competition": 0.42
+    },
+    "ship car from toronto to florida": {
+      "keyword": "ship car from toronto to florida",
+      "volume": 30,
+      "cpc": 0.0,
+      "competition": 0.4
+    },
+    "ship a car": {
+      "keyword": "ship a car",
+      "volume": 2900,
+      "cpc": 6.73,
+      "competition": 0.83
+    },
+    "automobile transport": {
+      "keyword": "automobile transport",
+      "volume": 1300,
+      "cpc": 7.92,
+      "competition": 0.7
+    },
+    "car shipping companies near me": {
+      "keyword": "car shipping companies near me",
+      "volume": 1000,
+      "cpc": 8.4,
+      "competition": 0.6
+    },
+    "vehicle transport company": {
+      "keyword": "vehicle transport company",
+      "volume": 1000,
+      "cpc": 7.94,
+      "competition": 0.36
+    },
+    "vehicle shipping canada to usa": {
+      "keyword": "vehicle shipping canada to usa",
+      "volume": 50,
+      "cpc": 4.13,
+      "competition": 0.24
+    },
+    "vehicle transport quote": {
+      "keyword": "vehicle transport quote",
+      "volume": 1900,
+      "cpc": 8.38,
+      "competition": 0.63
+    },
+    "cost to ship car from canada to us": {
+      "keyword": "cost to ship car from canada to us",
+      "volume": 20,
+      "cpc": 0.0,
+      "competition": 0.0
+    },
+    "shipping to florida": {
+      "keyword": "shipping to florida",
+      "volume": 90,
+      "cpc": 4.15,
+      "competition": 0.68
+    },
+    "auto haul": {
+      "keyword": "auto haul",
+      "volume": 140,
+      "cpc": 4.01,
+      "competition": 0.35
+    },
+    "car shipping canada": {
+      "keyword": "car shipping canada",
+      "volume": 590,
+      "cpc": 3.52,
+      "competition": 0.02
+    },
+    "car shipping to florida": {
+      "keyword": "car shipping to florida",
+      "volume": 110,
+      "cpc": 6.46,
+      "competition": 0.63
+    },
+    "vehicle transport companies": {
+      "keyword": "vehicle transport companies",
+      "volume": 1600,
+      "cpc": 8.27,
+      "competition": 0.7
+    },
+    "montway transportation": {
+      "keyword": "montway transportation",
+      "volume": 50,
+      "cpc": 5.0,
+      "competition": 0.72
+    },
+    "vehicle shipping": {
+      "keyword": "vehicle shipping",
+      "volume": 4400,
+      "cpc": 7.96,
+      "competition": 0.82
+    },
+    "top rated car transport companies": {
+      "keyword": "top rated car transport companies",
+      "volume": 1000,
+      "cpc": 6.96,
+      "competition": 0.82
+    },
+    "car shipments": {
+      "keyword": "car shipments",
+      "volume": 320,
+      "cpc": 7.7,
+      "competition": 0.39
+    },
+    "best car transport": {
+      "keyword": "best car transport",
+      "volume": 590,
+      "cpc": 7.46,
+      "competition": 0.67
+    }
+  },
+  "related_keywords": [
+    {
+      "keyword": "car shipping companies",
+      "volume": 27100,
+      "cpc": 7.98,
+      "competition": 0.29,
+      "relevance": 0.5
+    },
+    {
+      "keyword": "auto transport",
+      "volume": 14800,
+      "cpc": 7.67,
+      "competition": 0.67,
+      "relevance": 0.4
+    },
+    {
+      "keyword": "car transport",
+      "volume": 14800,
+      "cpc": 7.09,
+      "competition": 0.64,
+      "relevance": 0.5
+    },
+    {
+      "keyword": "auto transport companies",
+      "volume": 12100,
+      "cpc": 7.94,
+      "competition": 0.36,
+      "relevance": 0.4
+    },
+    {
+      "keyword": "car transport service",
+      "volume": 12100,
+      "cpc": 7.05,
+      "competition": 0.66,
+      "relevance": 0.55
+    },
+    {
+      "keyword": "cars transporteur",
+      "volume": 12100,
+      "cpc": 7.09,
+      "competition": 0.64,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "car shipping quotes",
+      "volume": 9900,
+      "cpc": 7.74,
+      "competition": 0.46,
+      "relevance": 0.35
+    },
+    {
+      "keyword": "car transport companies",
+      "volume": 9900,
+      "cpc": 7.94,
+      "competition": 0.36,
+      "relevance": 0.5
+    },
+    {
+      "keyword": "car shipping cost",
+      "volume": 8100,
+      "cpc": 4.52,
+      "competition": 0.79,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "car transport services",
+      "volume": 8100,
+      "cpc": 7.05,
+      "competition": 0.66,
+      "relevance": 0.55
+    },
+    {
+      "keyword": "cross country car shipping",
+      "volume": 8100,
+      "cpc": 6.95,
+      "competition": 0.43,
+      "relevance": 0.2
+    },
+    {
+      "keyword": "vehicle transport services",
+      "volume": 8100,
+      "cpc": 7.05,
+      "competition": 0.66,
+      "relevance": 0.45
+    },
+    {
+      "keyword": "auto transport services",
+      "volume": 6600,
+      "cpc": 7.05,
+      "competition": 0.66,
+      "relevance": 0.5
+    },
+    {
+      "keyword": "car delivery service",
+      "volume": 6600,
+      "cpc": 4.9,
+      "competition": 0.8,
+      "relevance": 0.45
+    },
+    {
+      "keyword": "car transport agencies",
+      "volume": 6600,
+      "cpc": 7.94,
+      "competition": 0.36,
+      "relevance": 0.25
+    },
+    {
+      "keyword": "central dispatch",
+      "volume": 90500,
+      "cpc": 0.4,
+      "competition": 0.08,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "car shipping",
+      "volume": 22200,
+      "cpc": 7.58,
+      "competition": 0.64,
+      "relevance": 0.5
+    },
+    {
+      "keyword": "central dispatch login",
+      "volume": 9900,
+      "cpc": 2.62,
+      "competition": 0.01,
+      "relevance": 0.15
+    },
+    {
+      "keyword": "car delivery",
+      "volume": 5400,
+      "cpc": 5.37,
+      "competition": 0.71,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "auto transport fort lauderdale",
+      "volume": 210,
+      "cpc": 7.24,
+      "competition": 0.93,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "snowbird car transport",
+      "volume": 110,
+      "cpc": 3.58,
+      "competition": 0.27,
+      "relevance": 0.6
+    },
+    {
+      "keyword": "ship car from florida to ontario",
+      "volume": 90,
+      "cpc": 0.0,
+      "competition": 0.0,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "snowbird transport for cars",
+      "volume": 90,
+      "cpc": 3.12,
+      "competition": 0.74,
+      "relevance": 0.7
+    },
+    {
+      "keyword": "auto transport companies fort lauderdale",
+      "volume": 70,
+      "cpc": 0.0,
+      "competition": 0.33,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "snowbird vehicle relocation",
+      "volume": 70,
+      "cpc": 1.71,
+      "competition": 0.71,
+      "relevance": 0.6
+    },
+    {
+      "keyword": "snowbirds auto connection",
+      "volume": 70,
+      "cpc": 2.41,
+      "competition": 0.49,
+      "relevance": 0.15
+    },
+    {
+      "keyword": "nexus auto transport",
+      "volume": 8100,
+      "cpc": 6.12,
+      "competition": 0.71,
+      "relevance": 0.1
+    },
+    {
+      "keyword": "services car transport",
+      "volume": 6600,
+      "cpc": 7.05,
+      "competition": 0.66,
+      "relevance": 0.6
+    },
+    {
+      "keyword": "vehicle transport",
+      "volume": 6600,
+      "cpc": 7.27,
+      "competition": 0.67,
+      "relevance": 0.25
+    },
+    {
+      "keyword": "auto shipping",
+      "volume": 5400,
+      "cpc": 8.33,
+      "competition": 0.63,
+      "relevance": 0.3
+    },
+    {
+      "keyword": "best car shipping companies",
+      "volume": 5400,
+      "cpc": 7.96,
+      "competition": 0.49,
+      "relevance": 0.15
+    }
+  ]
+}

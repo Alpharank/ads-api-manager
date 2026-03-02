@@ -1,0 +1,4 @@
+term,reason,clicks,cost,matched_keyword
+a1 auto transport,competitor_brand,2,9.4,car shipping
+car moving companies near me,irrelevant_intent,2,6.94,vehicle transport
+car transport to florida near me,irrelevant_intent,2,8.0,car shipping

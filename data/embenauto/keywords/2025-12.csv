@@ -1,0 +1,54 @@
+campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,impressions,clicks,cost,conversions
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,automobile transport,BROAD,139,9,20.620513000000003,1.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,car shipping canada,BROAD,522,22,62.299341,6.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,car shipping to florida,BROAD,6,3,9.530000000000001,1.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,car shipping to usa,BROAD,15,0,0.0,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,car transport service,BROAD,189,13,27.245342,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,cross border car shipping,BROAD,2,1,3.214766,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,ship car from canada to usa,BROAD,4,1,3.7,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,ship car from toronto to florida,BROAD,6,2,8.020198,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,shipping to florida,BROAD,12,0,0.0,0.0
+22941603101,Canada-US,183793632879,BOF Canada-US Exact,vehicle transport,BROAD,7021,551,1880.055753,190.999744
+22941603101,Canada-US,183793632919,MOF Canada-US Phrase,Snowbird auto transport,BROAD,147,20,49.157835,6.0
+22941603101,Canada-US,183793632919,MOF Canada-US Phrase,car shipping cost,BROAD,16,1,3.451082,0.0
+22941603101,Canada-US,183793632919,MOF Canada-US Phrase,car transport service,BROAD,27,1,8.615465,1.0
+22941603101,Canada-US,183793632919,MOF Canada-US Phrase,car transport to florida,BROAD,67,5,6.67,0.0
+22941603101,Canada-US,183793632919,MOF Canada-US Phrase,international car shipping canada,BROAD,3,0,0.0,0.0
+22941603101,Canada-US,183793632919,MOF Canada-US Phrase,vehicle transport to florida,BROAD,2,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,car hauling,BROAD,3,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,car moving companies,BROAD,2,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,car ship guys,BROAD,1,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,car shipping,BROAD,1224,91,271.78471,18.999051
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,car shipping companies near me,BROAD,3,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,car transport to florida,BROAD,16,1,1.2,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,international shipping,BROAD,530,24,51.215608,3.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,reliable auto transport,BROAD,2,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,ship your car,BROAD,2,0,0.0,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,snowbird auto shipping,BROAD,109,11,15.458543,6.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,vehicle shipping,BROAD,22,2,4.23,0.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,vehicle transport companies,BROAD,3,1,3.02,1.0
+22941603101,Canada-US,183793632959,TOF Canada-US Broad,vehicle transportation services,BROAD,7,1,2.39,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,auto moving companies,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,auto shipping company,PHRASE,3,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,auto transport company,BROAD,2,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,best rated auto transport companies,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car carrier,BROAD,6,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car hauling near me,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipments,BROAD,4,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipping,BROAD,2426,204,645.702673,54.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipping Michigan to Florida,PHRASE,2,1,2.393881,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipping company,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipping quote,BROAD,4,1,1.09,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car shipping services,BROAD,13,1,2.64,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car transport,PHRASE,27,1,3.54,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car transport company,BROAD,7,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,car truck transport,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,cars hauler,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,montway transportation,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,ship a car,BROAD,2,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,ship car,BROAD,2,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,top rated car transport companies,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,transport services,BROAD,262,8,23.07,2.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,truck shipping rates,BROAD,1,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,vehicle transport,PHRASE,9,0,0.0,0.0
+22942113116,TOF US-US Broad,189741124772,TOF-US,vehicle transport company,BROAD,2,0,0.0,0.0

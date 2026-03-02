@@ -1,7 +1,0 @@
-date,campaign_id,campaign_name,ad_group_id,ad_group_name,keyword,match_type,apps,approved,funded,production,value,cc_appvd,deposit_appvd,personal_appvd,vehicle_appvd,heloc_appvd
-2025-12-11,22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan rates,PHRASE,1,1,1,47159.82,6602.3748000000005,0,0,0,1,0
-2025-12-17,22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loans,PHRASE,2,0,0,0.0,0.0,0,0,0,0,0
-2025-12-18,22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loan refinance,EXACT,1,0,0,0.0,0.0,0,0,0,0,0
-2025-12-22,22527054383,CWO_Checking_Search,180103857758,Checking,online checking account,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
-2025-12-22,22860074145,CWO_Loans_Search,183132204123,Auto Loans,auto loans,EXACT,1,0,0,0.0,0.0,0,0,0,0,0
-2025-12-24,22860074145,CWO_Loans_Search,183132204123,Auto Loans,car loans,PHRASE,1,0,0,0.0,0.0,0,0,0,0,0
