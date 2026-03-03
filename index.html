@@ -1366,10 +1366,17 @@
             fill: currentColor;
         }
 
-        .no-kw-reason {
-            display: inline-block; font-size: 11px; color: var(--text-secondary);
-            font-style: italic; margin-left: 6px;
+        td.name-cell.has-tooltip { cursor: help; }
+
+        .fixed-tooltip {
+            position: fixed; z-index: 9999; pointer-events: none;
+            background: #1e293b; color: #f8fafc; font-size: 12px;
+            font-weight: 400; padding: 8px 14px; border-radius: 6px;
+            max-width: 420px; white-space: normal; line-height: 1.5;
+            opacity: 0; transition: opacity 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
         }
+        .fixed-tooltip.visible { opacity: 1; }
 
         /* Column resize handle */
         .col-resizer {
@@ -1794,6 +1801,8 @@
             <path class="loader-path" d="M27.99,103.62c8.59,4.73,18.32,7.13,28.93,7.13s20.4-2.42,29.08-7.2c8.73-4.81,15.66-11.5,20.58-19.89,3.51-5.98,5.73-12.56,6.74-19.61l-19.87-13.66v4.98c0,6.86-1.55,12.88-4.75,18.39-3.18,5.49-7.44,9.67-13.02,12.77-5.55,3.08-11.87,4.64-18.76,4.64s-13.17-1.56-18.67-4.63c-5.54-3.11-9.75-7.28-12.88-12.76-3.11-5.45-4.69-11.64-4.69-18.42s1.58-12.97,4.69-18.42c3.14-5.48,7.35-9.66,12.87-12.75,5.58-3.13,11.69-4.64,18.68-4.64s13.21,1.56,18.76,4.65c1.07.59,2.05,1.27,3.03,1.96l35.03,24.08,71.02,48.83c2.15,1.65,4.39,3.2,6.81,4.53,8.59,4.73,18.32,7.13,28.93,7.13s20.4-2.42,29.08-7.2c8.73-4.81,15.66-11.5,20.58-19.89,4.92-8.38,7.41-17.89,7.41-28.28s-2.49-19.89-7.41-28.28c-4.93-8.4-11.85-15.09-20.58-19.89-8.69-4.78-18.46-7.2-29.07-7.2s-20.35,2.4-28.94,7.13c-8.64,4.76-15.54,11.45-20.49,19.88-3.58,6.08-5.84,12.75-6.85,19.89l19.76,13.59h.28v-5.12c0-6.77,1.58-12.97,4.69-18.42,3.14-5.48,7.35-9.66,12.87-12.75,5.58-3.13,11.69-4.64,18.68-4.64s13.2,1.56,18.76,4.65c5.58,3.1,9.83,7.27,13.02,12.77,3.19,5.52,4.75,11.54,4.75,18.39s-1.56,12.88-4.75,18.39c-3.18,5.49-7.44,9.67-13.02,12.77-5.55,3.08-11.87,4.64-18.76,4.64s-14.18-1.78-19.74-4.89l-.03-.02L92.3,11.25c-.14-.1-.28-.19-.42-.29l-2.7-1.87-.1.09c-1.03-.66-2.01-1.38-3.1-1.97C77.3,2.42,67.52,0,56.92,0s-20.35,2.4-28.94,7.13c-8.64,4.76-15.54,11.45-20.49,19.88C2.51,35.45,0,44.99,0,55.37s2.51,19.93,7.48,28.36c4.96,8.44,11.86,15.12,20.5,19.88Z"/>
         </svg>
     </div>
+
+    <div id="fixedTooltip" class="fixed-tooltip"></div>
 
     <!-- Google Auth Screen -->
     <div id="authScreen" class="auth-screen hidden">
@@ -3405,12 +3414,13 @@
                 const kwIcon = hasKw
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
                     : '';
-                const noKwReason = hasKw ? '' : '<span class="no-kw-reason">\u2014 ' + noKeywordReason(r.campaign_name) + '</span>';
+                const tooltipClass = hasKw ? 'name-cell' : 'name-cell has-tooltip';
+                const reasonAttr = hasKw ? '' : ` data-reason="${escapeHtml(noKeywordReason(r.campaign_name))}"`;
                 const tr = document.createElement('tr');
                 tr.className = 'clickable';
                 tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
                 tr.innerHTML = `
-                    <td class="name-cell"><span class="drill-icon" title="Drill into ad groups">+</span>${kwIcon}${escapeHtml(displayName(r.campaign_name))}${noKwReason}</td>
+                    <td class="${tooltipClass}"${reasonAttr}><span class="drill-icon" title="Drill into ad groups">+</span>${kwIcon}${escapeHtml(displayName(r.campaign_name))}</td>
                     <td class="dim">${escapeHtml(r.campaign_id)}</td>
                     <td class="text-right">${fmtNum(r.impressions)}</td>
                     <td class="text-right">${fmtNum(r.clicks)}</td>
@@ -5754,6 +5764,24 @@ python scripts/anomaly_detector.py --client ${clientConfig.id} --lookback 90</pr
             }
             init();
         });
+
+        // ── Tooltip ──
+        (function() {
+            const tip = document.getElementById('fixedTooltip');
+            document.addEventListener('mouseover', e => {
+                const cell = e.target.closest('td.has-tooltip');
+                if (!cell) return;
+                tip.textContent = cell.dataset.reason || '';
+                const rect = cell.getBoundingClientRect();
+                tip.style.left = rect.left + 'px';
+                tip.style.top = (rect.top - 8) + 'px';
+                tip.style.transform = 'translateY(-100%)';
+                tip.classList.add('visible');
+            });
+            document.addEventListener('mouseout', e => {
+                if (e.target.closest('td.has-tooltip')) tip.classList.remove('visible');
+            });
+        })();
 
     </script>
 </body>
