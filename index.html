@@ -2359,6 +2359,27 @@
             return s.replace(/&/g, '&amp;').replace(/'/g, '&#39;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
+        function noKeywordReason(name) {
+            const n = (name || '').toLowerCase();
+            if (n.includes('pmax') || n.includes('performance max'))
+                return 'Performance Max campaigns are fully automated by Google — targeting, placements, and creatives are managed by machine learning with no user-defined keywords.';
+            if (n.includes('youtube') || n.includes('video'))
+                return 'YouTube/Video campaigns target audiences and placements, not keywords. Ads are shown based on viewer demographics, interests, and content context.';
+            if (n.includes('demand gen') || n.includes('dg ') || n.includes('dg_') || n.includes('demand_gen'))
+                return 'Demand Gen campaigns run across YouTube, Gmail, and Discover using audience signals and creative assets — there are no keywords to bid on.';
+            if (n.includes('display'))
+                return 'Display campaigns serve banner ads across the Google Display Network based on audience targeting, topics, and placements — not keyword searches.';
+            if (n.includes('discovery'))
+                return 'Discovery campaigns show ads on YouTube Home, Gmail, and Google Discover using audience targeting — no keyword bidding is involved.';
+            if (n.includes('smart'))
+                return 'Smart campaigns are fully automated by Google — ad targeting and placements are managed without user-defined keywords.';
+            if (n.includes('app ') || n.includes('app_'))
+                return 'App campaigns promote mobile apps across Search, Play, YouTube, and Display using automated targeting — no keyword-level reporting is available.';
+            if (n.includes('shopping'))
+                return 'Shopping campaigns match product feeds to search queries automatically — individual keyword bidding and reporting are not available.';
+            return 'This campaign type uses automated targeting rather than keywords, so keyword-level performance data is not available.';
+        }
+
         function formatMonth(m) {
             const [y, mo] = m.split('-');
             return new Date(y, parseInt(mo) - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
@@ -3384,7 +3405,7 @@
                 const kwIcon = hasKw
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
                     : '';
-                const noKwReason = hasKw ? '' : '<span class="no-kw-reason">\u2014 This campaign type does not have keyword-level data available in the Google Ads API.</span>';
+                const noKwReason = hasKw ? '' : '<span class="no-kw-reason">\u2014 ' + noKeywordReason(r.campaign_name) + '</span>';
                 const tr = document.createElement('tr');
                 tr.className = 'clickable';
                 tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
