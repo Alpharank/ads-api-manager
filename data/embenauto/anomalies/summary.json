@@ -1,0 +1,176 @@
+{
+  "generated_at": "2026-03-03T02:17:04.881071+00:00Z",
+  "config": {
+    "window": 14,
+    "threshold": 2.0,
+    "lookback": 60
+  },
+  "campaign_health": {
+    "22941603101": {
+      "campaign_name": "Canada-US",
+      "days": 59,
+      "total_cost": 1880.39,
+      "total_conversions": 147.5,
+      "avg_cpa": 12.75,
+      "avg_ctr": 8.33,
+      "avg_daily_cost": 31.87
+    },
+    "22942113116": {
+      "campaign_name": "TOF US-US Broad",
+      "days": 59,
+      "total_cost": 854.13,
+      "total_conversions": 71.5,
+      "avg_cpa": 11.95,
+      "avg_ctr": 8.05,
+      "avg_daily_cost": 14.48
+    },
+    "22975956367": {
+      "campaign_name": "MOF - US to US",
+      "days": 10,
+      "total_cost": 29.08,
+      "total_conversions": 3.0,
+      "avg_cpa": 9.69,
+      "avg_ctr": 5.7,
+      "avg_daily_cost": 2.91
+    }
+  },
+  "totals": {
+    "campaign_anomalies": 36,
+    "keyword_anomalies": 1,
+    "critical_campaign": 6,
+    "critical_keyword": 0,
+    "concerning_trends": 5
+  },
+  "trends": [
+    {
+      "campaign_id": "22942113116",
+      "campaign_name": "TOF US-US Broad",
+      "metric": "cpa",
+      "label": "CPA",
+      "recent_value": 13472.02,
+      "prior_value": 11.76,
+      "pct_change": 114482.4,
+      "direction": "increasing",
+      "concerning": true,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22942113116",
+      "campaign_name": "TOF US-US Broad",
+      "metric": "daily_conversions",
+      "label": "Daily Conversions",
+      "recent_value": 0.0,
+      "prior_value": 1.35,
+      "pct_change": -100.0,
+      "direction": "decreasing",
+      "concerning": true,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22975956367",
+      "campaign_name": "MOF - US to US",
+      "metric": "cpa",
+      "label": "CPA",
+      "recent_value": 3.43,
+      "prior_value": 18785.94,
+      "pct_change": -100.0,
+      "direction": "decreasing",
+      "concerning": false,
+      "recent_days": 6,
+      "prior_days": 4
+    },
+    {
+      "campaign_id": "22941603101",
+      "campaign_name": "Canada-US",
+      "metric": "daily_conversions",
+      "label": "Daily Conversions",
+      "recent_value": 0.17,
+      "prior_value": 2.76,
+      "pct_change": -94.0,
+      "direction": "decreasing",
+      "concerning": true,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22941603101",
+      "campaign_name": "Canada-US",
+      "metric": "daily_cost",
+      "label": "Daily Spend",
+      "recent_value": 3.97,
+      "prior_value": 35.03,
+      "pct_change": -88.7,
+      "direction": "decreasing",
+      "concerning": false,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22941603101",
+      "campaign_name": "Canada-US",
+      "metric": "cpa",
+      "label": "CPA",
+      "recent_value": 23.81,
+      "prior_value": 12.67,
+      "pct_change": 87.9,
+      "direction": "increasing",
+      "concerning": true,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22942113116",
+      "campaign_name": "TOF US-US Broad",
+      "metric": "daily_cost",
+      "label": "Daily Spend",
+      "recent_value": 2.25,
+      "prior_value": 15.86,
+      "pct_change": -85.8,
+      "direction": "decreasing",
+      "concerning": false,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22975956367",
+      "campaign_name": "MOF - US to US",
+      "metric": "daily_cost",
+      "label": "Daily Spend",
+      "recent_value": 1.72,
+      "prior_value": 4.7,
+      "pct_change": -63.5,
+      "direction": "decreasing",
+      "concerning": false,
+      "recent_days": 6,
+      "prior_days": 4
+    },
+    {
+      "campaign_id": "22941603101",
+      "campaign_name": "Canada-US",
+      "metric": "ctr",
+      "label": "CTR",
+      "recent_value": 11.02,
+      "prior_value": 8.29,
+      "pct_change": 33.0,
+      "direction": "increasing",
+      "concerning": false,
+      "recent_days": 6,
+      "prior_days": 53
+    },
+    {
+      "campaign_id": "22975956367",
+      "campaign_name": "MOF - US to US",
+      "metric": "ctr",
+      "label": "CTR",
+      "recent_value": 4.72,
+      "prior_value": 6.9,
+      "pct_change": -31.6,
+      "direction": "decreasing",
+      "concerning": true,
+      "recent_days": 6,
+      "prior_days": 4
+    }
+  ]
+}

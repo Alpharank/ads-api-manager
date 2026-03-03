@@ -1,0 +1,20 @@
+[
+  {
+    "month": "2026-01",
+    "campaign_id": "22941603101",
+    "campaign_name": "Canada-US",
+    "ad_group_name": "MOF Canada-US Phrase",
+    "keyword": "Snowbird auto transport",
+    "match_type": "BROAD",
+    "metric": "cpa",
+    "value": 36.9876,
+    "group_mean": 14.3139,
+    "group_stddev": 10.4197,
+    "z_score": 2.18,
+    "severity": "warning",
+    "impressions": 116,
+    "clicks": 17,
+    "cost": 36.99,
+    "conversions": 1.0
+  }
+]

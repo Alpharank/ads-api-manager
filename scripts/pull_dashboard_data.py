@@ -251,6 +251,53 @@ def pull_all_data(client, customer_id, start_date, end_date):
         })
     st_df = pd.DataFrame(st_rows)
 
+    # --- Negative keywords (account state, not date-bounded) ---
+    print(f"  Pulling negative keywords...")
+    q = """
+        SELECT
+            campaign.id, campaign.name,
+            ad_group.id, ad_group.name,
+            ad_group_criterion.negative,
+            ad_group_criterion.keyword.text,
+            ad_group_criterion.keyword.match_type
+        FROM ad_group_criterion
+        WHERE ad_group_criterion.negative = TRUE
+            AND ad_group_criterion.type = 'KEYWORD'
+            AND ad_group_criterion.status = 'ENABLED'
+    """
+    neg_rows = []
+    for row in search(svc, customer_id, q, "negative_keywords"):
+        neg_rows.append({
+            "keyword": row.ad_group_criterion.keyword.text,
+            "match_type": row.ad_group_criterion.keyword.match_type.name,
+            "campaign_id": str(row.campaign.id),
+            "campaign_name": row.campaign.name,
+            "ad_group_id": str(row.ad_group.id),
+            "ad_group_name": row.ad_group.name,
+        })
+
+    # Also pull campaign-level negative keywords
+    q2 = """
+        SELECT
+            campaign.id, campaign.name,
+            campaign_criterion.negative,
+            campaign_criterion.keyword.text,
+            campaign_criterion.keyword.match_type
+        FROM campaign_criterion
+        WHERE campaign_criterion.negative = TRUE
+            AND campaign_criterion.type = 'KEYWORD'
+    """
+    for row in search(svc, customer_id, q2, "campaign_negative_keywords"):
+        neg_rows.append({
+            "keyword": row.campaign_criterion.keyword.text,
+            "match_type": row.campaign_criterion.keyword.match_type.name,
+            "campaign_id": str(row.campaign.id),
+            "campaign_name": row.campaign.name,
+            "ad_group_id": "",
+            "ad_group_name": "(Campaign level)",
+        })
+    neg_df = pd.DataFrame(neg_rows)
+
     return {
         "daily": daily_df,
         "keywords": kw_df,
@@ -258,6 +305,7 @@ def pull_all_data(client, customer_id, start_date, end_date):
         "devices": dev_df,
         "locations": loc_df,
         "search_terms": st_df,
+        "negative_keywords": neg_df,
     }
 
 
@@ -374,6 +422,23 @@ def write_monthly_csvs(data, client_id, data_dir):
             os.makedirs(out_dir, exist_ok=True)
             df.to_csv(os.path.join(out_dir, f"{month}.csv"), index=False)
             print(f"    search_terms/{month}.csv ({len(df)} rows)")
+
+    # --- Negative keywords (same snapshot for every month) ---
+    if not data["negative_keywords"].empty:
+        # Negative keywords are account state, not time-series.
+        # Write the same snapshot to each month so the dashboard can load it.
+        all_months = set()
+        if not data["daily"].empty:
+            all_months = set(data["daily"]["date"].str[:7].unique())
+        if not all_months:
+            all_months = {datetime.now().strftime("%Y-%m")}
+        for month in sorted(all_months):
+            out_dir = os.path.join(client_dir, "negative_keywords")
+            os.makedirs(out_dir, exist_ok=True)
+            data["negative_keywords"].to_csv(
+                os.path.join(out_dir, f"{month}.csv"), index=False
+            )
+            print(f"    negative_keywords/{month}.csv ({len(data['negative_keywords'])} rows)")
 
 
 def main():

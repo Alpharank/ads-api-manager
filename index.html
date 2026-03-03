@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js" integrity="sha384-D/t0ZMqQW31H3az8ktEiNb39wyKnS82iFY52QPACM+IjKW3jDUhyIgh2PApRqJZs" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js" integrity="sha384-jb8JQMbMoBUzgWatfe6COACi2ljcDdZQ2OxczGA3bGNeWe+6DChMTBJemed7ZnvJ" crossorigin="anonymous"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap');
 
         :root {
             --teal: #C9A227;
@@ -76,7 +76,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Raleway', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.5;
@@ -148,10 +148,10 @@
         }
 
         .header-logo .wordmark {
-            font-family: 'Inter', Arial, Helvetica, sans-serif;
+            font-family: 'Raleway', Arial, Helvetica, sans-serif;
             font-size: 22px;
-            font-weight: 400;
-            letter-spacing: 3px;
+            font-weight: 300;
+            letter-spacing: 4px;
             color: #fff;
         }
 
@@ -172,7 +172,7 @@
         }
 
         .top-header .client-name {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Raleway', sans-serif;
             font-size: 16px;
             font-weight: 500;
             color: rgba(255,255,255,0.9);
@@ -427,7 +427,7 @@
         /* ── View Title ── */
         .view-title-bar {
             padding: 20px 24px 0;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Raleway', sans-serif;
             font-size: 22px;
             font-weight: 600;
             color: var(--text);
@@ -615,7 +615,7 @@
         .kpi-chip-value {
             font-size: 22px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Raleway', sans-serif;
             color: var(--text);
             font-variant-numeric: tabular-nums;
         }
@@ -908,7 +908,7 @@
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
             pointer-events: none;
             text-align: left;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Raleway', sans-serif;
         }
 
         #colTooltip.visible {
@@ -1052,7 +1052,7 @@
         .chart-card-value {
             font-size: 26px;
             font-weight: 600;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Raleway', sans-serif;
             color: var(--text);
             font-variant-numeric: tabular-nums;
             margin-bottom: 8px;
@@ -1470,7 +1470,7 @@
             background: var(--text);
             color: #fff;
             font-size: 11px;
-            font-family: 'Inter', sans-serif;
+            font-family: 'Raleway', sans-serif;
             border-radius: 4px;
             white-space: nowrap;
             opacity: 0;
@@ -1878,6 +1878,22 @@
                     <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/></svg>
                     <span>Competitor Intel</span>
                 </div>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Tracking</div>
+                <div class="sidebar-item" data-level="conversionactions" onclick="navigateToLevel('conversionactions')">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
+                    <span>Conversion Actions</span>
+                </div>
+                <div class="sidebar-item" data-level="optimizationlog" onclick="navigateToLevel('optimizationlog')">
+                    <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" fill="currentColor"/></svg>
+                    <span>Optimization Log</span>
+                </div>
+                <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Intelligence</div>
+                <div class="sidebar-item" data-level="anomalies" onclick="navigateToLevel('anomalies')">
+                    <svg viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" fill="currentColor"/></svg>
+                    <span>Anomaly Detection</span>
+                </div>
 
                 <!-- Current Selection Panel -->
                 <div id="currentSelectionPanel" class="current-selection hidden">
@@ -2224,6 +2240,9 @@
                             <tbody id="tableBody"></tbody>
                         </table>
                     </div>
+
+                    <!-- Semrush Content (hidden by default) -->
+                    <div id="semrushContent" style="display:none;"></div>
                 </div>
             </div>
         </div>
@@ -2358,10 +2377,16 @@
         // Google OAuth Client ID
         const GOOGLE_CLIENT_ID = '243432702432-ikai8elvur8t77tgt1ec62fg01k3t5mu.apps.googleusercontent.com';
 
-        // ── Client config (MCC 402-398-7894) ──
+        // ── Client config (MCC 499-723-5286) ──
         // Will be populated dynamically as accounts are added to the MCC
         const _clientMap = {
             'embenauto': { id: 'embenauto', name: 'Snowbird Shipping', stripPrefix: '' }
+        };
+
+        // Map custom domains to client IDs
+        const _domainMap = {
+            'snowbirdship.com': 'embenauto',
+            'www.snowbirdship.com': 'embenauto'
         };
 
         let authedUser = null;
@@ -2406,10 +2431,16 @@
         // ── Init ──
         async function init() {
             try {
-                // Use client token from URL if available, otherwise show MCC overview
+                // 1. Check if hostname maps to a specific client (unique domain per client)
+                const hostname = window.location.hostname;
+                const domainClient = _domainMap[hostname];
+
+                // 2. Fall back to ?client= URL param
                 const token = new URLSearchParams(window.location.search).get('client');
 
-                if (token && _clientMap[token]) {
+                if (domainClient && _clientMap[domainClient]) {
+                    clientConfig = _clientMap[domainClient];
+                } else if (token && _clientMap[token]) {
                     clientConfig = _clientMap[token];
                 } else {
                     // Default: load first available client, or MCC overview
@@ -2422,7 +2453,7 @@
                 dataManifest = await (await fetch('data-manifest.json')).json().catch(() => ({}));
                 const months = (dataManifest[clientConfig.id] || []).sort().reverse();
 
-                document.getElementById('clientName').textContent = authedUser ? authedUser.name : clientConfig.name;
+                document.getElementById('clientName').textContent = clientConfig.name || 'Ads Dashboard';
 
                 if (!months.length) {
                     // Show empty state dashboard instead of error
@@ -2434,13 +2465,13 @@
                             </svg>
                             <h2 style="font-size:24px;font-weight:600;color:#1d1d1f;margin-bottom:8px;">Welcome to FuturProof Ads Manager</h2>
                             <p style="color:#86868b;font-size:15px;max-width:500px;margin-bottom:24px;">
-                                MCC Account: <strong style="color:#C9A227;">402-398-7894</strong><br>
+                                MCC Account: <strong style="color:#C9A227;">499-723-5286</strong><br>
                                 Signed in as: <strong style="color:#1d1d1f;">${authedUser ? authedUser.email : ''}</strong>
                             </p>
                             <div style="background:#f5f5f7;border-radius:12px;padding:32px;max-width:520px;text-align:left;">
                                 <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin-bottom:16px;">Getting Started</h3>
                                 <div style="color:#424245;font-size:14px;line-height:1.8;">
-                                    <p style="margin-bottom:12px;">1. <strong>Add client accounts</strong> to MCC 402-398-7894 in Google Ads</p>
+                                    <p style="margin-bottom:12px;">1. <strong>Add client accounts</strong> to MCC 499-723-5286 in Google Ads</p>
                                     <p style="margin-bottom:12px;">2. <strong>Generate refresh token</strong> — run: <code style="background:#e5e7eb;padding:2px 6px;border-radius:4px;font-size:12px;">python scripts/generate_refresh_token.py</code></p>
                                     <p style="margin-bottom:12px;">3. <strong>Run the pipeline</strong> — <code style="background:#e5e7eb;padding:2px 6px;border-radius:4px;font-size:12px;">python pipeline/google_ads_to_s3.py</code></p>
                                     <p>4. <strong>Data syncs hourly</strong> — dashboard populates automatically</p>
@@ -2848,7 +2879,7 @@
         function navigateToLevel(level) {
             if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
             else if (level === 'adgroups') { selectedAdGroup = null; }
-            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere'].includes(level)) {
+            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere', 'recommendations', 'competitors', 'conversionactions', 'optimizationlog', 'anomalies'].includes(level)) {
                 selectedCampaign = null; selectedAdGroup = null;
             }
             currentLevel = level;
@@ -2883,10 +2914,24 @@
             updateSidebar();
             updateBreadcrumb();
             updateViewTitle();
-            updateKPIs();
-            updateFilterPlaceholder();
-            renderTable();
-            renderAllCharts();
+            const isSemrushView = currentLevel === 'recommendations' || currentLevel === 'competitors' || currentLevel === 'conversionactions' || currentLevel === 'optimizationlog' || currentLevel === 'anomalies';
+
+            // Toggle visibility: regular dashboard elements vs Semrush content
+            const regularElements = ['.kpi-toolbar', '.kpi-strip', '.chart-controls', '.widget-row', '.filter-bar', '.table-wrap'];
+            regularElements.forEach(sel => {
+                const el = document.querySelector('.main-content ' + sel);
+                if (el) el.style.display = isSemrushView ? 'none' : '';
+            });
+            document.getElementById('semrushContent').style.display = isSemrushView ? 'block' : 'none';
+
+            if (isSemrushView) {
+                renderTable();
+            } else {
+                updateKPIs();
+                updateFilterPlaceholder();
+                renderTable();
+                renderAllCharts();
+            }
         }
 
         function updateSidebar() {
@@ -3156,6 +3201,12 @@
                 bar.appendChild(makeCurrent('Semrush Recommendations'));
             } else if (currentLevel === 'competitors') {
                 bar.appendChild(makeCurrent('Competitor Intelligence'));
+            } else if (currentLevel === 'conversionactions') {
+                bar.appendChild(makeCurrent('Conversion Actions'));
+            } else if (currentLevel === 'optimizationlog') {
+                bar.appendChild(makeCurrent('Optimization Log'));
+            } else if (currentLevel === 'anomalies') {
+                bar.appendChild(makeCurrent('Anomaly Detection'));
             }
         }
 
@@ -3170,7 +3221,10 @@
                 channels: 'Channel Performance',
                 whenwhere: 'When & Where',
                 recommendations: 'Semrush Recommendations',
-                competitors: 'Competitor Intelligence'
+                competitors: 'Competitor Intelligence',
+                conversionactions: 'Conversion Actions',
+                optimizationlog: 'Optimization Log',
+                anomalies: 'Anomaly Detection'
             };
             document.getElementById('viewTitle').textContent = titles[currentLevel] || 'Dashboard';
         }
@@ -3235,6 +3289,9 @@
             else if (currentLevel === 'whenwhere') renderWhenWhere();
             else if (currentLevel === 'recommendations') renderRecommendations();
             else if (currentLevel === 'competitors') renderCompetitors();
+            else if (currentLevel === 'conversionactions') renderConversionActions();
+            else if (currentLevel === 'optimizationlog') renderOptimizationLog();
+            else if (currentLevel === 'anomalies') renderAnomalies();
         }
 
         // ── Campaigns Table ──
@@ -4337,7 +4394,7 @@
         }
 
         async function renderRecommendations() {
-            const mc = document.querySelector('.main-content');
+            const mc = document.getElementById('semrushContent');
             const recs = await loadSemrushData();
             if (!recs) {
                 mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
@@ -4485,6 +4542,17 @@
                 </div>
                 ` : ''}
 
+                <div style="background:#f9f9fb;border:1px solid #e5e5e5;border-radius:12px;padding:20px;margin-bottom:24px;">
+                    <h4 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 12px 0;">Apply Recommendations</h4>
+                    <div style="font-size:13px;color:#86868b;line-height:2;">
+                        ${recs.bid_adjustments.length ? `<div><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:#C9A227;">BIDS</span> <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/apply_bid_adjustments.py --client ${clientConfig.id} --dry-run</code></div>` : ''}
+                        ${recs.keyword_opportunities.length ? `<div><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:#22c55e;">KEYWORDS</span> <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/add_keywords.py --client ${clientConfig.id} --dry-run</code></div>` : ''}
+                        ${recs.negative_keyword_suggestions.length ? `<div><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:#dc2626;">NEGATIVES</span> <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/add_negative_keywords.py --client ${clientConfig.id} --dry-run</code></div>` : ''}
+                        <div><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:#6366f1;">DEVICES</span> <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/set_device_bid_modifiers.py --client ${clientConfig.id} --dry-run</code></div>
+                    </div>
+                    <p style="font-size:12px;color:#86868b;margin:12px 0 0 0;">Run with <code>--dry-run</code> first to preview changes, then remove the flag to apply.</p>
+                </div>
+
                 <div style="text-align:center;color:#86868b;font-size:12px;padding:16px;">
                     Generated: ${recs.generated_at ? new Date(recs.generated_at).toLocaleString() : 'Unknown'} | Data source: Semrush API + Google Ads
                 </div>
@@ -4494,7 +4562,7 @@
         }
 
         async function renderCompetitors() {
-            const mc = document.querySelector('.main-content');
+            const mc = document.getElementById('semrushContent');
             const recs = await loadSemrushData();
             if (!recs || !recs.competitor_insights || !recs.competitor_insights.length) {
                 mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
@@ -4574,6 +4642,468 @@
                 </div>
             </div>`;
 
+            mc.innerHTML = html;
+        }
+
+        // ── Conversion Actions ──
+        let conversionActionsData = null;
+
+        async function loadConversionActions() {
+            if (conversionActionsData) return conversionActionsData;
+            try {
+                const base = `data/${clientConfig.id}`;
+                const resp = await fetch(`${base}/conversion_actions/audit.json`);
+                if (!resp.ok) return null;
+                conversionActionsData = await resp.json();
+                return conversionActionsData;
+            } catch (e) {
+                console.warn('No conversion actions data found:', e);
+                return null;
+            }
+        }
+
+        async function renderConversionActions() {
+            const mc = document.getElementById('semrushContent');
+            const actions = await loadConversionActions();
+            if (!actions || !actions.length) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Conversion Actions Data</h3>
+                    <p>Run <code>python scripts/audit_conversion_actions.py --client ${clientConfig.id}</code> to audit conversion tracking.</p>
+                </div>`;
+                return;
+            }
+
+            const statusColors = { ENABLED: '#22c55e', PAUSED: '#f59e0b', HIDDEN: '#86868b' };
+            const webpageActions = actions.filter(a => a.type === 'WEBPAGE' || a.type === 'PHONE_CALL');
+            const otherActions = actions.filter(a => a.type !== 'WEBPAGE' && a.type !== 'PHONE_CALL');
+
+            let html = `<div style="padding:24px;max-width:1200px;">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px;">
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#C9A227;">${actions.length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Total Actions</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#22c55e;">${actions.filter(a => a.status === 'ENABLED').length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Enabled</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#1d1d1f;">${actions.filter(a => a.included_in_conversions).length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">In Conversions Metric</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#1d1d1f;">${webpageActions.length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Webpage / Phone</div>
+                    </div>
+                </div>
+
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">All Conversion Actions</h3>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px;color:#86868b;">Name</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Type</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Category</th>
+                                <th style="text-align:center;padding:8px;color:#86868b;">Status</th>
+                                <th style="text-align:center;padding:8px;color:#86868b;">In Conv?</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Counting</th>
+                                <th style="text-align:left;padding:8px;color:#86868b;">Attribution</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Default Value</th>
+                                <th style="text-align:right;padding:8px;color:#86868b;">Lookback</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${actions.map(a => `
+                                <tr style="border-bottom:1px solid #f1f1f1;">
+                                    <td style="padding:8px;font-weight:500;">${a.name}</td>
+                                    <td style="padding:8px;">${a.type}</td>
+                                    <td style="padding:8px;">${a.category}</td>
+                                    <td style="padding:8px;text-align:center;">
+                                        <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:${statusColors[a.status] || '#86868b'};">${a.status}</span>
+                                    </td>
+                                    <td style="padding:8px;text-align:center;">${a.included_in_conversions ? '✓' : '—'}</td>
+                                    <td style="padding:8px;">${a.counting_type || '—'}</td>
+                                    <td style="padding:8px;">${a.attribution_model || '—'}</td>
+                                    <td style="padding:8px;text-align:right;">${a.default_value ? '$' + Number(a.default_value).toFixed(0) : '—'}</td>
+                                    <td style="padding:8px;text-align:right;">${a.click_through_lookback_days || '—'}d</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="background:#f9f9fb;border:1px solid #e5e5e5;border-radius:12px;padding:20px;">
+                    <h4 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 12px 0;">CLI Commands</h4>
+                    <div style="font-size:13px;color:#86868b;line-height:1.8;">
+                        <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/audit_conversion_actions.py --client ${clientConfig.id}</code> — Refresh this data<br>
+                        <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/create_conversion_actions.py --client ${clientConfig.id} --dry-run</code> — Check missing actions<br>
+                        <code style="background:#fff;padding:2px 8px;border-radius:4px;font-size:12px;">python scripts/generate_tracking_code.py --client ${clientConfig.id}</code> — Generate tag snippets
+                    </div>
+                </div>
+            </div>`;
+
+            mc.innerHTML = html;
+        }
+
+        // ── Optimization Log ──
+        let optimizationLogData = null;
+
+        async function loadOptimizationLog() {
+            if (optimizationLogData) return optimizationLogData;
+            try {
+                const base = `data/${clientConfig.id}/optimization_log`;
+                // Try loading a manifest or scan individual files
+                // Since we can't list directory contents from static hosting,
+                // we'll try to load a combined log file
+                const resp = await fetch(`${base}/combined.json`);
+                if (resp.ok) {
+                    optimizationLogData = await resp.json();
+                    return optimizationLogData;
+                }
+                return null;
+            } catch (e) {
+                console.warn('No optimization log found:', e);
+                return null;
+            }
+        }
+
+        async function renderOptimizationLog() {
+            const mc = document.getElementById('semrushContent');
+            const entries = await loadOptimizationLog();
+            if (!entries || !entries.length) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Optimization Log</h3>
+                    <p>Optimization actions will appear here after running scripts like <code>apply_bid_adjustments.py</code>.</p>
+                    <p style="margin-top:12px;">To generate the combined log, run:<br>
+                    <code>python -c "import json, glob, os; files=sorted(glob.glob('data/${clientConfig.id}/optimization_log/*.json')); entries=[json.load(open(f)) for f in files if not f.endswith('combined.json')]; json.dump(entries, open('data/${clientConfig.id}/optimization_log/combined.json','w'), indent=2); print(f'Combined {len(entries)} entries')"</code></p>
+                </div>`;
+                return;
+            }
+
+            const actionColors = {
+                bid_adjustments: '#C9A227',
+                add_keywords: '#22c55e',
+                add_negative_keywords: '#dc2626',
+                device_bid_modifiers: '#6366f1',
+                create_conversion_actions: '#0ea5e9',
+            };
+
+            let html = `<div style="padding:24px;max-width:1200px;">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px;">
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#C9A227;">${entries.length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Total Actions</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#1d1d1f;">${entries.filter(e => e.action_type === 'bid_adjustments').length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Bid Changes</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#22c55e;">${entries.filter(e => e.action_type === 'add_keywords').length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Keyword Adds</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#dc2626;">${entries.filter(e => e.action_type === 'add_negative_keywords').length}</div>
+                        <div style="font-size:13px;color:#86868b;margin-top:4px;">Negative KW Adds</div>
+                    </div>
+                </div>
+
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Optimization Timeline</h3>`;
+
+            // Sort entries newest first
+            const sorted = [...entries].sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+
+            for (const entry of sorted) {
+                const ts = entry.timestamp ? new Date(entry.timestamp).toLocaleString() : 'Unknown';
+                const color = actionColors[entry.action_type] || '#86868b';
+                const typeLabel = (entry.action_type || 'unknown').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+
+                let details = '';
+                if (entry.action_type === 'bid_adjustments' && entry.changes) {
+                    details = `<table style="width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;">
+                        <tr style="border-bottom:1px solid #f1f1f1;">
+                            <th style="text-align:left;padding:4px 8px;color:#86868b;">Keyword</th>
+                            <th style="text-align:right;padding:4px 8px;color:#86868b;">Before</th>
+                            <th style="text-align:right;padding:4px 8px;color:#86868b;">After</th>
+                            <th style="text-align:right;padding:4px 8px;color:#86868b;">Market</th>
+                        </tr>
+                        ${entry.changes.map(c => `
+                            <tr style="border-bottom:1px solid #f8f8f8;">
+                                <td style="padding:4px 8px;">${c.keyword}</td>
+                                <td style="padding:4px 8px;text-align:right;">$${Number(c.before).toFixed(2)}</td>
+                                <td style="padding:4px 8px;text-align:right;font-weight:600;">$${Number(c.after).toFixed(2)}</td>
+                                <td style="padding:4px 8px;text-align:right;color:#86868b;">$${Number(c.market).toFixed(2)}</td>
+                            </tr>
+                        `).join('')}
+                    </table>`;
+                } else if (entry.action_type === 'add_keywords' && entry.keywords) {
+                    details = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+                        ${entry.keywords.map(k => `
+                            <span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#f0fdf4;font-size:11px;color:#166534;">
+                                ${k.keyword} → ${k.campaign}
+                            </span>
+                        `).join('')}
+                    </div>`;
+                } else if (entry.action_type === 'add_negative_keywords' && entry.negatives) {
+                    details = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+                        ${entry.negatives.map(n => `
+                            <span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#fef2f2;font-size:11px;color:#991b1b;">
+                                -"${n.term}" (${n.reason})
+                            </span>
+                        `).join('')}
+                    </div>`;
+                } else if (entry.action_type === 'device_bid_modifiers' && entry.changes) {
+                    details = `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;">
+                        ${entry.changes.map(c => `
+                            <span style="display:inline-block;padding:3px 10px;border-radius:12px;background:#eef2ff;font-size:11px;color:#3730a3;">
+                                ${c.device}: ${((c.before - 1) * 100).toFixed(0)}% → ${((c.after - 1) * 100).toFixed(0)}%
+                            </span>
+                        `).join('')}
+                    </div>`;
+                } else if (entry.count) {
+                    details = `<div style="margin-top:4px;font-size:12px;color:#86868b;">${entry.count} items affected</div>`;
+                }
+
+                html += `
+                    <div style="display:flex;gap:16px;padding:16px 0;border-bottom:1px solid #f1f1f1;">
+                        <div style="min-width:60px;">
+                            <span style="display:inline-block;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:600;color:#fff;background:${color};">${typeLabel}</span>
+                        </div>
+                        <div style="flex:1;">
+                            <div style="font-size:12px;color:#86868b;">${ts}</div>
+                            ${details}
+                        </div>
+                    </div>`;
+            }
+
+            html += `</div></div>`;
+            mc.innerHTML = html;
+        }
+
+        // ── Anomaly Detection ──
+        let anomalyData = null;
+
+        async function loadAnomalyData() {
+            if (anomalyData) return anomalyData;
+            try {
+                const base = `data/${clientConfig.id}/anomalies`;
+                const [summaryResp, campResp, kwResp] = await Promise.all([
+                    fetch(`${base}/summary.json`),
+                    fetch(`${base}/campaign_anomalies.json`),
+                    fetch(`${base}/keyword_anomalies.json`),
+                ]);
+                if (summaryResp.ok) {
+                    anomalyData = {
+                        summary: await summaryResp.json(),
+                        campaigns: campResp.ok ? await campResp.json() : [],
+                        keywords: kwResp.ok ? await kwResp.json() : [],
+                    };
+                    return anomalyData;
+                }
+                return null;
+            } catch (e) {
+                console.warn('No anomaly data found:', e);
+                return null;
+            }
+        }
+
+        async function renderAnomalies() {
+            const mc = document.getElementById('semrushContent');
+            const data = await loadAnomalyData();
+            if (!data) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Anomaly Data</h3>
+                    <p>Run the anomaly detector to generate insights:</p>
+                    <pre style="background:#1d1d1f;color:#f5f5f7;padding:16px;border-radius:8px;display:inline-block;text-align:left;margin-top:12px;">python scripts/anomaly_detector.py --client ${clientConfig.id}</pre>
+                </div>`;
+                return;
+            }
+
+            const s = data.summary;
+            const criticalCamp = s.totals.critical_campaign || 0;
+            const criticalKw = s.totals.critical_keyword || 0;
+            const totalCritical = criticalCamp + criticalKw;
+            const totalWarnings = (s.totals.campaign_anomalies + s.totals.keyword_anomalies) - totalCritical;
+            const concerningTrends = s.totals.concerning_trends || 0;
+
+            let html = `<div style="padding:24px;max-width:1400px;">`;
+
+            // KPI Cards
+            html += `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:32px;">
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                    <div style="font-size:28px;font-weight:700;color:${totalCritical > 0 ? '#dc2626' : '#22c55e'};">${totalCritical}</div>
+                    <div style="font-size:13px;color:#86868b;margin-top:4px;">Critical Anomalies</div>
+                </div>
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                    <div style="font-size:28px;font-weight:700;color:${totalWarnings > 0 ? '#f59e0b' : '#22c55e'};">${totalWarnings}</div>
+                    <div style="font-size:13px;color:#86868b;margin-top:4px;">Warnings</div>
+                </div>
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                    <div style="font-size:28px;font-weight:700;color:${concerningTrends > 0 ? '#dc2626' : '#22c55e'};">${concerningTrends}</div>
+                    <div style="font-size:13px;color:#86868b;margin-top:4px;">Concerning Trends</div>
+                </div>
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                    <div style="font-size:12px;color:#86868b;margin-top:4px;">Last Run</div>
+                    <div style="font-size:13px;font-weight:600;color:#1d1d1f;margin-top:4px;">${s.generated_at ? new Date(s.generated_at).toLocaleString() : 'Unknown'}</div>
+                </div>
+            </div>`;
+
+            // Campaign Health
+            if (s.campaign_health && Object.keys(s.campaign_health).length) {
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Campaign Health (${s.config.lookback}-day window)</h3>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px 12px;color:#86868b;">Campaign</th>
+                                <th style="text-align:right;padding:8px 12px;color:#86868b;">Cost</th>
+                                <th style="text-align:right;padding:8px 12px;color:#86868b;">Conversions</th>
+                                <th style="text-align:right;padding:8px 12px;color:#86868b;">Avg CPA</th>
+                                <th style="text-align:right;padding:8px 12px;color:#86868b;">CTR</th>
+                                <th style="text-align:right;padding:8px 12px;color:#86868b;">$/Day</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                for (const [cid, ch] of Object.entries(s.campaign_health)) {
+                    html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                        <td style="padding:8px 12px;font-weight:500;">${ch.campaign_name}</td>
+                        <td style="padding:8px 12px;text-align:right;">$${ch.total_cost.toFixed(2)}</td>
+                        <td style="padding:8px 12px;text-align:right;">${ch.total_conversions}</td>
+                        <td style="padding:8px 12px;text-align:right;">${ch.avg_cpa ? '$' + ch.avg_cpa.toFixed(2) : 'N/A'}</td>
+                        <td style="padding:8px 12px;text-align:right;">${ch.avg_ctr.toFixed(1)}%</td>
+                        <td style="padding:8px 12px;text-align:right;">$${ch.avg_daily_cost.toFixed(2)}</td>
+                    </tr>`;
+                }
+                html += `</tbody></table></div>`;
+            }
+
+            // Trends
+            if (s.trends && s.trends.length) {
+                const concerning = s.trends.filter(t => t.concerning);
+                const positive = s.trends.filter(t => !t.concerning);
+
+                html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">`;
+
+                // Concerning trends
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#dc2626;margin:0 0 16px 0;">Concerning Trends (${concerning.length})</h3>`;
+                if (concerning.length) {
+                    for (const t of concerning) {
+                        const arrow = t.direction === 'increasing' ? '&#9650;' : '&#9660;';
+                        const color = '#dc2626';
+                        html += `<div style="padding:10px 0;border-bottom:1px solid #f8f8f8;">
+                            <span style="color:${color};font-weight:600;">${arrow}</span>
+                            <strong>${t.campaign_name}</strong>: ${t.label}
+                            <span style="color:${color};font-weight:600;">${t.direction} ${Math.abs(t.pct_change).toFixed(0)}%</span>
+                            <div style="font-size:12px;color:#86868b;margin-top:2px;">${t.prior_value.toFixed(2)} → ${t.recent_value.toFixed(2)} (last 7d vs prior ${t.prior_days}d)</div>
+                        </div>`;
+                    }
+                } else {
+                    html += `<div style="color:#22c55e;font-size:14px;">No concerning trends detected</div>`;
+                }
+                html += `</div>`;
+
+                // Positive trends
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#22c55e;margin:0 0 16px 0;">Positive Trends (${positive.length})</h3>`;
+                if (positive.length) {
+                    for (const t of positive) {
+                        const arrow = t.direction === 'increasing' ? '&#9650;' : '&#9660;';
+                        html += `<div style="padding:10px 0;border-bottom:1px solid #f8f8f8;">
+                            <span style="color:#22c55e;font-weight:600;">${arrow}</span>
+                            <strong>${t.campaign_name}</strong>: ${t.label}
+                            <span style="color:#22c55e;font-weight:600;">${t.direction} ${Math.abs(t.pct_change).toFixed(0)}%</span>
+                            <div style="font-size:12px;color:#86868b;margin-top:2px;">${t.prior_value.toFixed(2)} → ${t.recent_value.toFixed(2)}</div>
+                        </div>`;
+                    }
+                } else {
+                    html += `<div style="color:#86868b;font-size:14px;">No significant positive trends</div>`;
+                }
+                html += `</div></div>`;
+            }
+
+            // Campaign Anomalies Table
+            if (data.campaigns.length) {
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Campaign Anomalies (${data.campaigns.length})</h3>
+                    <div style="max-height:500px;overflow-y:auto;">
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;position:sticky;top:0;background:#fff;">
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Date</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Campaign</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Metric</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Value</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Rolling Mean</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Z-Score</th>
+                                <th style="text-align:center;padding:8px 10px;color:#86868b;">Severity</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                for (const a of data.campaigns) {
+                    const sevColor = a.severity === 'critical' ? '#dc2626' : '#f59e0b';
+                    const sevBg = a.severity === 'critical' ? '#fef2f2' : '#fffbeb';
+                    const sevLabel = a.severity === 'critical' ? 'CRITICAL' : 'WARNING';
+                    const metricLabel = a.metric.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                        <td style="padding:8px 10px;">${a.date}</td>
+                        <td style="padding:8px 10px;font-weight:500;">${a.campaign_name}</td>
+                        <td style="padding:8px 10px;">${metricLabel}</td>
+                        <td style="padding:8px 10px;text-align:right;font-weight:600;">${a.value.toFixed(2)}</td>
+                        <td style="padding:8px 10px;text-align:right;color:#86868b;">${a.rolling_mean.toFixed(2)}</td>
+                        <td style="padding:8px 10px;text-align:right;font-weight:600;color:${sevColor};">${a.z_score > 0 ? '+' : ''}${a.z_score.toFixed(1)}σ</td>
+                        <td style="padding:8px 10px;text-align:center;">
+                            <span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:${sevColor};background:${sevBg};">${sevLabel}</span>
+                        </td>
+                    </tr>`;
+                }
+                html += `</tbody></table></div></div>`;
+            }
+
+            // Keyword Anomalies Table
+            if (data.keywords.length) {
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Keyword Anomalies (${data.keywords.length})</h3>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Month</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Keyword</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Metric</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Value</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Group Avg</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Z-Score</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+                for (const a of data.keywords) {
+                    const sevColor = a.severity === 'critical' ? '#dc2626' : '#f59e0b';
+                    const metricLabel = a.metric.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                    html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                        <td style="padding:8px 10px;">${a.month}</td>
+                        <td style="padding:8px 10px;font-weight:500;">${a.keyword}</td>
+                        <td style="padding:8px 10px;">${metricLabel}</td>
+                        <td style="padding:8px 10px;text-align:right;font-weight:600;">${a.value.toFixed(2)}</td>
+                        <td style="padding:8px 10px;text-align:right;color:#86868b;">${a.group_mean.toFixed(2)}</td>
+                        <td style="padding:8px 10px;text-align:right;font-weight:600;color:${sevColor};">${a.z_score > 0 ? '+' : ''}${a.z_score.toFixed(1)}σ</td>
+                        <td style="padding:8px 10px;text-align:right;">$${a.cost.toFixed(2)}</td>
+                    </tr>`;
+                }
+                html += `</tbody></table></div>`;
+            }
+
+            // CLI Reference
+            html += `<div style="background:#f9fafb;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 12px 0;">Refresh Anomaly Data</h3>
+                <pre style="background:#1d1d1f;color:#f5f5f7;padding:16px;border-radius:8px;font-size:12px;overflow-x:auto;margin:0;">python scripts/anomaly_detector.py --client ${clientConfig.id}
+python scripts/anomaly_detector.py --client ${clientConfig.id} --window 21 --threshold 2.5
+python scripts/anomaly_detector.py --client ${clientConfig.id} --lookback 90</pre>
+            </div>`;
+
+            html += `</div>`;
             mc.innerHTML = html;
         }
 
