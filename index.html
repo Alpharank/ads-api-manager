@@ -1366,6 +1366,29 @@
             fill: currentColor;
         }
 
+        .no-kw-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #f1f3f4; color: var(--text-secondary);
+            font-size: 10px; font-weight: 600; margin-right: 6px;
+            vertical-align: middle; cursor: help;
+        }
+        td.name-cell.has-tooltip { cursor: help; }
+
+        /* Fixed-position tooltip */
+        .fixed-tooltip {
+            position: fixed; z-index: 9999; pointer-events: none;
+            background: #1e293b; color: #f8fafc; font-size: 12px;
+            font-weight: 400; padding: 6px 12px; border-radius: 6px;
+            white-space: nowrap; opacity: 0; transition: opacity 0.15s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        .fixed-tooltip.visible { opacity: 1; }
+        .fixed-tooltip::after {
+            content: ''; position: absolute; left: 24px; top: 100%;
+            border: 5px solid transparent; border-top-color: #1e293b;
+        }
+
         /* Column resize handle */
         .col-resizer {
             position: absolute;
@@ -1783,6 +1806,7 @@
 </head>
 <body>
     <div id="colTooltip"></div>
+    <div id="fixedTooltip" class="fixed-tooltip"></div>
 
     <!-- FuturProof Page Loader -->
     <div id="pageLoader" class="page-loader">
@@ -3376,15 +3400,16 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
             data.forEach(r => {
-                const hasKwApproved = keywordData.some(k => k.campaign_id === r.campaign_id && k.cost > 0);
-                const kwIcon = hasKwApproved
+                const hasKw = keywordData.some(k => k.campaign_id === r.campaign_id && k.cost > 0);
+                const kwIcon = hasKw
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
-                    : '';
+                    : '<span class="no-kw-icon">?</span>';
                 const tr = document.createElement('tr');
                 tr.className = 'clickable';
                 tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
+                const tooltipClass = hasKw ? 'name-cell' : 'name-cell has-tooltip';
                 tr.innerHTML = `
-                    <td class="name-cell"><span class="drill-icon" title="Drill into ad groups">+</span>${kwIcon}${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td class="${tooltipClass}"><span class="drill-icon" title="Drill into ad groups">+</span>${kwIcon}${escapeHtml(displayName(r.campaign_name))}</td>
                     <td class="dim">${escapeHtml(r.campaign_id)}</td>
                     <td class="text-right">${fmtNum(r.impressions)}</td>
                     <td class="text-right">${fmtNum(r.clicks)}</td>
@@ -5728,6 +5753,26 @@ python scripts/anomaly_detector.py --client ${clientConfig.id} --lookback 90</pr
             }
             init();
         });
+
+        // ── Tooltip for non-keyword campaigns ──
+        (function() {
+            const tip = document.getElementById('fixedTooltip');
+            const MSG = 'This campaign type (PMax, YouTube, Display, etc.) does not have keyword-level data in the Google Ads API';
+            document.addEventListener('mouseover', e => {
+                const cell = e.target.closest('td.has-tooltip');
+                if (!cell) return;
+                tip.textContent = MSG;
+                const rect = cell.getBoundingClientRect();
+                tip.style.left = rect.left + 'px';
+                tip.style.top = (rect.top - 8) + 'px';
+                tip.style.transform = 'translateY(-100%)';
+                tip.classList.add('visible');
+            });
+            document.addEventListener('mouseout', e => {
+                const cell = e.target.closest('td.has-tooltip');
+                if (cell) tip.classList.remove('visible');
+            });
+        })();
     </script>
 </body>
 </html>
