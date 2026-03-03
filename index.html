@@ -810,6 +810,18 @@
 
         .filter-input::placeholder { color: #9aa0a6; }
 
+        .id-filter-row {
+            padding: 8px 0 0; display: flex; align-items: center;
+        }
+        .id-filter {
+            padding: 6px 12px; border: 1px solid var(--border);
+            border-radius: 6px; font-size: 13px; font-family: inherit;
+            font-weight: 600; background: var(--bg);
+            width: 180px; box-shadow: 0 2px 6px rgba(0,0,0,0.10);
+        }
+        .id-filter:focus { outline: none; border-color: var(--accent); box-shadow: 0 2px 6px rgba(201,162,39,0.25); }
+        .id-filter::placeholder { color: #9aa0a6; font-weight: 400; }
+
         .toolbar-count {
             font-size: 13px;
             color: var(--text-secondary);
@@ -2233,6 +2245,11 @@
                         </button>
                     </div>
 
+                    <!-- Campaign ID Search -->
+                    <div id="idFilterRow" class="id-filter-row">
+                        <input type="text" id="idFilter" class="id-filter" placeholder="Search Campaign ID...">
+                    </div>
+
                     <!-- Table -->
                     <div class="table-wrap">
                         <table>
@@ -2274,6 +2291,7 @@
         let sortColumn = 'clicks';
         let sortAscending = false;
         let textFilterValue = '';
+        let idFilterValue = '';
         let compactMode = false;
         let matchFilters = { BROAD: true, PHRASE: true, EXACT: true };
 
@@ -2498,6 +2516,10 @@
                 monthSel.value = currentMonth;
                 document.getElementById('textFilter').addEventListener('input', e => {
                     textFilterValue = e.target.value;
+                    renderTable();
+                });
+                document.getElementById('idFilter').addEventListener('input', e => {
+                    idFilterValue = e.target.value.trim();
                     renderTable();
                 });
 
@@ -2886,6 +2908,7 @@
             sortColumn = level === 'channels' ? 'cost' : (level === 'whenwhere' ? 'cost' : (level === 'negativekeywords' ? 'keyword' : 'clicks'));
             sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
+            idFilterValue = ''; document.getElementById('idFilter').value = '';
             closeSidebarOnMobile();
             render();
         }
@@ -2896,6 +2919,7 @@
             currentLevel = 'adgroups';
             sortColumn = 'clicks'; sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
+            idFilterValue = ''; document.getElementById('idFilter').value = '';
             closeSidebarOnMobile();
             render();
         }
@@ -2905,6 +2929,7 @@
             currentLevel = 'keywords';
             sortColumn = 'clicks'; sortAscending = false;
             textFilterValue = ''; document.getElementById('textFilter').value = '';
+            idFilterValue = ''; document.getElementById('idFilter').value = '';
             closeSidebarOnMobile();
             render();
         }
@@ -2923,6 +2948,9 @@
                 if (el) el.style.display = isSemrushView ? 'none' : '';
             });
             document.getElementById('semrushContent').style.display = isSemrushView ? 'block' : 'none';
+
+            // Show Campaign ID filter only on campaigns view
+            document.getElementById('idFilterRow').style.display = currentLevel === 'campaigns' ? 'flex' : 'none';
 
             if (isSemrushView) {
                 renderTable();
@@ -3279,7 +3307,19 @@
         }
 
         function renderTable() {
-            if (currentLevel === 'campaigns') renderCampaigns();
+            if (currentLevel === 'campaigns') {
+                renderCampaigns();
+                // Align ID filter above the Campaign ID column
+                requestAnimationFrame(() => {
+                    const th = document.querySelector('#tableHead th:nth-child(2)');
+                    const wrap = document.querySelector('.table-wrap');
+                    if (th && wrap) {
+                        const thRect = th.getBoundingClientRect();
+                        const wrapRect = wrap.getBoundingClientRect();
+                        document.getElementById('idFilter').style.marginLeft = (thRect.left - wrapRect.left) + 'px';
+                    }
+                });
+            }
             else if (currentLevel === 'adgroups') renderAdGroups();
             else if (currentLevel === 'keywords') renderKeywords();
             else if (currentLevel === 'allkeywords') renderAllKeywords();
@@ -3322,9 +3362,12 @@
                 _total_funded_value: r.value || 0
             }));
 
+            if (idFilterValue) {
+                data = data.filter(r => r.campaign_id.includes(idFilterValue));
+            }
             if (textFilterValue) {
                 const t = textFilterValue.toLowerCase();
-                data = data.filter(r => r.campaign_name.toLowerCase().includes(t) || r.campaign_id.includes(t));
+                data = data.filter(r => r.campaign_name.toLowerCase().includes(t));
             }
             data = applySorting(data);
             updateSortArrows();
