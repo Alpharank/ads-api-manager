@@ -3384,7 +3384,7 @@
                 const kwIcon = hasKw
                     ? `<span class="kw-chart-icon" onclick="event.stopPropagation(); showKwCharts('${escapeAttr(r.campaign_name)}', '${escapeAttr(r.campaign_id)}')" title="Keyword breakdown"><svg viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg></span>`
                     : '';
-                const noKwReason = hasKw ? '' : '<span class="no-kw-reason">(no keyword data)</span>';
+                const noKwReason = hasKw ? '' : '<span class="no-kw-reason">\u2014 This campaign type does not have keyword-level data available in the Google Ads API.</span>';
                 const tr = document.createElement('tr');
                 tr.className = 'clickable';
                 tr.onclick = () => drillIntoCampaign(r.campaign_name, r.campaign_id);
