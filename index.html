@@ -2519,6 +2519,12 @@
         // ── Init ──
         async function init() {
             try {
+                // Load client registry from clients.json
+                const clientsJson = await fetch('clients.json').then(r => r.json()).catch(() => ({}));
+                for (const [token, info] of Object.entries(clientsJson)) {
+                    _clientMap[token] = info;
+                }
+
                 // 1. Check if hostname maps to a specific client (unique domain per client)
                 const hostname = window.location.hostname;
                 const domainClient = _domainMap[hostname];
