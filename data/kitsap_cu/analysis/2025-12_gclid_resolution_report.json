@@ -1,0 +1,201 @@
+{
+  "client": "kitsap_cu",
+  "client_name": "Kitsap Credit Union",
+  "athena_id": "kitsap_cu",
+  "month": "2025-12",
+  "generated_at": "2026-03-06T16:38:12.067681",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 82,
+      "approved": 33,
+      "funded": 25,
+      "ltv": 111441.27,
+      "production": 355030.5
+    },
+    "delta": {
+      "apps": 82,
+      "approved": 33,
+      "funded": 25,
+      "ltv": 111441.27
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 50,
+      "pct": 61.0,
+      "approved": 22,
+      "funded": 19,
+      "ltv": 93552.27
+    },
+    "tier2": {
+      "apps": 19,
+      "pct": 23.2,
+      "approved": 8,
+      "funded": 4,
+      "ltv": 13920.0
+    },
+    "tier3": {
+      "apps": 13,
+      "pct": 15.9,
+      "approved": 3,
+      "funded": 2,
+      "ltv": 3969.0
+    },
+    "attribution_rate": 84.1,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "23228929821.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "KCU - Personal - Brand",
+      "ron_apps": 0,
+      "our_apps": 47,
+      "delta": 47,
+      "tier1": 47,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 20,
+      "ron_funded": 0,
+      "our_funded": 17,
+      "ron_ltv": 0,
+      "our_ltv": 79052.27,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23238626389.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "KCU - Personal - NB Locations",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 2,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 13000.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23282664394.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "KCU - Business - Brand",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 1500.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23430737916",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 18,
+      "delta": 18,
+      "tier1": 0,
+      "tier2": 18,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 8,
+      "ron_funded": 0,
+      "our_funded": 4,
+      "ron_ltv": 0,
+      "our_ltv": 13920.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23430742242",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "other_google_ads",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Other Google Ads Applications (T3 catch-all)",
+      "ron_apps": 0,
+      "our_apps": 13,
+      "delta": 13,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 13,
+      "ron_approved": 0,
+      "our_approved": 3,
+      "ron_funded": 0,
+      "our_funded": 2,
+      "ron_ltv": 0,
+      "our_ltv": 3969.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "total_delta": 82,
+    "ron_apps": 0,
+    "waterfall_apps": 82,
+    "reasons": [
+      {
+        "cause": "Client not in Ron's pipeline",
+        "apps_explained": 82,
+        "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."
+      }
+    ],
+    "ron_presence": {
+      "has_data": false,
+      "total_rows": 0,
+      "total_apps": 0,
+      "earliest_day": null,
+      "latest_day": null,
+      "months_with_data": 0,
+      "athena_id": "kitsap_cu"
+    },
+    "primary_cause": "ron_pipeline_missing",
+    "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='kitsap_cu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."
+  },
+  "recommendations": [
+    {
+      "priority": "MEDIUM",
+      "title": "13 apps still in T3 (15.9%)",
+      "impact": "T3 apps lack campaign-level attribution",
+      "action": "Investigate T3 attribution strings for extractable campaign IDs"
+    },
+    {
+      "priority": "LOW",
+      "title": "Attribution rate: 84.1%",
+      "impact": "13 apps only at channel level",
+      "action": "Review T3 attribution strings for campaign ID patterns"
+    }
+  ]
+}

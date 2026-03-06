@@ -1,0 +1,385 @@
+{
+  "client": "altura_ad_account",
+  "client_name": "Altura Ad Account",
+  "athena_id": "altura_cu",
+  "month": "2025-12",
+  "generated_at": "2026-03-06T16:37:38.814413",
+  "totals_comparison": {
+    "ron": {
+      "apps": 4,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 4,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "delta": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "tier2": {
+      "apps": 4,
+      "pct": 100.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "tier3": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "attribution_rate": 100.0,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "8701600450",
+      "campaign_name_ron": "SEARCH | Ascend Checking",
+      "campaign_name_ours": "SEARCH | Ascend Checking",
+      "ron_apps": 3,
+      "our_apps": 3,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 3,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0.0,
+      "status": "matched"
+    },
+    {
+      "campaign_id": "23093430697",
+      "campaign_name_ron": "Evergreen PMax - Auto",
+      "campaign_name_ours": "",
+      "ron_apps": 1,
+      "our_apps": 0,
+      "delta": -1,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "20266474689",
+      "campaign_name_ron": "SEARCH | Auto Expert",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "21273804445",
+      "campaign_name_ron": "Performance Max - Woodcrest",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "21641193985",
+      "campaign_name_ron": "Demand Gen - Overall Brand - All Products",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23285777966",
+      "campaign_name_ron": "PMax - Sig Loan 2025",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23346863439",
+      "campaign_name_ron": "Goodbuy Community Marketplace - PMax",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23382769817",
+      "campaign_name_ron": "MyMoney 50/50 Campaign",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23083394367",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "ron_only_campaigns": [
+      {
+        "campaign_id": "20266474689",
+        "campaign_name": "SEARCH | Auto Expert",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "21273804445",
+        "campaign_name": "Performance Max - Woodcrest",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "21641193985",
+        "campaign_name": "Demand Gen - Overall Brand - All Products",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23093430697",
+        "campaign_name": "Evergreen PMax - Auto",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23285777966",
+        "campaign_name": "PMax - Sig Loan 2025",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23346863439",
+        "campaign_name": "Goodbuy Community Marketplace - PMax",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23382769817",
+        "campaign_name": "MyMoney 50/50 Campaign",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      }
+    ],
+    "ours_only_campaigns": [
+      {
+        "campaign_id": "23083394367",
+        "campaign_name": "Unknown Campaign",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      }
+    ],
+    "total_gap_apps": 1,
+    "matched_count": 1,
+    "ron_only_count": 7,
+    "ours_only_count": 1,
+    "t3_catchall_apps": 0,
+    "gap_analysis": [
+      {
+        "campaign_id": "20266474689",
+        "campaign_name": "SEARCH | Auto Expert",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "21273804445",
+        "campaign_name": "Performance Max - Woodcrest",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "21641193985",
+        "campaign_name": "Demand Gen - Overall Brand - All Products",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23093430697",
+        "campaign_name": "Evergreen PMax - Auto",
+        "ron_apps": 1,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23285777966",
+        "campaign_name": "PMax - Sig Loan 2025",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23346863439",
+        "campaign_name": "Goodbuy Community Marketplace - PMax",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23382769817",
+        "campaign_name": "MyMoney 50/50 Campaign",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      }
+    ],
+    "discrepancy": {
+      "total_delta": 0,
+      "ron_apps": 4,
+      "waterfall_apps": 4,
+      "reasons": [
+        {
+          "cause": "Campaigns in waterfall not in Ron's data",
+          "apps_explained": 1,
+          "detail": "1 campaigns we attribute that Ron doesn't: Unknown Campaign. Possible causes: different campaign_id mapping, T2 attribution resolving campaigns Ron's click-only approach misses, or date range differences."
+        },
+        {
+          "cause": "Campaigns in Ron's data missing from waterfall",
+          "apps_explained": -1,
+          "detail": "7 campaigns Ron has that we don't: SEARCH | Auto Expert, Performance Max - Woodcrest, Demand Gen - Overall Brand - All Products, Evergreen PMax - Auto, PMax - Sig Loan 2025.... These apps exist in Ron's pipeline but our waterfall didn't extract a matching campaign_id from the attribution string."
+        }
+      ],
+      "ron_presence": {
+        "has_data": true,
+        "total_rows": 359,
+        "total_apps": 732,
+        "earliest_day": "2025-11-01",
+        "latest_day": "2025-12-31",
+        "months_with_data": 2,
+        "athena_id": "altura_cu"
+      },
+      "primary_cause": "methodology_difference",
+      "explanation": "Delta of +0 apps (waterfall 4 vs Ron 4). Breakdown: +1 from Campaigns in waterfall not in Ron's data; -1 from Campaigns in Ron's data missing from waterfall."
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "MEDIUM",
+      "title": "+1 apps from campaigns Ron doesn't have",
+      "impact": "Our T2 waterfall attributes these to campaigns via gad_campaignid/attribution string",
+      "action": "1 campaigns we attribute that Ron doesn't: Unknown Campaign. Possible causes: different campaign_id mapping, T2 attribution resolving campaigns Ron's click-only approach misses, or date range differences."
+    },
+    {
+      "priority": "HIGH",
+      "title": "1 apps in Ron-only campaigns we're missing",
+      "impact": "7 campaigns in Ron's data not in our waterfall",
+      "action": "7 campaigns Ron has that we don't: SEARCH | Auto Expert, Performance Max - Woodcrest, Demand Gen - Overall Brand - All Products, Evergreen PMax - Auto, PMax - Sig Loan 2025.... These apps exist in Ron's pipeline but our waterfall didn't extract a matching campaign_id from the attribution string."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "Attribution rate: 100.0%",
+      "impact": "T1+T2 covers vast majority of apps",
+      "action": "Maintain current extraction rules"
+    }
+  ]
+}

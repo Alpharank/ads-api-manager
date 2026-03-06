@@ -1,0 +1,105 @@
+{
+  "client": "commonwealth_one_fcu",
+  "client_name": "CommonWealth One Federal Credit Union",
+  "athena_id": "commonwealth_one_fcu",
+  "month": "2026-02",
+  "generated_at": "2026-03-06T16:37:52.348683",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 15,
+      "approved": 5,
+      "funded": 3,
+      "ltv": 4500.0,
+      "production": 90.0
+    },
+    "delta": {
+      "apps": 15,
+      "approved": 5,
+      "funded": 3,
+      "ltv": 4500.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "tier2": {
+      "apps": 15,
+      "pct": 100.0,
+      "approved": 5,
+      "funded": 3,
+      "ltv": 4500.0
+    },
+    "tier3": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "attribution_rate": 100.0,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "23412316985",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 15,
+      "delta": 15,
+      "tier1": 0,
+      "tier2": 15,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 5,
+      "ron_funded": 0,
+      "our_funded": 3,
+      "ron_ltv": 0,
+      "our_ltv": 4500.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "total_delta": 15,
+    "ron_apps": 0,
+    "waterfall_apps": 15,
+    "reasons": [
+      {
+        "cause": "Client not in Ron's pipeline",
+        "apps_explained": 15,
+        "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."
+      }
+    ],
+    "ron_presence": {
+      "has_data": false,
+      "total_rows": 0,
+      "total_apps": 0,
+      "earliest_day": null,
+      "latest_day": null,
+      "months_with_data": 0,
+      "athena_id": "commonwealth_one_fcu"
+    },
+    "primary_cause": "ron_pipeline_missing",
+    "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='commonwealth_one_fcu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."
+  },
+  "recommendations": [
+    {
+      "priority": "SUCCESS",
+      "title": "Attribution rate: 100.0%",
+      "impact": "T1+T2 covers vast majority of apps",
+      "action": "Maintain current extraction rules"
+    }
+  ]
+}

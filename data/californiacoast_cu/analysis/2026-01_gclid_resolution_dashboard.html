@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Waterfall Attribution -- California Coast Credit Union -- 2026-01</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+:root {
+    --teal: #296f5e;
+    --teal-dark: #1a4a3f;
+    --teal-light: #3a9a84;
+    --mint: #6DB09F;
+    --mint-light: #D1F0E8;
+    --rose: #C5998B;
+    --brown: #703B2A;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --light: #9ca3af;
+    --border: #e5e7eb;
+    --green: #22c55e;
+    --red: #ef4444;
+    --yellow: #eab308;
+    --blue: #3b82f6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+}
+
+.header {
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+    color: white;
+    padding: 32px 40px;
+    border-radius: 0 0 24px 24px;
+    margin-bottom: 24px;
+}
+.header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.header .subtitle {
+    font-size: 16px;
+    opacity: 0.85;
+    font-weight: 400;
+}
+.header .meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 12px;
+    font-size: 13px;
+    opacity: 0.7;
+    flex-wrap: wrap;
+}
+.header .meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.content {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+}
+
+/* Stat pills */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.stat-card {
+    background: white;
+    padding: 24px;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s;
+}
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+.stat-card.primary {
+    background: var(--teal);
+    color: white;
+}
+.stat-card.primary .stat-label {
+    color: rgba(255,255,255,0.8);
+}
+.stat-card.success {
+    background: #e8f5e9;
+    border: 2px solid #4caf50;
+}
+.stat-card.success .stat-value {
+    color: #2e7d32;
+}
+.stat-card.alert {
+    background: #fff3e0;
+    border: 2px solid #f57c00;
+}
+.stat-card.alert .stat-value {
+    color: #e65100;
+}
+.stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--teal);
+    line-height: 1.2;
+}
+.stat-card.primary .stat-value {
+    color: white;
+}
+.stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* Section titles */
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text);
+}
+.section-hint {
+    font-size: 12px;
+    color: var(--light);
+    margin-top: -12px;
+    margin-bottom: 16px;
+}
+
+/* Explainer box */
+.explainer {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    padding: 28px;
+    margin-bottom: 28px;
+    line-height: 1.8;
+    font-size: 14px;
+}
+.explainer h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--teal);
+    margin-bottom: 12px;
+}
+.explainer h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 16px;
+    margin-bottom: 6px;
+}
+.explainer p {
+    margin-bottom: 8px;
+    color: #374151;
+}
+.explainer .tier-def {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin: 10px 0;
+    padding: 12px 16px;
+    border-radius: 10px;
+}
+.explainer .tier-def.t1 { background: #e8f5e9; border-left: 4px solid #296f5e; }
+.explainer .tier-def.t2 { background: #e3f2fd; border-left: 4px solid #6DB09F; }
+.explainer .tier-def.t3 { background: #fff8e1; border-left: 4px solid #C5998B; }
+.explainer .tier-badge {
+    font-weight: 700;
+    font-size: 13px;
+    min-width: 28px;
+}
+.explainer .tier-def.t1 .tier-badge { color: #296f5e; }
+.explainer .tier-def.t2 .tier-badge { color: #1976d2; }
+.explainer .tier-def.t3 .tier-badge { color: #e65100; }
+.explainer .tier-desc {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.6;
+}
+.explainer .tier-desc strong { color: var(--text); }
+
+/* Chart cards */
+.chart-grid {
+    display: grid;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+.chart-grid.two-col {
+    grid-template-columns: 1fr 1fr;
+}
+.chart-grid.three-col {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.chart-grid.full-width {
+    grid-template-columns: 1fr;
+}
+.chart-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+    min-width: 0;
+}
+.chart-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--border);
+}
+.chart-header h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+}
+.chart-header .chart-subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+.chart-body {
+    padding: 20px;
+}
+
+/* Comparison table */
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-bottom: 28px;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.comparison-table th {
+    background: var(--bg);
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+}
+.comparison-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+}
+.comparison-table tr:last-child td {
+    border-bottom: none;
+}
+.comparison-table .metric-label {
+    font-weight: 600;
+    color: var(--text);
+}
+.comparison-table .val-positive { color: #2e7d32; font-weight: 600; }
+.comparison-table .val-negative { color: #c62828; font-weight: 600; }
+.comparison-table .val-neutral { color: var(--muted); font-weight: 600; }
+
+/* Insight cards */
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+}
+.insight-card {
+    background: var(--bg);
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid var(--teal);
+}
+.insight-card.SUCCESS { border-left-color: #4caf50; background: #e8f5e9; }
+.insight-card.HIGH { border-left-color: #f57c00; background: #fff8e1; }
+.insight-card.MEDIUM { border-left-color: #3D85C6; background: #e3f2fd; }
+.insight-card.LOW { border-left-color: var(--light); }
+.insight-card.INFO { border-left-color: #1976d2; background: #e8eaf6; }
+.insight-priority {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+.insight-card.SUCCESS .insight-priority { color: #2e7d32; }
+.insight-card.HIGH .insight-priority { color: #f57c00; }
+.insight-card.MEDIUM .insight-priority { color: #3D85C6; }
+.insight-card.LOW .insight-priority { color: var(--muted); }
+.insight-card.INFO .insight-priority { color: #1565c0; }
+.insight-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+.insight-impact {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+.insight-action {
+    font-size: 12px;
+    color: var(--text);
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
+/* Campaign table */
+.table-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+.table-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.table-header h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+.table-search {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    width: 240px;
+}
+.table-search:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px rgba(41,111,94,0.1);
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.data-table th {
+    background: var(--bg);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+.data-table th:hover {
+    color: var(--teal);
+}
+.data-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.data-table tr:hover td {
+    background: #f9fafb;
+}
+.data-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Status badges */
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.status-matched { background: #e8f5e9; color: #2e7d32; }
+.status-ron_only { background: #ffebee; color: #c62828; }
+.status-ours_only { background: #fff8e1; color: #e65100; }
+
+/* Delta styling */
+.delta-pos { color: #2e7d32; }
+.delta-neg { color: #c62828; }
+.delta-zero { color: var(--muted); }
+
+/* Reason box */
+.reason-box {
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+.reason-box.info { background: #e8eaf6; border-left: 4px solid #1976d2; }
+.reason-box.warn { background: #fff8e1; border-left: 4px solid #f57c00; }
+.reason-box.detail { background: #f5f7fa; border-left: 4px solid #296f5e; }
+.reason-box strong { display: block; font-size: 15px; margin-bottom: 4px; }
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--light);
+    font-size: 12px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header { padding: 20px; border-radius: 0 0 16px 16px; }
+    .header h1 { font-size: 24px; }
+    .chart-grid.two-col,
+    .chart-grid.three-col { grid-template-columns: 1fr; }
+    .content { padding: 0 16px 40px; }
+    .stat-card { padding: 16px; border-radius: 30px; }
+    .stat-value { font-size: 28px; }
+    .header .meta { flex-wrap: wrap; gap: 12px; }
+    .table-header { flex-direction: column; gap: 12px; }
+    .table-search { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+    <h1>Waterfall Attribution Analysis</h1>
+    <div class="subtitle">California Coast Credit Union -- 2026-01</div>
+    <div class="meta">
+        <span>Client: californiacoast_cu</span>
+        <span>Athena ID: california_coast_cu</span>
+        <span>Generated: 2026-03-06 16:51:15</span>
+    </div>
+</div>
+
+<div class="content">
+
+    <!-- Stats row -->
+    <div class="stats-grid" id="stats-grid"></div>
+
+    <!-- Methodology Explainer -->
+    <div class="explainer" id="explainer-section"></div>
+
+    <!-- Discrepancy Deep Dive -->
+    <div id="discrepancy-section"></div>
+
+    <!-- Per-Tier Detail Table -->
+    <div id="tier-detail-section"></div>
+
+    <!-- Totals Comparison Table -->
+    <div class="section-title">Ron vs Waterfall Totals</div>
+    <p class="section-hint">Side-by-side comparison of headline metrics</p>
+    <div id="totals-table"></div>
+
+    <!-- Tier Breakdown + Totals Charts -->
+    <div class="section-title">Attribution Tiers</div>
+    <p class="section-hint">How the waterfall distributes applications across T1 (GCLID), T2 (campaign ID), T3 (channel-only)</p>
+    <div class="chart-grid two-col">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Tier Distribution</h3>
+                <div class="chart-subtitle">Application count by tier</div>
+            </div>
+            <div class="chart-body">
+                <div id="chart-tier-pie" style="height:380px"></div>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>Ron vs Waterfall</h3>
+                <div class="chart-subtitle">Total apps, approved, funded, LTV comparison</div>
+            </div>
+            <div class="chart-body">
+                <div id="chart-totals-bar" style="height:380px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Per-Tier Funnel Charts -->
+    <div class="chart-grid three-col" id="tier-funnel-charts">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>T1: GCLID Match</h3>
+                <div class="chart-subtitle">Full keyword-level attribution</div>
+            </div>
+            <div class="chart-body">
+                <div id="chart-t1-funnel" style="height:280px"></div>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>T2: Campaign ID</h3>
+                <div class="chart-subtitle">Campaign-level via URL params</div>
+            </div>
+            <div class="chart-body">
+                <div id="chart-t2-funnel" style="height:280px"></div>
+            </div>
+        </div>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3>T3: Channel Only</h3>
+                <div class="chart-subtitle">Category/subcategory match only</div>
+            </div>
+            <div class="chart-body">
+                <div id="chart-t3-funnel" style="height:280px"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Campaign Comparison Table -->
+    <div class="section-title">Campaign-Level Comparison</div>
+    <p class="section-hint" id="campaign-hint"></p>
+    <div class="table-card">
+        <div class="table-header">
+            <h3>Campaigns</h3>
+            <input type="text" class="table-search" id="campaign-search" placeholder="Search campaigns...">
+        </div>
+        <div style="overflow-x:auto">
+            <table class="data-table" id="campaign-table">
+                <thead></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Gap Highlights -->
+    <div id="gap-section"></div>
+
+    <!-- Recommendations -->
+    <div class="section-title">Findings & Recommendations</div>
+    <div class="insights-grid" id="insights-grid"></div>
+
+</div>
+
+<div class="footer">
+    Alpharank Google Ads Attribution Analysis &middot; Generated 2026-03-06 16:51:15
+</div>
+
+<script>
+const R = {"client": "californiacoast_cu", "client_name": "California Coast Credit Union", "athena_id": "california_coast_cu", "month": "2026-01", "generated_at": "2026-03-06T16:51:15.794115", "totals_comparison": {"ron": {"apps": 0, "approved": 0, "funded": 0, "ltv": 0.0, "production": 0.0}, "waterfall": {"apps": 2024, "approved": 727, "funded": 353, "ltv": 1060131.7, "production": 5333386.0}, "delta": {"apps": 2024, "approved": 727, "funded": 353, "ltv": 1060131.7}}, "tier_breakdown": {"tier1": {"apps": 1911, "pct": 94.4, "approved": 682, "funded": 338, "ltv": 1009564.91}, "tier2": {"apps": 84, "pct": 4.2, "approved": 31, "funded": 11, "ltv": 33241.56}, "tier3": {"apps": 29, "pct": 1.4, "approved": 14, "funded": 4, "ltv": 17325.23}, "attribution_rate": 98.6, "t3_promotable_apps": 0}, "campaign_comparison": [{"campaign_id": "1578789530", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 5, "delta": 5, "tier1": 0, "tier2": 5, "tier3": 0, "ron_approved": 0, "our_approved": 2, "ron_funded": 0, "our_funded": 1, "ron_ltv": 0, "our_ltv": 1500.0, "status": "ours_only"}, {"campaign_id": "1578789530.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 111, "delta": 111, "tier1": 111, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 42, "ron_funded": 0, "our_funded": 26, "ron_ltv": 0, "our_ltv": 62046.0086, "status": "ours_only"}, {"campaign_id": "1578789533.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 102, "delta": 102, "tier1": 102, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 40, "ron_funded": 0, "our_funded": 20, "ron_ltv": 0, "our_ltv": 43432.5826, "status": "ours_only"}, {"campaign_id": "1578789542", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 8, "delta": 8, "tier1": 0, "tier2": 8, "tier3": 0, "ron_approved": 0, "our_approved": 4, "ron_funded": 0, "our_funded": 0, "ron_ltv": 0, "our_ltv": 0.0, "status": "ours_only"}, {"campaign_id": "1578789542.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 82, "delta": 82, "tier1": 82, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 36, "ron_funded": 0, "our_funded": 13, "ron_ltv": 0, "our_ltv": 41915.150400000006, "status": "ours_only"}, {"campaign_id": "1578789545", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 12, "delta": 12, "tier1": 0, "tier2": 12, "tier3": 0, "ron_approved": 0, "our_approved": 7, "ron_funded": 0, "our_funded": 1, "ron_ltv": 0, "our_ltv": 1500.0, "status": "ours_only"}, {"campaign_id": "1578789545.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 928, "delta": 928, "tier1": 928, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 345, "ron_funded": 0, "our_funded": 173, "ron_ltv": 0, "our_ltv": 534685.537, "status": "ours_only"}, {"campaign_id": "1636059240", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting", "ron_apps": 0, "our_apps": 2, "delta": 2, "tier1": 0, "tier2": 2, "tier3": 0, "ron_approved": 0, "our_approved": 0, "ron_funded": 0, "our_funded": 0, "ron_ltv": 0, "our_ltv": 0.0, "status": "ours_only"}, {"campaign_id": "21609985820", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach", "ron_apps": 0, "our_apps": 17, "delta": 17, "tier1": 0, "tier2": 17, "tier3": 0, "ron_approved": 0, "our_approved": 4, "ron_funded": 0, "our_funded": 2, "ron_ltv": 0, "our_ltv": 3682.5412, "status": "ours_only"}, {"campaign_id": "22071062520", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 5, "delta": 5, "tier1": 0, "tier2": 5, "tier3": 0, "ron_approved": 0, "our_approved": 4, "ron_funded": 0, "our_funded": 1, "ron_ltv": 0, "our_ltv": 4976.412000000001, "status": "ours_only"}, {"campaign_id": "22071062520.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 382, "delta": 382, "tier1": 382, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 119, "ron_funded": 0, "our_funded": 63, "ron_ltv": 0, "our_ltv": 176538.43800000002, "status": "ours_only"}, {"campaign_id": "22076650992.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 91, "delta": 91, "tier1": 91, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 30, "ron_funded": 0, "our_funded": 12, "ron_ltv": 0, "our_ltv": 46364.116, "status": "ours_only"}, {"campaign_id": "22080143039", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach", "ron_apps": 0, "our_apps": 24, "delta": 24, "tier1": 0, "tier2": 24, "tier3": 0, "ron_approved": 0, "our_approved": 6, "ron_funded": 0, "our_funded": 4, "ron_ltv": 0, "our_ltv": 12644.9976, "status": "ours_only"}, {"campaign_id": "22082727542", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting", "ron_apps": 0, "our_apps": 1, "delta": 1, "tier1": 0, "tier2": 1, "tier3": 0, "ron_approved": 0, "our_approved": 1, "ron_funded": 0, "our_funded": 1, "ron_ltv": 0, "our_ltv": 5573.960000000001, "status": "ours_only"}, {"campaign_id": "22086561724", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 5, "delta": 5, "tier1": 0, "tier2": 5, "tier3": 0, "ron_approved": 0, "our_approved": 2, "ron_funded": 0, "our_funded": 0, "ron_ltv": 0, "our_ltv": 0.0, "status": "ours_only"}, {"campaign_id": "22086561724.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 122, "delta": 122, "tier1": 122, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 32, "ron_funded": 0, "our_funded": 14, "ron_ltv": 0, "our_ltv": 36112.4888, "status": "ours_only"}, {"campaign_id": "22494484307", "campaign_name_ron": "", "campaign_name_ours": "Unknown Campaign", "ron_apps": 0, "our_apps": 1, "delta": 1, "tier1": 0, "tier2": 1, "tier3": 0, "ron_approved": 0, "our_approved": 0, "ron_funded": 0, "our_funded": 0, "ron_ltv": 0, "our_ltv": 0.0, "status": "ours_only"}, {"campaign_id": "22571396349", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 2, "delta": 2, "tier1": 0, "tier2": 2, "tier3": 0, "ron_approved": 0, "our_approved": 1, "ron_funded": 0, "our_funded": 1, "ron_ltv": 0, "our_ltv": 3363.6484000000005, "status": "ours_only"}, {"campaign_id": "22571396349.0", "campaign_name_ron": "", "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion", "ron_apps": 0, "our_apps": 93, "delta": 93, "tier1": 93, "tier2": 0, "tier3": 0, "ron_approved": 0, "our_approved": 38, "ron_funded": 0, "our_funded": 17, "ron_ltv": 0, "our_ltv": 68470.5906, "status": "ours_only"}, {"campaign_id": "23539572923", "campaign_name_ron": "", "campaign_name_ours": "Unknown Campaign", "ron_apps": 0, "our_apps": 2, "delta": 2, "tier1": 0, "tier2": 2, "tier3": 0, "ron_approved": 0, "our_approved": 0, "ron_funded": 0, "our_funded": 0, "ron_ltv": 0, "our_ltv": 0.0, "status": "ours_only"}, {"campaign_id": "other_google_ads", "campaign_name_ron": "", "campaign_name_ours": "Other Google Ads Applications (T3 catch-all)", "ron_apps": 0, "our_apps": 29, "delta": 29, "tier1": 0, "tier2": 0, "tier3": 29, "ron_approved": 0, "our_approved": 14, "ron_funded": 0, "our_funded": 4, "ron_ltv": 0, "our_ltv": 17325.233, "status": "ours_only"}], "gaps": {"ron_only_campaigns": [], "ours_only_campaigns": [{"campaign_id": "1578789530", "campaign_name": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 5, "approved": 2, "funded": 1, "ltv": 1500.0}, {"campaign_id": "1578789530.0", "campaign_name": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 111, "approved": 42, "funded": 26, "ltv": 62046.0086}, {"campaign_id": "1578789533.0", "campaign_name": "Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 102, "approved": 40, "funded": 20, "ltv": 43432.5826}, {"campaign_id": "1578789542", "campaign_name": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 8, "approved": 4, "funded": 0, "ltv": 0.0}, {"campaign_id": "1578789542.0", "campaign_name": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 82, "approved": 36, "funded": 13, "ltv": 41915.150400000006}, {"campaign_id": "1578789545", "campaign_name": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 12, "approved": 7, "funded": 1, "ltv": 1500.0}, {"campaign_id": "1578789545.0", "campaign_name": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion", "apps": 928, "approved": 345, "funded": 173, "ltv": 534685.537}, {"campaign_id": "1636059240", "campaign_name": "Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting", "apps": 2, "approved": 0, "funded": 0, "ltv": 0.0}, {"campaign_id": "21609985820", "campaign_name": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach", "apps": 17, "approved": 4, "funded": 2, "ltv": 3682.5412}, {"campaign_id": "22071062520", "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 5, "approved": 4, "funded": 1, "ltv": 4976.412000000001}, {"campaign_id": "22071062520.0", "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 382, "approved": 119, "funded": 63, "ltv": 176538.43800000002}, {"campaign_id": "22076650992.0", "campaign_name": "Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 91, "approved": 30, "funded": 12, "ltv": 46364.116}, {"campaign_id": "22080143039", "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach", "apps": 24, "approved": 6, "funded": 4, "ltv": 12644.9976}, {"campaign_id": "22082727542", "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting", "apps": 1, "approved": 1, "funded": 1, "ltv": 5573.960000000001}, {"campaign_id": "22086561724", "campaign_name": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 5, "approved": 2, "funded": 0, "ltv": 0.0}, {"campaign_id": "22086561724.0", "campaign_name": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 122, "approved": 32, "funded": 14, "ltv": 36112.4888}, {"campaign_id": "22494484307", "campaign_name": "Unknown Campaign", "apps": 1, "approved": 0, "funded": 0, "ltv": 0.0}, {"campaign_id": "22571396349", "campaign_name": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 2, "approved": 1, "funded": 1, "ltv": 3363.6484000000005}, {"campaign_id": "22571396349.0", "campaign_name": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion", "apps": 93, "approved": 38, "funded": 17, "ltv": 68470.5906}, {"campaign_id": "23539572923", "campaign_name": "Unknown Campaign", "apps": 2, "approved": 0, "funded": 0, "ltv": 0.0}], "total_gap_apps": 0, "matched_count": 0, "ron_only_count": 0, "ours_only_count": 20, "t3_catchall_apps": 29, "discrepancy": {"total_delta": 2024, "ron_apps": 0, "waterfall_apps": 2024, "reasons": [{"cause": "Client not in Ron's pipeline", "apps_explained": 2024, "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."}, {"cause": "T1: GCLID-matched apps", "apps_explained": 1911, "detail": "1911 apps matched via Google Click ID (GCLID) in Google Ads click_view API. These have full keyword-level attribution \u2014 we know the exact search term, ad group, and campaign. This is the highest-fidelity attribution tier."}, {"cause": "T2: Campaign-ID attributed apps", "apps_explained": 84, "detail": "84 apps attributed via campaign_id extracted from URL parameters (gad_campaignid) or attribution string patterns. Campaign-level attribution without keyword detail. Campaigns: Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting, Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach, Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach, Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting...."}, {"cause": "T3: Channel-only catch-all", "apps_explained": 29, "detail": "29 apps identified as Google Ads via category='Paid' + subcategory='Google Ads' but no campaign_id could be extracted. These are in the 'Other Google Ads' bucket. The attribution string may lack a gad_campaignid param or use an unrecognized format."}, {"cause": "Top campaigns by app volume", "apps_explained": 0, "detail": "Top 10 of 20 campaigns:\n  Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion: 928 apps (T1=928, T2=0, T3=0)\n  Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion: 382 apps (T1=382, T2=0, T3=0)\n  Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion: 122 apps (T1=122, T2=0, T3=0)\n  Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion: 111 apps (T1=111, T2=0, T3=0)\n  Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion: 102 apps (T1=102, T2=0, T3=0)\n  Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion: 93 apps (T1=93, T2=0, T3=0)\n  Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion: 91 apps (T1=91, T2=0, T3=0)\n  Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion: 82 apps (T1=82, T2=0, T3=0)\n  Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach: 24 apps (T1=0, T2=24, T3=0)\n  Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach: 17 apps (T1=0, T2=17, T3=0)"}], "ron_presence": {"has_data": false, "total_rows": 0, "total_apps": 0, "earliest_day": null, "latest_day": null, "months_with_data": 0, "athena_id": "california_coast_cu"}, "primary_cause": "ron_pipeline_missing", "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='california_coast_cu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."}}, "recommendations": [{"priority": "INFO", "title": "Ron's pipeline has no data for this client", "impact": "All 2,024 waterfall apps are incremental \u2014 previously untracked", "action": "No discrepancy to investigate. Our waterfall is the first pipeline to attribute Google Ads for this client. Ron's staging.google_ads_campaign_data table has 0 rows for this client_id. This means we are providing attribution data that did not exist before."}, {"priority": "SUCCESS", "title": "1,911 apps with full keyword-level attribution (T1)", "impact": "GCLID matched in Google Ads click_view API \u2014 highest fidelity", "action": "These 1,911 apps have complete attribution: search term, ad group, campaign, match type, and keyword. This data comes from matching the GCLID (Google Click ID) captured in the application URL against Google's click_view report."}, {"priority": "SUCCESS", "title": "84 apps with campaign-level attribution (T2)", "impact": "Campaign ID extracted from URL params or attribution string", "action": "These 84 apps have campaign_id attribution from either: (a) gad_campaignid URL parameter, (b) campaign ID embedded in the attribution string pattern, or (c) gbraid/wbraid iOS privacy-safe click identifiers. Campaign-level KPIs (apps, approved, funded, LTV) are reliable."}, {"priority": "SUCCESS", "title": "Attribution rate: 98.6%", "impact": "T1+T2 covers vast majority of apps", "action": "Maintain current extraction rules"}]};
+const totals = R.totals_comparison || {};
+const ron = totals.ron || {};
+const wf = totals.waterfall || {};
+const delta = totals.delta || {};
+const tier = R.tier_breakdown || {};
+const campaigns = R.campaign_comparison || [];
+const gaps = R.gaps || {};
+const recs = R.recommendations || [];
+
+function fmt(n, dec) {
+    if (n == null || isNaN(n)) return '0';
+    dec = dec || 0;
+    return Number(n).toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+function fmtDollar(n) {
+    if (n == null || isNaN(n)) return '$0';
+    return '$' + fmt(n, 0);
+}
+function fmtDelta(n) {
+    if (n > 0) return '<span class="delta-pos">+' + fmt(n) + '</span>';
+    if (n < 0) return '<span class="delta-neg">' + fmt(n) + '</span>';
+    return '<span class="delta-zero">0</span>';
+}
+function fmtDeltaDollar(n) {
+    if (n > 0) return '<span class="delta-pos">+' + fmtDollar(n) + '</span>';
+    if (n < 0) return '<span class="delta-neg">-' + fmtDollar(Math.abs(n)) + '</span>';
+    return '<span class="delta-zero">$0</span>';
+}
+function escapeHtml(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ============================================================
+//  Stat cards
+// ============================================================
+(function() {
+    const grid = document.getElementById('stats-grid');
+    const attrRate = tier.attribution_rate || 0;
+    const ronApps = ron.apps || 0;
+    const wfApps = wf.apps || 0;
+    const t1 = tier.tier1?.apps || 0;
+    const t2 = tier.tier2?.apps || 0;
+    const t3 = tier.tier3?.apps || 0;
+
+    const cards = [
+        {label: 'Waterfall Apps', value: fmt(wfApps), cls: wfApps > 0 ? 'primary' : ''},
+        {label: 'Ron Apps', value: fmt(ronApps), cls: ''},
+        {label: 'Delta', value: (delta.apps > 0 ? '+' : '') + fmt(delta.apps || 0),
+          cls: ronApps === 0 ? '' : Math.abs(delta.apps || 0) <= 2 ? 'success' : 'alert'},
+        {label: 'Attribution Rate', value: attrRate.toFixed(1) + '%',
+          cls: attrRate >= 90 ? 'success' : attrRate > 0 ? 'alert' : ''},
+        {label: 'T1 (GCLID)', value: fmt(t1), cls: ''},
+        {label: 'T2 (Campaign)', value: fmt(t2), cls: ''},
+        {label: 'T3 (Channel)', value: fmt(t3), cls: t3 > 0 ? 'alert' : ''},
+        {label: 'Waterfall Funded', value: fmt(wf.funded || 0), cls: ''},
+        {label: 'Waterfall LTV', value: fmtDollar(wf.ltv || 0), cls: ''},
+    ];
+
+    grid.innerHTML = cards.map(c =>
+        '<div class="stat-card ' + c.cls + '">' +
+        '<div class="stat-value">' + c.value + '</div>' +
+        '<div class="stat-label">' + c.label + '</div>' +
+        '</div>'
+    ).join('');
+})();
+
+// ============================================================
+//  Methodology Explainer
+// ============================================================
+(function() {
+    const section = document.getElementById('explainer-section');
+    const disc = gaps.discrepancy || {};
+    const cause = disc.primary_cause || '';
+    const ronApps = ron.apps || 0;
+    const wfApps = wf.apps || 0;
+    const presence = disc.ron_presence || {};
+
+    let html = '<h3>Understanding This Report</h3>';
+
+    // Executive summary
+    html += '<p><strong>Executive Summary:</strong> ';
+    if (cause === 'ron_pipeline_missing') {
+        html += 'Ron\'s pipeline (<code>staging.google_ads_campaign_data</code>) has <strong>no data</strong> for this client '
+              + '(athena_id=<code>' + escapeHtml(R.athena_id) + '</code>). '
+              + 'Our 3-tier waterfall is the <strong>only source</strong> of Google Ads attribution for ' + escapeHtml(R.client_name) + '. '
+              + 'We attributed <strong>' + fmt(wfApps) + ' applications</strong> this month.';
+    } else if (cause === 'ron_month_missing') {
+        html += 'Ron\'s pipeline has data for this client (' + fmt(presence.months_with_data || 0)
+              + ' months), but <strong>has not processed this specific month</strong>. '
+              + 'Our waterfall attributed <strong>' + fmt(wfApps) + ' applications</strong>.';
+    } else if (cause === 'methodology_difference') {
+        const sign = delta.apps > 0 ? '+' : '';
+        html += 'Both pipelines have data. Our waterfall found <strong>' + fmt(wfApps) + '</strong> apps vs Ron\'s <strong>'
+              + fmt(ronApps) + '</strong> (delta: <strong>' + sign + fmt(delta.apps) + '</strong>). '
+              + 'The discrepancy breakdown below explains each source of the difference.';
+    } else {
+        html += 'Our waterfall attributed <strong>' + fmt(wfApps) + ' applications</strong> this month.';
+    }
+    html += '</p>';
+
+    // What is the waterfall?
+    html += '<h4>What is the 3-Tier Waterfall?</h4>';
+    html += '<p>Our attribution pipeline assigns each Google Ads application to the highest-fidelity tier possible, '
+          + 'falling through from T1 to T3:</p>';
+
+    html += '<div class="tier-def t1">'
+          + '<span class="tier-badge">T1</span>'
+          + '<div class="tier-desc"><strong>GCLID Match (Highest Fidelity)</strong><br>'
+          + 'The application URL contains a Google Click ID (GCLID). We match it against the Google Ads '
+          + '<code>click_view</code> API to get the exact <strong>search term, keyword, match type, ad group, '
+          + 'and campaign</strong>. This is the gold standard of attribution.</div></div>';
+
+    html += '<div class="tier-def t2">'
+          + '<span class="tier-badge">T2</span>'
+          + '<div class="tier-desc"><strong>Campaign ID Match (Campaign-Level)</strong><br>'
+          + 'No GCLID match, but we extract a <code>campaign_id</code> from: (a) the <code>gad_campaignid</code> URL parameter, '
+          + '(b) patterns in the attribution/referral string, or (c) <code>gbraid</code>/<code>wbraid</code> iOS privacy-safe '
+          + 'click identifiers. We know <strong>which campaign</strong> drove the app, but not the specific keyword.</div></div>';
+
+    html += '<div class="tier-def t3">'
+          + '<span class="tier-badge">T3</span>'
+          + '<div class="tier-desc"><strong>Channel Only (Catch-All)</strong><br>'
+          + 'The application is tagged <code>category=Paid</code> + <code>subcategory=Google Ads</code> in the Athena data, '
+          + 'but we could not extract any campaign_id from the attribution string. These go into the '
+          + '<strong>"Other Google Ads"</strong> bucket. We know it\'s a Google Ads application, but not which campaign.</div></div>';
+
+    // What is Ron's pipeline?
+    html += '<h4>What is Ron\'s Pipeline?</h4>';
+    html += '<p><code>staging.google_ads_campaign_data</code> is the production attribution table maintained by Ron\'s ETL pipeline. '
+          + 'It uses <code>category=\'Paid\'</code> and <code>subcategory=\'Google Ads\'</code> to identify Google Ads applications, '
+          + 'then attributes them to campaigns. It is considered the <strong>source of truth</strong> for deployed reporting.</p>';
+
+    if (cause === 'ron_pipeline_missing') {
+        html += '<p style="background:#fff3e0;padding:10px 14px;border-radius:8px;color:#e65100;font-weight:500">'
+              + 'Ron\'s table has <strong>zero rows</strong> for <code>client_id=\'' + escapeHtml(R.athena_id)
+              + '\'</code>. This client has not been onboarded into Ron\'s pipeline. '
+              + 'All data shown below comes exclusively from our waterfall.</p>';
+    } else if (presence.has_data) {
+        html += '<p style="font-size:12px;color:var(--muted)">Ron\'s coverage: '
+              + fmt(presence.total_apps || 0) + ' total apps across '
+              + fmt(presence.months_with_data || 0) + ' months ('
+              + (presence.earliest_day || '?') + ' to ' + (presence.latest_day || '?') + ')</p>';
+    }
+
+    section.innerHTML = html;
+})();
+
+// ============================================================
+//  Discrepancy Deep Dive
+// ============================================================
+(function() {
+    const section = document.getElementById('discrepancy-section');
+    const disc = gaps.discrepancy || {};
+    const cause = disc.primary_cause || '';
+    const explanation = disc.explanation || '';
+    const reasons = disc.reasons || [];
+
+    if (!cause && reasons.length === 0) {
+        section.innerHTML = '';
+        return;
+    }
+
+    let html = '<div class="section-title">Attribution Breakdown & Discrepancy Analysis</div>';
+    html += '<p class="section-hint">Detailed breakdown of where applications come from and why counts may differ</p>';
+
+    // Primary cause banner
+    if (cause === 'ron_pipeline_missing') {
+        html += '<div class="reason-box info">'
+              + '<strong>Status: Client Not in Ron\'s Pipeline</strong>'
+              + escapeHtml(explanation)
+              + '</div>';
+    } else if (cause === 'ron_month_missing') {
+        html += '<div class="reason-box warn">'
+              + '<strong>Status: Ron\'s Pipeline Has Not Processed This Month</strong>'
+              + escapeHtml(explanation)
+              + '</div>';
+    } else if (cause === 'methodology_difference') {
+        html += '<div class="reason-box detail">'
+              + '<strong>Status: Methodology Difference (Both Pipelines Have Data)</strong>'
+              + escapeHtml(explanation)
+              + '</div>';
+    }
+
+    // Reason breakdown table
+    if (reasons.length > 0) {
+        html += '<table class="comparison-table" style="margin-bottom:28px">';
+        html += '<thead><tr>'
+              + '<th style="width:260px">Source / Cause</th>'
+              + '<th style="text-align:right;width:120px">Apps Impact</th>'
+              + '<th>Detailed Explanation</th>'
+              + '</tr></thead><tbody>';
+        reasons.forEach(r => {
+            const apps = r.apps_explained || 0;
+            const sign = apps > 0 ? '+' : '';
+            const color = apps > 0 ? '#2e7d32' : apps < 0 ? '#c62828' : '#6b7280';
+            const detail = escapeHtml(r.detail || '').replace(/\n/g, '<br>');
+            html += '<tr>';
+            html += '<td style="font-weight:600;white-space:nowrap;vertical-align:top">' + escapeHtml(r.cause) + '</td>';
+            if (apps !== 0) {
+                html += '<td style="text-align:right;font-weight:700;color:' + color + ';font-size:16px;vertical-align:top">'
+                      + sign + fmt(apps) + '</td>';
+            } else {
+                html += '<td style="text-align:right;color:#6b7280;font-size:12px;vertical-align:top">info</td>';
+            }
+            html += '<td style="font-size:12px;color:#374151;line-height:1.7;max-width:700px;white-space:normal">'
+                  + detail + '</td>';
+            html += '</tr>';
+        });
+        html += '</tbody></table>';
+    }
+
+    section.innerHTML = html;
+})();
+
+// ============================================================
+//  Per-Tier Detail Table
+// ============================================================
+(function() {
+    const section = document.getElementById('tier-detail-section');
+    const t1 = tier.tier1 || {};
+    const t2 = tier.tier2 || {};
+    const t3 = tier.tier3 || {};
+    const totalApps = (t1.apps||0) + (t2.apps||0) + (t3.apps||0);
+
+    if (totalApps === 0) {
+        section.innerHTML = '';
+        return;
+    }
+
+    let html = '<div class="section-title">Tier Performance Detail</div>';
+    html += '<p class="section-hint">Per-tier breakdown of the full application funnel</p>';
+    html += '<table class="comparison-table">';
+    html += '<thead><tr><th>Tier</th><th>Description</th>'
+          + '<th style="text-align:right">Apps</th>'
+          + '<th style="text-align:right">% of Total</th>'
+          + '<th style="text-align:right">Approved</th>'
+          + '<th style="text-align:right">Funded</th>'
+          + '<th style="text-align:right">LTV</th>'
+          + '<th style="text-align:right">Approval Rate</th>'
+          + '<th style="text-align:right">Fund Rate</th>'
+          + '</tr></thead><tbody>';
+
+    function tierRow(name, desc, t, color) {
+        const apps = t.apps || 0;
+        const approved = t.approved || 0;
+        const funded = t.funded || 0;
+        const ltv = t.ltv || 0;
+        const pct = t.pct || 0;
+        const approvalRate = apps > 0 ? (approved / apps * 100).toFixed(1) + '%' : '-';
+        const fundRate = apps > 0 ? (funded / apps * 100).toFixed(1) + '%' : '-';
+        return '<tr>'
+             + '<td style="font-weight:700;color:' + color + '">' + name + '</td>'
+             + '<td style="font-size:12px;color:#6b7280">' + desc + '</td>'
+             + '<td style="text-align:right;font-weight:600">' + fmt(apps) + '</td>'
+             + '<td style="text-align:right">' + pct.toFixed(1) + '%</td>'
+             + '<td style="text-align:right">' + fmt(approved) + '</td>'
+             + '<td style="text-align:right">' + fmt(funded) + '</td>'
+             + '<td style="text-align:right">' + fmtDollar(ltv) + '</td>'
+             + '<td style="text-align:right">' + approvalRate + '</td>'
+             + '<td style="text-align:right">' + fundRate + '</td>'
+             + '</tr>';
+    }
+
+    html += tierRow('T1', 'GCLID matched in click_view', t1, '#296f5e');
+    html += tierRow('T2', 'Campaign ID from URL/attribution', t2, '#1976d2');
+    html += tierRow('T3', 'Channel-only catch-all', t3, '#e65100');
+
+    // Totals row
+    const totalApproved = (t1.approved||0) + (t2.approved||0) + (t3.approved||0);
+    const totalFunded = (t1.funded||0) + (t2.funded||0) + (t3.funded||0);
+    const totalLTV = (t1.ltv||0) + (t2.ltv||0) + (t3.ltv||0);
+    html += '<tr style="background:#f5f7fa;font-weight:600">'
+          + '<td colspan="2">TOTAL</td>'
+          + '<td style="text-align:right">' + fmt(totalApps) + '</td>'
+          + '<td style="text-align:right">100%</td>'
+          + '<td style="text-align:right">' + fmt(totalApproved) + '</td>'
+          + '<td style="text-align:right">' + fmt(totalFunded) + '</td>'
+          + '<td style="text-align:right">' + fmtDollar(totalLTV) + '</td>'
+          + '<td style="text-align:right">' + (totalApps > 0 ? (totalApproved / totalApps * 100).toFixed(1) + '%' : '-') + '</td>'
+          + '<td style="text-align:right">' + (totalApps > 0 ? (totalFunded / totalApps * 100).toFixed(1) + '%' : '-') + '</td>'
+          + '</tr>';
+
+    html += '</tbody></table>';
+    section.innerHTML = html;
+})();
+
+// ============================================================
+//  Totals comparison table
+// ============================================================
+(function() {
+    const container = document.getElementById('totals-table');
+    const metrics = [
+        {label: 'Applications', ron: ron.apps, wf: wf.apps, d: delta.apps, dollar: false},
+        {label: 'Approved', ron: ron.approved, wf: wf.approved, d: delta.approved, dollar: false},
+        {label: 'Funded', ron: ron.funded, wf: wf.funded, d: delta.funded, dollar: false},
+        {label: 'LTV', ron: ron.ltv, wf: wf.ltv, d: delta.ltv, dollar: true},
+        {label: 'Production', ron: ron.production, wf: wf.production, d: (wf.production||0)-(ron.production||0), dollar: true},
+    ];
+
+    let html = '<table class="comparison-table">';
+    html += '<thead><tr><th>Metric</th><th>Ron (Source of Truth)</th><th>Waterfall</th><th>Delta</th></tr></thead><tbody>';
+    metrics.forEach(m => {
+        const ronVal = m.dollar ? fmtDollar(m.ron) : fmt(m.ron || 0);
+        const wfVal = m.dollar ? fmtDollar(m.wf) : fmt(m.wf || 0);
+        const dVal = m.dollar ? fmtDeltaDollar(m.d) : fmtDelta(m.d);
+        html += '<tr><td class="metric-label">' + m.label + '</td><td>' + ronVal + '</td><td>' + wfVal + '</td><td>' + dVal + '</td></tr>';
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+})();
+
+// ============================================================
+//  Tier pie chart
+// ============================================================
+(function() {
+    const t1 = tier.tier1?.apps || 0;
+    const t2 = tier.tier2?.apps || 0;
+    const t3 = tier.tier3?.apps || 0;
+    const total = t1 + t2 + t3;
+
+    if (total === 0) {
+        document.getElementById('chart-tier-pie').innerHTML = '<p style="text-align:center;color:#9ca3af;padding:60px">No waterfall data</p>';
+        return;
+    }
+
+    Plotly.newPlot('chart-tier-pie', [{
+        values: [t1, t2, t3],
+        labels: ['T1: GCLID Match (' + fmt(t1) + ')', 'T2: Campaign ID (' + fmt(t2) + ')', 'T3: Channel Only (' + fmt(t3) + ')'],
+        type: 'pie',
+        hole: 0.5,
+        marker: {colors: ['#296f5e', '#6DB09F', '#C5998B']},
+        textinfo: 'percent',
+        textfont: {size: 13},
+        hovertemplate: '%{label}<br>%{value:,} apps (%{percent})<extra></extra>',
+    }], {
+        margin: {t: 10, b: 10, l: 10, r: 10},
+        showlegend: true,
+        legend: {x: 0.5, xanchor: 'center', y: -0.1, orientation: 'h', font: {size: 11}},
+        paper_bgcolor: 'transparent',
+        plot_bgcolor: 'transparent',
+        annotations: [{
+            text: (tier.attribution_rate || 0).toFixed(1) + '%<br><span style="font-size:11px">attr rate</span>',
+            showarrow: false,
+            font: {size: 20, color: '#1a1a2e', family: 'Inter'},
+        }],
+    }, {responsive: true, displayModeBar: false});
+})();
+
+// ============================================================
+//  Totals bar chart
+// ============================================================
+(function() {
+    const metrics = ['apps', 'approved', 'funded'];
+    const ronVals = metrics.map(m => ron[m] || 0);
+    const wfVals = metrics.map(m => wf[m] || 0);
+    const labels = ['Apps', 'Approved', 'Funded'];
+
+    Plotly.newPlot('chart-totals-bar', [
+        {
+            name: "Ron",
+            x: labels,
+            y: ronVals,
+            type: 'bar',
+            marker: {color: '#3D85C6'},
+            hovertemplate: '%{x}: %{y:,}<extra>Ron</extra>',
+        },
+        {
+            name: "Waterfall",
+            x: labels,
+            y: wfVals,
+            type: 'bar',
+            marker: {color: '#296f5e'},
+            hovertemplate: '%{x}: %{y:,}<extra>Waterfall</extra>',
+        },
+    ], {
+        barmode: 'group',
+        margin: {t: 20, b: 40, l: 60, r: 20},
+        paper_bgcolor: 'transparent',
+        plot_bgcolor: 'transparent',
+        xaxis: {fixedrange: true},
+        yaxis: {fixedrange: true, gridcolor: '#e5e7eb'},
+        legend: {x: 0, y: 1.1, orientation: 'h'},
+    }, {responsive: true, displayModeBar: false});
+})();
+
+// ============================================================
+//  Per-Tier Funnel Charts
+// ============================================================
+(function() {
+    function tierFunnel(divId, t, color) {
+        const apps = t.apps || 0;
+        const approved = t.approved || 0;
+        const funded = t.funded || 0;
+        if (apps === 0) {
+            document.getElementById(divId).innerHTML = '<p style="text-align:center;color:#9ca3af;padding:40px">No data</p>';
+            return;
+        }
+        Plotly.newPlot(divId, [{
+            type: 'funnel',
+            y: ['Apps', 'Approved', 'Funded'],
+            x: [apps, approved, funded],
+            textinfo: 'value+percent initial',
+            marker: {color: [color, color, color]},
+            connector: {fillcolor: '#e5e7eb'},
+        }], {
+            margin: {t: 10, b: 10, l: 80, r: 20},
+            paper_bgcolor: 'transparent',
+            plot_bgcolor: 'transparent',
+            funnelmode: 'stack',
+        }, {responsive: true, displayModeBar: false});
+    }
+
+    tierFunnel('chart-t1-funnel', tier.tier1 || {}, '#296f5e');
+    tierFunnel('chart-t2-funnel', tier.tier2 || {}, '#6DB09F');
+    tierFunnel('chart-t3-funnel', tier.tier3 || {}, '#C5998B');
+})();
+
+// ============================================================
+//  Campaign comparison table
+// ============================================================
+(function() {
+    const matched = campaigns.filter(c => c.status === 'matched').length;
+    const ronOnly = campaigns.filter(c => c.status === 'ron_only').length;
+    const oursOnly = campaigns.filter(c => c.status === 'ours_only').length;
+    document.getElementById('campaign-hint').textContent =
+        matched + ' matched, ' + ronOnly + ' ron-only (red), ' + oursOnly + ' ours-only (yellow) -- click column headers to sort';
+
+    const thead = document.querySelector('#campaign-table thead');
+    const tbody = document.querySelector('#campaign-table tbody');
+
+    const cols = [
+        {key: 'status', label: 'Status'},
+        {key: 'campaign_id', label: 'Campaign ID'},
+        {key: 'campaign_name', label: 'Campaign Name'},
+        {key: 'ron_apps', label: 'Ron Apps', num: true},
+        {key: 'our_apps', label: 'Our Apps', num: true},
+        {key: 'delta', label: 'Delta', num: true},
+        {key: 'tier1', label: 'T1', num: true},
+        {key: 'tier2', label: 'T2', num: true},
+        {key: 'tier3', label: 'T3', num: true},
+        {key: 'ron_funded', label: 'Ron Funded', num: true},
+        {key: 'our_funded', label: 'Our Funded', num: true},
+        {key: 'ron_ltv', label: 'Ron LTV', num: true, dollar: true},
+        {key: 'our_ltv', label: 'Our LTV', num: true, dollar: true},
+    ];
+
+    thead.innerHTML = '<tr>' + cols.map(c =>
+        '<th' + (c.num ? ' class="num"' : '') + ' data-col="' + c.key + '">' + c.label + '</th>'
+    ).join('') + '</tr>';
+
+    function renderRows(data) {
+        tbody.innerHTML = data.map(row => {
+            const name = escapeHtml(row.campaign_name_ron || row.campaign_name_ours || '');
+            const rowBg = row.status === 'ron_only' ? ' style="background:#fff5f5"' :
+                          row.status === 'ours_only' ? ' style="background:#fffbeb"' : '';
+            return '<tr' + rowBg + '>' + cols.map(c => {
+                if (c.key === 'status') {
+                    return '<td><span class="status-badge status-' + row.status + '">' + row.status + '</span></td>';
+                }
+                if (c.key === 'campaign_name') {
+                    return '<td title="' + name + '">' + name + '</td>';
+                }
+                if (c.key === 'delta') {
+                    return '<td class="num">' + fmtDelta(row.delta) + '</td>';
+                }
+                if (c.dollar) {
+                    return '<td class="num">' + fmtDollar(row[c.key]) + '</td>';
+                }
+                if (c.num) {
+                    return '<td class="num">' + fmt(row[c.key]) + '</td>';
+                }
+                return '<td>' + escapeHtml(row[c.key]) + '</td>';
+            }).join('') + '</tr>';
+        }).join('');
+    }
+
+    // Sort by our_apps descending by default
+    const sorted = [...campaigns].sort((a, b) => (b.our_apps || 0) - (a.our_apps || 0));
+    renderRows(sorted);
+
+    // Search
+    document.getElementById('campaign-search').addEventListener('input', function() {
+        const q = this.value.toLowerCase();
+        const filtered = campaigns.filter(r =>
+            (r.campaign_name_ron || '').toLowerCase().includes(q) ||
+            (r.campaign_name_ours || '').toLowerCase().includes(q) ||
+            (r.campaign_id || '').toLowerCase().includes(q) ||
+            (r.status || '').toLowerCase().includes(q)
+        );
+        renderRows(filtered);
+    });
+
+    // Sort
+    let sortCol = null, sortAsc = true;
+    thead.querySelectorAll('th').forEach(th => {
+        th.addEventListener('click', function() {
+            const col = this.dataset.col;
+            if (sortCol === col) { sortAsc = !sortAsc; }
+            else { sortCol = col; sortAsc = true; }
+            const sorted = [...campaigns].sort((a, b) => {
+                let va = a[col], vb = b[col];
+                if (typeof va === 'number' && typeof vb === 'number') {
+                    return sortAsc ? va - vb : vb - va;
+                }
+                va = String(va || '').toLowerCase();
+                vb = String(vb || '').toLowerCase();
+                return sortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+            });
+            renderRows(sorted);
+        });
+    });
+})();
+
+// ============================================================
+//  Gap highlights
+// ============================================================
+(function() {
+    const section = document.getElementById('gap-section');
+    const ronOnlyCamps = gaps.ron_only_campaigns || [];
+    const oursOnlyCamps = gaps.ours_only_campaigns || [];
+
+    if (ronOnlyCamps.length === 0 && oursOnlyCamps.length === 0) {
+        return;
+    }
+
+    let html = '<div class="section-title">Gap Highlights</div>';
+
+    if (ronOnlyCamps.length > 0) {
+        html += '<p class="section-hint">' + ronOnlyCamps.length + ' campaigns in Ron\'s data that our waterfall is missing (' + fmt(gaps.total_gap_apps || 0) + ' apps)</p>';
+        html += '<div class="table-card"><div class="table-header"><h3>Ron-Only Campaigns (we are missing these)</h3></div>';
+        html += '<table class="data-table"><thead><tr><th>Campaign ID</th><th>Campaign Name</th><th class="num">Apps</th><th class="num">Approved</th><th class="num">Funded</th><th class="num">LTV</th></tr></thead><tbody>';
+        ronOnlyCamps.forEach(c => {
+            html += '<tr style="background:#ffebee"><td>' + escapeHtml(c.campaign_id) + '</td><td>' + escapeHtml(c.campaign_name) + '</td><td class="num">' + fmt(c.apps) + '</td><td class="num">' + fmt(c.approved) + '</td><td class="num">' + fmt(c.funded) + '</td><td class="num">' + fmtDollar(c.ltv) + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+
+    if (oursOnlyCamps.length > 0) {
+        html += '<p class="section-hint" style="margin-top:20px">' + oursOnlyCamps.length + ' campaigns in our waterfall not in Ron\'s data</p>';
+        html += '<div class="table-card"><div class="table-header"><h3>Waterfall-Only Campaigns (Ron doesn\'t have these)</h3></div>';
+        html += '<table class="data-table"><thead><tr><th>Campaign ID</th><th>Campaign Name</th><th class="num">Apps</th><th class="num">Approved</th><th class="num">Funded</th><th class="num">LTV</th></tr></thead><tbody>';
+        oursOnlyCamps.forEach(c => {
+            html += '<tr style="background:#fff8e1"><td>' + escapeHtml(c.campaign_id) + '</td><td>' + escapeHtml(c.campaign_name) + '</td><td class="num">' + fmt(c.apps) + '</td><td class="num">' + fmt(c.approved) + '</td><td class="num">' + fmt(c.funded) + '</td><td class="num">' + fmtDollar(c.ltv) + '</td></tr>';
+        });
+        html += '</tbody></table></div>';
+    }
+
+    section.innerHTML = html;
+})();
+
+// ============================================================
+//  Recommendations
+// ============================================================
+(function() {
+    const grid = document.getElementById('insights-grid');
+    if (recs.length === 0) {
+        grid.innerHTML = '<p style="color:var(--muted)">No recommendations generated.</p>';
+        return;
+    }
+    grid.innerHTML = recs.map(r => {
+        const cls = r.priority || 'LOW';
+        return '<div class="insight-card ' + cls + '">' +
+            '<div class="insight-priority">' + cls + '</div>' +
+            '<div class="insight-title">' + escapeHtml(r.title) + '</div>' +
+            '<div class="insight-impact">' + escapeHtml(r.impact) + '</div>' +
+            '<div class="insight-action">' + escapeHtml(r.action) + '</div>' +
+            '</div>';
+    }).join('');
+})();
+</script>
+</body>
+</html>

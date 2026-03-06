@@ -1,0 +1,239 @@
+date,campaign_id,campaign_name,impressions,clicks,cost,conversions
+2026-01-01,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2061,643,291.314542,176.124154
+2026-01-02,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2260,1088,290.04852,379.0
+2026-01-03,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1730,600,246.064358,199.437628
+2026-01-04,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1181,368,96.338507,99.0
+2026-01-05,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2196,1001,460.585305,373.240928
+2026-01-06,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2435,1145,349.491541,339.900862
+2026-01-07,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2110,984,303.564677,118.349397
+2026-01-08,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,761,290,76.255866,36.5
+2026-01-09,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,3673,1060,299.439457,151.710868
+2026-01-10,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1874,512,129.749204,106.248636
+2026-01-11,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1218,361,98.78994,36.0
+2026-01-12,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1600,749,366.594006,101.995018
+2026-01-13,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2211,941,362.1619,120.233168
+2026-01-14,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1980,917,341.217986,59.818333
+2026-01-15,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2412,1047,338.581046,55.919244
+2026-01-16,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,3090,1084,352.76817,77.0
+2026-01-17,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2351,648,204.027395,40.89712
+2026-01-18,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1468,441,136.039805,17.86676
+2026-01-19,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2003,807,412.353247,38.0
+2026-01-20,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2206,1005,326.165868,78.026716
+2026-01-21,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2117,1013,338.778879,55.063492
+2026-01-22,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2328,913,309.495323,40.382018
+2026-01-23,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2453,1000,341.834816,48.732069
+2026-01-24,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2225,590,205.402238,30.465297
+2026-01-25,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,1575,478,203.184068,7.843572
+2026-01-26,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2144,914,355.012813,69.0
+2026-01-27,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2106,951,339.120219,42.326482
+2026-01-28,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2082,924,300.562141,42.154557
+2026-01-29,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2531,963,280.85212,46.962198
+2026-01-30,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,3338,1013,251.464606,55.698958
+2026-01-31,11946764304,FCB_Search_Brand_BrandedTerms_AllRegions,2865,781,293.389906,21.149122
+2026-01-01,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2358,347,215.951933,41.162596
+2026-01-02,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,5334,701,317.165022,63.979266
+2026-01-03,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2980,292,180.544325,51.085598
+2026-01-04,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2613,345,344.489549,75.358922
+2026-01-05,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,5240,524,332.150453,131.909869
+2026-01-06,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3857,313,333.629987,74.165002
+2026-01-07,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,4953,418,460.29906,93.958961
+2026-01-08,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,760,37,43.987672,8.666628
+2026-01-09,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,4898,455,698.237186,117.688442
+2026-01-10,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3003,206,266.262523,37.765441
+2026-01-11,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2805,282,377.188515,63.999679
+2026-01-12,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,4517,360,291.047608,52.175753
+2026-01-13,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2609,218,212.218973,30.828565
+2026-01-14,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2783,239,268.59189,42.005949
+2026-01-15,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3279,252,266.609602,41.999157
+2026-01-16,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3290,267,315.004322,54.001329
+2026-01-17,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2654,198,243.212356,37.496731
+2026-01-18,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,1623,164,207.711832,47.82623
+2026-01-19,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3875,316,331.103085,66.394079
+2026-01-20,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3462,282,312.373587,64.30517
+2026-01-21,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3207,233,297.426446,59.466178
+2026-01-22,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3734,140,235.791769,23.874978
+2026-01-23,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,5020,186,313.760176,27.021766
+2026-01-24,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2219,155,246.094483,52.658466
+2026-01-25,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,1495,85,244.436698,21.996607
+2026-01-26,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,4590,281,416.429131,14.934452
+2026-01-27,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,3984,164,274.875803,20.938541
+2026-01-28,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2374,172,253.167784,29.735382
+2026-01-29,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2096,222,255.33891,44.412772
+2026-01-30,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,2380,213,266.126019,51.419836
+2026-01-31,17825136682,FCB_PMAX_Checking_Consumer_AllRegions,1777,182,258.553981,51.801688
+2026-01-01,20328798225,WFX- Business Checking- Central Ohio,13,0,0.0,0.0
+2026-01-02,20328798225,WFX- Business Checking- Central Ohio,6,1,9.94,0.0
+2026-01-03,20328798225,WFX- Business Checking- Central Ohio,3,0,0.0,0.0
+2026-01-04,20328798225,WFX- Business Checking- Central Ohio,18,0,0.0,0.0
+2026-01-05,20328798225,WFX- Business Checking- Central Ohio,18,1,9.84,0.0
+2026-01-06,20328798225,WFX- Business Checking- Central Ohio,32,2,8.98,0.0
+2026-01-07,20328798225,WFX- Business Checking- Central Ohio,35,1,16.16,1.0
+2026-01-08,20328798225,WFX- Business Checking- Central Ohio,1,1,14.69,0.0
+2026-01-01,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,9,1,11.29,0.0
+2026-01-02,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,71,2,19.64,2.0
+2026-01-03,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,5,1,9.81,0.0
+2026-01-04,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,40,0,0.0,0.0
+2026-01-05,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,6,2,10.4,0.0
+2026-01-06,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,7,1,11.97,0.0
+2026-01-07,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,7,3,10.12,1.0
+2026-01-08,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,37,4,12.9,1.83207
+2026-01-09,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,118,17,199.44,0.0
+2026-01-10,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,63,8,103.49,1.0
+2026-01-11,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,129,3,21.2,0.0
+2026-01-12,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,158,15,205.76972,1.0
+2026-01-26,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,79,2,26.1,0.0
+2026-01-27,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,135,15,135.223719,0.0
+2026-01-28,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,89,15,83.935519,0.0
+2026-01-29,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,119,11,51.24,0.0
+2026-01-30,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,81,11,50.61,1.0
+2026-01-31,20328798237,FCB_Search_Checking_AllBusinessProductsBrand_AllRegions,55,11,48.13,0.0
+2026-01-01,22597252504,WFX - Personal Checking -  Altoona,62,15,27.288382,7.0
+2026-01-02,22597252504,WFX - Personal Checking -  Altoona,91,23,23.381111,17.0
+2026-01-03,22597252504,WFX - Personal Checking -  Altoona,122,12,30.411208,4.0
+2026-01-04,22597252504,WFX - Personal Checking -  Altoona,76,10,16.417818,6.0
+2026-01-05,22597252504,WFX - Personal Checking -  Altoona,86,17,28.904277,11.0
+2026-01-06,22597252504,WFX - Personal Checking -  Altoona,75,7,8.625787,3.0
+2026-01-07,22597252504,WFX - Personal Checking -  Altoona,151,23,39.7,6.0
+2026-01-08,22597252504,WFX - Personal Checking -  Altoona,23,2,6.93,1.0
+2026-01-01,22876061951,WFX - Personal Checking - Natrona Heights,10,3,13.13,0.0
+2026-01-02,22876061951,WFX - Personal Checking - Natrona Heights,31,2,12.96,1.0
+2026-01-03,22876061951,WFX - Personal Checking - Natrona Heights,21,3,14.4,1.0
+2026-01-04,22876061951,WFX - Personal Checking - Natrona Heights,19,1,9.72,0.0
+2026-01-05,22876061951,WFX - Personal Checking - Natrona Heights,10,2,8.72,0.0
+2026-01-06,22876061951,WFX - Personal Checking - Natrona Heights,39,4,32.81,2.0
+2026-01-07,22876061951,WFX - Personal Checking - Natrona Heights,13,2,32.36,0.0
+2026-01-08,22876061951,WFX - Personal Checking - Natrona Heights,6,1,3.69,1.0
+2026-01-01,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,67,13,22.32303,2.0
+2026-01-02,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,112,11,18.39401,7.0
+2026-01-03,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,80,12,19.72,5.0
+2026-01-04,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,29,1,1.0,0.0
+2026-01-05,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,121,18,36.71024,4.0
+2026-01-06,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,84,9,8.323979,3.0
+2026-01-07,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,103,11,32.73,0.0
+2026-01-08,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,113,12,93.31367,3.0
+2026-01-09,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1217,196,368.957845,45.0
+2026-01-10,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1395,94,222.724301,14.0
+2026-01-11,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,575,72,154.229622,6.0
+2026-01-12,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1085,101,210.072127,14.0
+2026-01-13,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1175,121,212.956041,12.0
+2026-01-14,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1134,138,209.539566,3.0
+2026-01-15,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1348,113,183.228216,7.0
+2026-01-16,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1613,153,261.475775,13.0
+2026-01-17,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,888,87,145.411409,2.0
+2026-01-18,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,429,44,57.509118,1.0
+2026-01-19,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1610,152,333.419673,4.0
+2026-01-20,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1068,139,200.065083,5.999792
+2026-01-21,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1309,134,235.748162,5.0
+2026-01-22,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1620,160,387.246888,8.0
+2026-01-23,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1487,172,345.21581,9.0
+2026-01-24,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,930,98,226.914753,2.0
+2026-01-25,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,415,52,106.920868,3.0
+2026-01-26,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1188,172,375.693313,8.0
+2026-01-27,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1293,156,371.74639,5.997592
+2026-01-28,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1144,138,341.319336,3.0
+2026-01-29,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1116,153,310.975335,2.0
+2026-01-30,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,1140,178,336.309036,8.0
+2026-01-31,22876064318,FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions,809,110,243.890181,1.001236
+2026-01-01,22876064828,WFX - Personal Checking - Punxy Plaza,24,2,18.18,1.0
+2026-01-02,22876064828,WFX - Personal Checking - Punxy Plaza,20,4,13.311982,3.0
+2026-01-03,22876064828,WFX - Personal Checking - Punxy Plaza,12,3,19.82,1.0
+2026-01-04,22876064828,WFX - Personal Checking - Punxy Plaza,18,1,9.36,0.0
+2026-01-05,22876064828,WFX - Personal Checking - Punxy Plaza,16,5,19.89067,1.0
+2026-01-06,22876064828,WFX - Personal Checking - Punxy Plaza,15,3,18.072372,0.0
+2026-01-07,22876064828,WFX - Personal Checking - Punxy Plaza,42,3,20.03668,3.0
+2026-01-08,22876064828,WFX - Personal Checking - Punxy Plaza,22,3,33.991952,2.0
+2026-01-01,22876064855,WFX - Personal Checking - Allegheny Township,15,1,15.26,0.0
+2026-01-02,22876064855,WFX - Personal Checking - Allegheny Township,6,1,12.89,0.0
+2026-01-03,22876064855,WFX - Personal Checking - Allegheny Township,4,1,11.69,1.0
+2026-01-04,22876064855,WFX - Personal Checking - Allegheny Township,34,1,10.23,0.0
+2026-01-05,22876064855,WFX - Personal Checking - Allegheny Township,24,3,10.52,0.0
+2026-01-06,22876064855,WFX - Personal Checking - Allegheny Township,55,4,34.381753,2.0
+2026-01-07,22876064855,WFX - Personal Checking - Allegheny Township,92,6,30.79,3.0
+2026-01-08,22876064855,WFX - Personal Checking - Allegheny Township,9,2,5.981758,1.0
+2026-01-01,22919175118,WFX - Personal Checking -  Union Square,41,2,11.643092,1.0
+2026-01-02,22919175118,WFX - Personal Checking -  Union Square,31,4,8.847755,0.0
+2026-01-03,22919175118,WFX - Personal Checking -  Union Square,36,3,12.157112,2.0
+2026-01-04,22919175118,WFX - Personal Checking -  Union Square,35,1,4.08,0.0
+2026-01-05,22919175118,WFX - Personal Checking -  Union Square,30,3,16.36,1.0
+2026-01-06,22919175118,WFX - Personal Checking -  Union Square,74,6,8.79,1.0
+2026-01-07,22919175118,WFX - Personal Checking -  Union Square,49,4,9.87,1.0
+2026-01-08,22919175118,WFX - Personal Checking -  Union Square,13,0,0.0,0.0
+2026-01-01,22919175244,WFX - Personal Checking -  West Mifflin,124,7,22.95,0.0
+2026-01-02,22919175244,WFX - Personal Checking -  West Mifflin,141,7,23.59,2.0
+2026-01-03,22919175244,WFX - Personal Checking -  West Mifflin,61,8,12.066161,1.0
+2026-01-04,22919175244,WFX - Personal Checking -  West Mifflin,31,7,20.74,1.0
+2026-01-05,22919175244,WFX - Personal Checking -  West Mifflin,119,14,25.91,3.0
+2026-01-06,22919175244,WFX - Personal Checking -  West Mifflin,125,10,19.803333,2.0
+2026-01-07,22919175244,WFX - Personal Checking -  West Mifflin,144,14,23.005458,4.0
+2026-01-08,22919175244,WFX - Personal Checking -  West Mifflin,22,1,2.39,0.0
+2026-01-01,22919175247,WFX - Personal Checking -  North Plaza,60,8,15.032557,2.0
+2026-01-02,22919175247,WFX - Personal Checking -  North Plaza,80,12,15.462584,5.999969
+2026-01-03,22919175247,WFX - Personal Checking -  North Plaza,145,2,10.08,1.0
+2026-01-04,22919175247,WFX - Personal Checking -  North Plaza,72,3,9.24,2.0
+2026-01-05,22919175247,WFX - Personal Checking -  North Plaza,175,8,25.33,3.0
+2026-01-06,22919175247,WFX - Personal Checking -  North Plaza,148,13,26.151532,5.0
+2026-01-07,22919175247,WFX - Personal Checking -  North Plaza,254,15,41.309261,6.0
+2026-01-08,22919175247,WFX - Personal Checking -  North Plaza,37,3,13.780065,1.0
+2026-01-01,22919175250,WFX - Personal Checking -  Massillon,12,1,11.74,0.0
+2026-01-02,22919175250,WFX - Personal Checking -  Massillon,35,18,9.17,7.0
+2026-01-03,22919175250,WFX - Personal Checking -  Massillon,17,1,10.07,0.0
+2026-01-04,22919175250,WFX - Personal Checking -  Massillon,19,5,8.14,2.0
+2026-01-05,22919175250,WFX - Personal Checking -  Massillon,27,2,11.25,0.0
+2026-01-06,22919175250,WFX - Personal Checking -  Massillon,52,7,13.90236,5.0
+2026-01-07,22919175250,WFX - Personal Checking -  Massillon,16,7,12.509629,1.0
+2026-01-08,22919175250,WFX - Personal Checking -  Massillon,2,0,0.0,0.0
+2026-01-01,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,67931,9,285.810858,0.0
+2026-01-02,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,85756,12,316.431684,0.0
+2026-01-03,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,109433,3,337.748589,0.0
+2026-01-04,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,85181,9,326.922711,0.0
+2026-01-05,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,79139,3,319.206017,0.0
+2026-01-06,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,99606,4,459.515742,0.0
+2026-01-07,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,103369,11,481.06633,0.0
+2026-01-08,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,23570,1,100.848241,0.0
+2026-01-09,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,153861,21,862.094623,0.0
+2026-01-10,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,101260,8,476.920141,0.0
+2026-01-11,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,101262,8,478.183217,0.0
+2026-01-12,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,99669,7,476.565579,0.0
+2026-01-13,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,101337,4,475.366983,0.0
+2026-01-14,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,95670,7,473.495323,0.0
+2026-01-15,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,90120,12,449.537331,0.0
+2026-01-16,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,92345,6,470.601818,0.0
+2026-01-17,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,97640,5,470.00605,0.0
+2026-01-18,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,98184,9,462.635311,0.0
+2026-01-19,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,102583,8,470.655479,0.0
+2026-01-20,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,96586,10,463.554368,0.0
+2026-01-21,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,89803,11,439.445957,0.0
+2026-01-22,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,86057,9,457.173864,0.0
+2026-01-23,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,84809,7,459.432907,0.0
+2026-01-24,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,85723,2,453.413484,0.0
+2026-01-25,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,86820,2,452.429478,0.0
+2026-01-26,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,84632,1,447.279084,0.0
+2026-01-27,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,87397,8,442.492582,0.0
+2026-01-28,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,84595,4,438.174408,0.0
+2026-01-29,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,86796,11,430.543682,0.0
+2026-01-30,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,81162,11,419.608825,0.0
+2026-01-31,23409554117,FCB_YouTube_Brand_ConsumerBusiness_AllRegions,77177,3,400.198981,0.0
+2026-01-08,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,1,0,0.0,0.0
+2026-01-09,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,87,16,13.964587,3.634513
+2026-01-10,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,840,260,286.44015,71.0
+2026-01-11,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,565,130,216.089896,19.0
+2026-01-12,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,791,301,400.348098,44.0
+2026-01-13,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,583,180,118.725727,37.249002
+2026-01-14,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,507,170,99.011389,13.0
+2026-01-15,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,484,192,98.411382,14.0
+2026-01-16,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,510,137,103.112575,16.0
+2026-01-17,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,472,93,105.932051,9.0
+2026-01-18,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,370,99,93.895702,7.0
+2026-01-19,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,380,135,107.429651,5.0
+2026-01-20,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,566,199,102.799543,8.0
+2026-01-21,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,476,191,104.641383,15.676748
+2026-01-22,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,614,201,107.82902,5.0
+2026-01-23,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,566,193,94.942173,10.503492
+2026-01-24,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,147,25,30.214985,2.0
+2026-01-25,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,6,1,0.01,0.0
+2026-01-26,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,288,80,103.122031,8.874764
+2026-01-27,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,507,182,116.710145,6.0
+2026-01-28,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,582,206,110.482238,11.0
+2026-01-29,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,510,190,95.944679,14.77911
+2026-01-30,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,915,218,94.671171,10.0
+2026-01-31,23441286398,FCB_Search_Brand_NonBrandTerms_AllRegions,115,23,13.95,1.0

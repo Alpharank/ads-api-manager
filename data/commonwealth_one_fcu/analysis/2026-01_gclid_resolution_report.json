@@ -1,0 +1,168 @@
+{
+  "client": "commonwealth_one_fcu",
+  "client_name": "CommonWealth One Federal Credit Union",
+  "athena_id": "commonwealth_one_fcu",
+  "month": "2026-01",
+  "generated_at": "2026-03-06T16:51:22.397708",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 18,
+      "approved": 5,
+      "funded": 3,
+      "ltv": 4500.0,
+      "production": 90.0
+    },
+    "delta": {
+      "apps": 18,
+      "approved": 5,
+      "funded": 3,
+      "ltv": 4500.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "tier2": {
+      "apps": 10,
+      "pct": 55.6,
+      "approved": 4,
+      "funded": 2,
+      "ltv": 3000.0
+    },
+    "tier3": {
+      "apps": 8,
+      "pct": 44.4,
+      "approved": 1,
+      "funded": 1,
+      "ltv": 1500.0
+    },
+    "attribution_rate": 55.6,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "23412316985",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 10,
+      "delta": 10,
+      "tier1": 0,
+      "tier2": 10,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 4,
+      "ron_funded": 0,
+      "our_funded": 2,
+      "ron_ltv": 0,
+      "our_ltv": 3000.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "other_google_ads",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Other Google Ads Applications (T3 catch-all)",
+      "ron_apps": 0,
+      "our_apps": 8,
+      "delta": 8,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 8,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 1500.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "ron_only_campaigns": [],
+    "ours_only_campaigns": [
+      {
+        "campaign_id": "23412316985",
+        "campaign_name": "Unknown Campaign",
+        "apps": 10,
+        "approved": 4,
+        "funded": 2,
+        "ltv": 3000.0
+      }
+    ],
+    "total_gap_apps": 0,
+    "matched_count": 0,
+    "ron_only_count": 0,
+    "ours_only_count": 1,
+    "t3_catchall_apps": 8,
+    "discrepancy": {
+      "total_delta": 18,
+      "ron_apps": 0,
+      "waterfall_apps": 18,
+      "reasons": [
+        {
+          "cause": "Client not in Ron's pipeline",
+          "apps_explained": 18,
+          "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."
+        },
+        {
+          "cause": "T2: Campaign-ID attributed apps",
+          "apps_explained": 10,
+          "detail": "10 apps attributed via campaign_id extracted from URL parameters (gad_campaignid) or attribution string patterns. Campaign-level attribution without keyword detail. Campaigns: Unknown Campaign."
+        },
+        {
+          "cause": "T3: Channel-only catch-all",
+          "apps_explained": 8,
+          "detail": "8 apps identified as Google Ads via category='Paid' + subcategory='Google Ads' but no campaign_id could be extracted. These are in the 'Other Google Ads' bucket. The attribution string may lack a gad_campaignid param or use an unrecognized format."
+        },
+        {
+          "cause": "Top campaigns by app volume",
+          "apps_explained": 0,
+          "detail": "Top 1 of 1 campaigns:\n  Unknown Campaign: 10 apps (T1=0, T2=10, T3=0)"
+        }
+      ],
+      "ron_presence": {
+        "has_data": false,
+        "total_rows": 0,
+        "total_apps": 0,
+        "earliest_day": null,
+        "latest_day": null,
+        "months_with_data": 0,
+        "athena_id": "commonwealth_one_fcu"
+      },
+      "primary_cause": "ron_pipeline_missing",
+      "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='commonwealth_one_fcu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "title": "Ron's pipeline has no data for this client",
+      "impact": "All 18 waterfall apps are incremental \u2014 previously untracked",
+      "action": "No discrepancy to investigate. Our waterfall is the first pipeline to attribute Google Ads for this client. Ron's staging.google_ads_campaign_data table has 0 rows for this client_id. This means we are providing attribution data that did not exist before."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "10 apps with campaign-level attribution (T2)",
+      "impact": "Campaign ID extracted from URL params or attribution string",
+      "action": "These 10 apps have campaign_id attribution from either: (a) gad_campaignid URL parameter, (b) campaign ID embedded in the attribution string pattern, or (c) gbraid/wbraid iOS privacy-safe click identifiers. Campaign-level KPIs (apps, approved, funded, LTV) are reliable."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "8 apps still in T3 (44.4%)",
+      "impact": "T3 apps lack campaign-level attribution",
+      "action": "Investigate T3 attribution strings for extractable campaign IDs"
+    }
+  ]
+}

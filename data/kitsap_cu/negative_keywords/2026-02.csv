@@ -1,0 +1,26 @@
+keyword,match_type,campaign_id,campaign_name,ad_group_id,ad_group_name
+cd,BROAD,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cds,BROAD,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+certificate of deposit,PHRASE,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cd interest rates,PHRASE,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cd rates,PHRASE,23238626386,KCU - Personal - NB,185493406942,Savings Accounts
+cd,BROAD,23228929821,KCU - Personal - Brand,,(Campaign level)
+certificate,BROAD,23228929821,KCU - Personal - Brand,,(Campaign level)
+money market,PHRASE,23228929821,KCU - Personal - Brand,,(Campaign level)
+kcu,BROAD,23238626386,KCU - Personal - NB,,(Campaign level)
+kitsap credit union,BROAD,23238626386,KCU - Personal - NB,,(Campaign level)
+kcu,BROAD,23238626389,KCU - Personal - NB Locations,,(Campaign level)
+kitsap credit union,BROAD,23238626389,KCU - Personal - NB Locations,,(Campaign level)
+kcu,BROAD,23278396982,KCU - Business - NB,,(Campaign level)
+kitsap credit union,BROAD,23278396982,KCU - Business - NB,,(Campaign level)
+kcu,BROAD,23278397513,X KCU - Business - Non-Brand Locations,,(Campaign level)
+kitsap credit union,BROAD,23278397513,X KCU - Business - Non-Brand Locations,,(Campaign level)
+cd,BROAD,23379709610,KCU - Personal - Brand Brand Geo Test,,(Campaign level)
+certificate,BROAD,23379709610,KCU - Personal - Brand Brand Geo Test,,(Campaign level)
+money market,PHRASE,23379709610,KCU - Personal - Brand Brand Geo Test,,(Campaign level)
+bad credit loans 1000,EXACT,23434304363,KCU - pMax - 10 Mo Cert,,(Campaign level)
+get money in my bank account now,EXACT,23434304363,KCU - pMax - 10 Mo Cert,,(Campaign level)
+i need money like right now,EXACT,23434304363,KCU - pMax - 10 Mo Cert,,(Campaign level)
+loans that will approve you no matter what,EXACT,23434304363,KCU - pMax - 10 Mo Cert,,(Campaign level)
+personal loans for bad credit guaranteed approval no cosigner,EXACT,23434304363,KCU - pMax - 10 Mo Cert,,(Campaign level)
+urgent loans for bad credit guaranteed approval no cosigner,EXACT,23434304363,KCU - pMax - 10 Mo Cert,,(Campaign level)

@@ -1,0 +1,605 @@
+{
+  "client": "first_commonwealth_bank",
+  "client_name": "First Commonwealth Bank",
+  "athena_id": "fc_bank",
+  "month": "2026-02",
+  "generated_at": "2026-03-06T16:37:58.982903",
+  "totals_comparison": {
+    "ron": {
+      "apps": 411,
+      "approved": 172,
+      "funded": 76,
+      "ltv": 119370.0,
+      "production": 302392.02
+    },
+    "waterfall": {
+      "apps": 482,
+      "approved": 201,
+      "funded": 83,
+      "ltv": 129870.0,
+      "production": 303757.02
+    },
+    "delta": {
+      "apps": 71,
+      "approved": 29,
+      "funded": 7,
+      "ltv": 10500.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 268,
+      "pct": 55.6,
+      "approved": 119,
+      "funded": 54,
+      "ltv": 86370.0
+    },
+    "tier2": {
+      "apps": 156,
+      "pct": 32.4,
+      "approved": 63,
+      "funded": 23,
+      "ltv": 34500.0
+    },
+    "tier3": {
+      "apps": 58,
+      "pct": 12.0,
+      "approved": 19,
+      "funded": 6,
+      "ltv": 9000.0
+    },
+    "attribution_rate": 88.0,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "",
+      "campaign_name_ron": "Other Google Ads Applications",
+      "campaign_name_ours": "",
+      "ron_apps": 143,
+      "our_apps": 0,
+      "delta": -143,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 61,
+      "our_approved": 0,
+      "ron_funded": 21,
+      "our_funded": 0,
+      "ron_ltv": 37140.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "11946764304",
+      "campaign_name_ron": "FCB_Search_Brand_BrandedTerms_AllRegions",
+      "campaign_name_ours": "FCB_Search_Brand_BrandedTerms_AllRegions",
+      "ron_apps": 121,
+      "our_apps": 19,
+      "delta": -102,
+      "tier1": 0,
+      "tier2": 19,
+      "tier3": 0,
+      "ron_approved": 53,
+      "our_approved": 9,
+      "ron_funded": 24,
+      "our_funded": 4,
+      "ron_ltv": 36580.0,
+      "our_ltv": 6000.0,
+      "status": "matched"
+    },
+    {
+      "campaign_id": "17825136682",
+      "campaign_name_ron": "FCB_PMAX_Checking_Consumer_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 100,
+      "our_apps": 0,
+      "delta": -100,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 37,
+      "our_approved": 0,
+      "ron_funded": 17,
+      "our_funded": 0,
+      "ron_ltv": 25500.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23441286398",
+      "campaign_name_ron": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+      "campaign_name_ours": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+      "ron_apps": 32,
+      "our_apps": 3,
+      "delta": -29,
+      "tier1": 0,
+      "tier2": 3,
+      "tier3": 0,
+      "ron_approved": 15,
+      "our_approved": 2,
+      "ron_funded": 8,
+      "our_funded": 0,
+      "ron_ltv": 12000.0,
+      "our_ltv": 0.0,
+      "status": "matched"
+    },
+    {
+      "campaign_id": "22876064318",
+      "campaign_name_ron": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+      "campaign_name_ours": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+      "ron_apps": 14,
+      "our_apps": 2,
+      "delta": -12,
+      "tier1": 0,
+      "tier2": 2,
+      "tier3": 0,
+      "ron_approved": 6,
+      "our_approved": 1,
+      "ron_funded": 6,
+      "our_funded": 0,
+      "ron_ltv": 8150.0,
+      "our_ltv": 0.0,
+      "status": "matched"
+    },
+    {
+      "campaign_id": "20328798237",
+      "campaign_name_ron": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 1,
+      "our_apps": 0,
+      "delta": -1,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23409554117",
+      "campaign_name_ron": "FCB_YouTube_Brand_ConsumerBusiness_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "11946764304.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Brand_BrandedTerms_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 199,
+      "delta": 199,
+      "tier1": 199,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 87,
+      "ron_funded": 0,
+      "our_funded": 36,
+      "ron_ltv": 0,
+      "our_ltv": 58280.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "17825158525",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 5,
+      "delta": 5,
+      "tier1": 0,
+      "tier2": 5,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 3,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "17832721190",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 66,
+      "delta": 66,
+      "tier1": 0,
+      "tier2": 66,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 19,
+      "ron_funded": 0,
+      "our_funded": 7,
+      "ron_ltv": 0,
+      "our_ltv": 10500.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "17934014050",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 24,
+      "delta": 24,
+      "tier1": 0,
+      "tier2": 24,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 11,
+      "ron_funded": 0,
+      "our_funded": 4,
+      "ron_ltv": 0,
+      "our_ltv": 6000.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "20328798237.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22876064318.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 26,
+      "delta": 26,
+      "tier1": 26,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 12,
+      "ron_funded": 0,
+      "our_funded": 8,
+      "ron_ltv": 0,
+      "our_ltv": 13290.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23441286398.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 42,
+      "delta": 42,
+      "tier1": 42,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 20,
+      "ron_funded": 0,
+      "our_funded": 10,
+      "ron_ltv": 0,
+      "our_ltv": 14800.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23448429276",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 3,
+      "delta": 3,
+      "tier1": 0,
+      "tier2": 3,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23448429288",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23557268587",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 33,
+      "delta": 33,
+      "tier1": 0,
+      "tier2": 33,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 16,
+      "ron_funded": 0,
+      "our_funded": 8,
+      "ron_ltv": 0,
+      "our_ltv": 12000.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "other_google_ads",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Other Google Ads Applications (T3 catch-all)",
+      "ron_apps": 0,
+      "our_apps": 58,
+      "delta": 58,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 58,
+      "ron_approved": 0,
+      "our_approved": 19,
+      "ron_funded": 0,
+      "our_funded": 6,
+      "ron_ltv": 0,
+      "our_ltv": 9000.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "ron_only_campaigns": [
+      {
+        "campaign_id": "",
+        "campaign_name": "Other Google Ads Applications",
+        "apps": 143,
+        "approved": 61,
+        "funded": 21,
+        "ltv": 37140.0
+      },
+      {
+        "campaign_id": "17825136682",
+        "campaign_name": "FCB_PMAX_Checking_Consumer_AllRegions",
+        "apps": 100,
+        "approved": 37,
+        "funded": 17,
+        "ltv": 25500.0
+      },
+      {
+        "campaign_id": "20328798237",
+        "campaign_name": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23409554117",
+        "campaign_name": "FCB_YouTube_Brand_ConsumerBusiness_AllRegions",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      }
+    ],
+    "ours_only_campaigns": [
+      {
+        "campaign_id": "11946764304.0",
+        "campaign_name": "FCB_Search_Brand_BrandedTerms_AllRegions",
+        "apps": 199,
+        "approved": 87,
+        "funded": 36,
+        "ltv": 58280.0
+      },
+      {
+        "campaign_id": "17825158525",
+        "campaign_name": "Unknown Campaign",
+        "apps": 5,
+        "approved": 3,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "17832721190",
+        "campaign_name": "Unknown Campaign",
+        "apps": 66,
+        "approved": 19,
+        "funded": 7,
+        "ltv": 10500.0
+      },
+      {
+        "campaign_id": "17934014050",
+        "campaign_name": "Unknown Campaign",
+        "apps": 24,
+        "approved": 11,
+        "funded": 4,
+        "ltv": 6000.0
+      },
+      {
+        "campaign_id": "20328798237.0",
+        "campaign_name": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22876064318.0",
+        "campaign_name": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+        "apps": 26,
+        "approved": 12,
+        "funded": 8,
+        "ltv": 13290.0
+      },
+      {
+        "campaign_id": "23441286398.0",
+        "campaign_name": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+        "apps": 42,
+        "approved": 20,
+        "funded": 10,
+        "ltv": 14800.0
+      },
+      {
+        "campaign_id": "23448429276",
+        "campaign_name": "Unknown Campaign",
+        "apps": 3,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23448429288",
+        "campaign_name": "Unknown Campaign",
+        "apps": 1,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23557268587",
+        "campaign_name": "Unknown Campaign",
+        "apps": 33,
+        "approved": 16,
+        "funded": 8,
+        "ltv": 12000.0
+      }
+    ],
+    "total_gap_apps": 244,
+    "matched_count": 3,
+    "ron_only_count": 4,
+    "ours_only_count": 10,
+    "t3_catchall_apps": 58,
+    "gap_analysis": [
+      {
+        "campaign_id": "",
+        "campaign_name": "Other Google Ads Applications",
+        "ron_apps": 143,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "17825136682",
+        "campaign_name": "FCB_PMAX_Checking_Consumer_AllRegions",
+        "ron_apps": 100,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "20328798237",
+        "campaign_name": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+        "ron_apps": 1,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23409554117",
+        "campaign_name": "FCB_YouTube_Brand_ConsumerBusiness_AllRegions",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      }
+    ],
+    "discrepancy": {
+      "total_delta": 71,
+      "ron_apps": 411,
+      "waterfall_apps": 482,
+      "reasons": [
+        {
+          "cause": "T3 catch-all (Other Google Ads)",
+          "apps_explained": 58,
+          "detail": "Apps where we know it's Google Ads (via category/subcategory) but can't extract a campaign_id. Ron's pipeline only attributes apps it can match to specific campaigns \u2014 these fall through his cracks."
+        },
+        {
+          "cause": "Campaigns in waterfall not in Ron's data",
+          "apps_explained": 400,
+          "detail": "10 campaigns we attribute that Ron doesn't: FCB_Search_Brand_BrandedTerms_AllRegions, Unknown Campaign, Unknown Campaign, Unknown Campaign, FCB_Search_Checking_AllBusinessProductsBrand_AllRegions.... Possible causes: different campaign_id mapping, T2 attribution resolving campaigns Ron's click-only approach misses, or date range differences."
+        },
+        {
+          "cause": "Matched campaign count differences",
+          "apps_explained": -143,
+          "detail": "Ron has 143 more apps in matched campaigns. Possible: Ron's date range is wider, or he captures apps our filter misses."
+        },
+        {
+          "cause": "Campaigns in Ron's data missing from waterfall",
+          "apps_explained": -244,
+          "detail": "4 campaigns Ron has that we don't: Other Google Ads Applications, FCB_PMAX_Checking_Consumer_AllRegions, FCB_Search_Checking_AllBusinessProductsBrand_AllRegions, FCB_YouTube_Brand_ConsumerBusiness_AllRegions. These apps exist in Ron's pipeline but our waterfall didn't extract a matching campaign_id from the attribution string."
+        }
+      ],
+      "ron_presence": {
+        "has_data": true,
+        "total_rows": 3027,
+        "total_apps": 2873,
+        "earliest_day": "2025-08-01",
+        "latest_day": "2026-02-28",
+        "months_with_data": 7,
+        "athena_id": "fc_bank"
+      },
+      "primary_cause": "methodology_difference",
+      "explanation": "Delta of +71 apps (waterfall 482 vs Ron 411). Breakdown: +58 from T3 catch-all (Other Google Ads); +400 from Campaigns in waterfall not in Ron's data; -143 from Matched campaign count differences; -244 from Campaigns in Ron's data missing from waterfall."
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "title": "+58 apps from T3 catch-all (Other Google Ads)",
+      "impact": "Google Ads apps where we can't extract a campaign_id",
+      "action": "Apps where we know it's Google Ads (via category/subcategory) but can't extract a campaign_id. Ron's pipeline only attributes apps it can match to specific campaigns \u2014 these fall through his cracks."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "+400 apps from campaigns Ron doesn't have",
+      "impact": "Our T2 waterfall attributes these to campaigns via gad_campaignid/attribution string",
+      "action": "10 campaigns we attribute that Ron doesn't: FCB_Search_Brand_BrandedTerms_AllRegions, Unknown Campaign, Unknown Campaign, Unknown Campaign, FCB_Search_Checking_AllBusinessProductsBrand_AllRegions.... Possible causes: different campaign_id mapping, T2 attribution resolving campaigns Ron's click-only approach misses, or date range differences."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "-143 apps delta in matched campaigns",
+      "impact": "Same campaign_id, different app count",
+      "action": "Ron has 143 more apps in matched campaigns. Possible: Ron's date range is wider, or he captures apps our filter misses."
+    },
+    {
+      "priority": "HIGH",
+      "title": "244 apps in Ron-only campaigns we're missing",
+      "impact": "4 campaigns in Ron's data not in our waterfall",
+      "action": "4 campaigns Ron has that we don't: Other Google Ads Applications, FCB_PMAX_Checking_Consumer_AllRegions, FCB_Search_Checking_AllBusinessProductsBrand_AllRegions, FCB_YouTube_Brand_ConsumerBusiness_AllRegions. These apps exist in Ron's pipeline but our waterfall didn't extract a matching campaign_id from the attribution string."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "58 apps still in T3 (12.0%)",
+      "impact": "T3 apps lack campaign-level attribution",
+      "action": "Investigate T3 attribution strings for extractable campaign IDs"
+    },
+    {
+      "priority": "LOW",
+      "title": "Attribution rate: 88.0%",
+      "impact": "58 apps only at channel level",
+      "action": "Review T3 attribution strings for campaign ID patterns"
+    }
+  ]
+}

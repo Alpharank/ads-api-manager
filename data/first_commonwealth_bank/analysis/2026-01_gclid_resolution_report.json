@@ -1,0 +1,1011 @@
+{
+  "client": "first_commonwealth_bank",
+  "client_name": "First Commonwealth Bank",
+  "athena_id": "fc_bank",
+  "month": "2026-01",
+  "generated_at": "2026-03-06T16:51:29.071198",
+  "totals_comparison": {
+    "ron": {
+      "apps": 432,
+      "approved": 169,
+      "funded": 77,
+      "ltv": 146100.5,
+      "production": 337642.61
+    },
+    "waterfall": {
+      "apps": 844,
+      "approved": 341,
+      "funded": 154,
+      "ltv": 265862.5,
+      "production": 640834.63
+    },
+    "delta": {
+      "apps": 412,
+      "approved": 172,
+      "funded": 77,
+      "ltv": 119762.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 547,
+      "pct": 64.8,
+      "approved": 239,
+      "funded": 115,
+      "ltv": 200186.5
+    },
+    "tier2": {
+      "apps": 218,
+      "pct": 25.8,
+      "approved": 82,
+      "funded": 30,
+      "ltv": 45000.0
+    },
+    "tier3": {
+      "apps": 79,
+      "pct": 9.4,
+      "approved": 20,
+      "funded": 9,
+      "ltv": 20676.0
+    },
+    "attribution_rate": 90.6,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "11946764304",
+      "campaign_name_ron": "FCB_Search_Brand_BrandedTerms_AllRegions",
+      "campaign_name_ours": "FCB_Search_Brand_BrandedTerms_AllRegions",
+      "ron_apps": 168,
+      "our_apps": 6,
+      "delta": -162,
+      "tier1": 0,
+      "tier2": 6,
+      "tier3": 0,
+      "ron_approved": 79,
+      "our_approved": 2,
+      "ron_funded": 50,
+      "our_funded": 2,
+      "ron_ltv": 98827.5,
+      "our_ltv": 3000.0,
+      "status": "matched"
+    },
+    {
+      "campaign_id": "",
+      "campaign_name_ron": "Other Google Ads Applications",
+      "campaign_name_ours": "",
+      "ron_apps": 140,
+      "our_apps": 0,
+      "delta": -140,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 43,
+      "our_approved": 0,
+      "ron_funded": 14,
+      "our_funded": 0,
+      "ron_ltv": 29126.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "17825136682",
+      "campaign_name_ron": "FCB_PMAX_Checking_Consumer_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 102,
+      "our_apps": 0,
+      "delta": -102,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 39,
+      "our_approved": 0,
+      "ron_funded": 11,
+      "our_funded": 0,
+      "ron_ltv": 16500.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23441286398",
+      "campaign_name_ron": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 9,
+      "our_apps": 0,
+      "delta": -9,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 5,
+      "our_approved": 0,
+      "ron_funded": 1,
+      "our_funded": 0,
+      "ron_ltv": 147.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22876064318",
+      "campaign_name_ron": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 8,
+      "our_apps": 0,
+      "delta": -8,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 3,
+      "our_approved": 0,
+      "ron_funded": 1,
+      "our_funded": 0,
+      "ron_ltv": 1500.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22919175247",
+      "campaign_name_ron": "WFX - Personal Checking -  North Plaza",
+      "campaign_name_ours": "",
+      "ron_apps": 2,
+      "our_apps": 0,
+      "delta": -2,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22597252504",
+      "campaign_name_ron": "WFX - Personal Checking -  Altoona",
+      "campaign_name_ours": "WFX - Personal Checking -  Altoona",
+      "ron_apps": 1,
+      "our_apps": 1,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0.0,
+      "status": "matched"
+    },
+    {
+      "campaign_id": "20328798225",
+      "campaign_name_ron": "WFX- Business Checking- Central Ohio",
+      "campaign_name_ours": "",
+      "ron_apps": 1,
+      "our_apps": 0,
+      "delta": -1,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22919175250",
+      "campaign_name_ron": "WFX - Personal Checking -  Massillon",
+      "campaign_name_ours": "",
+      "ron_apps": 1,
+      "our_apps": 0,
+      "delta": -1,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "20328798237",
+      "campaign_name_ron": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22876061951",
+      "campaign_name_ron": "WFX - Personal Checking - Natrona Heights",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22876064828",
+      "campaign_name_ron": "WFX - Personal Checking - Punxy Plaza",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22876064855",
+      "campaign_name_ron": "WFX - Personal Checking - Allegheny Township",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22919175118",
+      "campaign_name_ron": "WFX - Personal Checking -  Union Square",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "22919175244",
+      "campaign_name_ron": "WFX - Personal Checking -  West Mifflin",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "23409554117",
+      "campaign_name_ron": "FCB_YouTube_Brand_ConsumerBusiness_AllRegions",
+      "campaign_name_ours": "",
+      "ron_apps": 0,
+      "our_apps": 0,
+      "delta": 0,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0.0,
+      "our_ltv": 0,
+      "status": "ron_only"
+    },
+    {
+      "campaign_id": "11946764304.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Brand_BrandedTerms_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 439,
+      "delta": 439,
+      "tier1": 439,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 192,
+      "ron_funded": 0,
+      "our_funded": 92,
+      "ron_ltv": 0,
+      "our_ltv": 164999.5,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "17825158525",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 3,
+      "delta": 3,
+      "tier1": 0,
+      "tier2": 3,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "17832721190",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 82,
+      "delta": 82,
+      "tier1": 0,
+      "tier2": 82,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 25,
+      "ron_funded": 0,
+      "our_funded": 7,
+      "ron_ltv": 0,
+      "our_ltv": 10500.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "17934014050",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 97,
+      "delta": 97,
+      "tier1": 0,
+      "tier2": 97,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 41,
+      "ron_funded": 0,
+      "our_funded": 15,
+      "ron_ltv": 0,
+      "our_ltv": 22500.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "20328798225.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "WFX- Business Checking- Central Ohio",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "20328798237.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22806840608",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22876064318.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 46,
+      "delta": 46,
+      "tier1": 46,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 18,
+      "ron_funded": 0,
+      "our_funded": 11,
+      "ron_ltv": 0,
+      "our_ltv": 18740.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22919175247.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "WFX - Personal Checking -  North Plaza",
+      "ron_apps": 0,
+      "our_apps": 3,
+      "delta": 3,
+      "tier1": 3,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22919175250.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "WFX - Personal Checking -  Massillon",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23441286398.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+      "ron_apps": 0,
+      "our_apps": 56,
+      "delta": 56,
+      "tier1": 56,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 28,
+      "ron_funded": 0,
+      "our_funded": 12,
+      "ron_ltv": 0,
+      "our_ltv": 16447.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23448429276",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 5,
+      "delta": 5,
+      "tier1": 0,
+      "tier2": 5,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 2,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23448429288",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23557268587",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 22,
+      "delta": 22,
+      "tier1": 0,
+      "tier2": 22,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 10,
+      "ron_funded": 0,
+      "our_funded": 6,
+      "ron_ltv": 0,
+      "our_ltv": 9000.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "other_google_ads",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Other Google Ads Applications (T3 catch-all)",
+      "ron_apps": 0,
+      "our_apps": 79,
+      "delta": 79,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 79,
+      "ron_approved": 0,
+      "our_approved": 20,
+      "ron_funded": 0,
+      "our_funded": 9,
+      "ron_ltv": 0,
+      "our_ltv": 20676.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "ron_only_campaigns": [
+      {
+        "campaign_id": "",
+        "campaign_name": "Other Google Ads Applications",
+        "apps": 140,
+        "approved": 43,
+        "funded": 14,
+        "ltv": 29126.0
+      },
+      {
+        "campaign_id": "17825136682",
+        "campaign_name": "FCB_PMAX_Checking_Consumer_AllRegions",
+        "apps": 102,
+        "approved": 39,
+        "funded": 11,
+        "ltv": 16500.0
+      },
+      {
+        "campaign_id": "20328798225",
+        "campaign_name": "WFX- Business Checking- Central Ohio",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "20328798237",
+        "campaign_name": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22876061951",
+        "campaign_name": "WFX - Personal Checking - Natrona Heights",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22876064318",
+        "campaign_name": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+        "apps": 8,
+        "approved": 3,
+        "funded": 1,
+        "ltv": 1500.0
+      },
+      {
+        "campaign_id": "22876064828",
+        "campaign_name": "WFX - Personal Checking - Punxy Plaza",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22876064855",
+        "campaign_name": "WFX - Personal Checking - Allegheny Township",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22919175118",
+        "campaign_name": "WFX - Personal Checking -  Union Square",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22919175244",
+        "campaign_name": "WFX - Personal Checking -  West Mifflin",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22919175247",
+        "campaign_name": "WFX - Personal Checking -  North Plaza",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22919175250",
+        "campaign_name": "WFX - Personal Checking -  Massillon",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23409554117",
+        "campaign_name": "FCB_YouTube_Brand_ConsumerBusiness_AllRegions",
+        "apps": 0,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23441286398",
+        "campaign_name": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+        "apps": 9,
+        "approved": 5,
+        "funded": 1,
+        "ltv": 147.0
+      }
+    ],
+    "ours_only_campaigns": [
+      {
+        "campaign_id": "11946764304.0",
+        "campaign_name": "FCB_Search_Brand_BrandedTerms_AllRegions",
+        "apps": 439,
+        "approved": 192,
+        "funded": 92,
+        "ltv": 164999.5
+      },
+      {
+        "campaign_id": "17825158525",
+        "campaign_name": "Unknown Campaign",
+        "apps": 3,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "17832721190",
+        "campaign_name": "Unknown Campaign",
+        "apps": 82,
+        "approved": 25,
+        "funded": 7,
+        "ltv": 10500.0
+      },
+      {
+        "campaign_id": "17934014050",
+        "campaign_name": "Unknown Campaign",
+        "apps": 97,
+        "approved": 41,
+        "funded": 15,
+        "ltv": 22500.0
+      },
+      {
+        "campaign_id": "20328798225.0",
+        "campaign_name": "WFX- Business Checking- Central Ohio",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "20328798237.0",
+        "campaign_name": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22806840608",
+        "campaign_name": "Unknown Campaign",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22876064318.0",
+        "campaign_name": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+        "apps": 46,
+        "approved": 18,
+        "funded": 11,
+        "ltv": 18740.0
+      },
+      {
+        "campaign_id": "22919175247.0",
+        "campaign_name": "WFX - Personal Checking -  North Plaza",
+        "apps": 3,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22919175250.0",
+        "campaign_name": "WFX - Personal Checking -  Massillon",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23441286398.0",
+        "campaign_name": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+        "apps": 56,
+        "approved": 28,
+        "funded": 12,
+        "ltv": 16447.0
+      },
+      {
+        "campaign_id": "23448429276",
+        "campaign_name": "Unknown Campaign",
+        "apps": 5,
+        "approved": 2,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23448429288",
+        "campaign_name": "Unknown Campaign",
+        "apps": 1,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23557268587",
+        "campaign_name": "Unknown Campaign",
+        "apps": 22,
+        "approved": 10,
+        "funded": 6,
+        "ltv": 9000.0
+      }
+    ],
+    "total_gap_apps": 263,
+    "matched_count": 2,
+    "ron_only_count": 14,
+    "ours_only_count": 14,
+    "t3_catchall_apps": 79,
+    "gap_analysis": [
+      {
+        "campaign_id": "",
+        "campaign_name": "Other Google Ads Applications",
+        "ron_apps": 140,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "17825136682",
+        "campaign_name": "FCB_PMAX_Checking_Consumer_AllRegions",
+        "ron_apps": 102,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "20328798225",
+        "campaign_name": "WFX- Business Checking- Central Ohio",
+        "ron_apps": 1,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "20328798237",
+        "campaign_name": "FCB_Search_Checking_AllBusinessProductsBrand_AllRegions",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22876061951",
+        "campaign_name": "WFX - Personal Checking - Natrona Heights",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22876064318",
+        "campaign_name": "FCB_Search_Checking_AllConsumerProductsNonBrand_AllRegions",
+        "ron_apps": 8,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22876064828",
+        "campaign_name": "WFX - Personal Checking - Punxy Plaza",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22876064855",
+        "campaign_name": "WFX - Personal Checking - Allegheny Township",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22919175118",
+        "campaign_name": "WFX - Personal Checking -  Union Square",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22919175244",
+        "campaign_name": "WFX - Personal Checking -  West Mifflin",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22919175247",
+        "campaign_name": "WFX - Personal Checking -  North Plaza",
+        "ron_apps": 2,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "22919175250",
+        "campaign_name": "WFX - Personal Checking -  Massillon",
+        "ron_apps": 1,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23409554117",
+        "campaign_name": "FCB_YouTube_Brand_ConsumerBusiness_AllRegions",
+        "ron_apps": 0,
+        "issue": "Campaign not extracted from attribution strings"
+      },
+      {
+        "campaign_id": "23441286398",
+        "campaign_name": "FCB_Search_Brand_NonBrandTerms_AllRegions",
+        "ron_apps": 9,
+        "issue": "Campaign not extracted from attribution strings"
+      }
+    ],
+    "discrepancy": {
+      "total_delta": 412,
+      "ron_apps": 432,
+      "waterfall_apps": 844,
+      "reasons": [
+        {
+          "cause": "T3 catch-all (Other Google Ads)",
+          "apps_explained": 79,
+          "detail": "Apps where we know it's Google Ads (via category/subcategory) but can't extract a campaign_id. Ron's pipeline only attributes apps it can match to specific campaigns \u2014 these fall through his cracks."
+        },
+        {
+          "cause": "Campaigns in waterfall not in Ron's data",
+          "apps_explained": 758,
+          "detail": "14 campaigns we attribute that Ron doesn't: FCB_Search_Brand_BrandedTerms_AllRegions, Unknown Campaign, Unknown Campaign, Unknown Campaign, WFX- Business Checking- Central Ohio.... Possible causes: different campaign_id mapping, T2 attribution resolving campaigns Ron's click-only approach misses, or date range differences."
+        },
+        {
+          "cause": "Matched campaign count differences",
+          "apps_explained": -162,
+          "detail": "Ron has 162 more apps in matched campaigns. Possible: Ron's date range is wider, or he captures apps our filter misses."
+        },
+        {
+          "cause": "Campaigns in Ron's data missing from waterfall",
+          "apps_explained": -263,
+          "detail": "14 campaigns Ron has that we don't: Other Google Ads Applications, FCB_PMAX_Checking_Consumer_AllRegions, WFX- Business Checking- Central Ohio, FCB_Search_Checking_AllBusinessProductsBrand_AllRegions, WFX - Personal Checking - Natrona Heights.... These apps exist in Ron's pipeline but our waterfall didn't extract a matching campaign_id from the attribution string."
+        }
+      ],
+      "ron_presence": {
+        "has_data": true,
+        "total_rows": 3027,
+        "total_apps": 2873,
+        "earliest_day": "2025-08-01",
+        "latest_day": "2026-02-28",
+        "months_with_data": 7,
+        "athena_id": "fc_bank"
+      },
+      "primary_cause": "methodology_difference",
+      "explanation": "Delta of +412 apps (waterfall 844 vs Ron 432). Breakdown: +79 from T3 catch-all (Other Google Ads); +758 from Campaigns in waterfall not in Ron's data; -162 from Matched campaign count differences; -263 from Campaigns in Ron's data missing from waterfall."
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "title": "+79 apps from T3 catch-all (Other Google Ads)",
+      "impact": "Google Ads apps where we can't extract a campaign_id",
+      "action": "Apps where we know it's Google Ads (via category/subcategory) but can't extract a campaign_id. Ron's pipeline only attributes apps it can match to specific campaigns \u2014 these fall through his cracks."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "+758 apps from campaigns Ron doesn't have",
+      "impact": "Our T2 waterfall attributes these to campaigns via gad_campaignid/attribution string",
+      "action": "14 campaigns we attribute that Ron doesn't: FCB_Search_Brand_BrandedTerms_AllRegions, Unknown Campaign, Unknown Campaign, Unknown Campaign, WFX- Business Checking- Central Ohio.... Possible causes: different campaign_id mapping, T2 attribution resolving campaigns Ron's click-only approach misses, or date range differences."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "-162 apps delta in matched campaigns",
+      "impact": "Same campaign_id, different app count",
+      "action": "Ron has 162 more apps in matched campaigns. Possible: Ron's date range is wider, or he captures apps our filter misses."
+    },
+    {
+      "priority": "HIGH",
+      "title": "263 apps in Ron-only campaigns we're missing",
+      "impact": "14 campaigns in Ron's data not in our waterfall",
+      "action": "14 campaigns Ron has that we don't: Other Google Ads Applications, FCB_PMAX_Checking_Consumer_AllRegions, WFX- Business Checking- Central Ohio, FCB_Search_Checking_AllBusinessProductsBrand_AllRegions, WFX - Personal Checking - Natrona Heights.... These apps exist in Ron's pipeline but our waterfall didn't extract a matching campaign_id from the attribution string."
+    },
+    {
+      "priority": "MEDIUM",
+      "title": "79 apps still in T3 (9.4%)",
+      "impact": "T3 apps lack campaign-level attribution",
+      "action": "Investigate T3 attribution strings for extractable campaign IDs"
+    },
+    {
+      "priority": "LOW",
+      "title": "Attribution rate: 90.6%",
+      "impact": "79 apps only at channel level",
+      "action": "Review T3 attribution strings for campaign ID patterns"
+    }
+  ]
+}

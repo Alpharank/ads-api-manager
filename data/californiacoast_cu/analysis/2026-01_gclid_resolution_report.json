@@ -1,0 +1,673 @@
+{
+  "client": "californiacoast_cu",
+  "client_name": "California Coast Credit Union",
+  "athena_id": "california_coast_cu",
+  "month": "2026-01",
+  "generated_at": "2026-03-06T16:51:15.794115",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 2024,
+      "approved": 727,
+      "funded": 353,
+      "ltv": 1060131.7,
+      "production": 5333386.0
+    },
+    "delta": {
+      "apps": 2024,
+      "approved": 727,
+      "funded": 353,
+      "ltv": 1060131.7
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 1911,
+      "pct": 94.4,
+      "approved": 682,
+      "funded": 338,
+      "ltv": 1009564.91
+    },
+    "tier2": {
+      "apps": 84,
+      "pct": 4.2,
+      "approved": 31,
+      "funded": 11,
+      "ltv": 33241.56
+    },
+    "tier3": {
+      "apps": 29,
+      "pct": 1.4,
+      "approved": 14,
+      "funded": 4,
+      "ltv": 17325.23
+    },
+    "attribution_rate": 98.6,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "1578789530",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 5,
+      "delta": 5,
+      "tier1": 0,
+      "tier2": 5,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 2,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 1500.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1578789530.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 111,
+      "delta": 111,
+      "tier1": 111,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 42,
+      "ron_funded": 0,
+      "our_funded": 26,
+      "ron_ltv": 0,
+      "our_ltv": 62046.0086,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1578789533.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 102,
+      "delta": 102,
+      "tier1": 102,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 40,
+      "ron_funded": 0,
+      "our_funded": 20,
+      "ron_ltv": 0,
+      "our_ltv": 43432.5826,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1578789542",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 8,
+      "delta": 8,
+      "tier1": 0,
+      "tier2": 8,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 4,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1578789542.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 82,
+      "delta": 82,
+      "tier1": 82,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 36,
+      "ron_funded": 0,
+      "our_funded": 13,
+      "ron_ltv": 0,
+      "our_ltv": 41915.150400000006,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1578789545",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 12,
+      "delta": 12,
+      "tier1": 0,
+      "tier2": 12,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 7,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 1500.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1578789545.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 928,
+      "delta": 928,
+      "tier1": 928,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 345,
+      "ron_funded": 0,
+      "our_funded": 173,
+      "ron_ltv": 0,
+      "our_ltv": 534685.537,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "1636059240",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 0,
+      "tier2": 2,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "21609985820",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach",
+      "ron_apps": 0,
+      "our_apps": 17,
+      "delta": 17,
+      "tier1": 0,
+      "tier2": 17,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 4,
+      "ron_funded": 0,
+      "our_funded": 2,
+      "ron_ltv": 0,
+      "our_ltv": 3682.5412,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22071062520",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 5,
+      "delta": 5,
+      "tier1": 0,
+      "tier2": 5,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 4,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 4976.412000000001,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22071062520.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 382,
+      "delta": 382,
+      "tier1": 382,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 119,
+      "ron_funded": 0,
+      "our_funded": 63,
+      "ron_ltv": 0,
+      "our_ltv": 176538.43800000002,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22076650992.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 91,
+      "delta": 91,
+      "tier1": 91,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 30,
+      "ron_funded": 0,
+      "our_funded": 12,
+      "ron_ltv": 0,
+      "our_ltv": 46364.116,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22080143039",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach",
+      "ron_apps": 0,
+      "our_apps": 24,
+      "delta": 24,
+      "tier1": 0,
+      "tier2": 24,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 6,
+      "ron_funded": 0,
+      "our_funded": 4,
+      "ron_ltv": 0,
+      "our_ltv": 12644.9976,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22082727542",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 5573.960000000001,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22086561724",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 5,
+      "delta": 5,
+      "tier1": 0,
+      "tier2": 5,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 2,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22086561724.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 122,
+      "delta": 122,
+      "tier1": 122,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 32,
+      "ron_funded": 0,
+      "our_funded": 14,
+      "ron_ltv": 0,
+      "our_ltv": 36112.4888,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22494484307",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22571396349",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 0,
+      "tier2": 2,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 3363.6484000000005,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22571396349.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion",
+      "ron_apps": 0,
+      "our_apps": 93,
+      "delta": 93,
+      "tier1": 93,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 38,
+      "ron_funded": 0,
+      "our_funded": 17,
+      "ron_ltv": 0,
+      "our_ltv": 68470.5906,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23539572923",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 0,
+      "tier2": 2,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "other_google_ads",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Other Google Ads Applications (T3 catch-all)",
+      "ron_apps": 0,
+      "our_apps": 29,
+      "delta": 29,
+      "tier1": 0,
+      "tier2": 0,
+      "tier3": 29,
+      "ron_approved": 0,
+      "our_approved": 14,
+      "ron_funded": 0,
+      "our_funded": 4,
+      "ron_ltv": 0,
+      "our_ltv": 17325.233,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "ron_only_campaigns": [],
+    "ours_only_campaigns": [
+      {
+        "campaign_id": "1578789530",
+        "campaign_name": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 5,
+        "approved": 2,
+        "funded": 1,
+        "ltv": 1500.0
+      },
+      {
+        "campaign_id": "1578789530.0",
+        "campaign_name": "Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 111,
+        "approved": 42,
+        "funded": 26,
+        "ltv": 62046.0086
+      },
+      {
+        "campaign_id": "1578789533.0",
+        "campaign_name": "Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 102,
+        "approved": 40,
+        "funded": 20,
+        "ltv": 43432.5826
+      },
+      {
+        "campaign_id": "1578789542",
+        "campaign_name": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 8,
+        "approved": 4,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "1578789542.0",
+        "campaign_name": "Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 82,
+        "approved": 36,
+        "funded": 13,
+        "ltv": 41915.150400000006
+      },
+      {
+        "campaign_id": "1578789545",
+        "campaign_name": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 12,
+        "approved": 7,
+        "funded": 1,
+        "ltv": 1500.0
+      },
+      {
+        "campaign_id": "1578789545.0",
+        "campaign_name": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 928,
+        "approved": 345,
+        "funded": 173,
+        "ltv": 534685.537
+      },
+      {
+        "campaign_id": "1636059240",
+        "campaign_name": "Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "21609985820",
+        "campaign_name": "Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach",
+        "apps": 17,
+        "approved": 4,
+        "funded": 2,
+        "ltv": 3682.5412
+      },
+      {
+        "campaign_id": "22071062520",
+        "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 5,
+        "approved": 4,
+        "funded": 1,
+        "ltv": 4976.412000000001
+      },
+      {
+        "campaign_id": "22071062520.0",
+        "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 382,
+        "approved": 119,
+        "funded": 63,
+        "ltv": 176538.43800000002
+      },
+      {
+        "campaign_id": "22076650992.0",
+        "campaign_name": "Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 91,
+        "approved": 30,
+        "funded": 12,
+        "ltv": 46364.116
+      },
+      {
+        "campaign_id": "22080143039",
+        "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach",
+        "apps": 24,
+        "approved": 6,
+        "funded": 4,
+        "ltv": 12644.9976
+      },
+      {
+        "campaign_id": "22082727542",
+        "campaign_name": "Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting",
+        "apps": 1,
+        "approved": 1,
+        "funded": 1,
+        "ltv": 5573.960000000001
+      },
+      {
+        "campaign_id": "22086561724",
+        "campaign_name": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 5,
+        "approved": 2,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22086561724.0",
+        "campaign_name": "Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 122,
+        "approved": 32,
+        "funded": 14,
+        "ltv": 36112.4888
+      },
+      {
+        "campaign_id": "22494484307",
+        "campaign_name": "Unknown Campaign",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22571396349",
+        "campaign_name": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 2,
+        "approved": 1,
+        "funded": 1,
+        "ltv": 3363.6484000000005
+      },
+      {
+        "campaign_id": "22571396349.0",
+        "campaign_name": "Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion",
+        "apps": 93,
+        "approved": 38,
+        "funded": 17,
+        "ltv": 68470.5906
+      },
+      {
+        "campaign_id": "23539572923",
+        "campaign_name": "Unknown Campaign",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      }
+    ],
+    "total_gap_apps": 0,
+    "matched_count": 0,
+    "ron_only_count": 0,
+    "ours_only_count": 20,
+    "t3_catchall_apps": 29,
+    "discrepancy": {
+      "total_delta": 2024,
+      "ron_apps": 0,
+      "waterfall_apps": 2024,
+      "reasons": [
+        {
+          "cause": "Client not in Ron's pipeline",
+          "apps_explained": 2024,
+          "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."
+        },
+        {
+          "cause": "T1: GCLID-matched apps",
+          "apps_explained": 1911,
+          "detail": "1911 apps matched via Google Click ID (GCLID) in Google Ads click_view API. These have full keyword-level attribution \u2014 we know the exact search term, ad group, and campaign. This is the highest-fidelity attribution tier."
+        },
+        {
+          "cause": "T2: Campaign-ID attributed apps",
+          "apps_explained": 84,
+          "detail": "84 apps attributed via campaign_id extracted from URL parameters (gad_campaignid) or attribution string patterns. Campaign-level attribution without keyword detail. Campaigns: Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_San Diego-ENG Q1 2026_Display_Google_Retargeting, Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach, Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion, Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach, Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Retargeting...."
+        },
+        {
+          "cause": "T3: Channel-only catch-all",
+          "apps_explained": 29,
+          "detail": "29 apps identified as Google Ads via category='Paid' + subcategory='Google Ads' but no campaign_id could be extracted. These are in the 'Other Google Ads' bucket. The attribution string may lack a gad_campaignid param or use an unrecognized format."
+        },
+        {
+          "cause": "Top campaigns by app volume",
+          "apps_explained": 0,
+          "detail": "Top 10 of 20 campaigns:\n  Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Search_Google_Conversion: 928 apps (T1=928, T2=0, T3=0)\n  Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Search_Google_Conversion: 382 apps (T1=382, T2=0, T3=0)\n  Ark Marketing_CCCU_Checking Out of Market-ENG Q1 2026_Search_Google_Conversion: 122 apps (T1=122, T2=0, T3=0)\n  Ark Marketing_CCCU_Deposit San Diego-ENG Q1 2026_Search_Google_Conversion: 111 apps (T1=111, T2=0, T3=0)\n  Ark Marketing_CCCU_Checking San Diego-ENG Q1 2026_Search_Google_Conversion: 102 apps (T1=102, T2=0, T3=0)\n  Ark Marketing_CCCU_Auto Loans Out of Market-ENG Q1 2026_Search_Google_Conversion: 93 apps (T1=93, T2=0, T3=0)\n  Ark Marketing_CCCU_Deposit Out of Market-ENG Q1 2026_Search_Google_Conversion: 91 apps (T1=91, T2=0, T3=0)\n  Ark Marketing_CCCU_Auto Loans San Diego-ENG Q1 2026_Search_Google_Conversion: 82 apps (T1=82, T2=0, T3=0)\n  Ark Marketing_CCCU_Brand Out of Market-ENG Q1 2026_Display_Google_Reach: 24 apps (T1=0, T2=24, T3=0)\n  Ark Marketing_CCCU_Brand San Diego-ENG Q1 2026_Display_Google_Reach: 17 apps (T1=0, T2=17, T3=0)"
+        }
+      ],
+      "ron_presence": {
+        "has_data": false,
+        "total_rows": 0,
+        "total_apps": 0,
+        "earliest_day": null,
+        "latest_day": null,
+        "months_with_data": 0,
+        "athena_id": "california_coast_cu"
+      },
+      "primary_cause": "ron_pipeline_missing",
+      "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='california_coast_cu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "title": "Ron's pipeline has no data for this client",
+      "impact": "All 2,024 waterfall apps are incremental \u2014 previously untracked",
+      "action": "No discrepancy to investigate. Our waterfall is the first pipeline to attribute Google Ads for this client. Ron's staging.google_ads_campaign_data table has 0 rows for this client_id. This means we are providing attribution data that did not exist before."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "1,911 apps with full keyword-level attribution (T1)",
+      "impact": "GCLID matched in Google Ads click_view API \u2014 highest fidelity",
+      "action": "These 1,911 apps have complete attribution: search term, ad group, campaign, match type, and keyword. This data comes from matching the GCLID (Google Click ID) captured in the application URL against Google's click_view report."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "84 apps with campaign-level attribution (T2)",
+      "impact": "Campaign ID extracted from URL params or attribution string",
+      "action": "These 84 apps have campaign_id attribution from either: (a) gad_campaignid URL parameter, (b) campaign ID embedded in the attribution string pattern, or (c) gbraid/wbraid iOS privacy-safe click identifiers. Campaign-level KPIs (apps, approved, funded, LTV) are reliable."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "Attribution rate: 98.6%",
+      "impact": "T1+T2 covers vast majority of apps",
+      "action": "Maintain current extraction rules"
+    }
+  ]
+}

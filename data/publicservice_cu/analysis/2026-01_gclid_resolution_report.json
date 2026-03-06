@@ -1,0 +1,624 @@
+{
+  "client": "publicservice_cu",
+  "client_name": "Public Service Credit Union",
+  "athena_id": "public_service_cu",
+  "month": "2026-01",
+  "generated_at": "2026-03-06T16:51:48.971558",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 529,
+      "approved": 42,
+      "funded": 31,
+      "ltv": 50517.97,
+      "production": 201478.91
+    },
+    "delta": {
+      "apps": 529,
+      "approved": 42,
+      "funded": 31,
+      "ltv": 50517.97
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 436,
+      "pct": 82.4,
+      "approved": 36,
+      "funded": 27,
+      "ltv": 46611.7
+    },
+    "tier2": {
+      "apps": 93,
+      "pct": 17.6,
+      "approved": 6,
+      "funded": 4,
+      "ltv": 3906.28
+    },
+    "tier3": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "attribution_rate": 100.0,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "22359768469.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Leads - Auto Loan",
+      "ron_apps": 0,
+      "our_apps": 30,
+      "delta": 30,
+      "tier1": 30,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22600644893.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "General Membership Campaign",
+      "ron_apps": 0,
+      "our_apps": 157,
+      "delta": 157,
+      "tier1": 157,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 26,
+      "ron_funded": 0,
+      "our_funded": 22,
+      "ron_ltv": 0,
+      "our_ltv": 44395.4229020075,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22600681592.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Recreational Loan Campaign",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 2,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22604458072.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Personal Loan Campaign",
+      "ron_apps": 0,
+      "our_apps": 227,
+      "delta": 227,
+      "tier1": 227,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 7,
+      "ron_funded": 0,
+      "our_funded": 4,
+      "ron_ltv": 0,
+      "our_ltv": 2210.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22672853490.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Recreational loan - Display - Leads",
+      "ron_apps": 0,
+      "our_apps": 8,
+      "delta": 8,
+      "tier1": 0,
+      "tier2": 8,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22682563885.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "General Membership - Display - Leads - Ads",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22746181331.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 0,
+      "tier2": 2,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22749894943.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 5,
+      "delta": 5,
+      "tier1": 0,
+      "tier2": 5,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22749926362.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 0,
+      "tier2": 1,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 2340.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22749926611.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Unknown Campaign",
+      "ron_apps": 0,
+      "our_apps": 18,
+      "delta": 18,
+      "tier1": 0,
+      "tier2": 18,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "22795984517.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Display - Personal Loan",
+      "ron_apps": 0,
+      "our_apps": 44,
+      "delta": 44,
+      "tier1": 0,
+      "tier2": 44,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23226790794.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Mortgage Search 6/11",
+      "ron_apps": 0,
+      "our_apps": 3,
+      "delta": 3,
+      "tier1": 3,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23236422937.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "CD - Search - 6/11/2025",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 2,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 1,
+      "ron_ltv": 0,
+      "our_ltv": 6.2751004015,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23550099732.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Recreational Search Campaign (02-2026)",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 2,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23575605815.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Auto Loans Search Campaign (02-2026)",
+      "ron_apps": 0,
+      "our_apps": 2,
+      "delta": 2,
+      "tier1": 2,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23575707539.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Checking Search Campaign (02-2026)",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23580139561.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Mortgage Search Campaign (02-2026)",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23580176296.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "CD Search Campaign (02-2026)",
+      "ron_apps": 0,
+      "our_apps": 1,
+      "delta": 1,
+      "tier1": 1,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 1,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    },
+    {
+      "campaign_id": "23580282388.0",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "Personal Loans Search Campaign (02-2026)",
+      "ron_apps": 0,
+      "our_apps": 8,
+      "delta": 8,
+      "tier1": 8,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 0,
+      "ron_funded": 0,
+      "our_funded": 0,
+      "ron_ltv": 0,
+      "our_ltv": 0.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "ron_only_campaigns": [],
+    "ours_only_campaigns": [
+      {
+        "campaign_id": "22359768469.0",
+        "campaign_name": "Leads - Auto Loan",
+        "apps": 30,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22600644893.0",
+        "campaign_name": "General Membership Campaign",
+        "apps": 157,
+        "approved": 26,
+        "funded": 22,
+        "ltv": 44395.4229020075
+      },
+      {
+        "campaign_id": "22600681592.0",
+        "campaign_name": "Recreational Loan Campaign",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22604458072.0",
+        "campaign_name": "Personal Loan Campaign",
+        "apps": 227,
+        "approved": 7,
+        "funded": 4,
+        "ltv": 2210.0
+      },
+      {
+        "campaign_id": "22672853490.0",
+        "campaign_name": "Recreational loan - Display - Leads",
+        "apps": 8,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22682563885.0",
+        "campaign_name": "General Membership - Display - Leads - Ads",
+        "apps": 1,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22746181331.0",
+        "campaign_name": "Unknown Campaign",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22749894943.0",
+        "campaign_name": "Unknown Campaign",
+        "apps": 5,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22749926362.0",
+        "campaign_name": "Unknown Campaign",
+        "apps": 1,
+        "approved": 1,
+        "funded": 1,
+        "ltv": 2340.0
+      },
+      {
+        "campaign_id": "22749926611.0",
+        "campaign_name": "Unknown Campaign",
+        "apps": 18,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "22795984517.0",
+        "campaign_name": "Display - Personal Loan",
+        "apps": 44,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23226790794.0",
+        "campaign_name": "Mortgage Search 6/11",
+        "apps": 3,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23236422937.0",
+        "campaign_name": "CD - Search - 6/11/2025",
+        "apps": 2,
+        "approved": 1,
+        "funded": 1,
+        "ltv": 6.2751004015
+      },
+      {
+        "campaign_id": "23550099732.0",
+        "campaign_name": "Recreational Search Campaign (02-2026)",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23575605815.0",
+        "campaign_name": "Auto Loans Search Campaign (02-2026)",
+        "apps": 2,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23575707539.0",
+        "campaign_name": "Checking Search Campaign (02-2026)",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23580139561.0",
+        "campaign_name": "Mortgage Search Campaign (02-2026)",
+        "apps": 1,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23580176296.0",
+        "campaign_name": "CD Search Campaign (02-2026)",
+        "apps": 1,
+        "approved": 1,
+        "funded": 0,
+        "ltv": 0.0
+      },
+      {
+        "campaign_id": "23580282388.0",
+        "campaign_name": "Personal Loans Search Campaign (02-2026)",
+        "apps": 8,
+        "approved": 0,
+        "funded": 0,
+        "ltv": 0.0
+      }
+    ],
+    "total_gap_apps": 0,
+    "matched_count": 0,
+    "ron_only_count": 0,
+    "ours_only_count": 19,
+    "t3_catchall_apps": 0,
+    "discrepancy": {
+      "total_delta": 529,
+      "ron_apps": 0,
+      "waterfall_apps": 529,
+      "reasons": [
+        {
+          "cause": "Client not in Ron's pipeline",
+          "apps_explained": 529,
+          "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."
+        },
+        {
+          "cause": "T1: GCLID-matched apps",
+          "apps_explained": 436,
+          "detail": "436 apps matched via Google Click ID (GCLID) in Google Ads click_view API. These have full keyword-level attribution \u2014 we know the exact search term, ad group, and campaign. This is the highest-fidelity attribution tier."
+        },
+        {
+          "cause": "T2: Campaign-ID attributed apps",
+          "apps_explained": 93,
+          "detail": "93 apps attributed via campaign_id extracted from URL parameters (gad_campaignid) or attribution string patterns. Campaign-level attribution without keyword detail. Campaigns: Recreational loan - Display - Leads, General Membership - Display - Leads - Ads, Unknown Campaign, Unknown Campaign, Unknown Campaign, Unknown Campaign, Display - Personal Loan."
+        },
+        {
+          "cause": "Top campaigns by app volume",
+          "apps_explained": 0,
+          "detail": "Top 10 of 19 campaigns:\n  Personal Loan Campaign: 227 apps (T1=227, T2=0, T3=0)\n  General Membership Campaign: 157 apps (T1=157, T2=0, T3=0)\n  Display - Personal Loan: 44 apps (T1=0, T2=44, T3=0)\n  Leads - Auto Loan: 30 apps (T1=30, T2=0, T3=0)\n  Unknown Campaign: 18 apps (T1=0, T2=18, T3=0)\n  Recreational loan - Display - Leads: 8 apps (T1=0, T2=8, T3=0)\n  Personal Loans Search Campaign (02-2026): 8 apps (T1=8, T2=0, T3=0)\n  Unknown Campaign: 5 apps (T1=0, T2=5, T3=0)\n  Mortgage Search 6/11: 3 apps (T1=3, T2=0, T3=0)\n  Recreational Loan Campaign: 2 apps (T1=2, T2=0, T3=0)"
+        }
+      ],
+      "ron_presence": {
+        "has_data": false,
+        "total_rows": 0,
+        "total_apps": 0,
+        "earliest_day": null,
+        "latest_day": null,
+        "months_with_data": 0,
+        "athena_id": "public_service_cu"
+      },
+      "primary_cause": "ron_pipeline_missing",
+      "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='public_service_cu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."
+    }
+  },
+  "recommendations": [
+    {
+      "priority": "INFO",
+      "title": "Ron's pipeline has no data for this client",
+      "impact": "All 529 waterfall apps are incremental \u2014 previously untracked",
+      "action": "No discrepancy to investigate. Our waterfall is the first pipeline to attribute Google Ads for this client. Ron's staging.google_ads_campaign_data table has 0 rows for this client_id. This means we are providing attribution data that did not exist before."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "436 apps with full keyword-level attribution (T1)",
+      "impact": "GCLID matched in Google Ads click_view API \u2014 highest fidelity",
+      "action": "These 436 apps have complete attribution: search term, ad group, campaign, match type, and keyword. This data comes from matching the GCLID (Google Click ID) captured in the application URL against Google's click_view report."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "93 apps with campaign-level attribution (T2)",
+      "impact": "Campaign ID extracted from URL params or attribution string",
+      "action": "These 93 apps have campaign_id attribution from either: (a) gad_campaignid URL parameter, (b) campaign ID embedded in the attribution string pattern, or (c) gbraid/wbraid iOS privacy-safe click identifiers. Campaign-level KPIs (apps, approved, funded, LTV) are reliable."
+    },
+    {
+      "priority": "SUCCESS",
+      "title": "Attribution rate: 100.0%",
+      "impact": "T1+T2 covers vast majority of apps",
+      "action": "Maintain current extraction rules"
+    }
+  ]
+}

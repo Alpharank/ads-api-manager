@@ -1,0 +1,105 @@
+{
+  "client": "firstcommunity_cu",
+  "client_name": "First Community Credit Union",
+  "athena_id": "first_community_cu",
+  "month": "2026-02",
+  "generated_at": "2026-03-06T16:38:05.682165",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 64,
+      "approved": 10,
+      "funded": 3,
+      "ltv": 4500.0,
+      "production": 150.0
+    },
+    "delta": {
+      "apps": 64,
+      "approved": 10,
+      "funded": 3,
+      "ltv": 4500.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 56,
+      "pct": 87.5,
+      "approved": 9,
+      "funded": 2,
+      "ltv": 3000.0
+    },
+    "tier2": {
+      "apps": 8,
+      "pct": 12.5,
+      "approved": 1,
+      "funded": 1,
+      "ltv": 1500.0
+    },
+    "tier3": {
+      "apps": 0,
+      "pct": 0.0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    },
+    "attribution_rate": 100.0,
+    "t3_promotable_apps": 0
+  },
+  "campaign_comparison": [
+    {
+      "campaign_id": "23091630396",
+      "campaign_name_ron": "",
+      "campaign_name_ours": "IMM_FirstCCU Checking - Lead Gen",
+      "ron_apps": 0,
+      "our_apps": 56,
+      "delta": 56,
+      "tier1": 56,
+      "tier2": 0,
+      "tier3": 0,
+      "ron_approved": 0,
+      "our_approved": 9,
+      "ron_funded": 0,
+      "our_funded": 2,
+      "ron_ltv": 0,
+      "our_ltv": 3000.0,
+      "status": "ours_only"
+    }
+  ],
+  "gaps": {
+    "total_delta": 64,
+    "ron_apps": 0,
+    "waterfall_apps": 64,
+    "reasons": [
+      {
+        "cause": "Client not in Ron's pipeline",
+        "apps_explained": 64,
+        "detail": "Ron's table has 0 rows for this client_id across all months. All waterfall apps are incremental \u2014 they were previously untracked."
+      }
+    ],
+    "ron_presence": {
+      "has_data": false,
+      "total_rows": 0,
+      "total_apps": 0,
+      "earliest_day": null,
+      "latest_day": null,
+      "months_with_data": 0,
+      "athena_id": "first_community_cu"
+    },
+    "primary_cause": "ron_pipeline_missing",
+    "explanation": "Ron's staging.google_ads_campaign_data has NO rows for client_id='first_community_cu'. This client has not been onboarded into Ron's pipeline yet. Our waterfall is the only source of Google Ads attribution."
+  },
+  "recommendations": [
+    {
+      "priority": "SUCCESS",
+      "title": "Attribution rate: 100.0%",
+      "impact": "T1+T2 covers vast majority of apps",
+      "action": "Maintain current extraction rules"
+    }
+  ]
+}

@@ -1,9 +1,41 @@
 {
-  "altura_ad_account": [],
-  "californiacoast_cu": [],
-  "commonwealth_one_fcu": [],
-  "first_commonwealth_bank": [],
-  "firstcommunity_cu": [],
-  "kitsap_cu": [],
-  "publicservice_cu": []
+  "altura_ad_account": [
+    "2026-03",
+    "2026-02",
+    "2026-01",
+    "2025-12"
+  ],
+  "californiacoast_cu": [
+    "2026-03",
+    "2026-02",
+    "2026-01",
+    "2025-12"
+  ],
+  "commonwealth_one_fcu": [
+    "2025-12"
+  ],
+  "first_commonwealth_bank": [
+    "2026-03",
+    "2026-02",
+    "2026-01",
+    "2025-12"
+  ],
+  "firstcommunity_cu": [
+    "2026-03",
+    "2026-02",
+    "2026-01",
+    "2025-12"
+  ],
+  "kitsap_cu": [
+    "2026-03",
+    "2026-02",
+    "2026-01",
+    "2025-12"
+  ],
+  "publicservice_cu": [
+    "2026-03",
+    "2026-02",
+    "2026-01",
+    "2025-12"
+  ]
 }

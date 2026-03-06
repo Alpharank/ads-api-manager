@@ -1,0 +1,69 @@
+{
+  "client": "altura_ad_account",
+  "client_name": "Altura Ad Account",
+  "athena_id": "altura_cu",
+  "month": "2026-02",
+  "generated_at": "2026-03-06T16:37:38.954497",
+  "totals_comparison": {
+    "ron": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0,
+      "production": 0.0
+    },
+    "waterfall": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0,
+      "production": 0
+    },
+    "delta": {
+      "apps": 0,
+      "approved": 0,
+      "funded": 0,
+      "ltv": 0.0
+    }
+  },
+  "tier_breakdown": {
+    "tier1": {
+      "apps": 0,
+      "pct": 0
+    },
+    "tier2": {
+      "apps": 0,
+      "pct": 0
+    },
+    "tier3": {
+      "apps": 0,
+      "pct": 0
+    },
+    "attribution_rate": 0
+  },
+  "campaign_comparison": [],
+  "gaps": {
+    "total_delta": 0,
+    "ron_apps": 0,
+    "waterfall_apps": 0,
+    "reasons": [
+      {
+        "cause": "Ron's pipeline not run for this month",
+        "apps_explained": 0,
+        "detail": "Ron has 732 total apps across 2 months, but none for this month."
+      }
+    ],
+    "ron_presence": {
+      "has_data": true,
+      "total_rows": 359,
+      "total_apps": 732,
+      "earliest_day": "2025-11-01",
+      "latest_day": "2025-12-31",
+      "months_with_data": 2,
+      "athena_id": "altura_cu"
+    },
+    "primary_cause": "ron_month_missing",
+    "explanation": "Ron's pipeline HAS data for this client (2 months, range 2025-11-01 to 2025-12-31), but has 0 apps for this specific month. Ron's pipeline may not have been run yet for this period."
+  },
+  "recommendations": []
+}

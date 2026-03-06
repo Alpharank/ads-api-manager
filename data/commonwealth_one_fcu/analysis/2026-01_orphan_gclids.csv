@@ -1,0 +1,18 @@
+application_id,click_id,click_id_type,click_id_source,bucket,bucket_detail,category,subcategory,attribution,approved,funded,production_value,lifetime_value,product_family,report_completion_timestamp
+103162,CKipt5usxJIDFfFiRwEdC-wZOg,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Vehicle Loan,2026-02-14 21:04:46.000
+103245,0AAAABCeIh12SsX-5j8btc3iMlUTAimVUa,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,0,0,0.0,0.0,Vehicle Loan,2026-02-18 20:00:14.000
+39659,Cj0KCQiAhtvMBhDBARIsAL26pjHzWFpjM5GG1-n9emweZDCH7uFlesmGn-8Egtc3vfYVFa3XZGVUdZ4aAiviEALw_wcB,gclid,gclid,B_gclid_unmatched,standard GCLID not in click_view data,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,1,1,30.0,1500.0,Xpress App,2026-02-19 19:29:59.000
+103315,CNeEgcuM35IDFanMzgAd-CMpKg,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Credit Card,2026-02-22 00:24:47.000
+39671,0AAAABCeIh10REkFuV_VyJ4f613bP7HFhK,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,0,0,0.0,0.0,Xpress App,2026-02-22 04:46:48.000
+103324,0AAAABCeIh109g8n-_rT8UNNAwQ1be2ow7,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,0,0,0.0,0.0,Vehicle Loan,2026-02-23 13:12:12.000
+103403,0AAAABCeIh10YxsZBgxjlGdWxJinUxE5Q5,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,0,0,0.0,0.0,Vehicle Loan,2026-02-26 00:02:50.000
+103405,0AAAABCeIh11pV1Xb1_p21o-PnIhLxJWeu,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,0,0,0.0,0.0,Vehicle Loan,2026-02-26 01:51:34.000
+103428,0AAAABCeIh101iHxDARASp8rFzZP7SNEks,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,1,0,0.0,0.0,Vehicle Loan,2026-02-27 02:46:08.000
+103432,0AAAABCeIh101iHxDARASp8rFzZP7SNEks,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,1,0,0.0,0.0,Vehicle Loan,2026-02-27 05:59:52.000
+103457,CKTl0LuP35IDFYbGzgAdgaMXVw,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Vehicle Loan,2026-02-27 21:50:47.000
+103459,CKOfo9rB7ZIDFSxXRwEd3IAA8w,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Vehicle Loan,2026-02-27 22:34:12.000
+39722,0AAAABCeIh101iHxDARASp8rFzZP7SNEks,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,1,1,30.0,1500.0,Xpress App,2026-02-28 00:16:19.000
+39725,0AAAABCeIh10AgZGq9fJuM1AqcW2L5ba6H,gbraid,gbraid,A_wrong_click_id_type,gbraid,Paid,Google Ads,utm: google/cpc/btd_commonwealthone/campaign id: 23412316985,0,0,0.0,0.0,Xpress App,2026-02-28 07:28:31.000
+103464,CKOfo9rB7ZIDFSxXRwEd3IAA8w,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Personal Loan,2026-02-28 12:11:17.000
+103466,CKOfo9rB7ZIDFSxXRwEd3IAA8w,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Personal Loan,2026-02-28 12:15:07.000
+103470,CNeEgcuM35IDFanMzgAd-CMpKg,dclid,dclid,A_wrong_click_id_type,dclid,Paid,Display,utm: banner/display/btd_commonwealthone,0,0,0.0,0.0,Personal Loan,2026-02-28 14:08:44.000
