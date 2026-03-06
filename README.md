@@ -2,7 +2,7 @@
 
 Automated daily pipeline: extracts campaigns, keywords, clicks, bidding config, conversions, and creatives from 7 Google Ads accounts via MCC, stores in S3, enriches with GCLID-based keyword-level attribution, and serves per-client dashboards via GitHub Pages.
 
-**Dashboard:** `https://alpharank.github.io/Google-Ads-Automation/?client=TOKEN` : see [`clients/`](clients/) for tokens
+**Dashboard:** `https://alpharank.github.io/ads-api-manager/?client=TOKEN` : see [`clients/`](clients/) for tokens
 
 ---
 

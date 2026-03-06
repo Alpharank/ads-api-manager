@@ -10,8 +10,8 @@
 ## 1. Clone and Install
 
 ```bash
-git clone git@github.com:Alpharank/Google-Ads-Automation.git
-cd Google-Ads-Automation
+git clone git@github.com:Alpharank/ads-api-manager.git
+cd ads-api-manager
 
 python -m venv .venv
 source .venv/bin/activate
