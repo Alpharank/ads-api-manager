@@ -1,12 +1,12 @@
-# Google Ads API Configuration — FuturProof Labs
+# Google Ads API Configuration — AlphaRank
 # Copy this file to config.yaml and fill in your credentials.
 
 google_ads:
-  developer_token: "JFdotF3qY07DJrOOram05A"
-  client_id: "243432702432-ikai8elvur8t77tgt1ec62fg01k3t5mu.apps.googleusercontent.com"
-  client_secret: "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"
+  developer_token: "YOUR_DEVELOPER_TOKEN"
+  client_id: "YOUR_OAUTH_CLIENT_ID"
+  client_secret: "YOUR_OAUTH_CLIENT_SECRET"
   refresh_token: "YOUR_REFRESH_TOKEN"  # Run: python scripts/generate_refresh_token.py
-  login_customer_id: "4997235286"  # FuturProof MCC (499-723-5286, no dashes)
+  login_customer_id: "9738614464"  # AlphaRank MCC (973-861-4464, no dashes)
 
 # Client accounts will be auto-discovered from MCC
 client_mapping: {}
