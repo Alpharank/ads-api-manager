@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240" fill="none">
+  <!-- Branch -->
+  <line x1="0" y1="195" x2="200" y2="195" stroke="white" stroke-width="2.5"/>
+  <!-- Branch twigs -->
+  <path d="M20 195 L8 183" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <path d="M20 195 L8 207" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <path d="M35 195 L25 186" stroke="white" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Left Foot -->
+  <path d="M72 195 C68 205 62 212 58 218 C55 222 58 226 64 224 C68 222 70 218 72 212 C74 218 76 222 80 224 C86 226 89 222 86 218 C82 212 78 205 76 195"
+        stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Right Foot -->
+  <path d="M124 195 C120 205 114 212 110 218 C107 222 110 226 116 224 C120 222 122 218 124 212 C126 218 128 222 132 224 C138 226 141 222 138 218 C134 212 130 205 128 195"
+        stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Body -->
+  <ellipse cx="100" cy="140" rx="52" ry="58" stroke="white" stroke-width="2.5"/>
+
+  <!-- Chest marking -->
+  <ellipse cx="100" cy="155" rx="32" ry="38" stroke="white" stroke-width="2"/>
+
+  <!-- Head outline with horizontal ear tufts -->
+  <path d="M48 75
+           C42 60 45 50 50 42
+           L28 30 C18 26 16 36 26 40 C36 44 48 42 55 40
+           C65 35 80 32 100 32
+           C120 32 135 35 145 40
+           C152 42 164 44 174 40 C184 36 182 26 172 30 L150 42
+           C155 50 158 60 152 75
+           C158 95 150 115 135 125
+           C120 135 80 135 65 125
+           C50 115 42 95 48 75Z"
+        stroke="white" stroke-width="2.5" fill="none"/>
+
+  <!-- Left Eye outer ring -->
+  <circle cx="75" cy="78" r="24" stroke="white" stroke-width="2.5"/>
+  <!-- Left Eye iris -->
+  <circle cx="75" cy="78" r="15" fill="#5a9a8a"/>
+  <!-- Left Eye pupil -->
+  <circle cx="75" cy="78" r="8" fill="#1a3530"/>
+
+  <!-- Right Eye outer ring -->
+  <circle cx="125" cy="78" r="24" stroke="white" stroke-width="2.5"/>
+  <!-- Right Eye iris -->
+  <circle cx="125" cy="78" r="15" fill="#5a9a8a"/>
+  <!-- Right Eye pupil -->
+  <circle cx="125" cy="78" r="8" fill="#1a3530"/>
+
+  <!-- Beak -->
+  <path d="M94 98 Q100 90 106 98 L100 110 Z" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/>
+</svg>
