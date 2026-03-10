@@ -8,6 +8,8 @@ This script exports:
 - Device data: Performance by device type (Mobile, Desktop, Tablet)
 - Location data: Performance by geographic location
 - Negative keywords: Ad-group-level negative keyword exclusions (account state snapshot)
+- Auction data: Campaign-level competitive search metrics (impression share, top/abs top IS, lost IS)
+- Campaign scores: Optimization score + quality score breakdown per keyword
 
 Usage:
     python scripts/export_insights_data.py                    # Pull yesterday's data
@@ -319,6 +321,158 @@ class InsightsExporter:
             df = df.sort_values(['campaign_name', 'ad_group_name', 'keyword']).reset_index(drop=True)
         return df
 
+    def pull_auction_data(self, customer_id: str, start_date: str, end_date: str) -> pd.DataFrame:
+        """Pull campaign-level competitive search metrics for a date range."""
+        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+
+        query = f"""
+            SELECT
+                campaign.id,
+                campaign.name,
+                metrics.search_impression_share,
+                metrics.search_top_impression_share,
+                metrics.search_absolute_top_impression_share,
+                metrics.search_budget_lost_impression_share,
+                metrics.search_rank_lost_impression_share,
+                metrics.search_exact_match_impression_share,
+                metrics.impressions,
+                metrics.clicks,
+                metrics.cost_micros,
+                metrics.conversions
+            FROM campaign
+            WHERE segments.date BETWEEN '{start_date}' AND '{end_date}'
+                AND campaign.status = 'ENABLED'
+                AND metrics.impressions > 0
+        """
+
+        camp_agg = {}
+        try:
+            response = ga_service.search(customer_id=customer_id, query=query)
+            for row in response:
+                cid = str(row.campaign.id)
+                if cid not in camp_agg:
+                    camp_agg[cid] = {
+                        'campaign_id': cid,
+                        'campaign_name': row.campaign.name,
+                        'impressions': 0, 'clicks': 0, 'cost': 0, 'conversions': 0,
+                        '_sis_sum': 0, '_tis_sum': 0, '_atis_sum': 0,
+                        '_blis_sum': 0, '_rlis_sum': 0, '_emis_sum': 0,
+                        '_days': 0
+                    }
+                c = camp_agg[cid]
+                c['impressions'] += row.metrics.impressions
+                c['clicks'] += row.metrics.clicks
+                c['cost'] += row.metrics.cost_micros / 1_000_000
+                c['conversions'] += row.metrics.conversions
+                c['_sis_sum'] += row.metrics.search_impression_share or 0
+                c['_tis_sum'] += row.metrics.search_top_impression_share or 0
+                c['_atis_sum'] += row.metrics.search_absolute_top_impression_share or 0
+                c['_blis_sum'] += row.metrics.search_budget_lost_impression_share or 0
+                c['_rlis_sum'] += row.metrics.search_rank_lost_impression_share or 0
+                c['_emis_sum'] += row.metrics.search_exact_match_impression_share or 0
+                c['_days'] += 1
+        except GoogleAdsException as e:
+            logger.warning(f"Error pulling auction data for {customer_id}: {e}")
+
+        rows = []
+        for c in camp_agg.values():
+            d = c['_days'] or 1
+            rows.append({
+                'campaign_id': c['campaign_id'],
+                'campaign_name': c['campaign_name'],
+                'impressions': c['impressions'],
+                'clicks': c['clicks'],
+                'cost': round(c['cost'], 2),
+                'conversions': round(c['conversions'], 2),
+                'search_impr_share': round(c['_sis_sum'] / d, 4),
+                'search_top_impr_share': round(c['_tis_sum'] / d, 4),
+                'search_abs_top_impr_share': round(c['_atis_sum'] / d, 4),
+                'search_budget_lost_impr_share': round(c['_blis_sum'] / d, 4),
+                'search_rank_lost_impr_share': round(c['_rlis_sum'] / d, 4),
+                'search_exact_match_impr_share': round(c['_emis_sum'] / d, 4),
+            })
+        return pd.DataFrame(rows)
+
+    def pull_campaign_scores(self, customer_id: str) -> pd.DataFrame:
+        """Pull campaign optimization scores and keyword quality scores."""
+        ga_service = self.google_ads_client.get_service("GoogleAdsService")
+
+        # Campaign optimization score (snapshot — no date segment)
+        opt_query = """
+            SELECT
+                campaign.id,
+                campaign.name,
+                campaign.optimization_score
+            FROM campaign
+            WHERE campaign.status = 'ENABLED'
+        """
+
+        camp_scores = {}
+        try:
+            response = ga_service.search(customer_id=customer_id, query=opt_query)
+            for row in response:
+                camp_scores[str(row.campaign.id)] = {
+                    'campaign_id': str(row.campaign.id),
+                    'campaign_name': row.campaign.name,
+                    'optimization_score': round(row.campaign.optimization_score, 4) if row.campaign.optimization_score else None,
+                }
+        except GoogleAdsException as e:
+            logger.warning(f"Error pulling optimization scores for {customer_id}: {e}")
+
+        # Keyword quality scores (snapshot)
+        qs_query = """
+            SELECT
+                campaign.id,
+                campaign.name,
+                ad_group.id,
+                ad_group.name,
+                ad_group_criterion.keyword.text,
+                ad_group_criterion.keyword.match_type,
+                ad_group_criterion.quality_info.quality_score,
+                ad_group_criterion.quality_info.creative_quality_score,
+                ad_group_criterion.quality_info.post_click_quality_score,
+                ad_group_criterion.quality_info.search_predicted_ctr
+            FROM keyword_view
+            WHERE ad_group_criterion.status = 'ENABLED'
+                AND campaign.status = 'ENABLED'
+        """
+
+        kw_rows = []
+        try:
+            response = ga_service.search(customer_id=customer_id, query=qs_query)
+            for row in response:
+                qi = row.ad_group_criterion.quality_info
+                kw_rows.append({
+                    'campaign_id': str(row.campaign.id),
+                    'campaign_name': row.campaign.name,
+                    'ad_group_id': str(row.ad_group.id),
+                    'ad_group_name': row.ad_group.name,
+                    'keyword': row.ad_group_criterion.keyword.text,
+                    'match_type': row.ad_group_criterion.keyword.match_type.name,
+                    'quality_score': qi.quality_score if qi.quality_score else None,
+                    'creative_quality': qi.creative_quality_score.name if qi.creative_quality_score else None,
+                    'landing_page_quality': qi.post_click_quality_score.name if qi.post_click_quality_score else None,
+                    'expected_ctr': qi.search_predicted_ctr.name if qi.search_predicted_ctr else None,
+                })
+        except GoogleAdsException as e:
+            logger.warning(f"Error pulling quality scores for {customer_id}: {e}")
+
+        # Build campaign-level summary with avg quality score
+        if kw_rows:
+            kw_df = pd.DataFrame(kw_rows)
+            scored = kw_df[kw_df['quality_score'].notna()]
+            if not scored.empty:
+                camp_avg_qs = scored.groupby('campaign_id')['quality_score'].mean().to_dict()
+                camp_kw_count = scored.groupby('campaign_id')['quality_score'].count().to_dict()
+                for cid, info in camp_scores.items():
+                    info['avg_quality_score'] = round(camp_avg_qs.get(cid, 0), 1) if cid in camp_avg_qs else None
+                    info['scored_keywords'] = camp_kw_count.get(cid, 0)
+        else:
+            kw_df = pd.DataFrame()
+
+        camp_df = pd.DataFrame(list(camp_scores.values()))
+        return camp_df, kw_df
+
     def save_data(self, df: pd.DataFrame, client_id: str, data_type: str, month: str):
         """Save dataframe to local CSV file."""
         if df.empty:
@@ -373,6 +527,15 @@ class InsightsExporter:
         # Negative keywords (account state snapshot, no date range needed)
         neg_df = self.pull_negative_keywords(customer_id)
         self.save_data(neg_df, client_id, 'negative_keywords', month)
+
+        # Auction data (competitive search metrics)
+        auction_df = self.pull_auction_data(customer_id, start_date, end_date)
+        self.save_data(auction_df, client_id, 'auction_data', month)
+
+        # Campaign scores (optimization score + quality scores)
+        camp_scores_df, kw_quality_df = self.pull_campaign_scores(customer_id)
+        self.save_data(camp_scores_df, client_id, 'campaign_scores', month)
+        self.save_data(kw_quality_df, client_id, 'quality_scores', month)
 
     def run(self, month: str = None, client_filter: Optional[str] = None):
         """Run the export for a specific month."""

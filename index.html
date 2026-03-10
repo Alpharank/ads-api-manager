@@ -1961,6 +1961,16 @@
                     <span>Competitor Intel</span>
                 </div>
                 <div class="sidebar-divider"></div>
+                <div class="sidebar-section-label">Competitive</div>
+                <div class="sidebar-item" data-level="auctiondata" onclick="navigateToLevel('auctiondata')">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" fill="currentColor"/></svg>
+                    <span>Auction Data</span>
+                </div>
+                <div class="sidebar-item" data-level="campaignscores" onclick="navigateToLevel('campaignscores')">
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm4.24 16L12 15.45 7.77 18l1.12-4.81-3.73-3.23 4.92-.42L12 5l1.92 4.53 4.92.42-3.73 3.23L16.23 18z" fill="currentColor"/></svg>
+                    <span>Campaign Scores</span>
+                </div>
+                <div class="sidebar-divider"></div>
                 <div class="sidebar-section-label">Tracking</div>
                 <div class="sidebar-item" data-level="conversionactions" onclick="navigateToLevel('conversionactions')">
                     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/></svg>
@@ -2348,6 +2358,9 @@
         let deviceData = [];
         let locationData = [];
         let negativeKeywordsData = [];
+        let auctionData = [];
+        let campaignScoresData = [];
+        let qualityScoresData = [];
         let enrichedDataByModel = {};  // Store enriched data for each attribution model
         let currentAttributionModel = 'last_click';  // last_click | first_click | linear
         let availableMonths = [];
@@ -2631,7 +2644,7 @@
                     const base_r = await fetch(`${path}${modelSuffix}.csv`);
                     return base_r.ok ? base_r.text() : '';
                 }
-                const [campText, kwText, dailyText, enrichedText, dailyEnrichedText, searchTermsText, channelText, deviceText, locationText, negKeywordsText] = await Promise.all([
+                const [campText, kwText, dailyText, enrichedText, dailyEnrichedText, searchTermsText, channelText, deviceText, locationText, negKeywordsText, auctionText, campScoresText, qualityScoresText] = await Promise.all([
                     fetch(`${base}/campaigns/${currentMonth}.csv`).then(r => { if (!r.ok) throw new Error('No campaign data'); return r.text(); }),
                     fetch(`${base}/keywords/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/daily/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
@@ -2641,7 +2654,10 @@
                     fetch(`${base}/channels/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/devices/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
                     fetch(`${base}/locations/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
-                    fetch(`${base}/negative_keywords/${availableMonths[0]}.csv`).then(r => r.ok ? r.text() : '')
+                    fetch(`${base}/negative_keywords/${availableMonths[0]}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/auction_data/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/campaign_scores/${currentMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                    fetch(`${base}/quality_scores/${currentMonth}.csv`).then(r => r.ok ? r.text() : '')
                 ]);
 
                 // Parse enriched Athena data (first-party: apps, funded, value, etc.)
@@ -2909,6 +2925,52 @@
                     .filter(r => r.keyword)
                     .sort((a, b) => a.campaign_name.localeCompare(b.campaign_name) || a.ad_group_name.localeCompare(b.ad_group_name) || a.keyword.localeCompare(b.keyword)) : [];
 
+                // Auction data (competitive search metrics)
+                auctionData = auctionText ? Papa.parse(auctionText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        campaign_id: (r.campaign_id || '').trim(),
+                        campaign_name: (r.campaign_name || '').trim(),
+                        impressions: parseInt(r.impressions) || 0,
+                        clicks: parseInt(r.clicks) || 0,
+                        cost: parseFloat(r.cost) || 0,
+                        conversions: parseFloat(r.conversions) || 0,
+                        search_impr_share: parseFloat(r.search_impr_share) || 0,
+                        search_top_impr_share: parseFloat(r.search_top_impr_share) || 0,
+                        search_abs_top_impr_share: parseFloat(r.search_abs_top_impr_share) || 0,
+                        search_budget_lost_impr_share: parseFloat(r.search_budget_lost_impr_share) || 0,
+                        search_rank_lost_impr_share: parseFloat(r.search_rank_lost_impr_share) || 0,
+                        search_exact_match_impr_share: parseFloat(r.search_exact_match_impr_share) || 0,
+                    }))
+                    .filter(r => r.campaign_name)
+                    .sort((a, b) => b.impressions - a.impressions) : [];
+
+                // Campaign scores (optimization + quality)
+                campaignScoresData = campScoresText ? Papa.parse(campScoresText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        campaign_id: (r.campaign_id || '').trim(),
+                        campaign_name: (r.campaign_name || '').trim(),
+                        optimization_score: r.optimization_score ? parseFloat(r.optimization_score) : null,
+                        avg_quality_score: r.avg_quality_score ? parseFloat(r.avg_quality_score) : null,
+                        scored_keywords: parseInt(r.scored_keywords) || 0,
+                    }))
+                    .filter(r => r.campaign_name) : [];
+
+                // Quality scores (keyword-level)
+                qualityScoresData = qualityScoresText ? Papa.parse(qualityScoresText, { header: true, skipEmptyLines: true }).data
+                    .map(r => ({
+                        campaign_id: (r.campaign_id || '').trim(),
+                        campaign_name: (r.campaign_name || '').trim(),
+                        ad_group_id: (r.ad_group_id || '').trim(),
+                        ad_group_name: (r.ad_group_name || '').trim(),
+                        keyword: (r.keyword || '').trim(),
+                        match_type: (r.match_type || '').trim(),
+                        quality_score: r.quality_score ? parseInt(r.quality_score) : null,
+                        creative_quality: (r.creative_quality || '').trim(),
+                        landing_page_quality: (r.landing_page_quality || '').trim(),
+                        expected_ctr: (r.expected_ctr || '').trim(),
+                    }))
+                    .filter(r => r.keyword) : [];
+
                 showDashboard();
                 render();
             } catch (e) {
@@ -2977,7 +3039,7 @@
         function navigateToLevel(level) {
             if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
             else if (level === 'adgroups') { selectedAdGroup = null; }
-            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere', 'recommendations', 'competitors', 'conversionactions', 'optimizationlog', 'anomalies'].includes(level)) {
+            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere', 'recommendations', 'competitors', 'conversionactions', 'optimizationlog', 'anomalies', 'auctiondata', 'campaignscores'].includes(level)) {
                 selectedCampaign = null; selectedAdGroup = null;
             }
             currentLevel = level;
@@ -3015,7 +3077,7 @@
             updateSidebar();
             updateBreadcrumb();
             updateViewTitle();
-            const isSemrushView = currentLevel === 'recommendations' || currentLevel === 'competitors' || currentLevel === 'conversionactions' || currentLevel === 'optimizationlog' || currentLevel === 'anomalies';
+            const isSemrushView = currentLevel === 'recommendations' || currentLevel === 'competitors' || currentLevel === 'conversionactions' || currentLevel === 'optimizationlog' || currentLevel === 'anomalies' || currentLevel === 'auctiondata' || currentLevel === 'campaignscores';
 
             // Toggle visibility: regular dashboard elements vs Semrush content
             const regularElements = ['.kpi-toolbar', '.kpi-strip', '.chart-controls', '.widget-row', '.filter-bar', '.table-wrap'];
@@ -3408,6 +3470,8 @@
             else if (currentLevel === 'conversionactions') renderConversionActions();
             else if (currentLevel === 'optimizationlog') renderOptimizationLog();
             else if (currentLevel === 'anomalies') renderAnomalies();
+            else if (currentLevel === 'auctiondata') renderAuctionData();
+            else if (currentLevel === 'campaignscores') renderCampaignScores();
         }
 
         // ── Campaigns Table ──
@@ -5222,6 +5286,310 @@
                 <pre style="background:#1d1d1f;color:#f5f5f7;padding:16px;border-radius:8px;font-size:12px;overflow-x:auto;margin:0;">python scripts/anomaly_detector.py --client ${clientConfig.id}
 python scripts/anomaly_detector.py --client ${clientConfig.id} --window 21 --threshold 2.5
 python scripts/anomaly_detector.py --client ${clientConfig.id} --lookback 90</pre>
+            </div>`;
+
+            html += `</div>`;
+            mc.innerHTML = html;
+        }
+
+        // ── Auction Data ──
+        function renderAuctionData() {
+            const mc = document.getElementById('semrushContent');
+            if (!auctionData.length) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Auction Data Available</h3>
+                    <p>Run <code>python scripts/export_insights_data.py --client ${clientConfig.id}</code> to pull competitive search metrics.</p>
+                </div>`;
+                return;
+            }
+
+            const totalImpr = auctionData.reduce((s, r) => s + r.impressions, 0);
+            const avgSIS = totalImpr > 0 ? auctionData.reduce((s, r) => s + r.search_impr_share * r.impressions, 0) / totalImpr : 0;
+            const avgTopIS = totalImpr > 0 ? auctionData.reduce((s, r) => s + r.search_top_impr_share * r.impressions, 0) / totalImpr : 0;
+            const avgAbsTopIS = totalImpr > 0 ? auctionData.reduce((s, r) => s + r.search_abs_top_impr_share * r.impressions, 0) / totalImpr : 0;
+            const avgBudgetLost = totalImpr > 0 ? auctionData.reduce((s, r) => s + r.search_budget_lost_impr_share * r.impressions, 0) / totalImpr : 0;
+            const avgRankLost = totalImpr > 0 ? auctionData.reduce((s, r) => s + r.search_rank_lost_impr_share * r.impressions, 0) / totalImpr : 0;
+
+            function isBar(val, max, color) {
+                const pct = max > 0 ? Math.min(val / max * 100, 100) : 0;
+                return `<div style="display:flex;align-items:center;gap:8px;">
+                    <div style="flex:1;height:8px;background:#f1f1f1;border-radius:4px;overflow:hidden;">
+                        <div style="width:${pct}%;height:100%;background:${color};border-radius:4px;"></div>
+                    </div>
+                    <span style="font-size:13px;font-weight:600;min-width:50px;text-align:right;">${(val * 100).toFixed(1)}%</span>
+                </div>`;
+            }
+
+            function scoreColor(val) {
+                if (val >= 0.7) return '#22c55e';
+                if (val >= 0.4) return '#f59e0b';
+                return '#dc2626';
+            }
+
+            let html = `<div style="padding:24px;max-width:1200px;">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:32px;">
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:${scoreColor(avgSIS)};">${(avgSIS * 100).toFixed(1)}%</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Search Impr. Share</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:${scoreColor(avgTopIS)};">${(avgTopIS * 100).toFixed(1)}%</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Top Impr. Share</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:${scoreColor(avgAbsTopIS)};">${(avgAbsTopIS * 100).toFixed(1)}%</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Abs. Top Impr. Share</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#dc2626;">${(avgBudgetLost * 100).toFixed(1)}%</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Lost IS (Budget)</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#f59e0b;">${(avgRankLost * 100).toFixed(1)}%</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Lost IS (Rank)</div>
+                    </div>
+                </div>
+
+                <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Campaign Auction Metrics</h3>
+                    <div style="overflow-x:auto;">
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Campaign</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Impr.</th>
+                                <th style="text-align:right;padding:8px 10px;color:#86868b;">Cost</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;min-width:150px;">Search IS</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;min-width:150px;">Top IS</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;min-width:150px;">Abs Top IS</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;min-width:150px;">Lost (Budget)</th>
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;min-width:150px;">Lost (Rank)</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+            for (const r of auctionData) {
+                html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                    <td style="padding:8px 10px;font-weight:500;">${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td style="padding:8px 10px;text-align:right;">${fmtNum(r.impressions)}</td>
+                    <td style="padding:8px 10px;text-align:right;">${fmtCur(r.cost)}</td>
+                    <td style="padding:8px 10px;">${isBar(r.search_impr_share, 1, scoreColor(r.search_impr_share))}</td>
+                    <td style="padding:8px 10px;">${isBar(r.search_top_impr_share, 1, scoreColor(r.search_top_impr_share))}</td>
+                    <td style="padding:8px 10px;">${isBar(r.search_abs_top_impr_share, 1, scoreColor(r.search_abs_top_impr_share))}</td>
+                    <td style="padding:8px 10px;">${isBar(r.search_budget_lost_impr_share, 1, '#dc2626')}</td>
+                    <td style="padding:8px 10px;">${isBar(r.search_rank_lost_impr_share, 1, '#f59e0b')}</td>
+                </tr>`;
+            }
+
+            html += `</tbody></table></div></div>
+
+                <div style="background:#f9fafb;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 12px 0;">Metric Definitions</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;font-size:12px;color:#86868b;">
+                        <div><strong>Search IS:</strong> % of eligible impressions your ads received on search</div>
+                        <div><strong>Top IS:</strong> % of impressions shown above organic results</div>
+                        <div><strong>Abs Top IS:</strong> % of impressions shown as the very first ad</div>
+                        <div><strong>Lost IS (Budget):</strong> % of impressions lost due to insufficient budget</div>
+                        <div><strong>Lost IS (Rank):</strong> % of impressions lost due to low Ad Rank (bid, quality, etc.)</div>
+                        <div><strong>Exact Match IS:</strong> % of eligible exact-match keyword impressions received</div>
+                    </div>
+                </div>
+            </div>`;
+
+            mc.innerHTML = html;
+        }
+
+        // ── Campaign Scores ──
+        function renderCampaignScores() {
+            const mc = document.getElementById('semrushContent');
+            if (!campaignScoresData.length && !qualityScoresData.length) {
+                mc.innerHTML = `<div style="padding:40px;text-align:center;color:#86868b;">
+                    <h3>No Campaign Score Data Available</h3>
+                    <p>Run <code>python scripts/export_insights_data.py --client ${clientConfig.id}</code> to pull optimization & quality scores.</p>
+                </div>`;
+                return;
+            }
+
+            function optScoreColor(val) {
+                if (val === null) return '#86868b';
+                if (val >= 0.8) return '#22c55e';
+                if (val >= 0.5) return '#f59e0b';
+                return '#dc2626';
+            }
+
+            function qsColor(val) {
+                if (val === null) return '#86868b';
+                if (val >= 7) return '#22c55e';
+                if (val >= 5) return '#f59e0b';
+                return '#dc2626';
+            }
+
+            function qualLabel(val) {
+                if (!val) return '\u2014';
+                return val.replace('ABOVE_AVERAGE', 'Above Avg').replace('AVERAGE', 'Average').replace('BELOW_AVERAGE', 'Below Avg');
+            }
+
+            function qualBadge(val) {
+                const label = qualLabel(val);
+                const color = val === 'ABOVE_AVERAGE' ? '#22c55e' : val === 'AVERAGE' ? '#f59e0b' : val === 'BELOW_AVERAGE' ? '#dc2626' : '#86868b';
+                const bg = val === 'ABOVE_AVERAGE' ? '#f0fdf4' : val === 'AVERAGE' ? '#fffbeb' : val === 'BELOW_AVERAGE' ? '#fef2f2' : '#f8f8f8';
+                return `<span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;color:${color};background:${bg};">${label}</span>`;
+            }
+
+            const scored = campaignScoresData.filter(c => c.optimization_score !== null);
+            const avgOpt = scored.length ? scored.reduce((s, c) => s + c.optimization_score, 0) / scored.length : null;
+            const qsScored = qualityScoresData.filter(k => k.quality_score !== null);
+            const avgQS = qsScored.length ? qsScored.reduce((s, k) => s + k.quality_score, 0) / qsScored.length : null;
+            const qsDistribution = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            qsScored.forEach(k => { if (k.quality_score >= 0 && k.quality_score <= 10) qsDistribution[k.quality_score]++; });
+
+            let html = `<div style="padding:24px;max-width:1200px;">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px;">
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:${optScoreColor(avgOpt)};">${avgOpt !== null ? (avgOpt * 100).toFixed(0) + '%' : '\u2014'}</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Avg Optimization Score</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:${qsColor(avgQS)};">${avgQS !== null ? avgQS.toFixed(1) : '\u2014'}<span style="font-size:14px;color:#86868b;">/10</span></div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Avg Quality Score</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#296f5e;">${qsScored.length}</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Scored Keywords</div>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;text-align:center;">
+                        <div style="font-size:28px;font-weight:700;color:#dc2626;">${qsScored.filter(k => k.quality_score !== null && k.quality_score < 5).length}</div>
+                        <div style="font-size:12px;color:#86868b;margin-top:4px;">Low QS (&lt; 5)</div>
+                    </div>
+                </div>`;
+
+            // Quality Score Distribution
+            if (qsScored.length) {
+                const maxCount = Math.max(...qsDistribution);
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Quality Score Distribution</h3>
+                    <div style="display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 8px;">
+                        ${qsDistribution.map((count, i) => {
+                            if (i === 0) return '';
+                            const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
+                            const color = i >= 7 ? '#22c55e' : i >= 5 ? '#f59e0b' : '#dc2626';
+                            return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;">
+                                <span style="font-size:11px;font-weight:600;color:#1d1d1f;">${count}</span>
+                                <div style="width:100%;height:${Math.max(pct, 2)}%;min-height:4px;background:${color};border-radius:4px 4px 0 0;"></div>
+                                <span style="font-size:11px;color:#86868b;">${i}</span>
+                            </div>`;
+                        }).join('')}
+                    </div>
+                </div>`;
+            }
+
+            // Campaign Optimization Scores Table
+            if (campaignScoresData.length) {
+                html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                    <h3 style="font-size:16px;font-weight:600;color:#1d1d1f;margin:0 0 16px 0;">Campaign Optimization Scores</h3>
+                    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                        <thead>
+                            <tr style="border-bottom:2px solid #e5e5e5;">
+                                <th style="text-align:left;padding:8px 10px;color:#86868b;">Campaign</th>
+                                <th style="text-align:center;padding:8px 10px;color:#86868b;">Optimization Score</th>
+                                <th style="text-align:center;padding:8px 10px;color:#86868b;">Avg Quality Score</th>
+                                <th style="text-align:center;padding:8px 10px;color:#86868b;">Scored KWs</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                const sorted = [...campaignScoresData].sort((a, b) => (b.optimization_score || 0) - (a.optimization_score || 0));
+                for (const c of sorted) {
+                    const optPct = c.optimization_score !== null ? (c.optimization_score * 100).toFixed(0) + '%' : '\u2014';
+                    const optColor = optScoreColor(c.optimization_score);
+                    const qsVal = c.avg_quality_score !== null ? c.avg_quality_score.toFixed(1) : '\u2014';
+                    html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                        <td style="padding:8px 10px;font-weight:500;">${escapeHtml(displayName(c.campaign_name))}</td>
+                        <td style="padding:8px 10px;text-align:center;">
+                            <span style="display:inline-block;padding:4px 12px;border-radius:20px;font-weight:700;color:${optColor};background:${optColor}15;">${optPct}</span>
+                        </td>
+                        <td style="padding:8px 10px;text-align:center;">
+                            <span style="font-weight:600;color:${qsColor(c.avg_quality_score)};">${qsVal}</span>
+                        </td>
+                        <td style="padding:8px 10px;text-align:center;color:#86868b;">${c.scored_keywords || 0}</td>
+                    </tr>`;
+                }
+                html += `</tbody></table></div>`;
+            }
+
+            // Keyword Quality Score Detail
+            if (qsScored.length) {
+                const lowQS = qsScored.filter(k => k.quality_score < 5).sort((a, b) => a.quality_score - b.quality_score);
+                const highQS = qsScored.filter(k => k.quality_score >= 7).sort((a, b) => b.quality_score - a.quality_score);
+
+                if (lowQS.length) {
+                    html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                        <h3 style="font-size:16px;font-weight:600;color:#dc2626;margin:0 0 16px 0;">Keywords Needing Improvement (QS &lt; 5)</h3>
+                        <div style="max-height:400px;overflow-y:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="border-bottom:2px solid #e5e5e5;position:sticky;top:0;background:#fff;">
+                                    <th style="text-align:left;padding:8px 10px;color:#86868b;">Keyword</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">QS</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">Ad Relevance</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">Landing Page</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">Expected CTR</th>
+                                    <th style="text-align:left;padding:8px 10px;color:#86868b;">Campaign</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                    for (const k of lowQS.slice(0, 50)) {
+                        html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                            <td style="padding:8px 10px;font-weight:500;">${escapeHtml(k.keyword)}</td>
+                            <td style="padding:8px 10px;text-align:center;">
+                                <span style="display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;font-weight:700;color:#fff;background:${qsColor(k.quality_score)};font-size:12px;">${k.quality_score}</span>
+                            </td>
+                            <td style="padding:8px 10px;text-align:center;">${qualBadge(k.creative_quality)}</td>
+                            <td style="padding:8px 10px;text-align:center;">${qualBadge(k.landing_page_quality)}</td>
+                            <td style="padding:8px 10px;text-align:center;">${qualBadge(k.expected_ctr)}</td>
+                            <td style="padding:8px 10px;color:#86868b;font-size:12px;">${escapeHtml(displayName(k.campaign_name))}</td>
+                        </tr>`;
+                    }
+                    html += `</tbody></table></div>
+                        ${lowQS.length > 50 ? `<div style="padding:8px;color:#86868b;font-size:12px;">+ ${lowQS.length - 50} more keywords</div>` : ''}
+                    </div>`;
+                }
+
+                if (highQS.length) {
+                    html += `<div style="background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                        <h3 style="font-size:16px;font-weight:600;color:#22c55e;margin:0 0 16px 0;">Top Performing Keywords (QS &gt;= 7)</h3>
+                        <div style="max-height:400px;overflow-y:auto;">
+                        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+                            <thead>
+                                <tr style="border-bottom:2px solid #e5e5e5;position:sticky;top:0;background:#fff;">
+                                    <th style="text-align:left;padding:8px 10px;color:#86868b;">Keyword</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">QS</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">Ad Relevance</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">Landing Page</th>
+                                    <th style="text-align:center;padding:8px 10px;color:#86868b;">Expected CTR</th>
+                                    <th style="text-align:left;padding:8px 10px;color:#86868b;">Campaign</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                    for (const k of highQS.slice(0, 30)) {
+                        html += `<tr style="border-bottom:1px solid #f1f1f1;">
+                            <td style="padding:8px 10px;font-weight:500;">${escapeHtml(k.keyword)}</td>
+                            <td style="padding:8px 10px;text-align:center;">
+                                <span style="display:inline-block;width:28px;height:28px;line-height:28px;border-radius:50%;font-weight:700;color:#fff;background:${qsColor(k.quality_score)};font-size:12px;">${k.quality_score}</span>
+                            </td>
+                            <td style="padding:8px 10px;text-align:center;">${qualBadge(k.creative_quality)}</td>
+                            <td style="padding:8px 10px;text-align:center;">${qualBadge(k.landing_page_quality)}</td>
+                            <td style="padding:8px 10px;text-align:center;">${qualBadge(k.expected_ctr)}</td>
+                            <td style="padding:8px 10px;color:#86868b;font-size:12px;">${escapeHtml(displayName(k.campaign_name))}</td>
+                        </tr>`;
+                    }
+                    html += `</tbody></table></div></div>`;
+                }
+            }
+
+            html += `<div style="background:#f9fafb;border:1px solid #e5e5e5;border-radius:12px;padding:24px;margin-bottom:24px;">
+                <h3 style="font-size:14px;font-weight:600;color:#1d1d1f;margin:0 0 12px 0;">Refresh Score Data</h3>
+                <pre style="background:#1d1d1f;color:#f5f5f7;padding:16px;border-radius:8px;font-size:12px;overflow-x:auto;margin:0;">python scripts/export_insights_data.py --client ${clientConfig.id}</pre>
             </div>`;
 
             html += `</div>`;
