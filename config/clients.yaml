@@ -2,12 +2,15 @@
 #
 # Keys are the internal client_id used for file paths, S3 keys, and dashboard tokens.
 # Fields:
-#   name            – human-readable client name
-#   google_ads_id   – Google Ads customer ID (no dashes)
-#   s3_path         – S3 folder for first-party DPR data
-#   athena_id       – client_id in staging.google_ads_campaign_data (may differ from key)
-#   prod_id         – client_id in prod.application_data (may differ from athena_id)
-#   dashboard_token – SHA-256 token for the GitHub Pages dashboard
+#   name                  – human-readable client name
+#   google_ads_id         – Google Ads customer ID (no dashes)
+#   s3_path               – S3 folder for first-party DPR data
+#   athena_id             – client_id in staging.google_ads_campaign_data (may differ from key)
+#   prod_id               – client_id in prod.application_data (may differ from athena_id)
+#   dashboard_token       – SHA-256 token for the GitHub Pages dashboard
+#   meta_ad_account_id    – (optional) Meta ad account ID (format: act_XXXXXXXXXX)
+#   meta_access_token_env – (optional) env var holding the Meta access token (default: META_ACCESS_TOKEN)
+#   platforms             – (optional) list of active platforms, e.g. [google, meta]
 
 altura_ad_account:
   name: "Altura Ad Account"
@@ -57,6 +60,9 @@ kitsap_cu:
   athena_id: "kitsap_cu"
   prod_id: "kitsap"
   dashboard_token: "d49d866d6e58accdfc6b0a57099c04d349ceafedcefa8f249d3cee7bd8ebb472"
+  meta_ad_account_id: "act_XXXXXXXXXX"        # TODO: replace with real Meta ad account ID
+  meta_access_token_env: "META_KITSAP_TOKEN"
+  platforms: ["google", "meta"]
 
 publicservice_cu:
   name: "Public Service Credit Union"

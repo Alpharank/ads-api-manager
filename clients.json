@@ -22,7 +22,8 @@
   },
   "d49d866d6e58accdfc6b0a57099c04d349ceafedcefa8f249d3cee7bd8ebb472": {
     "id": "kitsap_cu",
-    "name": "Kitsap Credit Union"
+    "name": "Kitsap Credit Union",
+    "platforms": ["google", "meta"]
   },
   "92ec66122ab956def432f3ba0d4f5f142db0f211270256bf12fc27beba80fd9a": {
     "id": "publicservice_cu",

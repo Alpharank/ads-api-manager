@@ -1570,6 +1570,55 @@
             min-height: 200px;
         }
 
+        /* ── Platform Toggle ── */
+        .platform-toggle-group {
+            display: inline-flex;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+            margin-right: 8px;
+        }
+        .platform-toggle-group.hidden { display: none; }
+        .platform-btn {
+            padding: 5px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            border: none;
+            background: #fff;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border-right: 1px solid var(--border);
+        }
+        .platform-btn:last-child { border-right: none; }
+        .platform-btn:hover { background: var(--hover-bg); }
+        .platform-btn.active {
+            background: var(--teal);
+            color: #fff;
+        }
+        .platform-btn .platform-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 4px;
+            vertical-align: -1px;
+        }
+        .platform-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            margin-right: 4px;
+        }
+        .sidebar-item.meta-only { display: none; }
+        .sidebar-item.google-only {}
+        .meta-active .sidebar-item.google-only { display: none; }
+        .meta-active .sidebar-item.meta-only { display: flex; }
+        .combined-active .sidebar-item.meta-only { display: flex; }
+
         /* ── Chart Date Range Selector ── */
         .chart-controls {
             display: flex;
@@ -1577,6 +1626,7 @@
             justify-content: flex-start;
             gap: 12px;
             padding: 8px 24px;
+            flex-wrap: wrap;
         }
 
         .date-range-label {
@@ -1918,23 +1968,38 @@
                     <span>Ad groups</span>
                 </div>
                 <div id="sidebarAdGroupSub" class="sidebar-sub hidden"></div>
-                <div class="sidebar-divider"></div>
-                <div class="sidebar-section-label">Keywords</div>
-                <div class="sidebar-item" data-level="keywords" onclick="navigateToLevel('keywords')">
+                <div class="sidebar-divider google-only"></div>
+                <div class="sidebar-section-label google-only">Keywords</div>
+                <div class="sidebar-item google-only" data-level="keywords" onclick="navigateToLevel('keywords')">
                     <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
                     <span>Keywords</span>
                 </div>
-                <div class="sidebar-item" data-level="allkeywords" onclick="navigateToLevel('allkeywords')">
+                <div class="sidebar-item google-only" data-level="allkeywords" onclick="navigateToLevel('allkeywords')">
                     <svg viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
                     <span>All keywords</span>
                 </div>
-                <div class="sidebar-item" data-level="searchterms" onclick="navigateToLevel('searchterms')">
+                <div class="sidebar-item google-only" data-level="searchterms" onclick="navigateToLevel('searchterms')">
                     <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
                     <span>Search terms</span>
                 </div>
-                <div class="sidebar-item" data-level="negativekeywords" onclick="navigateToLevel('negativekeywords')">
+                <div class="sidebar-item google-only" data-level="negativekeywords" onclick="navigateToLevel('negativekeywords')">
                     <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11H7v-2h10v2z"/></svg>
                     <span>Negative keywords</span>
+                </div>
+                <!-- Meta-specific: Ad Sets (equivalent of ad groups/keywords) -->
+                <div class="sidebar-divider meta-only"></div>
+                <div class="sidebar-section-label meta-only">Targeting</div>
+                <div class="sidebar-item meta-only" data-level="metaadsets" onclick="navigateToLevel('metaadsets')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    <span>Ad Sets</span>
+                </div>
+                <div class="sidebar-item meta-only" data-level="metaplacements" onclick="navigateToLevel('metaplacements')">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <span>Placements</span>
+                </div>
+                <div class="sidebar-item meta-only" data-level="metademographics" onclick="navigateToLevel('metademographics')">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="currentColor"/></svg>
+                    <span>Demographics</span>
                 </div>
                 <div class="sidebar-divider"></div>
                 <div class="sidebar-section-label">Insights</div>
@@ -2086,6 +2151,21 @@
 
                 <!-- Chart Controls -->
                 <div class="chart-controls">
+                    <span class="platform-label" id="platformLabel" style="display:none;">Platform</span>
+                    <div class="platform-toggle-group hidden" id="platformToggle">
+                        <button class="platform-btn active" data-platform="google" onclick="setPlatform('google')">
+                            <svg class="platform-icon" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+                            Google
+                        </button>
+                        <button class="platform-btn" data-platform="meta" onclick="setPlatform('meta')">
+                            <svg class="platform-icon" viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10-10.02z" fill="#1877F2"/></svg>
+                            Meta
+                        </button>
+                        <button class="platform-btn" data-platform="combined" onclick="setPlatform('combined')">
+                            <svg class="platform-icon" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" fill="currentColor"/></svg>
+                            Combined
+                        </button>
+                    </div>
                     <label class="date-range-label">Data Month</label>
                     <select class="date-range-select" id="monthSelect" onchange="changeMonth(this.value)"></select>
                     <label class="date-range-label" style="margin-left:16px;">Chart Range</label>
@@ -2361,6 +2441,16 @@
         let auctionData = [];
         let campaignScoresData = [];
         let qualityScoresData = [];
+        // Meta data arrays
+        let metaCampaignData = [];
+        let metaDailyData = [];
+        let metaAdsetData = [];
+        let metaPlacementData = [];
+        let metaDeviceData = [];
+        let metaDemographicData = [];
+        let metaLocationData = [];
+        let currentPlatform = 'google';  // google | meta | combined
+        let clientHasMeta = false;
         let enrichedDataByModel = {};  // Store enriched data for each attribution model
         let currentAttributionModel = 'last_click';  // last_click | first_click | linear
         let availableMonths = [];
@@ -2559,6 +2649,18 @@
 
                 dataManifest = await (await fetch('data-manifest.json')).json().catch(() => ({}));
                 const months = (dataManifest[clientConfig.id] || []).sort().reverse();
+
+                // Check if client has Meta data
+                const metaManifestKey = `${clientConfig.id}__meta`;
+                clientHasMeta = !!(
+                    (clientConfig.platforms && clientConfig.platforms.includes('meta')) ||
+                    (dataManifest[metaManifestKey] && dataManifest[metaManifestKey].length > 0)
+                );
+                if (clientHasMeta) {
+                    showPlatformToggle();
+                } else {
+                    hidePlatformToggle();
+                }
 
                 document.getElementById('clientName').textContent = clientConfig.name || 'Ads Dashboard';
 
@@ -2971,6 +3073,11 @@
                     }))
                     .filter(r => r.keyword) : [];
 
+                // Load Meta data if client has it and platform needs it
+                if (clientHasMeta && (currentPlatform === 'meta' || currentPlatform === 'combined')) {
+                    await loadMetaData();
+                }
+
                 showDashboard();
                 render();
             } catch (e) {
@@ -3008,8 +3115,12 @@
         function getKPIData() {
             if (currentLevel === 'allkeywords') return keywordData;
             if (currentLevel === 'keywords' && selectedAdGroup) return getScopedKeywords();
-            if (selectedCampaign) return campaignData.filter(c => c.campaign_name === selectedCampaign.campaign_name);
-            return campaignData;
+            if (currentLevel === 'metaadsets') return metaAdsetData;
+            if (currentLevel === 'metaplacements') return metaPlacementData.map(r => ({...r, network: r.platform}));
+            if (currentLevel === 'metademographics') return metaDemographicData;
+            const activeCampaigns = getActiveCampaignData();
+            if (selectedCampaign) return activeCampaigns.filter(c => c.campaign_name === selectedCampaign.campaign_name);
+            return activeCampaigns;
         }
 
         // ── Sidebar Toggle ──
@@ -3039,7 +3150,7 @@
         function navigateToLevel(level) {
             if (level === 'campaigns') { selectedCampaign = null; selectedAdGroup = null; }
             else if (level === 'adgroups') { selectedAdGroup = null; }
-            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere', 'recommendations', 'competitors', 'conversionactions', 'optimizationlog', 'anomalies', 'auctiondata', 'campaignscores'].includes(level)) {
+            else if (['allkeywords', 'searchterms', 'negativekeywords', 'channels', 'whenwhere', 'recommendations', 'competitors', 'conversionactions', 'optimizationlog', 'anomalies', 'auctiondata', 'campaignscores', 'metaadsets', 'metaplacements', 'metademographics'].includes(level)) {
                 selectedCampaign = null; selectedAdGroup = null;
             }
             currentLevel = level;
@@ -3078,6 +3189,13 @@
             updateBreadcrumb();
             updateViewTitle();
             const isSemrushView = currentLevel === 'recommendations' || currentLevel === 'competitors' || currentLevel === 'conversionactions' || currentLevel === 'optimizationlog' || currentLevel === 'anomalies' || currentLevel === 'auctiondata' || currentLevel === 'campaignscores';
+            // Show/hide Google-only sidebar items based on platform
+            document.querySelectorAll('.google-only').forEach(el => {
+                el.style.display = (currentPlatform === 'meta') ? 'none' : '';
+            });
+            document.querySelectorAll('.meta-only').forEach(el => {
+                el.style.display = (currentPlatform === 'meta' || currentPlatform === 'combined') ? '' : 'none';
+            });
 
             // Toggle visibility: regular dashboard elements vs Semrush content
             const regularElements = ['.kpi-toolbar', '.kpi-strip', '.chart-controls', '.widget-row', '.filter-bar', '.table-wrap'];
@@ -3127,6 +3245,209 @@
             loadData();
         }
 
+        // ── Platform Toggle ──
+        function setPlatform(platform) {
+            currentPlatform = platform;
+            // Update toggle buttons
+            document.querySelectorAll('.platform-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.platform === platform);
+            });
+            // Update sidebar visibility classes
+            const sidebar = document.querySelector('.sidebar');
+            sidebar.classList.remove('meta-active', 'combined-active');
+            if (platform === 'meta') sidebar.classList.add('meta-active');
+            if (platform === 'combined') sidebar.classList.add('combined-active');
+            // If switching to meta and on a google-only view, reset to campaigns
+            const googleOnlyViews = ['keywords', 'allkeywords', 'searchterms', 'negativekeywords'];
+            const metaOnlyViews = ['metaadsets', 'metaplacements', 'metademographics'];
+            if (platform === 'meta' && googleOnlyViews.includes(currentLevel)) {
+                currentLevel = 'campaigns';
+            }
+            if (platform === 'google' && metaOnlyViews.includes(currentLevel)) {
+                currentLevel = 'campaigns';
+            }
+            selectedCampaign = null;
+            selectedAdGroup = null;
+            loadData();
+        }
+
+        function showPlatformToggle() {
+            document.getElementById('platformToggle').classList.remove('hidden');
+            document.getElementById('platformLabel').style.display = '';
+        }
+
+        function hidePlatformToggle() {
+            document.getElementById('platformToggle').classList.add('hidden');
+            document.getElementById('platformLabel').style.display = 'none';
+        }
+
+        async function loadMetaData() {
+            const base = `data/${clientConfig.id}`;
+            const metaManifestKey = `${clientConfig.id}__meta`;
+            const metaMonths = (dataManifest[metaManifestKey] || []).sort().reverse();
+            // Use matching month if available, else closest
+            const metaMonth = metaMonths.includes(currentMonth) ? currentMonth : (metaMonths[0] || null);
+            if (!metaMonth) return;
+
+            const [campText, dailyText, adsetText, placementText, deviceText, demoText, locationText] = await Promise.all([
+                fetch(`${base}/meta_campaigns/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                fetch(`${base}/meta_daily/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                fetch(`${base}/meta_adsets/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                fetch(`${base}/meta_placements/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                fetch(`${base}/meta_devices/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                fetch(`${base}/meta_demographics/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+                fetch(`${base}/meta_locations/${metaMonth}.csv`).then(r => r.ok ? r.text() : ''),
+            ]);
+
+            metaCampaignData = campText ? Papa.parse(campText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    campaign_id: (r.campaign_id || '').trim(),
+                    campaign_name: (r.campaign_name || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                    _source: 'meta',
+                    // Meta has no first-party attribution (yet)
+                    apps: 0, approved: 0, funded: 0, production: 0, value: 0,
+                    cpf: 0, avg_funded_value: 0,
+                    cc_appvd: 0, deposit_appvd: 0, personal_appvd: 0, vehicle_appvd: 0, heloc_appvd: 0
+                }))
+                .filter(r => r.impressions > 0 || r.clicks > 0)
+                .sort((a, b) => b.clicks - a.clicks) : [];
+
+            metaDailyData = dailyText ? Papa.parse(dailyText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    date: (r.date || '').trim(),
+                    campaign_id: (r.campaign_id || '').trim(),
+                    campaign_name: (r.campaign_name || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                    _source: 'meta'
+                }))
+                .filter(r => r.date) : [];
+
+            // Load additional months for 90-day chart view
+            const metaMonthsToLoad = metaMonths.filter(m => m !== metaMonth).slice(0, 3);
+            for (const month of metaMonthsToLoad) {
+                try {
+                    const extraDaily = await fetch(`${base}/meta_daily/${month}.csv`).then(r => r.ok ? r.text() : '');
+                    if (extraDaily) {
+                        const parsed = Papa.parse(extraDaily, { header: true, skipEmptyLines: true }).data
+                            .map(r => ({
+                                date: (r.date || '').trim(),
+                                campaign_id: (r.campaign_id || '').trim(),
+                                campaign_name: (r.campaign_name || '').trim(),
+                                impressions: parseInt(r.impressions) || 0,
+                                clicks: parseInt(r.clicks) || 0,
+                                cost: parseFloat(r.cost) || 0,
+                                conversions: parseFloat(r.conversions) || 0,
+                                _source: 'meta'
+                            }))
+                            .filter(r => r.date);
+                        metaDailyData = metaDailyData.concat(parsed);
+                    }
+                } catch (e) { /* ignore */ }
+            }
+
+            metaAdsetData = adsetText ? Papa.parse(adsetText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    campaign_id: (r.campaign_id || '').trim(),
+                    campaign_name: (r.campaign_name || '').trim(),
+                    adset_id: (r.adset_id || '').trim(),
+                    adset_name: (r.adset_name || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                }))
+                .filter(r => r.impressions > 0 || r.clicks > 0)
+                .sort((a, b) => b.clicks - a.clicks) : [];
+
+            metaPlacementData = placementText ? Papa.parse(placementText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    platform: (r.platform || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                }))
+                .filter(r => r.impressions > 0 || r.clicks > 0)
+                .sort((a, b) => b.cost - a.cost) : [];
+
+            metaDeviceData = deviceText ? Papa.parse(deviceText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    device: (r.device || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                }))
+                .filter(r => r.impressions > 0 || r.clicks > 0)
+                .sort((a, b) => b.cost - a.cost) : [];
+
+            metaDemographicData = demoText ? Papa.parse(demoText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    age: (r.age || '').trim(),
+                    gender: (r.gender || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                }))
+                .filter(r => r.impressions > 0 || r.clicks > 0)
+                .sort((a, b) => b.cost - a.cost) : [];
+
+            metaLocationData = locationText ? Papa.parse(locationText, { header: true, skipEmptyLines: true }).data
+                .map(r => ({
+                    location: (r.location || '').trim(),
+                    impressions: parseInt(r.impressions) || 0,
+                    clicks: parseInt(r.clicks) || 0,
+                    cost: parseFloat(r.cost) || 0,
+                    conversions: parseFloat(r.conversions) || 0,
+                }))
+                .filter(r => r.impressions > 0 || r.clicks > 0)
+                .sort((a, b) => b.cost - a.cost) : [];
+        }
+
+        // Get the active campaign data based on current platform
+        function getActiveCampaignData() {
+            if (currentPlatform === 'google') return campaignData;
+            if (currentPlatform === 'meta') return metaCampaignData;
+            // Combined: merge both, tag source
+            return campaignData.map(r => ({...r, _source: 'google'})).concat(metaCampaignData);
+        }
+
+        function getActiveDailyData() {
+            if (currentPlatform === 'google') return dailyData;
+            if (currentPlatform === 'meta') return metaDailyData;
+            return dailyData.map(r => ({...r, _source: 'google'})).concat(metaDailyData);
+        }
+
+        function getActiveDeviceData() {
+            if (currentPlatform === 'google') return deviceData;
+            if (currentPlatform === 'meta') return metaDeviceData;
+            return deviceData.map(r => ({...r, _source: 'google'})).concat(metaDeviceData);
+        }
+
+        function getActiveLocationData() {
+            if (currentPlatform === 'google') return locationData;
+            if (currentPlatform === 'meta') return metaLocationData;
+            return locationData.map(r => ({...r, _source: 'google'})).concat(metaLocationData);
+        }
+
+        function getActiveChannelData() {
+            if (currentPlatform === 'meta') return metaPlacementData.map(r => ({...r, network: r.platform}));
+            if (currentPlatform === 'combined') {
+                const goog = channelData.map(r => ({...r, _source: 'google'}));
+                const meta = metaPlacementData.map(r => ({...r, network: r.platform, _source: 'meta'}));
+                return goog.concat(meta);
+            }
+            return channelData;
+        }
+
         // ── Chart View Selector ──
         function setChartView(view) {
             chartView = view;
@@ -3171,7 +3492,7 @@
             }
 
             // Standard metrics from daily campaign data
-            let src = filterByDateRange(dailyData);
+            let src = filterByDateRange(getActiveDailyData());
             if (selectedCampaign) {
                 src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
             }
@@ -3199,7 +3520,7 @@
         }
 
         function getDailyDerivedDataByDOW(metricKey) {
-            let src = filterByDateRange(dailyData);
+            let src = filterByDateRange(getActiveDailyData());
             if (selectedCampaign) {
                 src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
             }
@@ -3373,6 +3694,12 @@
                 bar.appendChild(makeCurrent('Optimization Log'));
             } else if (currentLevel === 'anomalies') {
                 bar.appendChild(makeCurrent('Anomaly Detection'));
+            } else if (currentLevel === 'metaadsets') {
+                bar.appendChild(makeCurrent('Meta Ad Sets'));
+            } else if (currentLevel === 'metaplacements') {
+                bar.appendChild(makeCurrent('Meta Placements'));
+            } else if (currentLevel === 'metademographics') {
+                bar.appendChild(makeCurrent('Meta Demographics'));
             }
         }
 
@@ -3390,9 +3717,15 @@
                 competitors: 'Competitor Intelligence',
                 conversionactions: 'Conversion Actions',
                 optimizationlog: 'Optimization Log',
-                anomalies: 'Anomaly Detection'
+                anomalies: 'Anomaly Detection',
+                metaadsets: 'Meta Ad Sets',
+                metaplacements: 'Meta Placements',
+                metademographics: 'Meta Demographics'
             };
-            document.getElementById('viewTitle').textContent = titles[currentLevel] || 'Dashboard';
+            let title = titles[currentLevel] || 'Dashboard';
+            if (currentPlatform === 'meta' && currentLevel === 'campaigns') title = 'Meta Campaigns';
+            if (currentPlatform === 'combined' && currentLevel === 'campaigns') title = 'All Campaigns (Google + Meta)';
+            document.getElementById('viewTitle').textContent = title;
         }
 
         function updateFilterPlaceholder() {
@@ -3404,7 +3737,10 @@
                 searchterms: 'Filter search terms...',
                 negativekeywords: 'Filter negative keywords...',
                 channels: 'Filter channels...',
-                whenwhere: 'Filter...'
+                whenwhere: 'Filter...',
+                metaadsets: 'Filter ad sets...',
+                metaplacements: 'Filter placements...',
+                metademographics: 'Filter demographics...'
             };
             document.getElementById('textFilter').placeholder = ph[currentLevel] || 'Filter...';
             // Show match type filters only on keywords or search terms view
@@ -3472,6 +3808,9 @@
             else if (currentLevel === 'anomalies') renderAnomalies();
             else if (currentLevel === 'auctiondata') renderAuctionData();
             else if (currentLevel === 'campaignscores') renderCampaignScores();
+            else if (currentLevel === 'metaadsets') renderMetaAdsets();
+            else if (currentLevel === 'metaplacements') renderMetaPlacements();
+            else if (currentLevel === 'metademographics') renderMetaDemographics();
         }
 
         // ── Campaigns Table ──
@@ -3495,10 +3834,10 @@
                 ['heloc_appvd', 'HELOC', true]
             ]);
 
-            let data = campaignData.map(r => ({
+            let data = getActiveCampaignData().map(r => ({
                 ...r, _ctr: ctr(r.impressions, r.clicks), _cpc: cpc(r.cost, r.clicks),
                 _conv_rate: convRate(r.conversions, r.clicks), _cpa: cpa(r.cost, r.conversions),
-                _cpf: r.funded > 0 ? r.cost / r.funded : null,
+                _cpf: (r.funded || 0) > 0 ? r.cost / r.funded : null,
                 _total_funded_value: r.value || 0
             }));
 
@@ -3870,7 +4209,8 @@
                 ['_cpa', 'CPA', true]
             ]);
 
-            let data = channelData.map(r => ({
+            const activeChannels = getActiveChannelData();
+            let data = activeChannels.map(r => ({
                 ...r,
                 _ctr: ctr(r.impressions, r.clicks),
                 _cpc: cpc(r.cost, r.clicks),
@@ -3880,7 +4220,7 @@
 
             if (textFilterValue) {
                 const t = textFilterValue.toLowerCase();
-                data = data.filter(r => r.network.toLowerCase().includes(t));
+                data = data.filter(r => (r.network || '').toLowerCase().includes(t));
             }
             data = applySorting(data);
             updateSortArrows();
@@ -3889,7 +4229,7 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
 
-            if (data.length === 0 && channelData.length === 0) {
+            if (data.length === 0 && activeChannels.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-secondary);padding:40px;">No channel data available. Run the channels export script to populate this view.</td></tr>';
                 return;
             }
@@ -3922,6 +4262,168 @@
                 'UNSPECIFIED': 'Unspecified'
             };
             return names[network] || network;
+        }
+
+        // ── Meta Ad Sets Table ──
+        function renderMetaAdsets() {
+            setHead([
+                ['adset_name', 'Ad Set', false],
+                ['campaign_name', 'Campaign', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conversions', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'CPA', true]
+            ]);
+
+            let data = metaAdsetData.map(r => ({
+                ...r,
+                _ctr: ctr(r.impressions, r.clicks),
+                _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks),
+                _cpa: cpa(r.cost, r.conversions)
+            }));
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.adset_name.toLowerCase().includes(t) || r.campaign_name.toLowerCase().includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'ad set');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--text-secondary);padding:40px;">No Meta ad set data available. Run pull_meta_dashboard_data.py to populate.</td></tr>';
+                return;
+            }
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.adset_name)}</td>
+                    <td class="dim">${escapeHtml(displayName(r.campaign_name))}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── Meta Placements Table ──
+        function renderMetaPlacements() {
+            setHead([
+                ['platform', 'Platform', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conversions', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'CPA', true]
+            ]);
+
+            let data = metaPlacementData.map(r => ({
+                ...r,
+                _ctr: ctr(r.impressions, r.clicks),
+                _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks),
+                _cpa: cpa(r.cost, r.conversions)
+            }));
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.platform.toLowerCase().includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'placement');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;color:var(--text-secondary);padding:40px;">No Meta placement data available.</td></tr>';
+                return;
+            }
+            const platformNames = { 'facebook': 'Facebook', 'instagram': 'Instagram', 'audience_network': 'Audience Network', 'messenger': 'Messenger' };
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(platformNames[r.platform] || r.platform)}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ── Meta Demographics Table ──
+        function renderMetaDemographics() {
+            setHead([
+                ['age', 'Age', false],
+                ['gender', 'Gender', false],
+                ['impressions', 'Impr.', true],
+                ['clicks', 'Clicks', true],
+                ['_ctr', 'CTR', true],
+                ['cost', 'Cost', true],
+                ['_cpc', 'Avg. CPC', true],
+                ['conversions', 'Conversions', true],
+                ['_conv_rate', 'Conv. rate', true],
+                ['_cpa', 'CPA', true]
+            ]);
+
+            let data = metaDemographicData.map(r => ({
+                ...r,
+                _ctr: ctr(r.impressions, r.clicks),
+                _cpc: cpc(r.cost, r.clicks),
+                _conv_rate: convRate(r.conversions, r.clicks),
+                _cpa: cpa(r.cost, r.conversions)
+            }));
+
+            if (textFilterValue) {
+                const t = textFilterValue.toLowerCase();
+                data = data.filter(r => r.age.toLowerCase().includes(t) || r.gender.toLowerCase().includes(t));
+            }
+            data = applySorting(data);
+            updateSortArrows();
+            setCount(data.length, 'segment');
+
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;color:var(--text-secondary);padding:40px;">No Meta demographics data available.</td></tr>';
+                return;
+            }
+            const genderNames = { 'male': 'Male', 'female': 'Female', 'unknown': 'Unknown' };
+            data.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="name-cell">${escapeHtml(r.age)}</td>
+                    <td>${escapeHtml(genderNames[r.gender] || r.gender)}</td>
+                    <td class="text-right">${fmtNum(r.impressions)}</td>
+                    <td class="text-right">${fmtNum(r.clicks)}</td>
+                    <td class="text-right">${fmtPct(r._ctr)}</td>
+                    <td class="text-right">${fmtCur(r.cost)}</td>
+                    <td class="text-right">${fmtCur(r._cpc)}</td>
+                    <td class="text-right">${fmtDec(r.conversions)}</td>
+                    <td class="text-right">${fmtPct(r._conv_rate)}</td>
+                    <td class="text-right">${r._cpa > 0 ? fmtCur(r._cpa) : '\u2014'}</td>`;
+                tbody.appendChild(tr);
+            });
         }
 
         // ── When & Where Table (combined devices + locations) ──
@@ -4203,7 +4705,7 @@
             }
 
             // Standard metrics from daily campaign data
-            let src = filterByDateRange(dailyData);
+            let src = filterByDateRange(getActiveDailyData());
             if (selectedCampaign) {
                 src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
             }
@@ -4228,7 +4730,7 @@
         }
 
         function getDailyDerivedData(metricKey) {
-            let src = filterByDateRange(dailyData);
+            let src = filterByDateRange(getActiveDailyData());
             if (selectedCampaign) {
                 src = src.filter(r => r.campaign_name === selectedCampaign.campaign_name);
             }

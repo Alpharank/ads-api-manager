@@ -5,6 +5,7 @@ pyyaml==6.0.2
 google-auth-oauthlib==1.2.1
 slack-sdk>=3.0.0
 pyarrow>=14.0.0
+requests>=2.31.0
 
 # Deploy dependency — installed in the Airflow environment, not pip-installed here
 # apache-airflow>=2.7.0
